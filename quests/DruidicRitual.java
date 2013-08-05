@@ -67,7 +67,7 @@ public class DruidicRitual extends Node{
 		
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
-		if(!DeltaQuester.checkedBank){
+		if(!DeltaQuester.checkedBank && (ctx.settings.get(2694) & 0xFF)!=136){
 			Method.checkBank();
 		}else
 		 if(Vars.useBank && (ctx.settings.get(2694) & 0xFF)!=136){

@@ -75,7 +75,7 @@ public class RestlessG extends Node{
 		if(DeltaQuester.checkedBank &&(ctx.settings.get(2324)&0x7) !=5)
 			Method.determineBank(bankItems);
 		
-			if(DeltaQuester.checkedBank && (ctx.settings.get(2324)&0x7) !=5){
+			if(!DeltaQuester.checkedBank && (ctx.settings.get(2324)&0x7) !=5){
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.settings.get(2324)&0x7) !=5){

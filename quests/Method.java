@@ -195,27 +195,30 @@ public class Method extends MethodProvider{
 	public void interactInventory(final int i, final String string, final String o) {
 		ArrayList<String> actions = new ArrayList<String>();
 		
+		 if(!timer.isRunning()){
 		for(Item t : ctx.backpack.select().id(i).first()){
 			//System.out.println(ctx.widgets.get(1477,122).getChild(0).getBoundingRect().getCenterY());
 			if(ctx.hud.view(Window.BACKPACK) && closeInterfaces() && ctx.widgets.get(1473,7).contains(
 					t.getComponent().getCenterPoint())){
+				System.out.println("Hovering");
 				t.hover();
+				ctx.game.sleep(1200);
 				String[] menuItems = ctx.menu.getItems();
-				
 				for(String opt: menuItems){
 					if(!actions.contains(opt)){
 						actions.add(opt);
 					}
 				}
-				 if(!timer.isRunning()){
 				for(String text: actions){
 					if(text.contains(string)){
-						state("Using " + string + " with item: " + o);
-						 t.interact(string);
-						 timer = new Timer(3000);
+						if(t.interact(string)){
+						System.out.println("Using " + string + " with item: " + o);
+						ctx.game.sleep(2000);
+						 timer = new Timer(2500);
+						}
 					}
 				}
-				 }
+				 
 			}else
 			if(ctx.widgets.get(1473,7).getBoundingRect().getCenterY()>
 			t.getComponent().getBoundingRect().getCenterY()){
@@ -226,9 +229,9 @@ public class Method extends MethodProvider{
 				state("Scrolling through inventory");
 				ctx.mouse.move(ctx.widgets.get(1473, 7).getAbsoluteLocation());
 				ctx.mouse.scroll(true);
+				}
 			}
-			
-		}
+		}else System.out.println("timer1 running");
 	}
     public boolean isInCombat() {
         return ctx.players.local().getInteracting()!=null;
@@ -261,7 +264,7 @@ public class Method extends MethodProvider{
 		}
 	}
 	private boolean closeInterfaces() {
-		int widgetInterference[] = {1188,1092,1191,1184,1188};
+		int widgetInterference[] = {1188,1092,1191,1184,1186};
 		
 		while((ctx.widgets.get(1244,23).isVisible())){//completed quest screen
 			state("Closing completed quest screen");
@@ -464,10 +467,7 @@ public class Method extends MethodProvider{
 			//state("Skipping special chat");
 			 int widgetID[] = {1189,1186};
 			 
-			 while(ctx.widgets.get(438,22).isVisible()){//The annoying 'Recruit a friend' thing
-					state("Closing advertisement");
-					ctx.widgets.get(438,22).click(true);//The close button
-				}
+		
 				while(ctx.widgets.get(1155,48).isVisible()){//The annoying 'Subscription advertisement' thing
 					state("Closing advertisement");
 					ctx.widgets.get(1155,48).click(true);//The close button
@@ -938,11 +938,6 @@ public class Method extends MethodProvider{
 			break;
 			
 		case 1:
-			bankTile = new Tile(3214,3257, 0);
-			bankFound = true;
-			break;
-			
-		default:
 			bankTile = new Tile(3214,3257, 0);
 			bankFound = true;
 			break;

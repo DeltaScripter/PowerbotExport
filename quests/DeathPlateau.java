@@ -57,7 +57,7 @@ public class DeathPlateau extends Node{
 		if(DeltaQuester.checkedBank && (ctx.settings.get(2337) & 0x1FF) !=449)
 			Method.determineBank(bankItems);
 		
-		if(DeltaQuester.checkedBank && (ctx.settings.get(2337) & 0x1FF) !=449){
+		if(!DeltaQuester.checkedBank && (ctx.settings.get(2337) & 0x1FF) !=449){
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.settings.get(2337) & 0x1FF) !=449){

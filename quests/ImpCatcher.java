@@ -42,7 +42,7 @@ public class ImpCatcher extends Node {
 		
 		if(DeltaQuester.checkedBank)
 		Method.determineBank(bankItems);
-		if(!DeltaQuester.checkedBank){
+		if(!DeltaQuester.checkedBank && (ctx.settings.get(2669)&0x3)!=2){
 			Method.checkBank();
 		}else
 		if(Vars.useBank && (ctx.settings.get(2669)&0x3)!=2){
