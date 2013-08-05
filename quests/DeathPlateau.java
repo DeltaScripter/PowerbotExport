@@ -57,7 +57,7 @@ public class DeathPlateau extends Node{
 		if(DeltaQuester.checkedBank && (ctx.settings.get(2337) & 0x1FF) !=449)
 			Method.determineBank(bankItems);
 		
-		if(!DeltaQuester.checkedBank && (ctx.settings.get(2337) & 0x1FF) !=449){
+		if(DeltaQuester.checkedBank && (ctx.settings.get(2337) & 0x1FF) !=449){
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.settings.get(2337) & 0x1FF) !=449){
@@ -189,8 +189,8 @@ public class DeathPlateau extends Node{
 	}
 
 	private boolean failsafe() {
-		if(new Tile(3432,4261,0).getMatrix(ctx).isReachable()){
-			Method.interactO(67571,"Climb", "Rock ladder");
+		if(new Tile(3432,4258,0).getMatrix(ctx).isReachable()){
+			Method.interactO(7103,"Climb", "Rock ladder");
 			return true;
 		}else
 		if(new Tile(3432,4276,0).getMatrix(ctx).isReachable()){

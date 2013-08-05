@@ -199,20 +199,22 @@ public class Method extends MethodProvider{
 			//System.out.println(ctx.widgets.get(1477,122).getChild(0).getBoundingRect().getCenterY());
 			if(ctx.hud.view(Window.BACKPACK) && closeInterfaces() && ctx.widgets.get(1473,7).contains(
 					t.getComponent().getCenterPoint())){
+				t.hover();
+				String[] menuItems = ctx.menu.getItems();
 				
-				for(String opt: t.getActions()){
-					t.hover();
+				for(String opt: menuItems){
 					if(!actions.contains(opt)){
 						actions.add(opt);
 					}
 				}
-				   actions.add("Use");
 				 if(!timer.isRunning()){
-					 if(actions.contains(string)){
-					state("Using " + string + " with item: " + o);
-					 t.interact(string);
-					 timer = new Timer(3000);
-					 }
+				for(String text: actions){
+					if(text.contains(string)){
+						state("Using " + string + " with item: " + o);
+						 t.interact(string);
+						 timer = new Timer(3000);
+					}
+				}
 				 }
 			}else
 			if(ctx.widgets.get(1473,7).getBoundingRect().getCenterY()>
@@ -234,23 +236,23 @@ public class Method extends MethodProvider{
     
 	public void interactO(final int i, final String string, final String o) {
 		ArrayList<String> actions = new ArrayList<String>();
-		
 		if(!interactO.isRunning()){
 		for(GameObject y: ctx.objects.select().id(i).nearest().first()){
 			
-			
 					if (closeInterfaces() && y.isOnScreen()) {
-						for(String opt: y.getActions()){
-							y.hover();
+						y.hover();
+						String menuItems[] = ctx.menu.getItems();
+						for(String opt: menuItems){
 							if(!actions.contains(opt))
 								actions.add(opt);
 						}
-						actions.add("Use");
-						if(actions.contains(string)){
-							if(y.interact(string)){
+						for(String text: actions){
+							if(text.contains(string)){
+								  interactO = new Timer(2400);
+								   y.interact(string);
+								   sleep(2000);
 								state("Using " + string + " on: " + o);
-								interactO = new Timer(1400);
-								return;
+								
 							}
 						}
 					} else ctx.camera.turnTo(y);
