@@ -76,7 +76,7 @@ public final Tile[] pathToCook = new Tile[] {
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
 		
-			if(!DeltaQuester.checkedBank){
+		if(!DeltaQuester.checkedBank&& (ctx.settings.get(2492)&0x3) !=2){
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.settings.get(2492)&0x3) !=2){

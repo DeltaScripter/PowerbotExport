@@ -580,7 +580,6 @@ public class Method extends MethodProvider{
 					}
 				 if(DeltaQuester.FOOD_FEATURE){
 						if(inventoryGetCount(DeltaQuester.FOOD_ID)<=foodspace && Vars.bankItems.contains(DeltaQuester.FOOD_ID)){
-							System.out.println("like a boss, foodspace:  " + foodspace);
 							Vars.useBank = true;
 							Vars.ranOnce = true;
 						}
@@ -775,12 +774,10 @@ public class Method extends MethodProvider{
 
 	public boolean inventoryContains(int i) {
 		if(!ctx.hud.isVisible(Window.BACKPACK)){
-			state("Opening inv view");
 			ctx.hud.view(Window.BACKPACK);
 			sleep(2000);
 		}
 			while (!ctx.backpack.select().id(i).first().isEmpty()) {
-				System.out.println("found item in inv");
 				return true;
 			}
 		

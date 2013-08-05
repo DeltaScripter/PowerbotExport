@@ -39,7 +39,6 @@ public class ImpCatcher extends Node {
 	
 	public void execute() {
 		DeltaQuester.numSteps = 3;
-		System.out.println(""+DeltaQuester.checkedBank);
 		
 		if(DeltaQuester.checkedBank)
 		Method.determineBank(bankItems);

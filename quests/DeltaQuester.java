@@ -563,7 +563,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 							questList.setModel(new AbstractListModel<String>() {
 								String[] values = {
 										"Cook's Assistant","Clock Tower","Death Plateau","Demon Slayer","Druidic Ritual",
-										"Imp Catcher","Let Them Eat Pie","Monk's Friend","Pirate's Treasure","Stolen Hearts","Swept Away","The Blood Pact",
+										"Imp Catcher","Let Them Eat Pie","Monk's Friend","Pirate's Treasure","Swept Away","The Blood Pact",
 										"The Restless Ghost","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
 								};
 								@Override
