@@ -39,6 +39,8 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 	public static boolean checkedBank = false;//if cache bank initially
 	public boolean GEWO = false;
 	public static boolean FOOD_FEATURE = false;
+	public static int number;
+	public static boolean bankFound = false;
 	public static boolean e = false;//The intermediate between quests, resets variables
 	
 	//for paint

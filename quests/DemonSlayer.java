@@ -50,6 +50,7 @@ public class DemonSlayer extends Node {
 	public boolean inits = false;
 	public boolean spokeToFaith = false;
 	public boolean spokeToBody = false;
+	private boolean silverEquip = false;//for rquipping the silver light sword
 	public int[] tileArray = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 	public int bankItems[] = {2402};
@@ -155,42 +156,38 @@ public class DemonSlayer extends Node {
 		//SceneObject door = SceneEntities.getNearest(24381);
 		if(init!=null){
 			if(!Method.isChatting("People"))
-			if(ctx.settings.get(82)==1018){
+			if((ctx.settings.get(82)&0x3FF)==1018){
 				if(!Method.isChatting("Cutscene")){//16724
-					if(!Method.EquipmentContains(2402)){
-						Method.interactInventory(2402, "Wield", "Silverlight");
-					}else if(local.getAppearance().equals(18019)){
+					
+					if(local.getAppearance().equals(18019)){
 						Method.npcInteract(16724, "Attack");
 					}else if(!Method.isInCombat()){
 						Method.npcInteract(16724, "Attack");
 					}else Method.basicFightNPC(16724);
 					
 				}
-			}else if(new Tile(init.getX()+31,init.getY()-30,0).distanceTo(local.getLocation())<5){
-				
-				if(local.getAppearance().equals(18019)){
-					Method.npcInteract(16723, "Attack");
-				}else Method.basicFightNPC(16723);
-				
-			}else Method.clickOnMap(new Tile(init.getX()+31,init.getY()-30,0));
-		}else 
-			{for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
+			}else if(silverEquip){
+				if(!Method.npcIsNotNull(16722) || !Method.npcIsNotNull(16723)){//Denath, not the demon
+				Method.clickOnMap(new Tile(init.getX()+31,init.getY()-30,0));
+				ctx.game.sleep(5000);
+				}
+			}else if(!Method.EquipmentContains(2402)){
+				Method.interactInventory(2402, "Wield", "Silverlight");
+			}else silverEquip = true;
+			
+		}else { 
+			for(GameObject  o : ctx.objects.select().id(71036).nearest().first()){
 			if(o.getLocation().distanceTo(local.getLocation())<20){
 				ctx.environment.sleep(2000);
 				init = ctx.players.local().getLocation();
 			}
 		}
-		if(new Tile(3258,3483,0).distanceTo(local.getLocation())<8){
-			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
-				if(!TrapDoor.contains(door.getLocation())){
-					Method.interactO(82059, "Climb", "Trapdoor");
-				}else Method.interactO(15536, "Open", "Door");
-			}
-			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
-			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3249,3480,0).distanceTo(local.getLocation())<20){
-			Method.clickOnMap(new Tile(3257,3483,0));
-			ctx.environment.sleep(1200);
+		if(new Tile(3256,3387,0).distanceTo(local.getLocation())<8){
+			if(!Method.objIsByTile(new Tile(3255,3388,0), 24381, 3)){
+				Method.interactO(82061, "Climb", "Trapdoor");
+			}else Method.interactO(24381, "Open", "Door");
+			
+				
 		}else delta(pathToTemple, "Walking to the temple");
 	}
 		
