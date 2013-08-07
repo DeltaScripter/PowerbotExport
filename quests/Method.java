@@ -200,7 +200,7 @@ public class Method extends MethodProvider{
 		for(Item t : ctx.backpack.select().id(i).first()){
 			//System.out.println(ctx.widgets.get(1477,122).getChild(0).getBoundingRect().getCenterY());
 			if(ctx.hud.view(Window.BACKPACK) && closeInterfaces() && ctx.widgets.get(1473,7).contains(
-					t.getComponent().getCenterPoint())){
+				t.getComponent().getCenterPoint())){
 				System.out.println("Hovering");
 				t.hover();
 				ctx.game.sleep(1200);
@@ -212,6 +212,7 @@ public class Method extends MethodProvider{
 				}
 				for(String text: actions){
 					if(text.contains(string)){
+						if(closeInterfaces())
 						if(t.interact(string)){
 						System.out.println("Using " + string + " with item: " + o);
 						ctx.game.sleep(2000);
@@ -265,7 +266,7 @@ public class Method extends MethodProvider{
 		}
 	}
 	private boolean closeInterfaces() {
-		int widgetInterference[] = {1188,1092,1191,1184,1186};
+		int widgetInterference[] = {1188,1092,1191,1184,1186,1189};
 		
 		while((ctx.widgets.get(1244,23).isVisible())){//completed quest screen
 			state("Closing completed quest screen");
@@ -537,7 +538,7 @@ public class Method extends MethodProvider{
 		}
 	}
 	public void determineBank(int[] items){
-		//System.out.println("Inside determine bank");
+		System.out.println("Inside determine bank");
 		int invspace= 28;
 		int itemsNeeded = 0;
 		int foodspace;
@@ -596,9 +597,8 @@ public class Method extends MethodProvider{
 			ctx.hud.view(Window.BACKPACK);
 		int freespace = 28 - items.length;new Tile(3180, 3482, 0);
 		int foodspace = freespace - 5;
-		
 		System.out.println("bankTile: "+ bankTile + "DeltaQuester.number is : " + DeltaQuester.number);
-		if (bankTile.distanceTo(ctx.players.local().getLocation()) < 6) {
+		if (bankTile.distanceTo(ctx.players.local().getLocation()) < 8) {
 			
 			//Destroy unbankable items!
 			for(int destroyItemID: destroyableItems){
@@ -662,7 +662,7 @@ public class Method extends MethodProvider{
 				Vars.useBank = false;
 					}
 					  }
-			} else ctx.bank.open();
+			} else openBank();
 			
 			
 		} else getToBank();
@@ -674,22 +674,27 @@ public class Method extends MethodProvider{
 			if(Vars.DYNAMICV){
 				switch(DeltaQuester.number){
 				case 1:
+					System.out.println("Inside case 1");
 					walking(Paths.pathToBank2,"Walking to lummbridge bank", false);
 					break;
 				case 0:
+					System.out.println("Inside case 0");
 					walking(Paths.pathToGE,"Walking to Grand Exchange bank", false);
 					break;
 				
 				}
 			}else{
 				switch(DeltaQuester.number){
+				
 				case 1:
+					System.out.println("Inside case 1");
 					if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().getLocation())<10){
 						Vars.DYNAMICV = true;
 					}else teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 					break;
 					
 				case 0:
+					System.out.println("Inside case 0");
 					if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().getLocation())<10||
 							TeleportLode.VARROCK.getTile().distanceTo(ctx.players.local().getLocation())<10){
 						Vars.DYNAMICV = true;
@@ -901,6 +906,7 @@ public class Method extends MethodProvider{
 	
 	public void checkBank() {
 		//System.out.println("Now deciding bank.."+ DeltaQuester.DeltaQuester.number);
+		System.out.println("Inside checkBank");
 		if(!DeltaQuester.bankFound){
 			System.out.println("Now deciding bank..");
 			decideBank();
@@ -919,12 +925,17 @@ public class Method extends MethodProvider{
 		} else getToBank();
 	}
 	private void openBank() {
+		System.out.println("Attempting to open bank: "+ DeltaQuester.number);
 		switch(DeltaQuester.number){
-		case 0:
+		case 0://G.E bank
+			if(getNPC(2718).isOnScreen()){
 		   npcInteract(2718,"Bank");
+			}else ctx.camera.turnTo(getNPC(2718).getLocation());
 			break;
-		case 1:
-		   interactO(79036,"Use","Bank chest");
+		case 1://Lumbridge outside bank
+			if(getObject(79036).isOnScreen()){
+			  interactO(79036,"Use","Bank chest");
+			}else ctx.camera.turnTo(getObject(79036).getLocation());
 			break;
 		
 		}
@@ -932,19 +943,19 @@ public class Method extends MethodProvider{
 	}
 	
 	private void decideBank() {
-
+		System.out.println("Inside decide bank");
 		if(DeltaQuester.number!=0 && DeltaQuester.number!=1){
 		System.out.println("Creating random numer!");
 		DeltaQuester.number = rand.nextInt(2);
 		}
 		switch(DeltaQuester.number){
 		
-		case 0:
+		case 0://Grand Exchange bank
 			bankTile = new Tile(3179, 3481, 0);
 			DeltaQuester.bankFound = true;
 			break;
 			
-		case 1:
+		case 1://Lumbridge outside bank
 			bankTile = new Tile(3214,3257, 0);
 			DeltaQuester.bankFound = true;
 			break;
