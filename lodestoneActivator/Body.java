@@ -17,7 +17,6 @@ import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Tile;
 
-import quests.Node;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "DeltaLodestone", 

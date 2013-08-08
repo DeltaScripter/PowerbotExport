@@ -16,7 +16,6 @@ import org.powerbot.script.wrappers.Widget;
 
 import chocopowder.Data.choco;
 
-import quests.Node;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "DeltaChocolate", 
