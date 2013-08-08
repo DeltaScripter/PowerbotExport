@@ -19,7 +19,7 @@ import chocopowder.Data.choco;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "DeltaChocolate", 
-description = "Converts chocolate bars into chocolate powder for profit!", website = "", version = .5)
+description = "Converts chocolate bars into chocolate powder for profit!", website = "", version = .1)
 public class Body extends PollingScript implements PaintListener{
 
 	public Body(){
