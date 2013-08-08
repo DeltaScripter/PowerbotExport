@@ -20,7 +20,7 @@ import org.powerbot.script.wrappers.Tile;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "DeltaLodestone", 
-description = "Simply unlocks F2P lodestones.", website = "", version = .5)
+description = "Simply unlocks F2P lodestones.", website = "", version = .1)
 public class Body extends PollingScript implements PaintListener{
 
 	public final Tile pathToVarrock[] = new Tile[]{

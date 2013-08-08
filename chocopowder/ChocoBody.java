@@ -14,15 +14,16 @@ import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Widget;
 
-import chocopowder.Data.choco;
+import chocopowder.ChocoData.choco;
 
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "DeltaChocolate", 
-description = "Converts chocolate bars into chocolate powder for profit!", website = "", version = .1)
-public class Body extends PollingScript implements PaintListener{
+description = "Grinds chocolate into powder, start script at a bank.", 
+website = "", version = 1)
+public class ChocoBody extends PollingScript implements PaintListener{
 
-	public Body(){
+	public ChocoBody(){
 		getExecQueue(State.START).add(new Runnable() {
 			@Override
 			public void run() {
@@ -32,12 +33,12 @@ public class Body extends PollingScript implements PaintListener{
 		});
 	}
 	
-	private final List<Node> nodeList = Collections.synchronizedList(new ArrayList<Node>());
+	private final List<ChocoNode> nodeList = Collections.synchronizedList(new ArrayList<ChocoNode>());
 	private String state;
 	@Override
 	public int poll() {
 		
-		for(Node node: nodeList){
+		for(ChocoNode node: nodeList){
 			if(node.activate()){
 				node.execute();
 			}
@@ -84,9 +85,9 @@ public class Body extends PollingScript implements PaintListener{
 				}
 			}
 	}
-	   private void addNode(final Node...nodes) {
+	   private void addNode(final ChocoNode...nodes) {
 		   
-	        for(Node node : nodes) {
+	        for(ChocoNode node : nodes) {
 	            if(!this.nodeList.contains(node)) {
 	                this.nodeList.add(node);
 	            }
@@ -104,7 +105,7 @@ public class Body extends PollingScript implements PaintListener{
 			return false;
 		}
 	   
-		class Crush extends Node{
+		class Crush extends ChocoNode{
 
 			public Crush(MethodContext ctx) {
 				super(ctx);
@@ -136,7 +137,7 @@ public class Body extends PollingScript implements PaintListener{
 			
 		}
 		
-	   class Bank extends Node{
+	   class Bank extends ChocoNode{
 
 		public Bank(MethodContext ctx) {
 			super(ctx);

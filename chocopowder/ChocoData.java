@@ -1,6 +1,6 @@
 package chocopowder;
 
-public class Data {
+public class ChocoData {
 
 	
 	public enum choco{

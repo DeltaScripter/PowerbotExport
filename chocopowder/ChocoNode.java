@@ -12,11 +12,11 @@ import org.powerbot.script.methods.MethodProvider;
 * To change this template use File | Settings | File Templates.
 */
 
-    public abstract class Node extends MethodProvider {
+    public abstract class ChocoNode extends MethodProvider {
 
     protected MethodContext ctx;
 
-    public Node(MethodContext ctx) {
+    public ChocoNode(MethodContext ctx) {
         super(ctx);
         this.ctx = ctx;
     }
