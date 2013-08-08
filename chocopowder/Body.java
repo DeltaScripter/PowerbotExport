@@ -11,8 +11,6 @@ import org.powerbot.event.PaintListener;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.Hud.Window;
-import org.powerbot.script.methods.Widgets;
-import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Widget;
 
