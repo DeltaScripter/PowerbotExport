@@ -5,6 +5,8 @@ import org.powerbot.script.wrappers.Tile;
 public class Data {
 
 
+
+	
 	public enum TeleportLode{
 		
 		VARROCK(new Tile(3214,3378,0)),FALADOR(new Tile(2965,3402, 0)), LUMMBRIDGE(new Tile(3200,3231, 0)),
