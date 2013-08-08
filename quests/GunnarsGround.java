@@ -14,7 +14,6 @@ public class GunnarsGround extends Node{
 		super(ctx);
 	}
 
-	//______________________________
 	public final Tile[] pathToDororan = new Tile[] { 
 			new Tile(3213, 3375, 0), new Tile(3211, 3380, 0), new Tile(3209, 3385, 0), 
 			new Tile(3209, 3390, 0), new Tile(3209, 3395, 0), new Tile(3210, 3400, 0), 
@@ -66,19 +65,31 @@ public class GunnarsGround extends Node{
 	
 	public int itemDAmount[] = {1,1,1};
 	public int bankItems[] = {1755,19770,19774,19771,19772};
+	public int bankItemAmount[] = {1,1,1,1,1};
 	private Method Method = new Method(ctx);
 	private Vars Vars = new Vars();
 	
 	public void execute() {
 		DeltaQuester.numSteps = 13;
+		
+		
+		
+		
+		if(DeltaQuester.checkedBank &&(ctx.settings.get(2111) & 0x7F) != 100)
+			Method.determineBank(bankItems);
+		
+			if(!DeltaQuester.checkedBank && (ctx.settings.get(2111) & 0x7F) != 100){
+			Method.checkBank();
+		}else
+	    if(Vars.useBank && (ctx.settings.get(2111) & 0x7F) != 100){
+			Method.useBank(bankItems, bankItemAmount);
+		}else if(!Method.interference())
 		if ((ctx.settings.get(2111) & 0x7F) == 100) {
 			DeltaQuester.progress =13;
 			Method.state("The Gunnar's Ground quest has been completed.");
 			Method.sleep(2000);
-			DeltaQuester.getInstance().e = true;
-		} else //if(Method.useBank){
-			//Method.useBank(bankItems, 1,1,90);
-		//}else
+			DeltaQuester.e = true;
+		} else
 		if ((ctx.settings.get(2111) & 0x7F) == 75) {
 			DeltaQuester.progress =12;
 			cs5();
@@ -132,7 +143,7 @@ public class GunnarsGround extends Node{
 		}
 	}
 
-	private void cs5() {
+	private void cs5() {//Finish the quest
 		final String opt[] = {"I'll consider"};
 		Player local = ctx.players.local();
 		if(new Tile(3080,3416,0).distanceTo(local.getLocation())<8){
@@ -147,7 +158,7 @@ public class GunnarsGround extends Node{
 		
 	}
 
-	private void cs4() {
+	private void cs4() {//Speak to the father, Gunthor
 		Player local = ctx.players.local();
 		final String opt[] = {"Please wait a moment","You're barbarians","Your daughter seeks permission","I need to speak with you"};
 		//SceneObject door = SceneEntities.getNearest(11621);
@@ -158,7 +169,7 @@ public class GunnarsGround extends Node{
 				Method.speakTo(2876, "Gunthor");
 			}
 		}else if(Vars.DYNAMICV2){
-			if(new Tile(3079,3438,0).distanceTo(local.getLocation())<7 && Method.objIsNotNull(11621) && FatherDoor.contains(Method.getObject(11621).getLocation())){
+			if(new Tile(3079,3438,0).distanceTo(local.getLocation())<6 && Method.objIsByTile(new Tile(3079,3438,0), 11621, 6)){
 				Method.interactO(11621, "Open", "Door");
 			}else Method.walking(pathToGunthor, "Walking to Gunthor", false);
 			
@@ -222,11 +233,13 @@ public class GunnarsGround extends Node{
 		if(new Tile(3107,3501,0).distanceTo(local.getLocation())<10){
 			Vars.DYNAMICV3 = true;
 		}
-		if(new Tile(3096, 3422, 0).distanceTo(local.getLocation())<9){
+		if(new Tile(3096, 3422, 0).distanceTo(local.getLocation())<9){//Dororan location
 			if(new Tile(3096, 3422, 0).distanceTo(local.getLocation())<8){
 				Method.skipPics();
 			if(!Method.startQuestOpen())
-				if(!Method.findOption(opt)){Vars.DYNAMICV = false; Vars.DYNAMICV2 = true;Vars.DYNAMICV3 = false;
+				if(!Method.findOption(opt)){Vars.DYNAMICV = false; 
+				Vars.DYNAMICV2 = true;
+				Vars.DYNAMICV3 = false;
 					if(!Method.isChatting("Dororan")){
 						Method.speakTo(1168, "Dororan");
 					}

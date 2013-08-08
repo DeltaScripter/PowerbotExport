@@ -41,6 +41,8 @@ public class BuyersAndCellars extends Node {
 	public String itemDString[] = {"Logs"};//contains the names of the items needing to be purchased.
 	
 	public int bankItems[] = {1511,18648};
+	public int bankItemAmount[] = {1,1};
+	
 	private Vars Vars = new Vars();
 	private Method Method = new Method(ctx);
 	public void execute() {
@@ -50,16 +52,21 @@ public class BuyersAndCellars extends Node {
 		 * 2085-steps for quest
 		 * 1297-More possibilities for starting quest and ending quest.
 		 */
-		if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().getLocation())<6){
-			Method.teleporting = false;
-		}
+		Method.resetTeleporting();
 		DeltaQuester.numSteps =9;
-	//	if(Method.useBank&&(ctx.settings.get(2085) & 0x7FF) != 1930){
-		//	Method.useBank(bankItems, 1,1,90);
-		//}else
-		//if (DeltaQuester.getInstance().GEFeature &&(ctx.settings.get(2085) & 0x7FF) != 1930) {
-		//	Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
-	//	}else
+	
+		if(DeltaQuester.checkedBank)
+			Method.determineBank(bankItems);
+		
+		if(!DeltaQuester.checkedBank&& (ctx.settings.get(2085) & 0x7FF) != 1930){
+			Method.checkBank();
+		}else
+	    if(Vars.useBank && (ctx.settings.get(2085) & 0x7FF) != 1930){
+			Method.useBank(bankItems, bankItemAmount);
+		}else
+		if (DeltaQuester.GEFeature && (ctx.settings.get(2085) & 0x7FF) != 1930) {
+			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
+		}else
 			if ((ctx.settings.get(2085) & 0x7FF) == 1930) {
 			DeltaQuester.progress=9;
 			Method.state("The Buyers and Cellars quest has been completed.");
@@ -157,8 +164,7 @@ public class BuyersAndCellars extends Node {
 					Method.interactO(45539, "Open","Door");
 			} else {
 				Method.state("Attempting to start fire");
-				//GroundItem log =GroundItems.getNearest(1511);
-				if (local.getLocation().equals(new Tile(3211, 3150, 0))) {
+				if (local.getLocation().equals(new Tile(3211, 3150, 0))) {//location to light fire
 					if (local.getAnimation() == -1){
 						if(Method.inventoryContains(1511)){
 						Method.interactInventory(1511, "Light","Logs");
@@ -167,7 +173,7 @@ public class BuyersAndCellars extends Node {
 						} else{
 							Vars.DYNAMICV = false;
 							Vars.DYNAMICV2 = false;
-							DeltaQuester.getInstance().GEFeature = true;
+							DeltaQuester.GEFeature = true;
 						}
 					}
 				} else {

@@ -445,6 +445,11 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					rewardItemModel.addElement("250XP Thieving lamp x 1");
 					rewardExpModel.addElement("Constitution XP: 250");
 					index++;
+				}else if(quest == "Gunnar's Ground"){
+					rewardItemModel.addElement("Antique lamp x 1");
+					rewardItemModel.addElement("Swanky boots x 1");
+					rewardExpModel.addElement("Crating XP: 300");
+					index++;
 				}else index++;
 			}
 			rewardItemList.setModel(rewardItemModel);
@@ -503,6 +508,9 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					index++;
 				}else if(quest == "Stolen Hearts"){
 					requirementsList.setText(requirementsList.getText() + quest + ":\nYou must defeat three level 2 enemies\n\n");
+					index++;
+				}else if(quest == "Gunnar's Ground"){
+					requirementsList.setText(requirementsList.getText() + quest + ":\nLevel 5 Crafting\n\n");
 					index++;
 				}else index++;
 			}
