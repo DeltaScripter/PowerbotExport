@@ -77,7 +77,7 @@ public class Body extends PollingScript implements PaintListener{
 		getExecQueue(State.START).add(new Runnable() {
 			@Override
 			public void run() {
-				     addNode(new walkTo(ctx));
+				   addNode(new walkTo(ctx));
 			}
 		});
 	}
@@ -101,6 +101,7 @@ public class Body extends PollingScript implements PaintListener{
 	            }
 	        }
 	    }
+	  
    class walkTo extends Node{
 
 	   
