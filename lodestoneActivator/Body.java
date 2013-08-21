@@ -185,7 +185,7 @@ public class Body extends PollingScript implements PaintListener{
    public void teleportTo(int tele){
 	  
 	   if(ctx.players.local().getAnimation()==-1 && !teleportTimer.isRunning())
-	   if(ctx.widgets.get(1092).isValid()){
+	   if(ctx.widgets.get(1092,tele).isVisible()){
 		   ctx.mouse.move(ctx.widgets.get(1092,tele).getCenterPoint());
 				   ctx.mouse.click(true);
 				   ctx.game.sleep(300);

@@ -116,6 +116,12 @@ public class MineIsYours extends Node{
 			if(!Method.isChatting("Listening")){
 			}
 		}
+		while(!Method.teleporting && (Method.inventoryContains(438) || (Method.inventoryContains(436)))){
+			int ores[] = {438,436};
+			for(int i : ores){
+				Method.interactInventory(i, "Drop", "Ore");
+			}
+		}
 		Method.skipPics();
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);

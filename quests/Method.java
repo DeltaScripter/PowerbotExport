@@ -287,14 +287,29 @@ public class Method extends MethodProvider{
 	}
 
 	public void npcInteract(int i, String string) {
+		ArrayList<String> actions = new ArrayList<String>();
+		if(!SpeakTotimer.isRunning()){
 		for(Npc n : ctx.npcs.select().id(i).nearest().first()){
 				if (closeInterfaces() && n.isOnScreen()) {
-					state("Interacting with " + n.getName());
-					if(!SpeakTotimer.isRunning()){
-					n.interact(string);
-					SpeakTotimer = new Timer(1400);
+					n.hover();
+					String menuItems[] = ctx.menu.getItems();
+					for(String opt: menuItems){
+						if(!actions.contains(opt))
+							actions.add(opt);
+					}
+					for(String text: actions){
+						if(text.contains(string)){
+							state("Interacting with " + n.getName() + " and using " + string);
+							 SpeakTotimer = new Timer(2400);
+							 System.out.println("interacting");
+							  n.interact(string);
+							   sleep(2000);
+							   break;
+							
+						}
 					}
 				} else ctx.camera.turnTo(n);
+			}
 		}
 	}
 
@@ -394,17 +409,19 @@ public class Method extends MethodProvider{
 			}
 		}
 		
-		if(ctx.bank.close() && ctx.widgets.get(1092).isValid()){//lodestone screen
+		if(ctx.bank.close() && ctx.widgets.get(1092,loc).isVisible()){//lodestone screen
 			state("Selecting teleport: " + teleName);
 			ctx.mouse.move(ctx.widgets.get(1092).getComponent(loc).getCenterPoint());
 			ctx.widgets.get(1092).getComponent(loc).click(true);
 			timer = new Timer(6000);
-		}else if (!ctx.players.local().isInCombat())
+		}else {
+			System.out.println("Selecting teleport spell");
+			if (!ctx.players.local().isInCombat())
 				if (ctx.players.local().getAnimation() == -1){
 					ctx.widgets.get(1465,10).interact("Teleport");//select lodestone button
 					timer = new Timer(1000);
 				}
-					
+		}		
 		}
 	}
 	
@@ -593,8 +610,9 @@ public class Method extends MethodProvider{
 		final int destroyableItems[] = {27156,26480,25131};
 		boolean donesearch = false;
 		
-		if(ctx.hud.isVisible(Window.BACKPACK))
+		if(!ctx.hud.isVisible(Window.BACKPACK))
 			ctx.hud.view(Window.BACKPACK);
+		
 		int freespace = 28 - items.length;new Tile(3180, 3482, 0);
 		int foodspace = freespace - 5;
 		System.out.println("bankTile: "+ bankTile + "DeltaQuester.number is : " + DeltaQuester.number);
@@ -781,7 +799,11 @@ public class Method extends MethodProvider{
 	}
 
 	public boolean inventoryContains(int i) {
+		
 		if(!ctx.hud.isVisible(Window.BACKPACK)){
+			while (ctx.bank.isOpen()){
+				ctx.bank.close();
+			}
 			ctx.hud.view(Window.BACKPACK);
 			sleep(2000);
 		}

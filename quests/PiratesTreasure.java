@@ -17,28 +17,19 @@ public class PiratesTreasure extends Node{
 	}
 
 	public final static Tile[] pathToFrank = new Tile[] {
-		new Tile(3231, 3220, 0), new Tile(3231, 3225, 0), new Tile(3231, 3230, 0), 
-		new Tile(3228, 3234, 0), new Tile(3226, 3239, 0), new Tile(3222, 3242, 0), 
-		new Tile(3218, 3246, 0), new Tile(3213, 3248, 0), new Tile(3208, 3248, 0), 
-		new Tile(3203, 3247, 0), new Tile(3198, 3246, 0), new Tile(3193, 3246, 0), 
-		new Tile(3188, 3244, 0), new Tile(3183, 3244, 0), new Tile(3178, 3246, 0), 
-		new Tile(3173, 3245, 0), new Tile(3169, 3242, 0), new Tile(3165, 3239, 0), 
-		new Tile(3160, 3238, 0), new Tile(3155, 3236, 0), new Tile(3150, 3234, 0), 
-		new Tile(3145, 3234, 0), new Tile(3141, 3231, 0), new Tile(3136, 3229, 0), 
-		new Tile(3132, 3226, 0), new Tile(3127, 3224, 0), new Tile(3122, 3224, 0), 
-		new Tile(3117, 3224, 0), new Tile(3112, 3225, 0), new Tile(3109, 3229, 0), 
-		new Tile(3107, 3234, 0), new Tile(3105, 3239, 0), new Tile(3103, 3244, 0), 
-		new Tile(3103, 3249, 0), new Tile(3103, 3254, 0), new Tile(3102, 3259, 0), 
-		new Tile(3102, 3263, 0), new Tile(3103, 3268, 0), new Tile(3103, 3273, 0), 
-		new Tile(3105, 3278, 0), new Tile(3105, 3283, 0), new Tile(3102, 3287, 0), 
-		new Tile(3097, 3289, 0), new Tile(3092, 3290, 0), new Tile(3087, 3289, 0), 
-		new Tile(3082, 3288, 0), new Tile(3077, 3288, 0), new Tile(3073, 3285, 0), 
-		new Tile(3072, 3280, 0), new Tile(3069, 3276, 0), new Tile(3064, 3275, 0), 
-		new Tile(3060, 3272, 0), new Tile(3057, 3268, 0), new Tile(3056, 3263, 0), 
-		new Tile(3056, 3258, 0), new Tile(3055, 3253, 0), new Tile(3052, 3249, 0), 
-		new Tile(3051, 3246, 0), new Tile(3043,3246,0), new Tile(3040,3236,0),
-		new Tile(3033,3236,0), new Tile(3028,3232,0), new Tile(3027,3226,0),
-		new Tile(3028,3220,0)};
+			new Tile(3018,3218,0),new Tile(3022,3218,0),new Tile(3027,3225,0),
+			new Tile(3027,3234,0),new Tile(3035,3235,0),new Tile(3041,3244,0),
+			new Tile(3047,3247,0),new Tile(3053,3247,0),//from port sarim
+			
+			new Tile(3200,3238,0),new Tile(3210,3254,0),new Tile(3216,3268,0),
+			new Tile(3209,3274,0),new Tile(3197,3278,0),new Tile(3188,3285,0),
+			new Tile(3177,3285,0),new Tile(3167,3288,0),new Tile(3154,3291,0),
+			new Tile(3143,3293,0),new Tile(3131,3295,0),new Tile(3118,3296,0),
+			new Tile(3109,3297,0),new Tile(3102,3295,0),new Tile(3093,3292,0),
+			new Tile(3086,3289,0),new Tile(3078,3283,0),new Tile(3072,3276,0),
+			new Tile(3064,3269,0),new Tile(3062,3261,0),new Tile(3056,3252,0),
+			new Tile(3052,3247,0)
+	};
 	
 	public final Tile[] pathToHallow = new Tile[] { 
 			new Tile(3232, 3221, 0), new Tile(3237, 3223, 0), new Tile(3242, 3225, 0), 
@@ -407,7 +398,7 @@ public class PiratesTreasure extends Node{
 		
 		Player local = ctx.players.local();
 		final String opt[] = {"Ok, I","I'm in search"}; 
-		if(new Tile(3052,3247,0).distanceTo(local.getLocation())<20){
+		if(new Tile(3052,3247,0).distanceTo(local.getLocation())<28){
 			if(new Tile(3052,3247,0).distanceTo(local.getLocation())<7){
 				if(!Method.findOption(opt))
 					if(!Method.isChatting("Pirate")){
