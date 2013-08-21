@@ -38,7 +38,7 @@ public class DivineMethod extends MethodProvider{
 		if(winner == null || tile.distanceTo(t) < winner.distanceTo(t))
 		winner = tile;
 		}
-		ctx.movement.stepTowards(winner.randomize(1, 1));
+		ctx.movement.stepTowards(winner);
 		}
 		 
 		public ArrayList<Tile> getSurroundingTiles(){

@@ -67,7 +67,6 @@ public class DivineBody extends PollingScript implements PaintListener{
 	DivineMethod Method = new DivineMethod(ctx);
 	
 	
-	
 	@Override
 	public int poll() {
 		
@@ -75,7 +74,6 @@ public class DivineBody extends PollingScript implements PaintListener{
 		for(DivineNode node: nodeList){
 			if(node.activate()){
 				node.execute();
-				
 			}
 		}
 		}
@@ -106,7 +104,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 			while(riftArea==null && Method.objIsNotNull("Energy Rift")){
 				state = "Setting rift area";
 				riftArea = Method.getObject("Energy Rift").getLocation();
-				riftArea = new Tile(riftArea.getX(), riftArea.getY()+3,riftArea.getPlane());
+				riftArea = new Tile(riftArea.getX(), riftArea.getY()-2,riftArea.getPlane());
 			}
 			
 			while(ctx.players.local().getAnimation()==animationType){
@@ -198,7 +196,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 		private boolean closeToObj(Tile loc, String string) {
 			if(loc.distanceTo(ctx.players.local().getLocation())<5){
 				return true;
-			}else if(loc.distanceTo(ctx.players.local().getLocation())<8){
+			}else if(loc.distanceTo(ctx.players.local().getLocation())<12){
 				Method.clickOnMap(loc);
 			}else{
 				state = string;
