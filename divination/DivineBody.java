@@ -40,6 +40,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 			@Override
 			public void run() {
 				initiateGUI();
+				initialExp = ctx.skills.getExperience(25);
 				runtime = new Timer(0);
 				secondsA = new Timer(0);
 				minutesA = new Timer(0);
@@ -54,6 +55,9 @@ public class DivineBody extends PollingScript implements PaintListener{
 	private boolean harvest = false;
 	private int convertType;
 	private int animationType;
+	private int initialExp;
+	private int expGained;
+	private int expPerHr;
 	private String wispKind;
 	private String wispSpring;
 	private String memoryType;
@@ -104,9 +108,10 @@ public class DivineBody extends PollingScript implements PaintListener{
 		public void execute() {
 			while(riftArea==null && Method.objIsNotNull("Energy Rift")){
 				state = "Setting rift area";
+				System.out.println("Setting rift area");
 				riftArea = Method.getObject("Energy Rift").getLocation();
 				riftArea = new Tile(riftArea.getX(), riftArea.getY()-2,riftArea.getPlane());
-				return;
+				break;
 			}
 			
 			while(ctx.players.local().getAnimation()==animationType){
@@ -144,6 +149,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 			}
 			@Override
 			public void execute() {
+				
 				while(ctx.players.local().getAnimation()==animation.HARVESTINGSPRING2.getID()){
 					state = "Harvesting spring";
 					updateCounts();
@@ -154,14 +160,8 @@ public class DivineBody extends PollingScript implements PaintListener{
 					harvest = false;
 					break;
 				}
-				
-				if(Method.npcIsNotNull("Enriched glowing spring")){
-					System.out.println("Found an enriched spring!");
-					if(closeToNpc("Enriched glowing spring","Walking to enriched spring")){
-						state = "Attempting to harvest enriched spring";
-						Method.npcInteract("Enriched glowing spring", "Harvest");
-					}
-				}else
+				if(!foundEnrichedSpring("Enriched sparkling spring"))
+				if(!foundEnrichedSpring("Enriched glowing spring"))
 				if(Method.npcIsNotNull(wispSpring)){
 					if(closeToNpc(wispSpring,"Walking to spring")){
 						state = "Attempting to harvest spring";
@@ -179,6 +179,17 @@ public class DivineBody extends PollingScript implements PaintListener{
 			
 		
 
+			private boolean foundEnrichedSpring(String string) {
+				if(Method.npcIsNotNull(string)){
+					System.out.println("Found an enriched spring!");
+					if(closeToNpc(string,"Walking to enriched spring")){
+						state = "Attempting to harvest enriched spring";
+						Method.npcInteract(string, "Harvest");
+					}
+				}
+				return false;
+			}
+
 			private boolean closeToNpc(String name, String string) {
 				if(Method.getNPC(name).getLocation().distanceTo(ctx.players.local().getLocation())<7){
 					return true;
@@ -193,6 +204,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 		}
 		private void updateCounts() {
 			paleECount = Method.inventoryGetCount(memoryType);
+			calcExpHr();
 			
 		}
 		private boolean closeToObj(Tile loc, String string) {
@@ -228,8 +240,16 @@ private void setMouse(Graphics g) {
 
 	@Override
 	public void repaint(Graphics g) {
+		double runtimeHold = runtime.getElapsed();
+		runtimeHold = 3600000/runtimeHold;
+		expPerHr = (int)runtimeHold * expGained;
+		String expHr = ""+ expPerHr;
+		if(expHr.length()>3)
+		expHr = expHr.substring(0, expHr.length() - 3);
+		
 		mouseX = (int) ctx.mouse.getLocation().getX();
 		mouseY = (int) ctx.mouse.getLocation().getY();
+		int level = ctx.skills.getLevel(25);
 		setMouse(g);
 		//g.drawImage(paint, mouseX-950,mouseY-600, null);
 		int seconds = (int)(runtime.getElapsed()/1000);
@@ -251,9 +271,20 @@ private void setMouse(Graphics g) {
 		g.setColor(Color.CYAN);
 		g.drawString("Runtime: " +hours+":"+minHold +":" + secHold, 20, 150);
 		g.drawString("Energy in inventory: " + paleECount, 20, 170);
+		g.drawString("Current level: " + level, 20, 190);
+		g.drawString("XP Gained: " + expGained + " XP : P/Hr(" +expHr+"K)" , 20, 210);
+		//g.drawString("XP per hour: "+ expPerHr, 20, 230);
 		
 		
 	}
+
+	private void calcExpHr() {
+		int current = ctx.skills.getExperience(25);
+		int diff = current - initialExp;
+		expGained = diff;
+		
+	}
+
 	public void initiateGUI() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
