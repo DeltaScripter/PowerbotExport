@@ -21,6 +21,7 @@ import org.powerbot.event.PaintListener;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 
 import divination.DivineData.animation;
@@ -32,7 +33,7 @@ import divination.DivineData.wisps;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
 description = "Trains the Divination skill, harvests and converts energy to your choosing.",
-website = "http://www.powerbot.org/community/topic/1082019-delta-divinity/", version = 1.06)
+website = "http://www.powerbot.org/community/topic/1082019-delta-divinity/", version = 1.07)
 public class DivineBody extends PollingScript implements PaintListener{
 
 	public DivineBody(){
@@ -54,6 +55,8 @@ public class DivineBody extends PollingScript implements PaintListener{
 				minutesA = new Timer(0);
 				addNode(new harvestWisp(ctx));
 				addNode(new convertMemories(ctx));
+				addNode(new DivineAntipattern(ctx));
+				
 			}
 
 			private void initilizeLocVariables() {
@@ -150,6 +153,8 @@ public class DivineBody extends PollingScript implements PaintListener{
 	private String memoryType;
 	private Tile riftArea;
 	private int paleECount;
+	public static boolean antiPattern;
+	private Random rand = new Random();
 	private boolean start = false;
 	private Timer waiting = new Timer(0);
 	private Timer runtime;
@@ -193,6 +198,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 
 		@Override
 		public void execute() {
+			calcAntiPattern();
 			while(riftArea==null && Method.objIsNotNull("Energy Rift")){
 				state = "Setting rift area";
 				System.out.println("Setting rift area");
@@ -203,6 +209,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 			
 			while(ctx.players.local().getAnimation()==animationType){
 				updateCounts();
+				calcAntiPattern();
 				state = "Converting memories..";
 				waiting = new Timer(3700);
 			}
@@ -224,7 +231,15 @@ public class DivineBody extends PollingScript implements PaintListener{
 			}
 			
 		}
+
 	   }
+	   private void calcAntiPattern() {
+			int number = rand.nextInt(0, 2);
+			if(number == 1){
+				antiPattern = true;
+			}
+			
+		}
 		class harvestWisp extends DivineNode{
 
 			public harvestWisp(MethodContext ctx) {
@@ -237,17 +252,21 @@ public class DivineBody extends PollingScript implements PaintListener{
 			}
 			@Override
 			public void execute() {
-				
+				calcAntiPattern();
 				while(ctx.players.local().getAnimation()==animation.HARVESTINGSPRING2.getID()){
 					state = "Harvesting spring";
+					calcAntiPattern();
 					updateCounts();
-					ctx.game.sleep(700,1500);
 				}
 				while(Method.backPackIsFull()){
 					state = "backpack is full";
 					harvest = false;
 					break;
 				}
+				if(ctx.widgets.get(131,1).isVisible()){
+					state = "Closing interference";
+					Method.clickOnMap(ctx.players.local().getLocation());
+				}else
 				if(!foundEnrichedSpring("Enriched sparkling spring"))
 				if(!foundEnrichedSpring("Enriched glowing spring"))
 				if(Method.npcIsNotNull(wispSpring) && 
