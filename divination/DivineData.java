@@ -9,7 +9,9 @@ public class DivineData {
 		
 		PALEWISP(18150,"Pale wisp"),PALESPRING(18173,"Pale spring"),
 		FLICKERINGWISP(18151,"Flickering wisp"),FLICKERINGSPRING(18174,"Flickering spring"),ENRICHEDFLICKERINGWISP(18152,""),
-		BRIGHTWISP(9999,"Bright wisp"),BRIGHTSPRING(9999,"Bright spring");
+		BRIGHTWISP(9999,"Bright wisp"),BRIGHTSPRING(9999,"Bright spring"),
+		GLOWINGWISP(9999,"Glowing wisp"),GLOWINGSPRING(9999,"Glowing spring"),
+		SPARKLINGWISP(9999,"Sparkling wisp"),SPARKLINGSPRING(9999,"Sparkling spring");
 		
 		int id;
 		String name;
@@ -49,7 +51,9 @@ public class DivineData {
 		
 		PALEMEMORY(29384,"Pale memory"),PALEENERGY(29313, "Pale energy"),
 		FLICKERINGMEMORY(29385,"Flickering memory"),FLICKERINGENERGY(29314,"Flickering energy"),ENRICHEDFLICKERINGMEMORY(29396,"don't know"),
-		BRIGHTMEMORY(29386,"Bright memory"),BRIGHTENERGY(29315,"Bright energy");
+		BRIGHTMEMORY(29386,"Bright memory"),BRIGHTENERGY(29315,"Bright energy"),
+		GLOWINGMEMORY(9999,"Glowing memory"),
+		SPARKLINGMEMORY(9999,"Sparkling memory");
 		
 		int id;
 		String name;

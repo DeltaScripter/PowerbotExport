@@ -30,7 +30,7 @@ import divination.DivineData.wisps;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
-description = "Trains the Divination skill.",
+description = "Trains the Divination skill, harvests and converts energy to your choosing.",
 website = "", version = 1)
 public class DivineBody extends PollingScript implements PaintListener{
 
@@ -121,7 +121,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 						ctx.widgets.get(131,6).click();
 					}else ctx.widgets.get(131,convertType).click();
 					ctx.game.sleep(3800,4500);
-				}else if(ctx.widgets.get(1186,0).isVisible()){
+				}else if(ctx.widgets.get(1186,2).isVisible()){
 					state = "Closing dialogue";
 					Method.clickOnMap(ctx.players.local().getLocation());
 				}else Method.interactO("Energy Rift", "Convert memories", "Interacting with rift");
@@ -268,6 +268,16 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 				wispSpring = wisps.BRIGHTSPRING.getName();
 				memoryType = memories.BRIGHTMEMORY.getName();
 			}
+			if(riftChoice=="Seers' Village"){
+				wispKind = wisps.GLOWINGWISP.getName();
+				wispSpring = wisps.GLOWINGSPRING.getName();
+				memoryType = memories.GLOWINGMEMORY.getName();
+			}
+			if(riftChoice=="Golden Apple Tree"){
+				wispKind = wisps.SPARKLINGWISP.getName();
+				wispSpring = wisps.SPARKLINGSPRING.getName();
+				memoryType = memories.SPARKLINGMEMORY.getName();
+			}
 			start = true;
 			this.dispose();
 		}
@@ -296,7 +306,7 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 
 			//---- riftLocation ----
 			riftLocation.setModel(new DefaultComboBoxModel<>(new String[] {
-				"Lummbridge","Falador","Varrock"
+				"Lummbridge","Falador","Varrock","Seers' Village","Golden Apple Tree"
 			}));
 
 			//---- strtBtn ----
