@@ -7,21 +7,28 @@ public class DivineData {
 	
 	public enum wisps{
 		
-		PALEWISP(18150),PALESPRING(18173);
+		PALEWISP(18150,"Pale wisp"),PALESPRING(18173,"Pale spring"),
+		FLICKERINGWISP(18151,"Flickering wisp"),FLICKERINGSPRING(18174,"Flickering spring"),ENRICHEDFLICKERINGWISP(18152,""),
+		BRIGHTWISP(9999,"Bright wisp"),BRIGHTSPRING(9999,"Bright spring");
 		
 		int id;
-		wisps(int id){
+		String name;
+		wisps(int id, String name){
 			this.id = id;
+			this.name = name;
 			
 		}
 		public int getID(){
 			return id;
 		}
+		public String getName(){
+			return name;
+		}
 		
 	}
 	public enum rifts{
 		
-		LUMMBRIDGE(87306, new Tile(3120,3218,0));
+		LUMMBRIDGE(87306, new Tile(3120,3218,0)),FALADOR(87306, new Tile(3004,3402,0));
 		
 		int id;
 		Tile loc;
@@ -40,15 +47,22 @@ public class DivineData {
 	}
 	public enum memories{
 		
-		PALEMEMORY(29384);
+		PALEMEMORY(29384,"Pale memory"),PALEENERGY(29313, "Pale energy"),
+		FLICKERINGMEMORY(29385,"Flickering memory"),FLICKERINGENERGY(29314,"Flickering energy"),ENRICHEDFLICKERINGMEMORY(29396,"don't know"),
+		BRIGHTMEMORY(29386,"Bright memory"),BRIGHTENERGY(29315,"Bright energy");
 		
 		int id;
-		memories(int id){
+		String name;
+		memories(int id, String name){
 			this.id = id;
+			this.name = name;
 			
 		}
 		public int getID(){
 			return id;
+		}
+		public String getName(){
+			return name;
 		}
 		
 	}

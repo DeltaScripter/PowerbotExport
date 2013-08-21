@@ -2,10 +2,10 @@ package divination;
 
 import java.util.ArrayList;
 
+import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
-import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Npc;
@@ -21,6 +21,12 @@ public class DivineMethod extends MethodProvider{
 
 	public GameObject getObject(int i) {
 		for(GameObject obj : ctx.objects.select().id(i).nearest().first()){
+			return obj;
+		}
+		return null;
+	}
+	public GameObject getObject(String name) {
+		for(GameObject obj : ctx.objects.select().name(name).nearest().first()){
 			return obj;
 		}
 		return null;
@@ -67,11 +73,44 @@ public class DivineMethod extends MethodProvider{
 			}
 		return false;
 	}
+		public boolean npcIsNotNull(String name) {
+			if(!ctx.npcs.select().name(name).nearest().first().isEmpty()){
+				return true;
+			}
+		return false;
+	}
 		public Npc getNPC(int i) {
 			for(Npc npc : ctx.npcs.select().id(i).nearest().first()){
 				return npc;
 			}
 			return null;
+		}
+		public Npc getNPC(String name) {
+			for(Npc npc : ctx.npcs.select().name(name).nearest().first()){
+				return npc;
+			}
+			return null;
+		}
+		public void npcInteract(String name, String string) {
+			ArrayList<String> actions = new ArrayList<String>();
+			for(Npc n : ctx.npcs.select().name(name).nearest().first()){
+					if (n.isOnScreen()) {
+						n.hover();
+						String menuItems[] = ctx.menu.getItems();
+						for(String opt: menuItems){
+							if(!actions.contains(opt))
+								actions.add(opt);
+						}
+						for(String text: actions){
+							if(text.contains(string)){
+								  n.interact(string);
+								   sleep(2000);
+								   break;
+								
+							}
+						}
+					} else ctx.camera.turnTo(n);
+				}
 		}
 		public void npcInteract(int i, String string) {
 			ArrayList<String> actions = new ArrayList<String>();
@@ -93,7 +132,6 @@ public class DivineMethod extends MethodProvider{
 						}
 					} else ctx.camera.turnTo(n);
 				}
-			
 		}
 		public boolean objIsByTile(Tile tile, int object, int dist) {
 			for(GameObject obj : ctx.objects.select().id(object).nearest(tile)){
@@ -117,9 +155,19 @@ public class DivineMethod extends MethodProvider{
 				}
 				return inventory.size()>=28;
 			}
-			public void interactO(final int i, final String string, final String o) {
+			public int inventoryGetCount(String name) {
+				if(!ctx.hud.isOpen(Window.BACKPACK) || !ctx.hud.isVisible(Window.BACKPACK))
+					ctx.hud.view(Window.BACKPACK);
+				
+				ItemQuery<Item> g;
+				g = null;
+				g = ctx.backpack.select().name(name);
+			
+				return g.count(false);
+			}
+			public void interactO(final String name, final String string, final String o) {
 				ArrayList<String> actions = new ArrayList<String>();
-				for(GameObject y: ctx.objects.select().id(i).nearest().first()){
+				for(GameObject y: ctx.objects.select().name(name).nearest().first()){
 					DivineBody.state = o;
 							if (y.isOnScreen()) {
 								y.hover();
@@ -140,12 +188,12 @@ public class DivineMethod extends MethodProvider{
 						}
 				
 			}
-			public boolean inventoryContains(int i) {
+			public boolean inventoryContains(String name) {
 				if(!ctx.hud.isVisible(Window.BACKPACK)){
 					ctx.hud.view(Window.BACKPACK);
 					sleep(2000);
 				}
-					while (!ctx.backpack.select().id(i).first().isEmpty()) {
+					while (!ctx.backpack.select().name(name).first().isEmpty()) {
 						return true;
 					}
 				
@@ -154,7 +202,6 @@ public class DivineMethod extends MethodProvider{
 	public void interactInventory(final int i, final String string, final String o) {
 		ArrayList<String> actions = new ArrayList<String>();
 		for(Item t : ctx.backpack.select().id(i).first()){
-			//System.out.println(ctx.widgets.get(1477,122).getChild(0).getBoundingRect().getCenterY());
 			if(ctx.hud.view(Window.BACKPACK) && ctx.widgets.get(1473,7).contains(
 				t.getComponent().getCenterPoint())){
 				t.hover();

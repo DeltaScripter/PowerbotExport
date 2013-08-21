@@ -25,13 +25,12 @@ import org.powerbot.script.util.Timer;
 import divination.DivineData.animation;
 import divination.DivineData.convert;
 import divination.DivineData.memories;
-import divination.DivineData.rifts;
 import divination.DivineData.wisps;
 
 
 
-@org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "DeltaDivinity", 
-description = "Dances like a chicken everywhere!",hidden = true, 
+@org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
+description = "Trains the Divination skill.",
 website = "", version = 1)
 public class DivineBody extends PollingScript implements PaintListener{
 
@@ -40,33 +39,43 @@ public class DivineBody extends PollingScript implements PaintListener{
 			@Override
 			public void run() {
 				initiateGUI();
+				runtime = new Timer(0);
+				secondsA = new Timer(0);
 				addNode(new harvestWisp(ctx));
 				addNode(new convertMemories(ctx));
 			}
 		});
 	}
-	public final Tile[] pathToAubury = new Tile[]{new Tile(3253,3420,0),
-			new Tile(3260,3417,0),new Tile(3258,3409,0),new Tile(3256,3402,0),
-			new Tile(3253,3400,0)};
+	
 	private final List<DivineNode> nodeList = Collections.synchronizedList(new ArrayList<DivineNode>());
 	public static String state;
-	private boolean harvest= true;
+	private boolean harvest = false;
 	private int convertType;
 	private int animationType;
+	private String wispKind;
+	private String wispSpring;
+	private String memoryType;
 	private Tile riftArea;
+	private int paleECount;
 	private boolean start = false;
-	//private Timer waiting = new Timer(0);
+	private Timer waiting = new Timer(0);
+	private Timer runtime;
+	private Timer secondsA;
 	
 	DivineMethod Method = new DivineMethod(ctx);
+	
+	
 	
 	@Override
 	public int poll() {
 		
-		if(start)
+		if(start){
 		for(DivineNode node: nodeList){
 			if(node.activate()){
 				node.execute();
+				
 			}
+		}
 		}
 		return 400;
 	}
@@ -92,19 +101,30 @@ public class DivineBody extends PollingScript implements PaintListener{
 
 		@Override
 		public void execute() {
-			while(ctx.players.local().getAnimation()==animationType){
-				state = "Converting memories..";
-				ctx.game.sleep(8500,8700);
+			if(riftArea==null && Method.objIsNotNull(87306)){
+				riftArea = Method.getObject("Energy Rift").getLocation();
+				riftArea = new Tile(riftArea.getX(), riftArea.getY()+3,riftArea.getPlane());
 			}
 			
-			if(!Method.inventoryContains(memories.PALEMEMORY.getID())){
+			while(ctx.players.local().getAnimation()==animationType){
+				updateCounts();
+				state = "Converting memories..";
+				waiting = new Timer(4000);
+			}
+			if(!waiting.isRunning())
+			if(!Method.inventoryContains(memoryType)){
 				harvest = true;
 			}else
-			if(closeToObj(riftArea,"Walking to Lummbridge rift")){
+			if(closeToObj(riftArea,"Walking to rift")){
 				if(ctx.widgets.get(131,convertType).isVisible()){
-					ctx.widgets.get(131,convertType).click();
+					if(convertType == 7 && ctx.widgets.get(131,39).getTextureId()==13827){
+						ctx.widgets.get(131,6).click();
+					}else ctx.widgets.get(131,convertType).click();
 					ctx.game.sleep(3800,4500);
-				}else Method.interactO(rifts.LUMMBRIDGE.getID(), "Convert memories", "Interacting with rift");
+				}else if(ctx.widgets.get(1186,0).isVisible()){
+					state = "Closing dialogue";
+					Method.clickOnMap(ctx.players.local().getLocation());
+				}else Method.interactO("Energy Rift", "Convert memories", "Interacting with rift");
 			}
 			
 		}
@@ -123,6 +143,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 			public void execute() {
 				while(ctx.players.local().getAnimation()==animation.HARVESTINGSPRING2.getID()){
 					state = "Harvesting spring";
+					updateCounts();
 					ctx.game.sleep(700,1500);
 				}
 				while(Method.backPackIsFull()){
@@ -130,30 +151,45 @@ public class DivineBody extends PollingScript implements PaintListener{
 					harvest = false;
 					break;
 				}
-				if(Method.npcIsNotNull(wisps.PALESPRING.getID())){
-					if(closeToNpc(wisps.PALESPRING.getID(),"Walking to spring")){
-						state = "Attempting to harvest spring";
-						Method.npcInteract(wisps.PALESPRING.getID(), "Harvest");
+				
+				if(Method.npcIsNotNull("Enriched glowing spring")){
+					System.out.println("Found an enriched spring!");
+					if(closeToNpc("Enriched glowing spring","Walking to enriched spring")){
+						state = "Attempting to harvest enriched spring";
+						Method.npcInteract("Enriched glowing spring", "Harvest");
 					}
 				}else
-				if(Method.npcIsNotNull(wisps.PALEWISP.getID())){
-					if(closeToNpc(wisps.PALEWISP.getID(),"Walking to wisp")){
+				if(Method.npcIsNotNull(wispSpring)){
+					if(closeToNpc(wispSpring,"Walking to spring")){
+						state = "Attempting to harvest spring";
+						Method.npcInteract(wispSpring, "Harvest");
+					}
+				}else
+				if(Method.npcIsNotNull(wispKind)){
+					if(closeToNpc(wispKind,"Walking to wisp")){
 						state = "Attempting to convert wisp to spring";
-						Method.npcInteract(wisps.PALEWISP.getID(), "Harvest");
+						Method.npcInteract(wispKind, "Harvest");
 					}
 				}else ctx.movement.findPath(riftArea).traverse();
 				
 			}
 			
-			private boolean closeToNpc(int id, String string) {
-				if(Method.getNPC(id).getLocation().distanceTo(ctx.players.local().getLocation())<7){
+		
+
+			private boolean closeToNpc(String name, String string) {
+				if(Method.getNPC(name).getLocation().distanceTo(ctx.players.local().getLocation())<7){
 					return true;
 				}else {
 					state = string;
-					ctx.movement.findPath(Method.getNPC(id).getLocation()).traverse();
+					ctx.movement.findPath(Method.getNPC(name).getLocation()).traverse();
+					ctx.game.sleep(2000,2400);
 				}
 				return false;
 			}
+			
+		}
+		private void updateCounts() {
+			paleECount = Method.inventoryGetCount(memoryType);
 			
 		}
 		private boolean closeToObj(Tile loc, String string) {
@@ -167,12 +203,24 @@ public class DivineBody extends PollingScript implements PaintListener{
 		}
 	  
 private Font myFont = new Font("Consolas",Font.BOLD,14);
+
+
+
 	@Override
 	public void repaint(Graphics g) {
+		int seconds = (int)(runtime.getElapsed()/1000);
+		int minutes = (int)(seconds/60);
+		int hours = (int)(minutes/60);
+		int secHold = (int)(secondsA.getElapsed()/1000);
+		if(secHold>=60)
+			secondsA = new Timer(0);
+		
+		
 		g.setFont(myFont);
 		g.setColor(Color.green);
 		g.drawString("State: "+state, 20, 130);
-		//g.drawString("Timer: " + waiting.getElapsed(), 20, 150);
+		g.drawString("Runtime: " +hours+":"+minutes +":" + secHold, 20, 150);
+		g.drawString("Energy in inventory: " + paleECount, 20, 170);
 	}
 	public void initiateGUI() {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -206,7 +254,19 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 				animationType = animation.TODIVINEEXP.getID();
 			}
 			if(riftChoice=="Lummbridge"){
-				riftArea = rifts.LUMMBRIDGE.getTile();
+				wispKind = wisps.PALEWISP.getName();
+				wispSpring = wisps.PALESPRING.getName();
+				memoryType = memories.PALEMEMORY.getName();
+			}
+			if(riftChoice=="Falador"){
+				wispKind = wisps.FLICKERINGWISP.getName();
+				wispSpring = wisps.FLICKERINGSPRING.getName();
+				memoryType = memories.FLICKERINGMEMORY.getName();
+			}
+			if(riftChoice=="Varrock"){
+				wispKind = wisps.BRIGHTWISP.getName();
+				wispSpring = wisps.BRIGHTSPRING.getName();
+				memoryType = memories.BRIGHTMEMORY.getName();
 			}
 			start = true;
 			this.dispose();
@@ -217,8 +277,6 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 			convertList = new JComboBox<>();
 			label2 = new JLabel();
 			riftLocation = new JComboBox<>();
-			label3 = new JLabel();
-			wispType = new JComboBox<>();
 			strtBtn = new JButton();
 
 			//======== this ========
@@ -230,7 +288,7 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 
 			//---- convertList ----
 			convertList.setModel(new DefaultComboBoxModel<>(new String[] {
-				"Divine Energy","Divinity Experience","Enhanced Experience"
+					"Divine Energy","Divinity Experience","Enhanced Experience"
 			}));
 
 			//---- label2 ----
@@ -238,15 +296,7 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 
 			//---- riftLocation ----
 			riftLocation.setModel(new DefaultComboBoxModel<>(new String[] {
-				"Lummbridge"
-			}));
-
-			//---- label3 ----
-			label3.setText("Wisp Type: ");
-
-			//---- wispType ----
-			wispType.setModel(new DefaultComboBoxModel<>(new String[] {
-				"Pale wisp"
+				"Lummbridge","Falador","Varrock"
 			}));
 
 			//---- strtBtn ----
@@ -264,22 +314,17 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 				contentPaneLayout.createParallelGroup()
 					.addGroup(contentPaneLayout.createSequentialGroup()
 						.addContainerGap()
-						.addGroup(contentPaneLayout.createParallelGroup()
+						.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+							.addComponent(strtBtn)
 							.addGroup(contentPaneLayout.createSequentialGroup()
 								.addGroup(contentPaneLayout.createParallelGroup()
 									.addComponent(label1)
-									.addComponent(label2)
-									.addComponent(label3))
+									.addComponent(label2))
 								.addGap(19, 19, 19)
 								.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
 									.addComponent(convertList, GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-									.addComponent(riftLocation, GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-									.addComponent(wispType, GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))
-								.addGap(0, 0, Short.MAX_VALUE))
-							.addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-								.addGap(0, 236, Short.MAX_VALUE)
-								.addComponent(strtBtn)))
-						.addContainerGap())
+									.addComponent(riftLocation, GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))))
+						.addContainerGap(3, Short.MAX_VALUE))
 			);
 			contentPaneLayout.setVerticalGroup(
 				contentPaneLayout.createParallelGroup()
@@ -292,25 +337,20 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 						.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 							.addComponent(riftLocation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addComponent(label2))
-						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-							.addComponent(wispType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(label3))
-						.addGap(30, 30, 30)
+						.addGap(18, 18, 18)
 						.addComponent(strtBtn)
-						.addContainerGap(10, Short.MAX_VALUE))
+						.addContainerGap(6, Short.MAX_VALUE))
 			);
 			pack();
 			setLocationRelativeTo(getOwner());
 		}
-
-		private JLabel label1;
+        private JLabel label1;
 		private JComboBox<String> convertList;
 		private JLabel label2;
 		private JComboBox<String> riftLocation;
-		private JLabel label3;
-		private JComboBox<String> wispType;
 		private JButton strtBtn;
 	}
+
+	
 
 }
