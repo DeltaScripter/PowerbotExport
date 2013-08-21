@@ -104,7 +104,7 @@ public class DivineMethod extends MethodProvider{
 						for(String text: actions){
 							if(text.contains(string)){
 								  n.interact(string);
-								   sleep(2000);
+								  ctx.game.sleep(700,1000);
 								   break;
 								
 							}
@@ -185,7 +185,7 @@ public class DivineMethod extends MethodProvider{
 								for(String text: actions){
 									if(text.contains(string)){
 										   y.interact(string);
-										   sleep(2000);
+										   ctx.game.sleep(1000,1200);
 										
 									}
 								}

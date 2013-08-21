@@ -32,20 +32,106 @@ import divination.DivineData.wisps;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
 description = "Trains the Divination skill, harvests and converts energy to your choosing.",
-website = "", version = 1.05)
+website = "http://www.powerbot.org/community/topic/1082019-delta-divinity/", version = 1.06)
 public class DivineBody extends PollingScript implements PaintListener{
 
 	public DivineBody(){
+		getExecQueue(State.STOP).add(new Runnable() {
+			@Override
+			public void run() {
+				System.out.println("Shutting down.");
+				getController().stop();
+			}
+			});
 		getExecQueue(State.START).add(new Runnable() {
 			@Override
 			public void run() {
 				initiateGUI();
+				initilizeLocVariables();
 				initialExp = ctx.skills.getExperience(25);
 				runtime = new Timer(0);
 				secondsA = new Timer(0);
 				minutesA = new Timer(0);
 				addNode(new harvestWisp(ctx));
 				addNode(new convertMemories(ctx));
+			}
+
+			private void initilizeLocVariables() {
+				
+				if(Method.npcIsNotNull(wisps.PALEWISP.getName())){
+					location = "Lummbridge";
+					wispKind = wisps.PALEWISP.getName();
+					wispSpring = wisps.PALESPRING.getName();
+					memoryType = memories.PALEMEMORY.getName();
+					System.out.println(""+wispKind);
+				}
+				if(Method.npcIsNotNull(wisps.FLICKERINGWISP.getName())){
+					location = "Falador";
+					wispKind = wisps.FLICKERINGWISP.getName();
+					wispSpring = wisps.FLICKERINGSPRING.getName();
+					memoryType = memories.FLICKERINGMEMORY.getName();
+				}
+				if(Method.npcIsNotNull(wisps.BRIGHTWISP.getName())){
+					location = "Varrock";
+					wispKind = wisps.BRIGHTWISP.getName();
+					wispSpring = wisps.BRIGHTSPRING.getName();
+					memoryType = memories.BRIGHTMEMORY.getName();
+				}
+				if(Method.npcIsNotNull(wisps.GLOWINGWISP.getName())){
+					location = "Seers' Village";
+					wispKind = wisps.GLOWINGWISP.getName();
+					wispSpring = wisps.GLOWINGSPRING.getName();
+					memoryType = memories.GLOWINGMEMORY.getName();
+				}
+				if(Method.npcIsNotNull(wisps.SPARKLINGWISP.getName())){
+					location = "Golden Apple Tree";
+					wispKind = wisps.SPARKLINGWISP.getName();
+					wispSpring = wisps.SPARKLINGSPRING.getName();
+					memoryType = memories.SPARKLINGMEMORY.getName();
+				}
+				if(Method.npcIsNotNull(wisps.GLEAMINGWISP.getName())){
+					location = "Shilo Village";
+					wispKind = wisps.GLEAMINGWISP.getName();
+					wispSpring = wisps.GLEAMINGSPRING.getName();
+					memoryType = memories.GLEAMINGMEMORY.getName();
+				}
+				if(Method.npcIsNotNull(wisps.VIBRANTWISP.getName())){
+					location = "Mobilizing Armies";
+					wispKind = wisps.VIBRANTWISP.getName();
+					wispSpring = wisps.VIBRANTSPRING.getName();
+					memoryType = memories.VIBRANTMEMORY.getName();
+				}
+				if(Method.npcIsNotNull(wisps.LUSTROUSWISP.getName())){
+					location = "Slayer Tower";
+					wispKind = wisps.LUSTROUSWISP.getName();
+					wispSpring = wisps.LUSTROUSSPRING.getName();
+					memoryType = memories.LUSTROUSMEMORY.getName();
+				}
+				if(Method.npcIsNotNull(wisps.BRILLIANTWISP.getName())){
+					location = "Mage Training Arena";
+					wispKind = wisps.BRILLIANTWISP.getName();
+					wispSpring = wisps.BRILLIANTSPRING.getName();
+					memoryType = memories.BRILLIANTMEMORY.getName();
+				}
+				if(Method.npcIsNotNull(wisps.RADIANTWISP.getName())){
+					location = "Dragontooth Island";
+					wispKind = wisps.RADIANTWISP.getName();
+					wispSpring = wisps.RADIANTSPRING.getName();
+					memoryType = memories.RADIANTMEMORY.getName();
+				}
+				if(Method.npcIsNotNull(wisps.LUMINOUSWISP.getName())){
+					location = "Sophanem";
+					wispKind = wisps.LUMINOUSWISP.getName();
+					wispSpring = wisps.LUMINOUSSPRING.getName();
+					memoryType = memories.LUMINOUSMEMORY.getName();
+				}
+				if(Method.npcIsNotNull(wisps.INCANDESCENTWISP.getName())){
+					location = "Poison Waste";
+					wispKind = wisps.INCANDESCENTWISP.getName();
+					wispSpring = wisps.INCANDESCENTSPRING.getName();
+					memoryType = memories.INCANDESCENTMEMORY.getName();
+				}
+				
 			}
 		});
 	}
@@ -58,6 +144,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 	private int initialExp;
 	private int expGained;
 	private int expPerHr;
+	private String location;
 	private String wispKind;
 	private String wispSpring;
 	private String memoryType;
@@ -117,7 +204,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 			while(ctx.players.local().getAnimation()==animationType){
 				updateCounts();
 				state = "Converting memories..";
-				waiting = new Timer(4500);
+				waiting = new Timer(3700);
 			}
 			if(!waiting.isRunning())
 			if(!Method.inventoryContains(memoryType) && !Method.backPackIsFull()){
@@ -128,9 +215,10 @@ public class DivineBody extends PollingScript implements PaintListener{
 					if(convertType == 7 && ctx.widgets.get(131,39).getTextureId()==13827){
 						ctx.widgets.get(131,6).click();
 					}else ctx.widgets.get(131,convertType).click();
-					ctx.game.sleep(3800,4500);
+					ctx.game.sleep(2000,2800);
 				}else if(ctx.widgets.get(1186,2).isVisible()){
 					state = "Closing dialogue";
+					System.out.println("Closing dialogue");
 					Method.clickOnMap(ctx.players.local().getLocation());
 				}else Method.interactO("Energy Rift", "Convert memories", "Interacting with rift");
 			}
@@ -162,7 +250,8 @@ public class DivineBody extends PollingScript implements PaintListener{
 				}
 				if(!foundEnrichedSpring("Enriched sparkling spring"))
 				if(!foundEnrichedSpring("Enriched glowing spring"))
-				if(Method.npcIsNotNull(wispSpring)){
+				if(Method.npcIsNotNull(wispSpring) && 
+						Method.getNPC(wispSpring).getLocation().distanceTo(ctx.players.local().getLocation())<12){
 					if(closeToNpc(wispSpring,"Walking to spring")){
 						state = "Attempting to harvest spring";
 						Method.npcInteract(wispSpring, "Harvest");
@@ -195,7 +284,12 @@ public class DivineBody extends PollingScript implements PaintListener{
 					return true;
 				}else {
 					state = string;
-					ctx.movement.findPath(Method.getNPC(name).getLocation()).traverse();
+					if(Method.getNPC(name).isOnScreen()){
+						System.out.println("Clicking on npc to get closer");
+						Method.getNPC(name).click();
+					}else
+					ctx.movement.stepTowards(Method.getNPC(name).getLocation());
+					//ctx.movement.findPath(Method.getNPC(name).getLocation()).traverse();
 					ctx.game.sleep(2000,2400);
 				}
 				return false;
@@ -211,11 +305,13 @@ public class DivineBody extends PollingScript implements PaintListener{
 			if(loc!=null)
 			if(loc.distanceTo(ctx.players.local().getLocation())<5){
 				return true;
-			}else if(loc.distanceTo(ctx.players.local().getLocation())<12){
+			}else if(loc.distanceTo(ctx.players.local().getLocation())<8 && ctx.widgets.get(1186,1).isVisible()){
+				System.out.println("Cliking on map");
 				Method.clickOnMap(loc);
 			}else{
 				state = string;
-				ctx.movement.findPath(loc).traverse();
+				ctx.movement.stepTowards(loc);
+				//ctx.movement.findPath(loc).traverse();
 			}
 			return false;
 		}/*
@@ -240,12 +336,16 @@ private void setMouse(Graphics g) {
 
 	@Override
 	public void repaint(Graphics g) {
-		double runtimeHold = runtime.getElapsed();
+		double runtimeHold;
+		String expHr = "";
+		if(start){
+		runtimeHold = runtime.getElapsed();
 		runtimeHold = 3600000/runtimeHold;
 		expPerHr = (int)runtimeHold * expGained;
-		String expHr = ""+ expPerHr;
+		expHr = ""+ expPerHr;
 		if(expHr.length()>3)
 		expHr = expHr.substring(0, expHr.length() - 3);
+		
 		
 		mouseX = (int) ctx.mouse.getLocation().getX();
 		mouseY = (int) ctx.mouse.getLocation().getY();
@@ -273,8 +373,9 @@ private void setMouse(Graphics g) {
 		g.drawString("Energy in inventory: " + paleECount, 20, 170);
 		g.drawString("Current level: " + level, 20, 190);
 		g.drawString("XP Gained: " + expGained + " XP : P/Hr(" +expHr+"K)" , 20, 210);
+		g.drawString("Location: " + location, 20, 230);
 		//g.drawString("XP per hour: "+ expPerHr, 20, 230);
-		
+		}
 		
 	}
 
@@ -303,7 +404,6 @@ private void setMouse(Graphics g) {
 
 		private void strtBtnActionPerformed(ActionEvent e) {
 			String convChoice = convertList.getSelectedItem().toString();
-			String riftChoice = riftLocation.getSelectedItem().toString();
 			if(convChoice=="Divine Energy"){
 				convertType = convert.DIVINEENERGY.getID();
 				animationType = animation.TODIVINEENERGY.getID();
@@ -316,66 +416,6 @@ private void setMouse(Graphics g) {
 				convertType = convert.BOTH.getID();
 				animationType = animation.TODIVINEEXP.getID();
 			}
-			if(riftChoice=="Lummbridge"){
-				wispKind = wisps.PALEWISP.getName();
-				wispSpring = wisps.PALESPRING.getName();
-				memoryType = memories.PALEMEMORY.getName();
-			}
-			if(riftChoice=="Falador"){
-				wispKind = wisps.FLICKERINGWISP.getName();
-				wispSpring = wisps.FLICKERINGSPRING.getName();
-				memoryType = memories.FLICKERINGMEMORY.getName();
-			}
-			if(riftChoice=="Varrock"){
-				wispKind = wisps.BRIGHTWISP.getName();
-				wispSpring = wisps.BRIGHTSPRING.getName();
-				memoryType = memories.BRIGHTMEMORY.getName();
-			}
-			if(riftChoice=="Seers' Village"){
-				wispKind = wisps.GLOWINGWISP.getName();
-				wispSpring = wisps.GLOWINGSPRING.getName();
-				memoryType = memories.GLOWINGMEMORY.getName();
-			}
-			if(riftChoice=="Golden Apple Tree"){
-				wispKind = wisps.SPARKLINGWISP.getName();
-				wispSpring = wisps.SPARKLINGSPRING.getName();
-				memoryType = memories.SPARKLINGMEMORY.getName();
-			}
-			if(riftChoice=="Shilo Village"){
-				wispKind = wisps.GLEAMINGWISP.getName();
-				wispSpring = wisps.GLEAMINGSPRING.getName();
-				memoryType = memories.GLEAMINGMEMORY.getName();
-			}
-			if(riftChoice=="Mobilising Armies"){
-				wispKind = wisps.VIBRANTWISP.getName();
-				wispSpring = wisps.VIBRANTSPRING.getName();
-				memoryType = memories.VIBRANTMEMORY.getName();
-			}
-			if(riftChoice=="Slayer Tower"){
-				wispKind = wisps.LUSTROUSWISP.getName();
-				wispSpring = wisps.LUSTROUSSPRING.getName();
-				memoryType = memories.LUSTROUSMEMORY.getName();
-			}
-			if(riftChoice=="Mage Training Arena"){
-				wispKind = wisps.BRILLIANTWISP.getName();
-				wispSpring = wisps.BRILLIANTSPRING.getName();
-				memoryType = memories.BRILLIANTMEMORY.getName();
-			}
-			if(riftChoice=="Dragontooth Island"){
-				wispKind = wisps.RADIANTWISP.getName();
-				wispSpring = wisps.RADIANTSPRING.getName();
-				memoryType = memories.RADIANTMEMORY.getName();
-			}
-			if(riftChoice=="Sophanem"){
-				wispKind = wisps.LUMINOUSWISP.getName();
-				wispSpring = wisps.LUMINOUSSPRING.getName();
-				memoryType = memories.LUMINOUSMEMORY.getName();
-			}
-			if(riftChoice=="Poison Waste"){
-				wispKind = wisps.INCANDESCENTWISP.getName();
-				wispSpring = wisps.INCANDESCENTSPRING.getName();
-				memoryType = memories.INCANDESCENTMEMORY.getName();
-			}
 			start = true;
 			this.dispose();
 		}
@@ -383,12 +423,12 @@ private void setMouse(Graphics g) {
 		private void initComponents() {
 			label1 = new JLabel();
 			convertList = new JComboBox<>();
-			label2 = new JLabel();
-			riftLocation = new JComboBox<>();
 			strtBtn = new JButton();
+			label3 = new JLabel();
 
 			//======== this ========
-			setTitle("DeltaDivinity");
+			setTitle("");
+			setFont(new Font("Dialog", Font.BOLD, 15));
 			Container contentPane = getContentPane();
 
 			//---- label1 ----
@@ -397,17 +437,6 @@ private void setMouse(Graphics g) {
 			//---- convertList ----
 			convertList.setModel(new DefaultComboBoxModel<>(new String[] {
 					"Divine Energy","Divinity Experience","Enhanced Experience"
-			}));
-
-			//---- label2 ----
-			label2.setText("Location of rift: ");
-
-			//---- riftLocation ----
-			riftLocation.setModel(new DefaultComboBoxModel<>(new String[] {
-				"Lummbridge","Falador","Varrock","Seers' Village",
-				"Golden Apple Tree","Shilo Village","Mobilising Armies",
-				"Slayer Tower","Mage Training Arena","Dragontooth Island",
-				"Sophanem","Poison Waste"
 			}));
 
 			//---- strtBtn ----
@@ -419,49 +448,54 @@ private void setMouse(Graphics g) {
 				}
 			});
 
+			//---- label3 ----
+			label3.setText("Delta Divinity");
+			label3.setFont(label3.getFont().deriveFont(label3.getFont().getStyle() | Font.BOLD, label3.getFont().getSize() + 5f));
+
 			GroupLayout contentPaneLayout = new GroupLayout(contentPane);
 			contentPane.setLayout(contentPaneLayout);
 			contentPaneLayout.setHorizontalGroup(
 				contentPaneLayout.createParallelGroup()
 					.addGroup(contentPaneLayout.createSequentialGroup()
-						.addContainerGap()
 						.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-							.addComponent(strtBtn)
 							.addGroup(contentPaneLayout.createSequentialGroup()
-								.addGroup(contentPaneLayout.createParallelGroup()
-									.addComponent(label1)
-									.addComponent(label2))
-								.addGap(19, 19, 19)
-								.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-									.addComponent(convertList, GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-									.addComponent(riftLocation, GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))))
-						.addContainerGap(3, Short.MAX_VALUE))
+								.addGap(0, 0, Short.MAX_VALUE)
+								.addComponent(strtBtn))
+							.addGroup(contentPaneLayout.createSequentialGroup()
+								.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(label3)
+								.addGap(95, 95, 95))
+							.addGroup(GroupLayout.Alignment.LEADING, contentPaneLayout.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(label1)
+								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+								.addComponent(convertList, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)))
+						.addContainerGap(14, Short.MAX_VALUE))
 			);
 			contentPaneLayout.setVerticalGroup(
 				contentPaneLayout.createParallelGroup()
 					.addGroup(contentPaneLayout.createSequentialGroup()
-						.addGap(19, 19, 19)
+						.addContainerGap()
+						.addComponent(label3)
+						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 						.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 							.addComponent(convertList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addComponent(label1))
-						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-							.addComponent(riftLocation, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(label2))
 						.addGap(18, 18, 18)
 						.addComponent(strtBtn)
 						.addContainerGap(6, Short.MAX_VALUE))
 			);
-			pack();
+			setSize(340, 155);
 			setLocationRelativeTo(getOwner());
 		}
-        private JLabel label1;
+
+		private JLabel label1;
 		private JComboBox<String> convertList;
-		private JLabel label2;
-		private JComboBox<String> riftLocation;
 		private JButton strtBtn;
+		private JLabel label3;
 	}
 
+	
 	
 
 }
