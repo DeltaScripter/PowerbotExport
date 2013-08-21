@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 import javax.swing.JButton;
@@ -31,7 +32,7 @@ import divination.DivineData.wisps;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
 description = "Trains the Divination skill, harvests and converts energy to your choosing.",
-website = "", version = 1.04)
+website = "", version = 1.05)
 public class DivineBody extends PollingScript implements PaintListener{
 
 	public DivineBody(){
@@ -114,7 +115,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 				waiting = new Timer(4500);
 			}
 			if(!waiting.isRunning())
-			if(!Method.inventoryContains(memoryType)){
+			if(!Method.inventoryContains(memoryType) && !Method.backPackIsFull()){
 				harvest = true;
 			}else
 			if(closeToObj(riftArea,"Walking to rift")){
@@ -205,14 +206,32 @@ public class DivineBody extends PollingScript implements PaintListener{
 				ctx.movement.findPath(loc).traverse();
 			}
 			return false;
-		}
-	  
-private Font myFont = new Font("Consolas",Font.BOLD,14);
+		}/*
+		private Image getImage(String url) {
+			try {
+				return ImageIO.read(new URL(url));
+			} catch (IOException e) {
+				return null;
+			}
+		}*/
+private Font myFont = new Font("Consolas",Font.BOLD,15);
+private Font myStateFont = new Font("Arial Black",Font.BOLD,14);
+//private final Image paint = getImage("http://img546.imageshack.us/img546/8859/i52e.png");
+private int mouseX;
+private int mouseY;
 
-
+private void setMouse(Graphics g) {
+	g.setColor(Color.MAGENTA);
+	g.drawLine(mouseX, mouseY - 800, mouseX, mouseY + 800);
+	g.drawLine(mouseX - 800, mouseY, mouseX + 800, mouseY);
+}
 
 	@Override
 	public void repaint(Graphics g) {
+		mouseX = (int) ctx.mouse.getLocation().getX();
+		mouseY = (int) ctx.mouse.getLocation().getY();
+		setMouse(g);
+		//g.drawImage(paint, mouseX-950,mouseY-600, null);
 		int seconds = (int)(runtime.getElapsed()/1000);
 		int minutes = (int)(seconds/60);
 		int hours = (int)(minutes/60);
@@ -225,11 +244,15 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 			minutesA = new Timer(0);
 		
 		
-		g.setFont(myFont);
+		g.setFont(myStateFont);
 		g.setColor(Color.green);
 		g.drawString("State: "+state, 20, 130);
+		g.setFont(myFont);
+		g.setColor(Color.CYAN);
 		g.drawString("Runtime: " +hours+":"+minHold +":" + secHold, 20, 150);
 		g.drawString("Energy in inventory: " + paleECount, 20, 170);
+		
+		
 	}
 	public void initiateGUI() {
 		SwingUtilities.invokeLater(new Runnable() {
