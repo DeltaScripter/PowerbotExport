@@ -147,6 +147,12 @@ public class DivineMethod extends MethodProvider{
 				}
 				return false;
 			}
+		 public boolean objIsNotNull(String name) {
+				if(!ctx.objects.select().name(name).first().isEmpty()){
+					return true;
+				}
+				return false;
+			}
 			public boolean backPackIsFull() {
 				ArrayList<Integer> inventory = new ArrayList<Integer>();
 				for(Item i : ctx.backpack.getAllItems()){

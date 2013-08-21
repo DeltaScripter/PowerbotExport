@@ -11,7 +11,11 @@ public class DivineData {
 		FLICKERINGWISP(18151,"Flickering wisp"),FLICKERINGSPRING(18174,"Flickering spring"),ENRICHEDFLICKERINGWISP(18152,""),
 		BRIGHTWISP(9999,"Bright wisp"),BRIGHTSPRING(9999,"Bright spring"),
 		GLOWINGWISP(9999,"Glowing wisp"),GLOWINGSPRING(9999,"Glowing spring"),
-		SPARKLINGWISP(9999,"Sparkling wisp"),SPARKLINGSPRING(9999,"Sparkling spring");
+		SPARKLINGWISP(9999,"Sparkling wisp"),SPARKLINGSPRING(9999,"Sparkling spring"),
+		GLEAMINGWISP(9999,"Gleaming wisp"),GLEAMINGSPRING(9999,"Gleaming spring"),
+		VIBRANTWISP(9999,"Vibrant wisp"),VIBRANTSPRING(9999,"Vibrant spring"),
+		LUSTROUSWISP(9999,"Lustrous wisp"),LUSTROUSSPRING(9999,"Lustrous spring"),
+		BRILLIANTWISP(9999,"Brilliant wisp"),BRILLIANTSPRING(9999,"Brilliant spring");
 		
 		int id;
 		String name;
@@ -53,7 +57,11 @@ public class DivineData {
 		FLICKERINGMEMORY(29385,"Flickering memory"),FLICKERINGENERGY(29314,"Flickering energy"),ENRICHEDFLICKERINGMEMORY(29396,"don't know"),
 		BRIGHTMEMORY(29386,"Bright memory"),BRIGHTENERGY(29315,"Bright energy"),
 		GLOWINGMEMORY(9999,"Glowing memory"),
-		SPARKLINGMEMORY(9999,"Sparkling memory");
+		SPARKLINGMEMORY(9999,"Sparkling memory"),
+		GLEAMINGMEMORY(9999,"Gleaming memory"),
+		VIBRANTMEMORY(9999,"Vibrant memory"),
+		LUSTROUSMEMORY(9999,"Lustrous memory"),
+		BRILLIANTMEMORY(9999,"Brilliant memory");
 		
 		int id;
 		String name;

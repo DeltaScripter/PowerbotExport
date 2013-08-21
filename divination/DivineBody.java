@@ -101,7 +101,8 @@ public class DivineBody extends PollingScript implements PaintListener{
 
 		@Override
 		public void execute() {
-			if(riftArea==null && Method.objIsNotNull(87306)){
+			while(riftArea==null && Method.objIsNotNull("Energy Rift")){
+				state = "Setting rift area";
 				riftArea = Method.getObject("Energy Rift").getLocation();
 				riftArea = new Tile(riftArea.getX(), riftArea.getY()+3,riftArea.getPlane());
 			}
@@ -195,7 +196,9 @@ public class DivineBody extends PollingScript implements PaintListener{
 		private boolean closeToObj(Tile loc, String string) {
 			if(loc.distanceTo(ctx.players.local().getLocation())<5){
 				return true;
-			}else {
+			}else if(loc.distanceTo(ctx.players.local().getLocation())<8){
+				Method.clickOnMap(loc);
+			}else{
 				state = string;
 				ctx.movement.findPath(loc).traverse();
 			}
@@ -278,6 +281,26 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 				wispSpring = wisps.SPARKLINGSPRING.getName();
 				memoryType = memories.SPARKLINGMEMORY.getName();
 			}
+			if(riftChoice=="Shilo Village"){
+				wispKind = wisps.GLEAMINGWISP.getName();
+				wispSpring = wisps.GLEAMINGSPRING.getName();
+				memoryType = memories.GLEAMINGMEMORY.getName();
+			}
+			if(riftChoice=="Mobilising Armies"){
+				wispKind = wisps.VIBRANTWISP.getName();
+				wispSpring = wisps.VIBRANTSPRING.getName();
+				memoryType = memories.VIBRANTMEMORY.getName();
+			}
+			if(riftChoice=="Slayer Tower"){
+				wispKind = wisps.LUSTROUSWISP.getName();
+				wispSpring = wisps.LUSTROUSSPRING.getName();
+				memoryType = memories.LUSTROUSMEMORY.getName();
+			}
+			if(riftChoice=="Mage Training Arena"){
+				wispKind = wisps.BRILLIANTWISP.getName();
+				wispSpring = wisps.BRILLIANTSPRING.getName();
+				memoryType = memories.BRILLIANTMEMORY.getName();
+			}
 			start = true;
 			this.dispose();
 		}
@@ -306,7 +329,9 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 
 			//---- riftLocation ----
 			riftLocation.setModel(new DefaultComboBoxModel<>(new String[] {
-				"Lummbridge","Falador","Varrock","Seers' Village","Golden Apple Tree"
+				"Lummbridge","Falador","Varrock","Seers' Village",
+				"Golden Apple Tree","Shilo Village","Mobilising Armies",
+				"Slayer Tower","Mage Training Arena"
 			}));
 
 			//---- strtBtn ----
