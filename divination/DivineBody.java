@@ -31,7 +31,7 @@ import divination.DivineData.wisps;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
 description = "Trains the Divination skill, harvests and converts energy to your choosing.",
-website = "", version = 1.02)
+website = "", version = 1.03)
 public class DivineBody extends PollingScript implements PaintListener{
 
 	public DivineBody(){
