@@ -41,6 +41,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 				initiateGUI();
 				runtime = new Timer(0);
 				secondsA = new Timer(0);
+				minutesA = new Timer(0);
 				addNode(new harvestWisp(ctx));
 				addNode(new convertMemories(ctx));
 			}
@@ -61,6 +62,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 	private Timer waiting = new Timer(0);
 	private Timer runtime;
 	private Timer secondsA;
+	private Timer minutesA;
 	
 	DivineMethod Method = new DivineMethod(ctx);
 	
@@ -215,14 +217,18 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 		int minutes = (int)(seconds/60);
 		int hours = (int)(minutes/60);
 		int secHold = (int)(secondsA.getElapsed()/1000);
+		int minHold = (int)(minutesA.getElapsed()/60000);
+		
 		if(secHold>=60)
 			secondsA = new Timer(0);
+		if(minHold>=60)
+			minutesA = new Timer(0);
 		
 		
 		g.setFont(myFont);
 		g.setColor(Color.green);
 		g.drawString("State: "+state, 20, 130);
-		g.drawString("Runtime: " +hours+":"+minutes +":" + secHold, 20, 150);
+		g.drawString("Runtime: " +hours+":"+minHold +":" + secHold, 20, 150);
 		g.drawString("Energy in inventory: " + paleECount, 20, 170);
 	}
 	public void initiateGUI() {
