@@ -31,7 +31,7 @@ import divination.DivineData.wisps;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
 description = "Trains the Divination skill, harvests and converts energy to your choosing.",
-website = "", version = 1.03)
+website = "", version = 1.04)
 public class DivineBody extends PollingScript implements PaintListener{
 
 	public DivineBody(){
@@ -305,6 +305,21 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 				wispSpring = wisps.BRILLIANTSPRING.getName();
 				memoryType = memories.BRILLIANTMEMORY.getName();
 			}
+			if(riftChoice=="Dragontooth Island"){
+				wispKind = wisps.RADIANTWISP.getName();
+				wispSpring = wisps.RADIANTSPRING.getName();
+				memoryType = memories.RADIANTMEMORY.getName();
+			}
+			if(riftChoice=="Sophanem"){
+				wispKind = wisps.LUMINOUSWISP.getName();
+				wispSpring = wisps.LUMINOUSSPRING.getName();
+				memoryType = memories.LUMINOUSMEMORY.getName();
+			}
+			if(riftChoice=="Poison Waste"){
+				wispKind = wisps.INCANDESCENTWISP.getName();
+				wispSpring = wisps.INCANDESCENTSPRING.getName();
+				memoryType = memories.INCANDESCENTMEMORY.getName();
+			}
 			start = true;
 			this.dispose();
 		}
@@ -335,7 +350,8 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 			riftLocation.setModel(new DefaultComboBoxModel<>(new String[] {
 				"Lummbridge","Falador","Varrock","Seers' Village",
 				"Golden Apple Tree","Shilo Village","Mobilising Armies",
-				"Slayer Tower","Mage Training Arena"
+				"Slayer Tower","Mage Training Arena","Dragontooth Island",
+				"Sophanem","Poison Waste"
 			}));
 
 			//---- strtBtn ----
