@@ -105,12 +105,13 @@ public class DivineBody extends PollingScript implements PaintListener{
 				state = "Setting rift area";
 				riftArea = Method.getObject("Energy Rift").getLocation();
 				riftArea = new Tile(riftArea.getX(), riftArea.getY()-2,riftArea.getPlane());
+				return;
 			}
 			
 			while(ctx.players.local().getAnimation()==animationType){
 				updateCounts();
 				state = "Converting memories..";
-				waiting = new Timer(4000);
+				waiting = new Timer(4500);
 			}
 			if(!waiting.isRunning())
 			if(!Method.inventoryContains(memoryType)){
@@ -194,6 +195,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 			
 		}
 		private boolean closeToObj(Tile loc, String string) {
+			if(loc!=null)
 			if(loc.distanceTo(ctx.players.local().getLocation())<5){
 				return true;
 			}else if(loc.distanceTo(ctx.players.local().getLocation())<12){
