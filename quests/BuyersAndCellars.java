@@ -19,14 +19,20 @@ public class BuyersAndCellars extends Node {
 	public final int fArray[] = { 9, 2, 4, 12 };
 	Tile t = new Tile(3211, 3150, 0);
 
-	public final Tile[] pathToCellar = new Tile[] { new Tile(3227, 3232, 0),
+	public final Tile[] pathToCellar = new Tile[] {
+			new Tile(3207,3234,0), new Tile(3219,3223,0), new Tile(3232,3221,0),
+			new Tile(3227, 3232, 0),
 			new Tile(3222, 3242, 0), new Tile(3218, 3252, 0),
 			new Tile(3216, 3264, 0), new Tile(3222, 3269, 0) };
 
-	public final Tile[] pathToRobin = new Tile[] { new Tile(3224, 3217, 0),
+	public final Tile[] pathToRobin = new Tile[] {
+			new Tile(3207,3234,0), new Tile(3219,3223,0), new Tile(3232,3221,0),
+			new Tile(3224, 3217, 0),
 			new Tile(3218, 3210, 0), new Tile(3212, 3206, 0) };
 
-	public final Tile[] pathToFather = new Tile[] { new Tile(3235, 3208, 0),
+	public final Tile[] pathToFather = new Tile[] {
+			new Tile(3207,3234,0), new Tile(3219,3223,0), new Tile(3232,3221,0),
+			new Tile(3235, 3208, 0),
 			new Tile(3240, 3195, 0), new Tile(3240, 3181, 0),
 			new Tile(3236, 3169, 0), new Tile(3227, 3158, 0),
 			new Tile(3216, 3156, 0), new Tile(3207, 3153, 0) };
@@ -112,10 +118,9 @@ public class BuyersAndCellars extends Node {
 				if(!Method.isChatting("Head-thief")){
 					Vars.DYNAMICV = false;
 					if(ctx.hud.isOpen(Window.BACKPACK)){//If the inventory is open
-					if (ctx.backpack.getSelectedItem() != null) {
+					if (ctx.backpack.isItemSelected()) {
 						Method.npcInteract(11273, "Use");
-					} else
-						Method.interactInventory(18648, "Use","Trophy");
+					} else Method.interactInventory(18648, "Use","Trophy");
 				}else ctx.hud.open(Window.BACKPACK);//open backpack
 				}
 			} else if(Method.objIsNotNull(52424)){

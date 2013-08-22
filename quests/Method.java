@@ -368,7 +368,7 @@ public class Method extends MethodProvider{
 			state(string);
 			
 			ctx.movement.newTilePath(t).randomize(2, 1).traverse();
-			SpeakTotimer = new Timer(3800);
+			SpeakTotimer = new Timer(4800);
 			}else if(!SpeakTotimer.isRunning()){
 				state(string + ": Reverse");
 				ctx.movement.newTilePath(t).reverse().traverse();
@@ -418,8 +418,14 @@ public class Method extends MethodProvider{
 			System.out.println("Selecting teleport spell");
 			if (!ctx.players.local().isInCombat())
 				if (ctx.players.local().getAnimation() == -1){
-					ctx.widgets.get(1465,10).interact("Teleport");//select lodestone button
-					timer = new Timer(1000);
+					ctx.widgets.get(1465,10).hover();
+					for(String t: ctx.menu.getItems()){
+						if(t.contains("Teleport")){
+							ctx.widgets.get(1465,10).click();//select lodestone button
+							timer = new Timer(1000);
+						}
+					}
+				
 				}
 		}		
 		}
@@ -461,7 +467,6 @@ public class Method extends MethodProvider{
 	}
 	public void useItemOn(int item, int obj, String string) {
 		state("Using item on object");
-		
 		if(closeInterfaces())
 		if(ctx.backpack.isItemSelected()){
 			interactO(obj, "Use", string);
@@ -474,7 +479,7 @@ public class Method extends MethodProvider{
 		m.state("Using item on ground item");
 		skipPics();
 		if(!isChatting("Self"))
-		if(ctx.backpack.getSelectedItem()!=null){
+		if(ctx.backpack.isItemSelected()){
 			m.interactG(obj, "Use", string);
 		}else if(m.inventoryContains(item))
 			for(Item i: ctx.backpack.select().id(item).first()){
@@ -555,7 +560,6 @@ public class Method extends MethodProvider{
 		}
 	}
 	public void determineBank(int[] items){
-		System.out.println("Inside determine bank");
 		int invspace= 28;
 		int itemsNeeded = 0;
 		int foodspace;
@@ -687,16 +691,13 @@ public class Method extends MethodProvider{
 	}
 	
 	private void getToBank() {
-		System.out.println("Attempting to get to bank!");
 		if(bankTile.getLocation().distanceTo(ctx.players.local().getLocation())>7){
 			if(Vars.DYNAMICV){
 				switch(DeltaQuester.number){
 				case 1:
-					System.out.println("Inside case 1");
 					walking(Paths.pathToBank2,"Walking to lummbridge bank", false);
 					break;
 				case 0:
-					System.out.println("Inside case 0");
 					walking(Paths.pathToGE,"Walking to Grand Exchange bank", false);
 					break;
 				
@@ -705,14 +706,12 @@ public class Method extends MethodProvider{
 				switch(DeltaQuester.number){
 				
 				case 1:
-					System.out.println("Inside case 1");
 					if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().getLocation())<10){
 						Vars.DYNAMICV = true;
 					}else teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 					break;
 					
 				case 0:
-					System.out.println("Inside case 0");
 					if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().getLocation())<10||
 							TeleportLode.VARROCK.getTile().distanceTo(ctx.players.local().getLocation())<10){
 						Vars.DYNAMICV = true;
@@ -730,7 +729,7 @@ public class Method extends MethodProvider{
 	public void interactG(int i, String string, String string2) {
 		if(!ctx.groundItems.select().id(i).first().isEmpty()){
 			DeltaQuester.paintIndicator = i;
-			if(!ctx.widgets.get(1092).isValid()){
+			if(!ctx.widgets.get(1092,42).isVisible()){
 				for(GroundItem item : ctx.groundItems.select().id(i).nearest().first()){
 					if (item.isOnScreen()) {
 						state("Performing action on ground item: " + string2);
@@ -743,7 +742,7 @@ public class Method extends MethodProvider{
 					break;
 				}
 				
-			}else ctx.movement.newTilePath(ctx.players.local().getLocation()).traverse();
+			}else clickOnMap(ctx.players.local().getLocation());
 		}
 		
 	}
@@ -799,19 +798,30 @@ public class Method extends MethodProvider{
 	}
 
 	public boolean inventoryContains(int i) {
-		
 		if(!ctx.hud.isVisible(Window.BACKPACK)){
 			while (ctx.bank.isOpen()){
 				ctx.bank.close();
 			}
 			ctx.hud.view(Window.BACKPACK);
-			sleep(2000);
 		}
-			while (!ctx.backpack.select().id(i).first().isEmpty()) {
+			while (!ctx.backpack.select().id(i).isEmpty()) {
 				return true;
 			}
 		
 		return false;
+	}
+	public boolean inventoryContains(String name) {
+		if(!ctx.hud.isVisible(Window.BACKPACK)){
+			while (ctx.bank.isOpen()){
+				ctx.bank.close();
+			}
+			ctx.hud.view(Window.BACKPACK);
+		}
+			if(ctx.backpack.select().name(name).isEmpty()) {
+				return false;
+			}
+		
+		return true;
 	}
 
 	public void clickOnMap(Tile t) {
@@ -928,7 +938,6 @@ public class Method extends MethodProvider{
 	
 	public void checkBank() {
 		//System.out.println("Now deciding bank.."+ DeltaQuester.DeltaQuester.number);
-		System.out.println("Inside checkBank");
 		if(!DeltaQuester.bankFound){
 			System.out.println("Now deciding bank..");
 			decideBank();

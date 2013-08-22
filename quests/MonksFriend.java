@@ -56,6 +56,7 @@ public class MonksFriend extends Node{
 	@Override
 	public void execute() {
 		Method.resetTeleporting();
+		DeltaQuester.numSteps =8;
 		
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
@@ -69,29 +70,37 @@ public class MonksFriend extends Node{
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else
 		if((ctx.settings.get(2370) & 0x7F) == 80){
+			DeltaQuester.progress = 8;
 			Method.state("The Monk's Friend quest has been completed");
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
 		if((ctx.settings.get(2370) & 0x7F) == 70){
+			DeltaQuester.progress = 7;
 			cs0();//Return to brother Omad
 		}else
 		if((ctx.settings.get(2370) & 0x3F) == 60){
+			DeltaQuester.progress = 6;
 			cs2();//Give Brother Omad logs.
 		}else
 		if((ctx.settings.get(2370) & 0x3F) == 50){
+			DeltaQuester.progress = 5;
 			cs2();//Give Brother Omad a jug of water
 		}else
 		if((ctx.settings.get(2370) & 0x3F) == 40){
+			DeltaQuester.progress = 4;
 			cs2();//continue speaking to brother cedric
 		}else
 		if((ctx.settings.get(2370) & 0x1F) == 30){
+			DeltaQuester.progress = 3;
 			cs2();//Speak to Brother Cedric 
 		}else
 		if((ctx.settings.get(2370) & 0x1F) == 20){
+			DeltaQuester.progress = 2;
 			cs0();//Speak to brother Omad to find out if he needs anything else(he does)
 		}else
 		if((ctx.settings.get(2370) & 0xF) == 10){
+			DeltaQuester.progress = 1;
 			cs1();//Gather the blanket from the thieves and bring it to brother Omad
 		}else cs0();//Start the quest by speaking to brother Omad
 		
@@ -183,7 +192,7 @@ public class MonksFriend extends Node{
 					Method.findPath(Method.getNPC(279).getLocation(), "Walking to monk Omad");
 				}else if(new Tile(2606,3219,0).distanceTo(local.getLocation())<5){
 					Method.interactO(1530, "Open", "Door");
-				}else Method.findPath(new Tile(2606,3219,0), "Walking to door");
+				}else ctx.movement.stepTowards(new Tile(2606,3219,0));
 			}
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToMonastry, "Walking to the monastry", false);

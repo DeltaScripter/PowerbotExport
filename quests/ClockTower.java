@@ -62,12 +62,13 @@ public class ClockTower extends Node{
 	public void execute() {
 		Method.resetTeleporting();
 		Method.foodSupport();
+		DeltaQuester.numSteps = 6;
 		
 		
 		if(DeltaQuester.checkedBank && (ctx.settings.get(2197)&0xF)!=8)
 			Method.determineBank(bankItems);
 		
-			if(!DeltaQuester.checkedBank&& (ctx.settings.get(2197)&0xF)!=8){
+			if(DeltaQuester.checkedBank&& (ctx.settings.get(2197)&0xF)!=8){
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.settings.get(2197)&0xF)!=8){
@@ -76,23 +77,29 @@ public class ClockTower extends Node{
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else
 		if((ctx.settings.get(2197)&0xF)==8){
+			DeltaQuester.progress = 6;
 			DeltaQuester.getInstance().state ="The Clock Tower quest has been completed";
 			ctx.environment.sleep(2000);
 			DeltaQuester.e  = true;
 		}else
 		if((ctx.settings.get(2197)&0x7)==5){
+			DeltaQuester.progress = 5;
 			cs0();//Speak to the man to finish the quest
 		}else
 		if((ctx.settings.get(2197)&0x7)==4){
+			DeltaQuester.progress = 4;
 			cs4();//Gather and place the white cog
 		}else
 		if((ctx.settings.get(2197)&0x3)==3){
+			DeltaQuester.progress = 3;
 			cs3();//Gather and place the blue cog
 		}else
 		if((ctx.settings.get(2197)&0x3)==2){
+			DeltaQuester.progress = 2;
 			cs2();//Gather and place the red cog
 		}else
 		if((ctx.settings.get(2197)&0x1)==1){
+			DeltaQuester.progress = 1;
 			cs1();//Gather and place the black cog
 		}else cs0();//Start the quest
 		
@@ -255,9 +262,10 @@ public class ClockTower extends Node{
 		}else//Gather the black cog
 		if(Method.objIsNotNull(31127)){//If inside the cave
 			if(new Tile(2612,9639,0).distanceTo(local.getLocation())<7){//area by first cog
-				if(Method.inventoryContains(1929)){//A bucket of water
+				if(Method.inventoryContains("Bucket of water")){//A bucket of water
+					System.out.println("Trying to interact item");
 				Method.useItemOnG(1929, 21, "Use");//use the water bucket on the cog
-				}else Method.interactG(21, "Take", "Black cog");
+				}else System.out.println("Trying to interact directly");Method.interactG(21, "Take", "Black cog");
 			}else
 			if(!Method.objIsByTile(new Tile(2601,9638,0),31808,3) && //second door loc
 					!Method.objIsByTile(new Tile(2582,9651,0), 31808, 3)){
@@ -271,7 +279,9 @@ public class ClockTower extends Node{
 			if(new Tile(2579,9650,0).distanceTo(local.getLocation())<6){//tile area
 				if(new Tile(2581,9651,0).distanceTo(local.getLocation())<2){//closer to door
 					Method.interactO(31808, "Open", "Large Door");
-				}else new Tile(2581,9651,0).getLocation().getMatrix(ctx).click();
+				}else if(new Tile(2581,9651,0).getMatrix(ctx).isOnScreen())
+					new Tile(2581,9651,0).getLocation().getMatrix(ctx).click();
+				else ctx.camera.turnTo(new Tile(2581,9651,0));
 			}else Method.findPath(new Tile(2578,9648,0),"Walking to the main area");
 		}else//If not in cave enter the cave
 		if(new Tile(2566,3243,0).distanceTo(local.getLocation())<4){//distance to ladder
