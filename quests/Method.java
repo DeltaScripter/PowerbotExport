@@ -98,7 +98,7 @@ public class Method extends MethodProvider{
 		int[] widgets = {1184,1191,1187};
 		
 		for(int w : widgets){
-			if(ctx.widgets.get(w).isValid() && ctx.widgets.get(w,10).isVisible()){
+			if(ctx.widgets.get(w).isValid() && ctx.widgets.get(w,11).isVisible()){
 				state("Speaking to: " + p);
 				SpeakTotimer = new Timer(5000);
 				pressContinue();
@@ -512,10 +512,11 @@ public class Method extends MethodProvider{
 		
 	}
 	public boolean playerText(String string) {
-		if (ctx.widgets.get(137,87).isVisible()) {
+		if (ctx.widgets.get(137,87).isValid()) {
 			//state("Checking: " + string);
 			if (ctx.widgets.get(137,87).getChild(0).getText()
 					.contains(string)) {
+				System.out.println("returning true for player text");
 				return true;
 			}
 		}
@@ -530,17 +531,19 @@ public class Method extends MethodProvider{
 		}
 	}
 	public boolean interference() {
+		while(ctx.widgets.get(1186).isValid() && ctx.widgets.get(1186,2).getText().contains("are now leaving the")){//18
+			if(ctx.widgets.get(1186,3).isValid()){
+		    	ctx.widgets.get(1186, 3).click();
+		    	return true;
+		    }else break;
+			
+		}
 		if(ctx.widgets.get(1188,0).isVisible() && ctx.widgets.get(1188,11).getText().contains("Leave the st")){
 			ctx.mouse.click(ctx.widgets.get(1188, 11).getAbsoluteLocation().x+10,ctx.widgets.get(1188, 11).getAbsoluteLocation().y+3 , true);
 			
 			return true;
-		}else
-		if(ctx.widgets.get(1186).isValid() && ctx.widgets.get(1186,2).getText().contains("are now leaving the")){//18
-			if(ctx.widgets.get(1186,7).isValid()){
-		    	ctx.widgets.get(1186, 7).click();
-		    }
-			return true;
-		}else return false;
+		}
+	 return false;
 	}
 	
 	public void pressContinue(){
@@ -553,8 +556,8 @@ public class Method extends MethodProvider{
 			 ctx.environment.sleep(1200);
 		 }
 		for(int both : widgetID){
-		    if(ctx.widgets.get(both,15).isVisible()){
-		    	ctx.widgets.get(both, 15).click();
+		    if(ctx.widgets.get(both,14).isVisible()){
+		    	ctx.widgets.get(both, 14).click();
 		    	ctx.environment.sleep(500);
 		    }
 		}
@@ -916,8 +919,8 @@ public class Method extends MethodProvider{
 	}
 
 	public boolean npcSays(String text) {
-		if(ctx.widgets.get(1184,11).isValid())
-		if(ctx.widgets.get(1184,11).getText().contains(text)){
+		if(ctx.widgets.get(1184,9).isValid())
+		if(ctx.widgets.get(1184,9).getText().contains(text)){
 			return true;
 		}
 		return false;

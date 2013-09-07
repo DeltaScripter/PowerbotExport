@@ -27,7 +27,7 @@ import org.powerbot.script.util.Timer;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Quester", 
 description = "Completes quests! See thread for supported quests", 
-website = "https://www.powerbot.org/community/topic/777386-delta-quester/",topic =816007, version = 1.6005)
+website = "https://www.powerbot.org/community/topic/777386-delta-quester/",topic =816007, version = 1.6006)
 public class DeltaQuester extends PollingScript implements PaintListener{
 
 

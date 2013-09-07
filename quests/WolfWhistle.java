@@ -1,3 +1,4 @@
+
 package quests;
 
 import org.powerbot.script.methods.MethodContext;

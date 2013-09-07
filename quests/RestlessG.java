@@ -86,7 +86,6 @@ public class RestlessG extends Node{
 			Method.state("The Restless Ghost quest has been completed.");
 			Method.sleep(2000);
 			DeltaQuester.e = true;
-			Thread.currentThread().interrupt();
 		}else
 		if((ctx.settings.get(2324)&0x7) ==4){
 			DeltaQuester.progress = 5;

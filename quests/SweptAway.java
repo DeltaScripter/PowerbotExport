@@ -1,6 +1,7 @@
 package quests;
 
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
@@ -30,7 +31,10 @@ public class SweptAway extends Node {
 			new Tile(3078,3268,0), new Tile(3080,3257,0), new Tile(3081,3252),
 			new Tile(3087,3248,0), new Tile(3099,3247,0), new Tile(3103,3236,0),
 			new Tile(3103,3227,0), new Tile(3111,3221,0), new Tile(3118,3218,0),
-			new Tile(3124,3215,0),new Tile(3127,3215,0)};
+			new Tile(3124,3215,0),new Tile(3127,3215,0), new Tile(3117,3220,0),
+			new Tile(3112,3226,0), new Tile(3105,3237,0), new Tile(3103,3251,0),
+			new Tile(3104,3268,0), new Tile(3102,3285,0), new Tile(3090,3291,0),
+			new Tile(3079,3299,0)};
 	
 	Tile[] pathToAggie = new Tile[] { 
 			new Tile(3201,3236,0), new Tile(3199,3243,0), new Tile(3204,3247,0),
@@ -142,7 +146,7 @@ public class SweptAway extends Node {
 		if(DeltaQuester.checkedBank && (ctx.settings.get(2198) & 0x1F) !=18)
 			Method.determineBank(bankItems);
 		
-			if(DeltaQuester.checkedBank){
+			if(!DeltaQuester.checkedBank){
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.settings.get(2198) & 0x1F) !=18){
@@ -228,6 +232,9 @@ private void cs6() {
 				}
 			}else //Below completes the puzzle
 				for(int step = 1; step !=7;){
+					if(ctx.hud.isVisible(Window.SKILLS)){
+						break;
+					}
 				if((ctx.settings.get(2199)>>4 & 0x1) ==1){
 				break;
 				}else{
@@ -406,9 +413,8 @@ private void cs5() {
 
 	private void solveCrates(int i, int j, int k) {
 		Player local  = ctx.players.local();
-		//SceneObject crate1 =SceneEntities.getNearest(39445);
-		//SceneObject crate2 =SceneEntities.getNearest(39446);
-	//	SceneObject crate3 =SceneEntities.getNearest(39447);
+		
+	
 		if(!Method.teleporting &&Method.inventoryContains(i)){
 				for(GameObject crate1 : ctx.objects.select().id(39445).nearest().first()){
 				if(crate1.getLocation().distanceTo(local.getLocation())<6){
@@ -438,11 +444,8 @@ private void cs5() {
 		//SceneObject hettyDoor = SceneEntities.getNearest(72004);
 		
 		if(new Tile(2963, 3205, 0).distanceTo(local.getLocation())<7){
-			System.out.println("here1");
 			if(Method.npcIsNotNull(307)){
-				System.out.println("here");
 				if(Method.getNPC(307).getLocation().distanceTo(local.getLocation())<3){
-					System.out.println("here3");
 					Vars.DYNAMICV = false;
 					Vars.DYNAMICV2 = true;
 					if(!Method.findOption(opt)){
@@ -451,7 +454,6 @@ private void cs5() {
 						}
 					}
 				}else if(Method.objIsByTile(new Tile(2965,3206,0), 72004, 3)){
-					System.out.println("here4");
 					Method.interactO(72004, "Open", "Door");
 				}else Method.clickOnMap(Method.getNPC(307).getLocation());
 			}
@@ -525,7 +527,7 @@ private void cs5() {
 					}
 				}
 			}else
-			if(ctx.widgets.get(1184).isValid() && ctx.widgets.get(1184,11).getText().contains("How are you")){
+			if(ctx.widgets.get(1184).isValid() && ctx.widgets.get(1184,9).getText().contains("How are you")){
 				ready = true;
 			}else
 			if(!Method.isChatting("Aggie")){

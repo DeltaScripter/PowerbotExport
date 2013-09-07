@@ -46,7 +46,7 @@ public class Vars {
 	
 	public static ArrayList<Integer> bankItems = new ArrayList<Integer>();
 	public static final int[] CHATWIDGETS = {1191,1184,1188};
-	public  final int OPTIONVALUE[] = {11,19,24,29,34};
+	public  final int OPTIONVALUE[] = {11,12,18,19,23,24,28,29,33,34};
 	public boolean DYNAMICV = false;
 	public boolean DYNAMICV2 = false;
 	public boolean DYNAMICV3 = false;
