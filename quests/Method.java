@@ -535,7 +535,7 @@ public class Method extends MethodProvider{
 			
 			return true;
 		}else
-		if(ctx.widgets.get(1186).isValid() && ctx.widgets.get(1186,1).getText().contains("are now leaving the")){//18
+		if(ctx.widgets.get(1186).isValid() && ctx.widgets.get(1186,2).getText().contains("are now leaving the")){//18
 			if(ctx.widgets.get(1186,7).isValid()){
 		    	ctx.widgets.get(1186, 7).click();
 		    }

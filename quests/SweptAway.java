@@ -142,7 +142,7 @@ public class SweptAway extends Node {
 		if(DeltaQuester.checkedBank && (ctx.settings.get(2198) & 0x1F) !=18)
 			Method.determineBank(bankItems);
 		
-			if(!DeltaQuester.checkedBank){
+			if(DeltaQuester.checkedBank){
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.settings.get(2198) & 0x1F) !=18){
