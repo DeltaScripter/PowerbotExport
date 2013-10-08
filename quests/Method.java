@@ -174,9 +174,9 @@ public class Method extends MethodProvider{
 	}
 	public void foodSupport() {
 		resetTeleporting();
-		if(ctx.widgets.get(1430,82).isValid()){//health bar
-			double barHealth = ctx.widgets.get(1430,82).getChild(3).getWidth();
-			double maxHealth = ctx.widgets.get(1430,82).getChild(1).getWidth() + 32;
+		if(ctx.widgets.get(1430,83).isValid()){//health bar
+			double barHealth = ctx.widgets.get(1430,83).getChild(3).getWidth();
+			double maxHealth = ctx.widgets.get(1430,83).getChild(1).getWidth() + 32;
 			DeltaQuester.health = (barHealth/maxHealth)*100;
 		}
 		 
