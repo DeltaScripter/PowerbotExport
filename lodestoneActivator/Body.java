@@ -20,7 +20,7 @@ import org.powerbot.script.wrappers.Tile;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "DeltaLodestone", 
-description = "Simply unlocks F2P lodestones.", website = "", version = .1)
+description = "Simply unlocks 5 main F2P lodestones.", website = "", version = .12,topic = 1129211)
 public class Body extends PollingScript implements PaintListener{
 
 	public final Tile pathToVarrock[] = new Tile[]{
@@ -39,6 +39,9 @@ public class Body extends PollingScript implements PaintListener{
 			new Tile(2952,3423,0),new Tile(2959,3414,0),new Tile(2967,3405,0)
 	};
 	public final Tile pathToDraynor[] = new Tile[] {
+			
+			new Tile(3233,3223,0),new Tile(3221,3223,0),new Tile(3217,3232,0),
+			new Tile(3207,3233,0),
 			new Tile(3209,3233,0),new Tile(3208,3240,0),new Tile(3212,3246,0),
 			new Tile(3212,3254,0),new Tile(3217,3265,0),new Tile(3211,3274,0),
 			new Tile(3201,3276,0),new Tile(3193,3282,0),new Tile(3181,3287,0),
@@ -72,6 +75,7 @@ public class Body extends PollingScript implements PaintListener{
 	private Timer teleportTimer = new Timer(0);
 	private Timer walkingTimer = new Timer(0);
 	private String state;
+	private String countLodestones;
 	
 	public Body(){
 		getExecQueue(State.START).add(new Runnable() {
@@ -120,10 +124,15 @@ public class Body extends PollingScript implements PaintListener{
 	public void execute() {
 		
 		if((ctx.settings.get(3) >> 11 & 0x1)==1){//Varrok is active
+			countLodestones = "5 lodestones left";
 			if((ctx.settings.get(3) >>6 &0x1)==1){//Falador
+				countLodestones = "4 lodestones left";
 				if((ctx.settings.get(3) >>4 &0x1)==1){//Draynor
+					countLodestones = "3 lodestones left";
 					if((ctx.settings.get(3) >> 10 &0x1) == 1){//Taverly
+						countLodestones = "2 lodestones left";
 						if((ctx.settings.get(3) >> 8 & 0x1) == 1){//Port Sarim
+							countLodestones = "1 lodestones left";
 							if((ctx.settings.get(3) & 0x1) == 1){//Alkharid
 								System.out.println("Finished");
 								getController().stop();
@@ -204,6 +213,7 @@ public void repaint(Graphics g) {
 	g.setColor(Color.GREEN);
 	g.setFont(myFont);
 	g.drawString("State: " + state, 20, 130);
+	g.drawString("Count: " + countLodestones, 20, 160);
 	
 }
 
