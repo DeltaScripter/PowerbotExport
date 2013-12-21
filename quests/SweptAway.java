@@ -209,6 +209,8 @@ public class SweptAway extends Node {
 private void cs6() {
 	final String opt[]  ={"I need to retrieve"};
 	Player local = ctx.players.local();
+	if(ctx.camera.getPitch()<40)
+		ctx.camera.setPitch(80);
 	
 	  if(hasWand){
 		  cs5();
@@ -407,7 +409,8 @@ private void cs5() {
 		final int crates[] = {39445,39446,39447};
 		Player local = ctx.players.local();
 		//SceneObject hettyDoor = SceneEntities.getNearest(72004);
-		
+		if(ctx.camera.getPitch()<40)
+			ctx.camera.setPitch(80);
 		if(Method.objIsNotNull(39321)){
 			Vars.DYNAMICV = false;
 			if((ctx.settings.get(2198)>>10 & 0x1) ==1){//after placing the labels

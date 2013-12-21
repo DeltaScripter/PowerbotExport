@@ -93,7 +93,18 @@ public class PiratesTreasure extends Node{
 	
 	public int bankItems[] = {952,1005,433,431,1963,1963,1963,1963,1963,1963,1963,1963,1963,1963,1963,1963,1963};
 	public int bankItemAmount[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+	boolean q = true;
 	public void execute() {
+		if(q){
+			TaskListing.taskRemove.clear();
+			TaskListing.taskListData.add("Start quest by speaking to the pirate");
+			TaskListing.taskListData.add("Head to Karamja and smuggle some rum in the crates");
+			TaskListing.taskListData.add("Find the treasure chest in Varrock");
+			TaskListing.taskListData.add("Find the buried treasure in Falador and finish quest");
+			
+			TaskListing.updateTasks();
+			q = false;
+		}
 		Method.resetTeleporting();
 		Method.foodSupport();
 		
@@ -125,6 +136,9 @@ public class PiratesTreasure extends Node{
 			if((ctx.settings.get(2227) & 0x7) ==4){
 				DeltaQuester.progress = 5;
 				Method.state("The Pirates Treasure quest has been completed.");
+				TaskListing.updateTaskRemove("Start quest by speaking to the pirate","Head to Karamja and smuggle some rum in the crates","Find the treasure chest in Varrock","Find the buried treasure in Falador and finish quest");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+			
 				Method.sleep(2000);
 				DeltaQuester.e = true;
 			}else if(!Vars.r){
@@ -138,15 +152,22 @@ public class PiratesTreasure extends Node{
 			if((ctx.settings.get(2227) & 0x3) ==3){
 				DeltaQuester.progress = 4;
 				cs5();//Find the treasure!!
+				TaskListing.updateTaskRemove("Start quest by speaking to the pirate","Head to Karamja and smuggle some rum in the crates","Find the treasure chest in Varrock");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+			
 			}else
 			if((ctx.settings.get(2227) & 0x3) ==2){
 				DeltaQuester.progress = 3;
 				cs4();//Find the chest!!
+				TaskListing.updateTaskRemove("Start quest by speaking to the pirate","Head to Karamja and smuggle some rum in the crates");
+				TaskListing.removeTasks(TaskListing.taskRemove);
 			}else
 			if((ctx.settings.get(2227) & 0x1) ==1){
 				DeltaQuester.progress = 2;
 				try {
 					cs1();//Heads to karamja and finishes the job(gets the wine stored)
+					TaskListing.updateTaskRemove("Start quest by speaking to the pirate");
+					TaskListing.removeTasks(TaskListing.taskRemove);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

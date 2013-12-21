@@ -4,6 +4,8 @@ package quests;
 import java.awt.*;
 
 import quests.Node;
+import quests.TaskListing.TaskListForm;
+
 import javax.imageio.ImageIO;
 
 import java.io.IOException;
@@ -25,7 +27,7 @@ import org.powerbot.script.util.Timer;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Quester", 
-description = "Completes quests! See thread for supported quests, enjoy", hidden = false,
+description = "Completes quests! See thread for supported quests.", hidden = false,
 website = "https://www.powerbot.org/community/topic/777386-delta-quester/",topic =816007, version = 1.6007)
 public class DeltaQuester extends PollingScript implements PaintListener{
 
@@ -56,6 +58,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 	
 	//Settings
 	public static ArrayList<String> qList = new ArrayList<String>();
+
 	public static int paintIndicator= 0;
 	public static boolean exchangeBank = false;
 	public static boolean g = false;
@@ -75,6 +78,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			@Override
 			public void run() {
 				timeSec = new Timer(0);
+				
 				initiateGui();
 				//qList.add("The Restless Ghost");
 				     addNode(new TheBloodPact(ctx));
@@ -105,6 +109,8 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			@Override
 			public void run() {
 				log.info("Now shutting down.");
+				TaskListing.taskRemove.clear();//Clears the task list
+				TaskListing.updateTasks();
 				qList.clear();
 				GEWO = false;
 				GEFeature = false;
@@ -132,6 +138,8 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 		
 		if(g){
 			log.info("shutting down");
+			TaskListing.taskRemove.clear();//Clears the task list
+			TaskListing.updateTasks();
 			getController().stop();
 		}
 		if(ready){
@@ -145,6 +153,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 				progress = 0;
 				numSteps = 0;
 			 //Resets variables then reinitiates the queue
+				TaskListing.taskRemove.clear();//Clears the task list
 				log.info("Finished quest: " + qList.get(0));
 			    DeltaQuester.qList.remove(0);
 				DeltaQuester.scriptToStart=100;
@@ -290,10 +299,10 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 	}
 	class DeltaQuesterGUI extends JFrame {
 		
-		public DefaultListModel queueListModel = new DefaultListModel();
-		public DefaultListModel questListModel = new DefaultListModel();
-		public DefaultListModel rewardItemModel = new DefaultListModel();
-		public DefaultListModel rewardExpModel = new DefaultListModel();
+		public DefaultListModel<String> queueListModel = new DefaultListModel<String>();
+		public DefaultListModel<?> questListModel = new DefaultListModel<Object>();
+		public DefaultListModel<String> rewardItemModel = new DefaultListModel<String>();
+		public DefaultListModel<String> rewardExpModel = new DefaultListModel<String>();
 		 Color color=new Color(255,0,0);
 		public DeltaQuesterGUI() {
 			rewardItemModel.addElement("");
@@ -346,6 +355,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 		}
 
 		private void startButtonActionPerformed(ActionEvent e) {
+			
 			for(int index = 0; index <queueListModel.size();){
 				String quest = queueListModel.get(index).toString();
 			if(!qList.contains(quest)){
@@ -847,7 +857,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 						typeOfFoodLabel.setText("Type of Food:");
 
 						//---- typeOfFoodComboBox ----
-						typeOfFoodComboBox.setModel(new DefaultComboBoxModel(new String[] {
+						typeOfFoodComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {
 								"Banana","Cooked Chicken","Cooked lobster","Cooked meat","Rabbit sandwich",
 								"Swordfish"
 						}));
@@ -989,9 +999,9 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 		// JFormDesigner - End of variables declaration  //GEN-END:variables
 		 private class MyListRenderer extends DefaultListCellRenderer  
 		    {  
-		        private HashMap incompleteQuests = new HashMap();  
+		        private HashMap<Object, String> incompleteQuests = new HashMap<Object, String>();  
 		   
-		        public Component getListCellRendererComponent( JList list,  
+		        public Component getListCellRendererComponent( JList<?> list,  
 		                Object value, int index, boolean isSelected,  
 		                boolean cellHasFocus)  
 		        {  
@@ -1197,13 +1207,13 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 		   
 	}
 
-	
 
 
 	public void initiateGui() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				
+				TaskListForm taskgui= new TaskListForm();
+				taskgui.setVisible(true);
 				final DeltaQuesterGUI deltagui = new DeltaQuesterGUI();
 				deltagui.setVisible(true);
 				deltagui.setResizable(false);

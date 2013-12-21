@@ -37,9 +37,16 @@ public class ImpCatcher extends Node {
 	public Method Method = new Method(ctx);
 	public Vars Vars = new Vars();
 	
+	boolean q = true;
 	public void execute() {
 		DeltaQuester.numSteps = 3;
-		
+		if(q){
+			TaskListing.taskRemove.clear();
+			TaskListing.taskListData.add("Start quest by speaking to the wizard");
+			TaskListing.taskListData.add("Finish quest by giving the beads");
+			TaskListing.updateTasks();
+			q = false;
+		}
 		if(DeltaQuester.checkedBank)
 		Method.determineBank(bankItems);
 		if(!DeltaQuester.checkedBank && (ctx.settings.get(2669)&0x3)!=2){
@@ -54,19 +61,29 @@ public class ImpCatcher extends Node {
 		if((ctx.settings.get(2669)&0x3)==2){
 			DeltaQuester.progress = 3;
 			DeltaQuester.state = "The Imp Catcher quest has been completed.";
+			TaskListing.updateTaskRemove("Start quest by speaking to the wizard","Finish quest by giving the beads");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
 		if((ctx.settings.get(2669)&0x1)==1){
 			DeltaQuester.progress = 2;
-			cS1();
+			cS1();//Finish the quest by giving beads
+			TaskListing.updateTaskRemove("Start quest by speaking to the wizard");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2669)&0x1)==0){
 			DeltaQuester.progress = 1;
-			cS1();
+			cS1();//Start the quest
 		}
 	}
-	
+	private void updateTaskRemove(String... tasks) {
+		for(String t: tasks){
+			if(!TaskListing.taskRemove.contains(t)){
+				TaskListing.taskRemove.add(t);
+			}
+		}
+	}
 	private void cS1() {
 		final String opt[]  ={"I've got","Can I help"};
 		Player local = ctx.players.local();

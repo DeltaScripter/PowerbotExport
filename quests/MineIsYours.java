@@ -108,8 +108,29 @@ public class MineIsYours extends Node{
 		return DeltaQuester.scriptToStart==27;
 	}
 
-	
+	boolean q = true;
 	public void execute() {
+		if(q){
+			TaskListing.taskRemove.clear();
+			TaskListing.taskListData.add("Start the quest");
+			TaskListing.taskListData.add("Gather the high-quality copper ore from Falador mine");
+			TaskListing.taskListData.add("Gather the high-quality tin ore from Varrock eastern mine");
+			TaskListing.taskListData.add("Gather the high-quality copper ore from Varrock western mine");
+			TaskListing.taskListData.add("Gather the high-quality coper ore from Rimmington mine");
+			TaskListing.taskListData.add("Speak to Doric again");
+			TaskListing.taskListData.add("Make weapons at Doric's house");
+			TaskListing.taskListData.add("Speak to Askel at the workshop in Falador");
+			TaskListing.taskListData.add("Get the report from sten in the basement");
+			TaskListing.taskListData.add("Give Askel the report");
+			TaskListing.taskListData.add("Speak to the squire in Falador");
+			TaskListing.taskListData.add("Resolve family conflict");
+			TaskListing.taskListData.add("Speak to Doric for the last time");
+			TaskListing.taskListData.add("Make armour");
+			TaskListing.taskListData.add("Mine the rocks in the basement");
+			TaskListing.taskListData.add("Finish quest");
+			TaskListing.updateTasks();
+			q = false;
+		}
 		DeltaQuester.numSteps = 17;
 		Method.foodSupport();
 		while(ctx.settings.get(1114)==1 && (ctx.settings.get(2231)&0x3F) !=35){//When the cinimatic plays
@@ -141,68 +162,114 @@ public class MineIsYours extends Node{
 		if((ctx.settings.get(2231)&0x3F) ==55){
 			DeltaQuester.progress = 17;
 			DeltaQuester.state ="The What's Mine Is Yours quest has been completed.";
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement","Give Askel the report","Speak to the squire in Falador","Resolve family conflict","Speak to Doric for the last time","Make armour","Mine the rocks in the basement","Finish quest");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 			Method.sleep(2000);
 			DeltaQuester.e  = true;
 		}else
 		if((ctx.settings.get(2231)>>17& 0x1) ==1 ||((ctx.settings.get(2231)&0x3F) ==50)){
 			DeltaQuester.progress = 16;
 			cs1();//Speak to Doric for the last time
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement","Give Askel the report","Speak to the squire in Falador","Resolve family conflict","Speak to Doric for the last time","Make armour","Mine the rocks in the basement");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if((ctx.settings.get(2231)>>14& 0x7) ==7){
 			DeltaQuester.progress = 15;
 			cs11();//Mine the rocks in basement
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement","Give Askel the report","Speak to the squire in Falador","Resolve family conflict","Speak to Doric for the last time","Make armour");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if(((ctx.settings.get(2231)&0x3F) ==45)){
 			DeltaQuester.progress = 14;
 			cs10();//Make the ornamental armour
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement","Give Askel the report","Speak to the squire in Falador","Resolve family conflict","Speak to Doric for the last time");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if(((ctx.settings.get(2231)&0x3F) ==40)){
 			DeltaQuester.progress = 13;
 			cs1();//Speak to Doric again.
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement","Give Askel the report","Speak to the squire in Falador","Resolve family conflict");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if(((ctx.settings.get(2231)&0x1F) ==30)||(ctx.settings.get(2231)&0x3F) ==35){
 			DeltaQuester.progress = 12;
 			cs1();//Resolve the family conflict
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement","Give Askel the report","Speak to the squire in Falador");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if(((ctx.settings.get(2231)&0x1F) ==20)||(ctx.settings.get(2231)&0x1F) ==25){
 			DeltaQuester.progress = 11;
 			cs9();//Speak to the squire
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement","Give Askel the report");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if(((ctx.settings.get(2231)&0x1F) ==19)){
 			DeltaQuester.progress = 10;
-			cs7();//Give aksel the report we just recieved.
+			cs7();//Give aksel the report we just recieved.\
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if(((ctx.settings.get(2231)&0x1F) ==18)){
 			DeltaQuester.progress = 9;
 			cs8();//Get report from Sten in the workshop
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if(((ctx.settings.get(2231)&0xF) ==15)){
 			DeltaQuester.progress = 8;
 			cs7();//Speak to Aksel in the workshop
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if(((ctx.settings.get(2231)&0xF) ==10)){
 			DeltaQuester.progress = 7;
 			cs1();//Make some weapons at Dorics house.
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if((ctx.settings.get(2231)>>9 & 0x1F) ==31){
 			DeltaQuester.progress = 6;
 			cs1();//Speak to Doric again
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if((ctx.settings.get(2231)>>10 & 0x1) ==1){
 			DeltaQuester.progress = 5;
 			cs5();//Gather more copper ore at the rimmington mine
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if((ctx.settings.get(2231)>>11 & 0x1) ==1){
 			DeltaQuester.progress = 4;
 			cs4();//Gather the high-quality copper ore(Varrok western mine)
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if((ctx.settings.get(2231)>>9 &0x1)==1){
 			DeltaQuester.progress = 3;
 			cs3();//Gather the high-quality tin ore(Varrok eastern mine)
+			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2231)&0x7)==6){
 			DeltaQuester.progress = 2;
 			cs2();//Gather the high-quality copper ore(Faldor dwarven mine)
+			TaskListing.updateTaskRemove("Start the quest");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2231)&0x7)==0 || (ctx.settings.get(2231)&0x7)==1||
 				(ctx.settings.get(2231)&0x7)==4||(ctx.settings.get(2231)&0x7)==5){

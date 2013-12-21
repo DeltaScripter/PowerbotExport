@@ -74,8 +74,16 @@ public final Tile[] pathToCook = new Tile[] {
 	Timer wait = new Timer(0);
 	public Player player = ctx.players.local();
 	public Vars Vars = new Vars();
-	
+	boolean q = true;//only runs once.
 	public void execute() {
+		if(q){
+			TaskListing.taskRemove.clear();
+			TaskListing.taskListData.add("Start quest by speaking to the cook");
+			TaskListing.taskListData.add("Gather the special ingredients");
+			TaskListing.taskListData.add("Speak to the cook and finish quest");
+			TaskListing.updateTasks();
+			q = false;
+		}
 		Method.resetTeleporting();
 		DeltaQuester.numSteps = 3;
 		failsafe();
@@ -94,12 +102,16 @@ public final Tile[] pathToCook = new Tile[] {
 		if((ctx.settings.get(2492)&0x3) ==2){
 			DeltaQuester.progress = 3;
 			Method.state("The Cook's Assistant quest has been completed.");
+			TaskListing.updateTaskRemove("Start quest by speaking to the cook","Speak to the cook and finish quest");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 			ctx.environment.sleep(2000);
 			DeltaQuester.e = true;
 		}else
 		if((ctx.settings.get(2492)&0x1) ==1){
 			DeltaQuester.progress = 2;
 			cs1();//Gather/make the items and finish the quest
+			TaskListing.updateTaskRemove("Start quest by speaking to the cook");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2492)&0x1) ==0){
 			DeltaQuester.progress = 1;

@@ -58,14 +58,28 @@ public class DemonSlayer extends Node {
 	
 	Method Method = new Method(ctx);	
 	Vars Vars = new Vars();
-	
+	boolean q = true;
 	public boolean activate() {
 		return DeltaQuester.scriptToStart==26;
 	}
 
 	
 	public void execute() {
-		
+		if(q){
+			TaskListing.taskRemove.clear();
+			TaskListing.taskListData.add("Start the quest");
+			TaskListing.taskListData.add("Speak to the ghosts downstairs");
+			TaskListing.taskListData.add("Complete walking puzzle");
+			TaskListing.taskListData.add("Defeat the skeletons");
+			TaskListing.taskListData.add("Complete the mind test");
+			TaskListing.taskListData.add("Speak to the ghosts and recieve the sword");
+			TaskListing.taskListData.add("Inform Grufeld Bach of your success");
+			TaskListing.taskListData.add("Defeat the supporters of the demon");
+			TaskListing.taskListData.add("Defeat the demon");
+			TaskListing.taskListData.add("Complete the quest");
+			TaskListing.updateTasks();
+			q = false;
+		}
 		Method.foodSupport();
 		
 		DeltaQuester.numSteps = 14;
@@ -88,16 +102,25 @@ public class DemonSlayer extends Node {
 		if((ctx.settings.get(3518) & 0x7F)==121){
 			DeltaQuester.progress=14;
 			Method.state("The Demon Slayer quest has been completed.");
+			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons","Complete the mind test","Speak to the ghosts and recieve the sword","Inform Grufeld Bach of your success","Defeat the supporters of the demon","Defeat the demon","Complete the quest");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+			
 			ctx.environment.sleep(2000);
 			DeltaQuester.e = true;
 		}else
 		if((ctx.settings.get(3518) & 0x7F)==120){
 			DeltaQuester.progress=13;
 			cs0();//Complete the quest
+			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons","Complete the mind test","Speak to the ghosts and recieve the sword","Inform Grufeld Bach of your success","Defeat the supporters of the demon","Defeat the demon");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+			
 		}else
 		if((ctx.settings.get(3518) & 0x3FF)==1015){
 			DeltaQuester.progress=12;
 			cs9();//Fight delrith
+			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons","Complete the mind test","Speak to the ghosts and recieve the sword","Inform Grufeld Bach of your success","Defeat the supporters of the demon");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+			
 		}else
 		if((ctx.settings.get(3518) & 0x1FF)==503){
 			DeltaQuester.progress=11;
@@ -110,30 +133,49 @@ public class DemonSlayer extends Node {
 		if((ctx.settings.get(3518) & 0x7F)==119){
 			DeltaQuester.progress=9;
 			cs6();//Fight wave 1 of enemies
+			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons","Complete the mind test","Speak to the ghosts and recieve the sword","Inform Grufeld Bach of your success");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+			
 		}else
 		if((ctx.settings.get(3518) & 0x7F)==118){
 			DeltaQuester.progress=9;
 			cs0();//Inform Bach you have the silverlight sword
+			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons","Complete the mind test","Speak to the ghosts and recieve the sword");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if((ctx.settings.get(3518) & 0x7F)==117){
 			DeltaQuester.progress=8;
 			cs5();//Take the sword from the pedestal
+		
 		}else
 		if((ctx.settings.get(3518) & 0x7F)==116){
 			DeltaQuester.progress=7;
 			cs1();//Speak to the ghosts after the trials; to release the sword.
+			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons","Complete the mind test");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if((ctx.settings.get(3518) & 0x7F)==83){
 			DeltaQuester.progress=6;
 			cs4();//Speak to the ghost of mind and take the test.
+			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if((ctx.settings.get(3518) & 0x7F)==67){
 			DeltaQuester.progress=5;
 			cs3();//Speak to the ghost of body and then defeat the skeletons
+			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if((ctx.settings.get(3518) & 0x3)==3){
 			DeltaQuester.progress=4;
 			cs2();//Speak to the ghost then complete the walking puzzle.
+			updateTaskRemove("Start the quest","Speak to the ghosts downstairs");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if((ctx.settings.get(3518) & 0x3)==2){
 			DeltaQuester.progress=3;
@@ -142,6 +184,8 @@ public class DemonSlayer extends Node {
 		if((ctx.settings.get(3518) & 1)==1){
 			DeltaQuester.progress=2;
 			cs0();//Speak to bach initially
+			updateTaskRemove("Start the quest");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(3518) & 1)==0){
 			DeltaQuester.progress=1;
@@ -150,7 +194,14 @@ public class DemonSlayer extends Node {
 		
 	}
 
-
+	private void updateTaskRemove(String... tasks) {
+		for(String t: tasks){
+			if(!TaskListing.taskRemove.contains(t)){
+				TaskListing.taskRemove.add(t);
+			}
+		}
+		
+	}
 	private void cs9() {
 		Player local = ctx.players.local();
 		//SceneObject door = SceneEntities.getNearest(24381);
@@ -436,6 +487,7 @@ public class DemonSlayer extends Node {
 		if(init!=null){
 			
 			if(spokeToFaith){
+				if(ctx.camera.getPitch()<40)
 				ctx.camera.setPitch(80);
 				ctx.camera.setAngle(40);
 			 if(local.getAnimation()==2311){
