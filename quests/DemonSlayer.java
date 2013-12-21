@@ -17,7 +17,7 @@ public class DemonSlayer extends Node {
 	}
 
 
-	final Tile[] pathToBach = new Tile[] { new Tile(3212, 3376, 0),
+	final Tile[] pathToBach = new Tile[] {// new Tile(3212, 3376, 0),
 			new Tile(3211, 3381, 0), new Tile(3210, 3386, 0),
 			new Tile(3210, 3391, 0), new Tile(3210, 3396, 0),
 			new Tile(3210, 3401, 0), new Tile(3210, 3406, 0),
@@ -182,12 +182,11 @@ public class DemonSlayer extends Node {
 				init = ctx.players.local().getLocation();
 			}
 		}
-		if(new Tile(3256,3387,0).distanceTo(local.getLocation())<8){
+		if(new Tile(3256,3387,0).distanceTo(local.getLocation())<4){
 			if(!Method.objIsByTile(new Tile(3255,3388,0), 24381, 3)){
 				Method.interactO(82061, "Climb", "Trapdoor");
 			}else Method.interactO(24381, "Open", "Door");
 			
-				
 		}else delta(pathToTemple, "Walking to the temple");
 	}
 		
@@ -437,7 +436,8 @@ public class DemonSlayer extends Node {
 		if(init!=null){
 			
 			if(spokeToFaith){
-				//ctx.camera.setYaw(80);
+				ctx.camera.setPitch(80);
+				ctx.camera.setAngle(40);
 			 if(local.getAnimation()==2311){
 					for(int i = 0; i<=tileArray.length;){
 						Method.state("Restarting");
@@ -480,7 +480,7 @@ public class DemonSlayer extends Node {
 					}else moveToTile(0,36,1);
 				}else moveToTile(0,35,0);
 				
-			}else if(ctx.widgets.get(1184).isValid() && ctx.widgets.get(1184).getComponent(11).getText().contains("Step out into the")){
+			}else if(ctx.widgets.get(1184).isValid() && ctx.widgets.get(1184).getComponent(9).getText().contains("Step out into the")){
 				Method.pressContinue();
 				spokeToFaith = true;
 			}else
@@ -556,7 +556,7 @@ public class DemonSlayer extends Node {
 				init = ctx.players.local().getLocation();
 			}
 		}
-		if(new Tile(3258,3483,0).distanceTo(local.getLocation())<8){
+		if(new Tile(3258,3483,0).distanceTo(local.getLocation())<4){
 			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
 				if(!TrapDoor.contains(door.getLocation())){
 					Method.interactO(82059, "Climb", "Trapdoor");

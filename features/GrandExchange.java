@@ -5,6 +5,7 @@ import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 
+import quests.DeltaQuester;
 import quests.Method;
 
 public class GrandExchange extends MethodProvider{
@@ -16,11 +17,18 @@ public class GrandExchange extends MethodProvider{
 	}
 
 	public boolean geIsOpen(){
-		return (ctx.widgets.get(105,2).isVisible());
+		if(ctx.widgets.get(105,5).isValid()){
+			while(ctx.widgets.get(105,5).getText().contains("Sell Offer") && 
+					ctx.widgets.get(105,5).isVisible()){
+				DeltaQuester.state = "Closing sell screen";
+				ctx.widgets.get(105,87).click();
+			}
+		}
+		return (ctx.widgets.get(105,86).getChild(14).isVisible());
 	}
 
 	public boolean isSlotEmpty() {
-		return ctx.widgets.get(105,19).getChild(10).getText().contains("Empty");
+		return ctx.widgets.get(105,28).getChild(1).getText().contains("Empty");
 	}
 
 	public void createBuyItem(String name, int itemAmount, int itemPrice) {
@@ -30,7 +38,7 @@ public class GrandExchange extends MethodProvider{
 			if(itemName().equals(name)){
 				if(quantity()==(itemAmount)){
 					if(price()==itemPrice){
-						Component buy = ctx.widgets.get(105, 187);
+						Component buy = ctx.widgets.get(105, 166);
 						if(ctx.widgets.get(1469,0).isVisible()){
 							ctx.widgets.get(1469,2).click();
 							setPrice(itemPrice);
@@ -41,11 +49,12 @@ public class GrandExchange extends MethodProvider{
 			}else typeItem(name);
 			
 			
-		}else ctx.widgets.get(105,30).click();//click the slot buy button
+		}else ctx.widgets.get(105,19).click();//click the slot buy button
 		
 	}
 
 	private void setPrice(int i) {
+		DeltaQuester.state = "setting price";
 		String price = ""+i;
 		Component g = ctx.widgets.get(1469,2);//search box for price
 		if(g.isVisible() && g.getText().contains("you wish to buy for")){//if open
@@ -53,13 +62,13 @@ public class GrandExchange extends MethodProvider{
 				ctx.keyboard.sendln("");
 			}else if(ctx.widgets.get(1469,3).getText().isEmpty()){
 				sendText(price);
-			}else ctx.widgets.get(105,177).click();//re-open the search textbox
-		}else ctx.widgets.get(105,177).click();
+			}else ctx.widgets.get(105,154).click();//re-open the search textbox
+		}else ctx.widgets.get(105,154).click();
 		
 	}
 
 	private int price() {
-		String price = ctx.widgets.get(105,153).getText();
+		String price = ctx.widgets.get(105,52).getText();
 		price = price.replaceAll(" gp", "");
 		price = price.replaceAll(",", "");
 		return Integer.parseInt(price);
@@ -67,18 +76,18 @@ public class GrandExchange extends MethodProvider{
 
 	private void setQuantity(int itemAmount) {
 		String amount = ""+itemAmount;
-		
+		DeltaQuester.state = "setting quantity";
 		if(ctx.widgets.get(1469,2).isVisible()){//typing box for quantity
 			if(ctx.widgets.get(1469,3).getText().equals(amount)){
 			ctx.keyboard.sendln("");
 			}else if(ctx.widgets.get(1469,3).getText().isEmpty()){
 				sendText(amount);
 			}else {
-				ctx.widgets.get(105,168).click();//empty the search box (try again)
-				ctx.environment.sleep(1200);
+				ctx.widgets.get(105,131).click();//empty the search box (try again)
+				ctx.game.sleep(1200);
 			}
 		
-		}else ctx.widgets.get(105,168).click();//search quantity button
+		}else ctx.widgets.get(105,131).click();//search quantity button
 	
 		
 	}
@@ -93,10 +102,11 @@ public class GrandExchange extends MethodProvider{
 	}
 
 	private int quantity() {
-		return Integer.parseInt(ctx.widgets.get(105,148).getText().toString());
+		return Integer.parseInt(ctx.widgets.get(105,49).getText().toString());
 	}
 
 	private void typeItem(String name) {
+		DeltaQuester.state = "Inside typing item";
 		final int spot[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 		Method Method = new Method(ctx);
 		if(ctx.widgets.get(389,11).isVisible()){//magnifying glass button is visible
@@ -115,34 +125,38 @@ public class GrandExchange extends MethodProvider{
 			}else if(ctx.widgets.get(389,7).getText().equals("*")){
 				sendText(name);
 			}else {
-				ctx.widgets.get(105,139).click();//reset search box
+				ctx.widgets.get(105,11).click();//reset search box
 				ctx.environment.sleep(1200);
 			}
 		}else {
-			ctx.widgets.get(105,139).click();//open the textbox
+			ctx.widgets.get(105,11).click();//open the textbox
 			ctx.keyboard.sleep(800);
 		}
 		
 	}
 
 	private String itemName() {
-		return ctx.widgets.get(105,142).getText().toString();
+		return ctx.widgets.get(105,4).getText().toString();
 	}
 
 	public void collectItem(String name) {
-		int collect[] = {206,208};
-		if(ctx.widgets.get(105,208).isVisible()){//collect area
+		int collect[] = {77,79};
+		if(ctx.widgets.get(105,5).isVisible()){//collect area
 			if(ctx.widgets.get(1469,1).isVisible()){//search bar still open(causes glitch)
-				ctx.widgets.get(105,14).click();//the exit button in GE
+				ctx.widgets.get(105,87).click();//the exit button in GE
 			}else if(!itemName().equals(name)){//if something else is being bought
 				ctx.widgets.get(105,200).click();//cancel the existing order
 			}
 			for (int col : collect) {
 				if (ctx.widgets.get(105, col).getItemId() != -1) {
+					DeltaQuester.state = "Selecting item in collection box";
 					ctx.widgets.get(105, col).click();
 				}
 			}
-		}else ctx.widgets.get(105,33).click();//open the collect area
+		}else {
+			DeltaQuester.state = "Opening collection area";
+			ctx.widgets.get(105,28).click();//open the collect area
+		}
 		
 	}
 	

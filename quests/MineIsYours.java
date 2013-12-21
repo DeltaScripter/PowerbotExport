@@ -140,7 +140,7 @@ public class MineIsYours extends Node{
 		}else
 		if((ctx.settings.get(2231)&0x3F) ==55){
 			DeltaQuester.progress = 17;
-			DeltaQuester.getInstance().state ="The What's Mine Is Yours quest has been completed.";
+			DeltaQuester.state ="The What's Mine Is Yours quest has been completed.";
 			Method.sleep(2000);
 			DeltaQuester.e  = true;
 		}else

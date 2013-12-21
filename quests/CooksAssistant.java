@@ -27,11 +27,17 @@ public final Tile[] pathToCook = new Tile[] {
 			new Tile(3258, 3268, 0), new Tile(3259, 3273, 0), new Tile(3261, 3279, 0) };
  
  public final Tile[] pathToSpecialEgg = new Tile[] {
+		 new Tile(3218,3229,0), new Tile(3208,3238,0),
+		 //up is path to old lode by weird minigame in lummy
+		 
 		 new Tile(3201,3235,0), new Tile(3200,3242,0), new Tile(3205,3248,0),
 		 new Tile(3211,3253,0), new Tile(3216,3264,0),new Tile(3213,3273,0),
 		 new Tile(3208,3278,0), new Tile(3207,3283,0)};
  
- public final  Tile[] pathToMill= new Tile[] { 
+ public final  Tile[] pathToMill= new Tile[] {
+		 new Tile(3218,3229,0), new Tile(3208,3238,0),
+		 //up is path to old lode by weird minigame in lummy
+		 
 		 new Tile(3201,3235,0), new Tile(3200,3242,0), new Tile(3205,3248,0),
 		 new Tile(3211,3253,0), new Tile(3216,3264,0),
 			new Tile(3214, 3270, 0), 
@@ -112,9 +118,9 @@ public final Tile[] pathToCook = new Tile[] {
 		
 		
 		
-		if (requiredItems[0] == 1) {
-			if (requiredItems[1] == 1) {
-				if (requiredItems[2] == 1) {
+		if (requiredItems[0] == 1) {// If has milk
+			if (requiredItems[1] == 1) {// If has egg
+				if (requiredItems[2] == 1) {//special flour
 				cs0();//Speak to the cook again
 			}else if(ctx.widgets.get(1188).isValid() && ctx.widgets.get(1188,3).getText().contains("Who are you")){
 				Vars.DYNAMICV = false;
@@ -128,7 +134,7 @@ public final Tile[] pathToCook = new Tile[] {
 				}
 				if(!Method.objIsByTile(new Tile(3167,3302,0), 45966,5)){//mill door
 					doMillStuff();
-				}else Method.interactO(45966, "Open", "Door");//mill door
+				}else Method.interactO(45966, "Open", "Door");//open the mill door
 				
 			}else if(Vars.DYNAMICV){
 				Method.walking(pathToMill, "Walking to the mill", false);
@@ -171,7 +177,7 @@ public final Tile[] pathToCook = new Tile[] {
 	}
 	private void doMillStuff(){
 		final String opt[] = {"I'm looking for"};
-		if(opHopper){
+		if(opHopper){//Is true if the wheat was passed down the shout; after pulling the controls.
 			if(ctx.game.getPlane()==2){
 				Method.interactO(36797, "Climb-down", "Ladder");
 			}else
@@ -181,23 +187,23 @@ public final Tile[] pathToCook = new Tile[] {
 			if(ctx.game.getPlane()==0){
 				Method.interactO(36880, "Take", "Flour bin");
 			}
-		}else
-		if(sFlour){
+		}else//Below should put wheat in shout and use controls
+		if(sFlour){//Checks if we are now making 'special flour'
 			if(ctx.game.getPlane()==2){
 				if(Method.playerText("You operate the")){
-					opHopper = true;
+					opHopper = true;//becomes true after operating the controls (pushing the wheat down)
 				}else if(Method.playerText("There is already") || Method.playerText("You put the wheat")){
-					Method.interactO(2718, "Operate", "Controls");
+					Method.interactO(2718, "Operate", "Controls");//if there is already wheat in hopper
 				}else
 				if(!Method.teleporting &&Method.inventoryContains(1947)){//wheat
-					Method.useItemOn(1947, 70034, "Hopper");
+					Method.useItemOn(1947, 70034, "Hopper");//if no wheat in hopper; put some in.
 				}
-			}else
+			}else//below climbs up to the point
 			if(ctx.game.getPlane()==1){
 				Method.interactO(36796, "Climb-up", "Ladder");
 			}else
 			Method.interactO(36795, "Climb", "Ladder");
-		}else if (Method.npcSays("Really? How marvellous!") && wait.isRunning()){
+		}else if (Method.npcSays("Really? How marvellous!") && wait.isRunning()){//Below tries to speak to miller about making special flour
 			sFlour = true;
 		}else if(!wait.isRunning()){
 			if(!Method.findOption(opt)){

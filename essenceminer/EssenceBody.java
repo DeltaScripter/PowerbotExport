@@ -23,7 +23,7 @@ import essenceminer.EssenceData.essence;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "DeltaEssence", 
 description = "Mines rune essence at Varrock and banks, start at Varrock eastern bank.", 
-website = "", version = 1)
+website = "", version = 1, topic = 1128727)
 public class EssenceBody extends PollingScript implements PaintListener{
 
 	public EssenceBody(){

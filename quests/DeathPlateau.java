@@ -47,7 +47,7 @@ public class DeathPlateau extends Node{
 	public void execute() {
 		DeltaQuester.numSteps = 12;//2337 is setting
 		Method.resetTeleporting();
-		while(ctx.settings.get(1113)==5){
+		while(ctx.settings.get(1113)!=0){
 			Method.state("Cinematic");
 			Method.pressContinue();
 		}
@@ -197,7 +197,7 @@ public class DeathPlateau extends Node{
 			Method.interactO(7103,"Climb", "Rock ladder");
 			return true;
 		}else if(new Tile(3419,4259,0).getMatrix(ctx).isReachable()){
-			Method.interactO(7103,"Climb", "Rock ladder");
+			Method.interactO(67571,"Climb", "Rock ladder");//previous ID for the rock ladder was 7103, but it was clicking off screen.
 			return true;
 		}
 		return false;

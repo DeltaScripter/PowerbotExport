@@ -63,7 +63,9 @@ public class DruidicRitual extends Node{
 	public void execute() {
 		DeltaQuester.numSteps = 6;
 		Method.foodSupport();
-		
+		while (ctx.settings.get(1113)!=0){//If cutscene is occurring.
+			Method.isChatting("Cutscene");
+		}
 		
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);

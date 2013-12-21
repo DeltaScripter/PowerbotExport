@@ -229,14 +229,14 @@ public class TheBloodPact extends Node{
 			}
 		}else
 		if(new Tile(3246,3198,0).distanceTo(ctx.players.local().getLocation())<9){
-			Method.interactO(48797, "Climb-down", "Catacomb");
+			Method.interactO(2745, "Climb-down", "Catacomb");
 			Method.sleep(4000);
 		}else cs0();//get the player to the catacombs
 		
 	}
 
 	private void cs0() {
-		final String opt[] = {"I think I'll","It was nothing","I'll help you","What do you need"};
+		final String opt[] = {"I think I'll","It was nothing","I'll help you","do you need"};
 		if(	new Tile(3243, 3197, 0).distanceTo(ctx.players.local().getLocation())<8){
 			Method.skipPics();
 			if(!Method.startQuestOpen())

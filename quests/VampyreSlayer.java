@@ -83,17 +83,17 @@ public class VampyreSlayer extends Node{
 		Method.foodSupport();
 		Method.resetTeleporting();
 		DeltaQuester.numSteps = 6;
-		
+
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
-			if((!DeltaQuester.checkedBank)&& (ctx.settings.get(2170)&0x7)!=7){
+			if((DeltaQuester.checkedBank)&& (ctx.settings.get(2170)&0x7)!=7){
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.settings.get(2170)&0x7)!=7){
 			Method.useBank(bankItems, bankItemAmount);
 		}else if (DeltaQuester.GEFeature && (ctx.settings.get(2170)&0x7)!=7) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
-		}else if(!DeltaQuester.exchangeBank){
+		}else if(!DeltaQuester.exchangeBank){//should be if  false
 			Method.exchangeBank(1918,1917,3);
 		}else
 		if((ctx.settings.get(2170)&0x7)==7){

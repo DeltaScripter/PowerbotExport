@@ -442,7 +442,7 @@ private void setMouse(Graphics g) {
 
 		private void initComponents() {
 			label1 = new JLabel();
-			convertList = new JComboBox<>();
+			convertList = new JComboBox();
 			strtBtn = new JButton();
 			label3 = new JLabel();
 
@@ -455,7 +455,7 @@ private void setMouse(Graphics g) {
 			label1.setText("Convert memories into: ");
 
 			//---- convertList ----
-			convertList.setModel(new DefaultComboBoxModel<>(new String[] {
+			convertList.setModel(new DefaultComboBoxModel(new String[] {
 					"Divine Energy","Divinity Experience","Enhanced Experience"
 			}));
 

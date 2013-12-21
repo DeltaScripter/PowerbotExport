@@ -53,7 +53,7 @@ public class ImpCatcher extends Node {
 		}else
 		if((ctx.settings.get(2669)&0x3)==2){
 			DeltaQuester.progress = 3;
-			DeltaQuester.getInstance().state = "The Imp Catcher quest has been completed.";
+			DeltaQuester.state = "The Imp Catcher quest has been completed.";
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else

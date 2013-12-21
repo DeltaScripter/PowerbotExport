@@ -10,10 +10,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 import javax.swing.*;
-import javax.swing.GroupLayout;
-import javax.swing.LayoutStyle;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,13 +25,13 @@ import org.powerbot.script.util.Timer;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Quester", 
-description = "Completes quests! See thread for supported quests", 
-website = "https://www.powerbot.org/community/topic/777386-delta-quester/",topic =816007, version = 1.6006)
+description = "Completes quests! See thread for supported quests, enjoy", hidden = false,
+website = "https://www.powerbot.org/community/topic/777386-delta-quester/",topic =816007, version = 1.6007)
 public class DeltaQuester extends PollingScript implements PaintListener{
 
 
 	public static int scriptToStart = 0;
-	public String state = "Welcome, please choose your settings";
+	public static String state = "Welcome, please choose your settings";
 	public static boolean GEFeature = false;
 	public boolean useBank;
 	public static boolean ranOnce = false;
@@ -76,7 +75,8 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			@Override
 			public void run() {
 				timeSec = new Timer(0);
-					initiateGui();
+				initiateGui();
+				//qList.add("The Restless Ghost");
 				     addNode(new TheBloodPact(ctx));
 					 addNode(new CooksAssistant(ctx));
 					 addNode(new RestlessG(ctx));
@@ -114,7 +114,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 				checkedBank = false;
 				Method.depoBank = false;
 				Method.hasFood = true;
-				setReady(false);
+				ready  =false;
 			}
 		});
 	}
@@ -134,7 +134,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			log.info("shutting down");
 			getController().stop();
 		}
-		if(getInstance().isReady()){
+		if(ready){
 		for(Node node : nodesList) {
             if(node.activate()) {
                 node.execute();
@@ -160,13 +160,13 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 		return 100;
 	}
 	
-	public static DeltaQuester getInstance(){
+	//public DeltaQuester getInstance(){
 		
-		if(instance==null){
-			instance = new DeltaQuester();
-		}
-		return instance;
-	}
+	//	if(instance==null){
+		//	instance = new DeltaQuester();
+	//	}
+	//	return instance;
+//	}
 	
 	public static Vars getVars(){
 		
@@ -282,7 +282,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 				if(GEWO) GEFeature = true;
 			}
 			
-		}else if(getInstance().isReady() && qList.isEmpty()){
+		}else if(ready && qList.isEmpty()){
 			Method.state("There are no quests in queue; shutting down.");
 			getController().stop();
 		}
@@ -291,11 +291,31 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 	class DeltaQuesterGUI extends JFrame {
 		
 		public DefaultListModel queueListModel = new DefaultListModel();
+		public DefaultListModel questListModel = new DefaultListModel();
 		public DefaultListModel rewardItemModel = new DefaultListModel();
 		public DefaultListModel rewardExpModel = new DefaultListModel();
+		 Color color=new Color(255,0,0);
 		public DeltaQuesterGUI() {
 			rewardItemModel.addElement("");
 			initComponents();
+			setCompletedQuests();
+		}
+
+		private void setCompletedQuests() {
+		questList.setCellRenderer(new MyListRenderer());
+			
+			questList.setModel(new AbstractListModel<String>() {
+				String[] values = {
+						"Buyers and Cellars","Cook's Assistant","Clock Tower","Death Plateau","Demon Slayer","Druidic Ritual",
+						"Imp Catcher","Let Them Eat Pie","Monk's Friend","Pirate's Treasure","Swept Away",
+						"The Restless Ghost","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
+				};
+				
+				@Override
+				public int getSize() { return values.length; }
+				@Override
+				public String getElementAt(int i) { return values[i]; }
+			});
 		}
 
 		private void addQuestActionPerformed(ActionEvent e) {
@@ -343,7 +363,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			
 			setFood();
 			this.setVisible(false);
-			getInstance().ready = true;
+			ready = true;
 			this.dispose();
 		}
 
@@ -363,6 +383,12 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			}
 			if(foodType.equals("Cooked Chicken")){
 				FOOD_ID = Vars.foodtype.CHICKEN.getFood();
+			}
+			if(foodType.equals("Banana")){
+				FOOD_ID = Vars.foodtype.BANANA.getFood();
+			}
+			if(foodType.equals("Rabbit sandwich")){
+				FOOD_ID = Vars.foodtype.RABBITSANDWICH.getFood();
 			}
 			
 			
@@ -520,9 +546,9 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			tabbedPane1 = new JTabbedPane();
 			panel2 = new JPanel();
 			scrollPane1 = new JScrollPane();
-			questList = new JList<>();
+			questList = new JList<String>();
 			scrollPane2 = new JScrollPane();
-			queueList = new JList<>();
+			queueList = new JList<String>();
 			questListLabel = new JLabel();
 			questQueueLabel = new JLabel();
 			addQuest = new JButton();
@@ -534,10 +560,10 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			requirementsLabel = new JLabel();
 			panel3 = new JPanel();
 			scrollPane3 = new JScrollPane();
-			rewardItemList = new JList<>();
+			rewardItemList = new JList<String>();
 			itemLabel = new JLabel();
 			scrollPane4 = new JScrollPane();
-			rewardExpList = new JList<>();
+			rewardExpList = new JList<String>();
 			expLabel = new JLabel();
 			panel4 = new JPanel();
 			foodSupportCheckBox = new JCheckBox();
@@ -545,7 +571,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			scrollPane7 = new JScrollPane();
 			foodSupportInfoText = new JTextArea();
 			typeOfFoodLabel = new JLabel();
-			typeOfFoodComboBox = new JComboBox<>();
+			typeOfFoodComboBox = new JComboBox<String>();
 			scrollPane8 = new JScrollPane();
 			GESupportInfoText = new JTextArea();
 			startButton = new JButton();
@@ -569,18 +595,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 						//======== scrollPane1 ========
 						{
 
-							//---- questList ----
-							questList.setModel(new AbstractListModel<String>() {
-								String[] values = {
-										"Buyers and Cellars","Cook's Assistant","Clock Tower","Death Plateau","Demon Slayer","Druidic Ritual",
-										"Imp Catcher","Let Them Eat Pie","Monk's Friend","Pirate's Treasure","Swept Away","The Blood Pact",
-										"The Restless Ghost","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
-								};
-								@Override
-								public int getSize() { return values.length; }
-								@Override
-								public String getElementAt(int i) { return values[i]; }
-							});
+							
 							questList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 							
 							scrollPane1.setViewportView(questList);
@@ -832,9 +847,9 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 						typeOfFoodLabel.setText("Type of Food:");
 
 						//---- typeOfFoodComboBox ----
-						typeOfFoodComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-								"Cooked meat",
-								"Cooked lobster","Swordfish","Bread","Cooked Chicken"
+						typeOfFoodComboBox.setModel(new DefaultComboBoxModel(new String[] {
+								"Banana","Cooked Chicken","Cooked lobster","Cooked meat","Rabbit sandwich",
+								"Swordfish"
 						}));
 
 						//======== scrollPane8 ========
@@ -972,6 +987,214 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 		private JTextArea GESupportInfoText;
 		private JButton startButton;
 		// JFormDesigner - End of variables declaration  //GEN-END:variables
+		 private class MyListRenderer extends DefaultListCellRenderer  
+		    {  
+		        private HashMap incompleteQuests = new HashMap();  
+		   
+		        public Component getListCellRendererComponent( JList list,  
+		                Object value, int index, boolean isSelected,  
+		                boolean cellHasFocus)  
+		        {  
+		            super.getListCellRendererComponent( list, value, index,  
+		                    isSelected, cellHasFocus);  
+		           
+		            
+		           for(int i = 0; i < list.getModel().getSize();i++){
+		        	   String name = list.getModel().getElementAt(i).toString();
+		        	//   "Swept Away","The Blood Pact",
+					//	"The Restless Ghost","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
+		            	if(name.equals("Buyers and Cellars")){
+		            		if((ctx.settings.get(2085) & 0x7FF) == 1930){
+		            			System.out.println("Done buyers and cellars");
+		            			incompleteQuests.put( value, "complete" );  
+		            			if(index == i)
+				            		 if( incompleteQuests.containsKey( value ) )  
+				            		 {setForeground( Color.green );} 
+		            		}
+		            		//setForeground( Color.red );  
+		            	}else if(name.equals("Cook's Assistant")){
+		            		if((ctx.settings.get(2492)&0x3) ==2){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+			            		 if( incompleteQuests.containsKey( value ) )  {
+			            		 {setForeground( Color.green );} 
+			            		 }else setForeground( Color.red ); 
+	            		}
+		            		 
+		            	}else if(name.equals("Clock Tower")){
+		            		if((ctx.settings.get(2197)&0xF)==8){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+			            		 if( incompleteQuests.containsKey( value ) )  
+			            		 {setForeground( Color.green );} 
+	            		}
+		            	}else if(name.equals("Death Plateau")){
+		            		if((ctx.settings.get(2337) & 0x1FF) ==449){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}
+		            	else if(name.equals("Demon Slayer")){
+		            		if((ctx.settings.get(3518) & 0x7F)==121){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}
+		            	else if(name.equals("Druidic Ritual")){
+		            		if((ctx.settings.get(2694) & 0xFF)==136){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Elemental Workshop 1")){
+		            		if((ctx.settings.get(2675)>>20&0x1)==1){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Ernest The Chicken")){
+		            		if((ctx.settings.get(2183) & 0x3) == 3){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Goblin Diplomacy")){
+		            		if(ctx.settings.get(2137)==6){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Gunnar's Ground")){
+		            		if((ctx.settings.get(2111) & 0x7F) == 100){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Imp Catcher")){
+		            		if((ctx.settings.get(2669)&0x3)==2){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Let Them Eat Pie")){
+		            		if((ctx.settings.get(2674)&0x3F)==40){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Lost City")){
+		            		if((ctx.settings.get(2551)&0x7) == 6){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("What's Mine Is Yours")){
+		            		if((ctx.settings.get(2231)&0x3F) ==55){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Monk's Friend")){
+		            		if((ctx.settings.get(2370) & 0x7F) == 80){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Pirate's Treasure")){
+		            		if((ctx.settings.get(2227) & 0x7) ==4){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("The Restless Ghost")){
+		            		if((ctx.settings.get(2324)&0x7) ==5){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Stolen Hearts")){
+		            		if((ctx.settings.get(2449)&0x7F)==105){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Swept Away")){
+		            		if((ctx.settings.get(2198) & 0x1F) ==18){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("The Blood Pact")){
+		            		if((ctx.settings.get(2334)&0x3F)==60){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Vampyre Slayer")){
+		            		if((ctx.settings.get(2170)&0x7)==7){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Wolf Whistle")){
+		            		if((ctx.settings.get(2506)&0x3F)==35){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}
+	            		
+		            	
+		        	  // System.out.println("lolly"+list.getModel().getElementAt(i));
+		            }
+		           
+		           
+		             
+		   
+		            return( this );  
+		        }  
+		    }  
+		   
 	}
 
 	
@@ -1003,13 +1226,11 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 	
 	
     
-    public  void repaint(Graphics g2) {
-		
-		Graphics2D g = (Graphics2D) g2;
+    public  void repaint(Graphics g) {
 		g.drawImage(paint, +5, -15, null);
-		mouseX = (int) ctx.mouse.getLocation().getX();
-		mouseY = (int) ctx.mouse.getLocation().getY();
-		setMouse(g);
+		//mouseX = (int) ctx.mouse.getLocation().getX();
+		//mouseY = (int) ctx.mouse.getLocation().getY();
+		//setMouse(g);
 		g.setColor(Color.DARK_GRAY);
 		g.drawRect(20,334, 185, 7);
 		g.setColor(Color.green);
@@ -1017,7 +1238,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 		g.fillRect(20,335, progress*185/numSteps, 7);
 		g.setFont(font1);
 		g.setColor(Color.pink);
-		g.drawString("State: " + DeltaQuester.getInstance().state, 18, 106);
+		g.drawString("State: " + state, 18, 106);
 		if(!qList.isEmpty())
 		g.drawString("Quest: "+ qList.get(0).toString(), 18, 370);
 		if(qList.size()>=2)
@@ -1046,12 +1267,12 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 
 	}
 
-	public boolean isReady() {
-		return getInstance().ready;
-	}
-	public void setReady(boolean ready) {
-		getInstance().ready = ready;
-	}
+	//public boolean isReady() {
+	//	return getInstance().ready;
+	//}
+	//public void setReady(boolean ready) {
+	//	getInstance().ready = ready;
+	//}
 
 	
 

@@ -77,7 +77,7 @@ public class BuyersAndCellars extends Node {
 			DeltaQuester.progress=9;
 			Method.state("The Buyers and Cellars quest has been completed.");
 			ctx.environment.sleep(2000);
-			DeltaQuester.getInstance().e = true;
+			DeltaQuester.e = true;
 		}else if ((ctx.settings.get(2085) & 0x7FF) == 1605) {
 			cS7();
 			DeltaQuester.progress=8;

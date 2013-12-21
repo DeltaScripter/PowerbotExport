@@ -78,7 +78,7 @@ public class ClockTower extends Node{
 		}else
 		if((ctx.settings.get(2197)&0xF)==8){
 			DeltaQuester.progress = 6;
-			DeltaQuester.getInstance().state ="The Clock Tower quest has been completed";
+			DeltaQuester.state ="The Clock Tower quest has been completed";
 			ctx.environment.sleep(2000);
 			DeltaQuester.e  = true;
 		}else

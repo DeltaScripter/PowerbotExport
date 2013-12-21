@@ -128,6 +128,7 @@ public class SweptAway extends Node {
 	public boolean hasNewt = false;
 	public boolean hasOintment = false;
 	public boolean hasWand = false;
+	public int nextPhase = 0;//Controls the first shifting of the animal puzzle
 	public Timer triTimer = new Timer(0);//Triangle sweeping puzzle
 	public Timer wait = new Timer(0);
 	Method Method = new Method(ctx);
@@ -144,7 +145,7 @@ public class SweptAway extends Node {
 		
 		
 		if(DeltaQuester.checkedBank && (ctx.settings.get(2198) & 0x1F) !=18)
-			Method.determineBank(bankItems);
+		Method.determineBank(bankItems);
 		
 			if(!DeltaQuester.checkedBank){
 			Method.checkBank();
@@ -230,7 +231,61 @@ private void cs6() {
 						}else Method.interactO(39443, "Open", "Chest");
 					}else Method.clickOnMap(new Tile(3220,4524,0));
 				}
-			}else //Below completes the puzzle
+			}else {//Complete animal puzzle
+				if(nextPhase ==2){//should be 2
+					if((ctx.settings.get(2199) >>29 & 0x3)==3){//if reptile in proper cage
+						if((ctx.settings.get(2199) >>28 & 0x1)==1){//if spider in proper cage
+							
+							if(!Method.inventoryContains(14071)){//the bird (final step)
+								controlAnimal(new Tile(3231,4521,0),39314);//go to holding pen and grab bird (final step)
+							}else controlAnimal(new Tile(3231,4515,0),39281);//place bird in bird pen(final step)
+					
+						}else if(!Method.inventoryContains(14073)){//the spider
+							controlAnimal(new Tile(3231,4515,0),39281);//go to bird pen
+						}else controlAnimal(new Tile(3231,4502,0),39297);//go to spider pen
+						
+					}else if(!Method.inventoryContains(14070)){//the reptile
+						controlAnimal(new Tile(3231,4502,0),39297);//go to spider pen	
+					}else controlAnimal(new Tile(3240,4502,0),39303);//go to reptile pen
+				}else
+				if(nextPhase ==1){
+					if((ctx.settings.get(2199) >>26 & 0x3)==3){//If reptile is in spider cage
+						if((ctx.settings.get(2199) >>19 & 0x1)==1){//If spider in bird cage
+							if((ctx.settings.get(2199) >>21 & 0x3)==3){//if rat in rat pen
+								nextPhase  =2;
+							}else if(!Method.inventoryContains(14074)){//the rat
+								controlAnimal(new Tile(3240,4502,0),39303);//go to reptile pen
+							}else controlAnimal(new Tile(3240,4511,0),39309);// go to rat pen
+							
+						}else if(!Method.inventoryContains(14073)){//the spider
+							controlAnimal(new Tile(3240,4511,0),39309);// go to rat pen
+						}else controlAnimal(new Tile(3231,4515,0),39281);//go to bird pen
+						
+					}else if(!Method.inventoryContains(14070)){//the reptile
+						controlAnimal(new Tile(3231,4515,0),39281);// go to bird pen
+					}else controlAnimal(new Tile(3231,4502,0),39297);//go to spider pen
+				}else//Begin the initial shifting of the animals.
+				if((ctx.settings.get(2199) >>12 & 0x1)==1){//If blackbird is in holding pen.
+					if((ctx.settings.get(2199) >>17 & 0x3)==3){//If reptile is in bird cage
+						
+						if((ctx.settings.get(2199) >>22 & 0x1)==1){//If spider is in rat cage
+							if((ctx.settings.get(2199) >>30 & 0x1)==1){
+								nextPhase =  1;
+							}else if(!Method.inventoryContains(14074)){//the rat
+								controlAnimal(new Tile(3231,4502,0),39297);//go to spider pen
+							}else controlAnimal(new Tile(3240,4502,0),39303);//go to reptile pen
+							
+						}else if(!Method.inventoryContains(14073)){//the spider
+							controlAnimal(new Tile(3240,4502,0),39303);//go to reptile pen
+						}else controlAnimal(new Tile(3240,4511,0),39309);//go to rat cage
+						
+					}else if((ctx.settings.get(2199) >>20 & 0x3)==3){//If reptile is in initial cage
+						controlAnimal(new Tile(3240,4511,0),39309);
+					}else controlAnimal(new Tile(3231,4515,0),39281);
+				}else if((ctx.settings.get(2199) >>18 & 0x1)==1){//If blackbird is in initial cage
+					controlAnimal(new Tile(3231,4515,0),39281);
+				}else controlAnimal(new Tile(3231,4521,0),39314);
+			}/*
 				for(int step = 1; step !=7;){
 					if(ctx.hud.isVisible(Window.SKILLS)){
 						break;
@@ -284,7 +339,7 @@ private void cs6() {
 						}
 					}
 				}
-			
+			*/
 			
 			
 		}else if(!Method.findOption(opt)){
@@ -299,19 +354,31 @@ private void cs6() {
 		} else cs5();// Get to Betty's shop
 
 	}
+private void controlAnimal(Tile location1, int cageId) {//can be used to grab/place animals
+	if(location1.distanceTo(ctx.players.local().getLocation())<2.5){
+		Method.state("Taking animal from cage");
+		Method.interactO(cageId, "Move-creature", "Cage");
+	}else {
+		Method.state("Walking to next cage");
+		Method.clickOnMap(location1);
+	}
+}
+
+
+
 private void cs5() {
 	final String opt[]  ={"Talk to Betty about Swept"};
 	Player local = ctx.players.local();
 	//SceneObject bettyDoor = SceneEntities.getNearest(40108);
-	
 	if(Method.objIsNotNull(39321)){
 		Method.interactO(39273, "Climb", "Ladder");
 	}else
 		if( new Tile(3017, 3258, 0).distanceTo(local.getLocation())<7){
-			if(Method.isInCombat()){
+			
+			if(ctx.players.local().isInCombat()){
 				Method.basicFightNPC(175);
 			}else
-			if(BettyArea.contains(local.getLocation())){
+			if(BettyArea.contains(local.getLocation()) || new Tile(3014,3258,0).getMatrix(ctx).isReachable()){
 				Vars.DYNAMICV = false;
 				if(!Method.findOption(opt)){
 					if(!Method.isChatting("Betty")){
@@ -351,10 +418,14 @@ private void cs5() {
 					}
 					for(GameObject crate : ctx.objects.select().id(crates[g]).nearest().first()){
 						if(crate.getLocation().distanceTo(local.getLocation())<3){
-						System.out.println("Extractingfrom the crate");
+						System.out.println("Extracting from the crate");
+						if(ctx.widgets.get(1184).isValid() && ctx.widgets.get(1184,9).isVisible()){
+							if(ctx.widgets.get(1184,9).getText().contains("to be getting a newt")){
+								g++;
+							}
+						}
 						Method.interactO(crates[g], "Extract", "Crate : ");
-						Method.sleep(3000);
-						g++;
+						
 						}else {
 							Method.clickOnMap(crate.getLocation());
 							System.out.println("Clicking on map: " + crate.getLocation());
@@ -562,7 +633,8 @@ private void cs5() {
 	private void cs1() {
 		 final String opt[] = {"I've stirred the","Of course I could.","I have good news","I can do","Oo,","What do you need","So,", "Is there any"};
 		 Player local = ctx.players.local();
-		 if(new Tile(3127, 3212, 0).distanceTo(local.getLocation())<8){
+		 if(new Tile(3127, 3212, 0).distanceTo(local.getLocation())<8 || (Method.npcIsNotNull(8078) && Method.getNPC(8078).getLocation().distanceTo(
+				 ctx.players.local().getLocation())<8)){
 			 if((ctx.settings.get(2198) & 0x7) ==6){
 				 Method.interactO(39228, "Stir", "Cauldron");
 			 }else

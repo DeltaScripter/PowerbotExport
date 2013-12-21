@@ -12,6 +12,7 @@ import org.powerbot.script.methods.Backpack;
 import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
+import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Action;
 import org.powerbot.script.wrappers.GameObject;
@@ -60,12 +61,14 @@ public class Method extends MethodProvider{
 				state("Attempting to open backpack");
 				if(Ge.geIsOpen())
 				ctx.widgets.get(105,14).click();//close GE
+				if(ctx.bank.isOpen())
+					ctx.bank.close();//Close the bank
 				else
 				ctx.hud.view(Window.BACKPACK);
 			}
 			if (Ge.geIsOpen()) {
 			for(int pos = 0; pos < itemID.length;){
-				state("Purchasing " + itemAmount[pos]+ " " + name[pos]+ " for "+itemPrice[pos]+ "GP" );
+				//state("Purchasing " + itemAmount[pos]+ " " + name[pos]+ " for "+itemPrice[pos]+ "GP" );
 				if (Ge.geIsOpen()) {
 					if(ctx.backpack.getMoneyPouch() < itemPrice[0]){
 						System.out.println("not enough money in pouch");
@@ -74,9 +77,9 @@ public class Method extends MethodProvider{
 					}else
 					if(inventoryContains(itemID[pos])){
 						if((pos+1)==itemID.length){
-							while(ctx.widgets.get(105,14).isVisible()){
+							while(ctx.widgets.get(105,87).isVisible()){
 								state("Closing GE");
-								ctx.widgets.get(105,14).click();
+								ctx.widgets.get(105,87).click();
 							}
 							DeltaQuester.GEFeature=false;
 							break;
@@ -84,7 +87,11 @@ public class Method extends MethodProvider{
 					}else
 					if(Ge.isSlotEmpty()){
 						Ge.createBuyItem(name[pos], itemAmount[pos],itemPrice[pos]);
-					}else Ge.collectItem(name[pos]);
+						ctx.game.sleep(1000);
+					}else {
+						ctx.game.sleep(1000);
+						Ge.collectItem(name[pos]);
+					}
 				}else break;
 			}
 			
@@ -153,7 +160,7 @@ public class Method extends MethodProvider{
 	}
 	
 	public void state(final String message) {
-		DeltaQuester.getInstance().state = message;
+		DeltaQuester.state = message;
 	}
 	
 	public void speakTo(final int id, final String p) {
@@ -241,29 +248,32 @@ public class Method extends MethodProvider{
     
 	public void interactO(final int i, final String string, final String o) {
 		ArrayList<String> actions = new ArrayList<String>();
-		if(!interactO.isRunning()){
 		for(GameObject y: ctx.objects.select().id(i).nearest().first()){
-			
+			if(y.isOnScreen()){
+			state("Interacting: " + string);
+			y.interact(string);
+			ctx.game.sleep(1200);
+			}else ctx.camera.turnTo(y);
+			/*
 					if (closeInterfaces() && y.isOnScreen()) {
 						y.hover();
 						String menuItems[] = ctx.menu.getItems();
 						for(String opt: menuItems){
 							if(!actions.contains(opt))
 								actions.add(opt);
+							state("Investigating options..");
 						}
 						for(String text: actions){
 							if(text.contains(string)){
-								  interactO = new Timer(2400);
 								   y.interact(string);
-								   sleep(2000);
+								  // sleep(2000);
 								state("Using " + string + " on: " + o);
-								
 							}
 						}
 					} else ctx.camera.turnTo(y);
-				
+				*/
 				}
-		}
+		
 	}
 	private boolean closeInterfaces() {
 		int widgetInterference[] = {1188,1092,1191,1184,1186,1189};
@@ -415,7 +425,6 @@ public class Method extends MethodProvider{
 			ctx.widgets.get(1092).getComponent(loc).click(true);
 			timer = new Timer(6000);
 		}else {
-			System.out.println("Selecting teleport spell");
 			if (!ctx.players.local().isInCombat())
 				if (ctx.players.local().getAnimation() == -1){
 					ctx.widgets.get(1465,10).hover();
@@ -505,16 +514,16 @@ public class Method extends MethodProvider{
 				for(int both : widgetID){
 				    if(ctx.widgets.get(both).isValid()){
 				    	ctx.widgets.get(both, 11).click();
-				    	ctx.widgets.get(both, 8).click();
+				    	ctx.widgets.get(both, 7).click();
 				    }
 				}
 		}
 		
 	}
 	public boolean playerText(String string) {
-		if (ctx.widgets.get(137,87).isValid()) {
+		if (ctx.widgets.get(137,89).isValid()) {
 			//state("Checking: " + string);
-			if (ctx.widgets.get(137,87).getChild(0).getText()
+			if (ctx.widgets.get(137,89).getChild(0).getText()
 					.contains(string)) {
 				System.out.println("returning true for player text");
 				return true;
@@ -829,13 +838,15 @@ public class Method extends MethodProvider{
 
 	public void clickOnMap(Tile t) {
 		
+		ctx.movement.stepTowards(ctx.movement.getClosestOnMap(t));
+		/*
 		Tile winner = null;
 		 
 		for(Tile tile : getSurroundingTiles()){
 		if(winner == null || tile.distanceTo(t) < winner.distanceTo(t))
 		winner = tile;
 		}
-		ctx.movement.stepTowards(winner.randomize(1, 1));
+		ctx.movement.stepTowards(winner);
 		}
 		 
 		public ArrayList<Tile> getSurroundingTiles(){
@@ -862,7 +873,7 @@ public class Method extends MethodProvider{
 		l.add(new Tile(myX + i, myY + j, myPlane));
 		}
 		}
-		return l;
+		return l;*/
 	}
 
 	public boolean npcIsNotNull(int id) {

@@ -21,6 +21,7 @@ public class PiratesTreasure extends Node{
 			new Tile(3027,3234,0),new Tile(3035,3235,0),new Tile(3041,3244,0),
 			new Tile(3047,3247,0),new Tile(3053,3247,0),//from port sarim
 			
+			new Tile(3218,3229,0), new Tile(3208,3238,0),
 			new Tile(3200,3238,0),new Tile(3210,3254,0),new Tile(3216,3268,0),
 			new Tile(3209,3274,0),new Tile(3197,3278,0),new Tile(3188,3285,0),
 			new Tile(3177,3285,0),new Tile(3167,3288,0),new Tile(3154,3291,0),
@@ -32,6 +33,7 @@ public class PiratesTreasure extends Node{
 	};
 	
 	public final Tile[] pathToHallow = new Tile[] { 
+			new Tile(3218,3229,0), new Tile(3208,3238,0),
 			new Tile(3232, 3221, 0), new Tile(3237, 3223, 0), new Tile(3242, 3225, 0), 
 			new Tile(3247, 3225, 0), new Tile(3252, 3226, 0), new Tile(3256, 3229, 0), 
 			new Tile(3258, 3234, 0), new Tile(3258, 3239, 0), new Tile(3258, 3244, 0), 
@@ -96,7 +98,9 @@ public class PiratesTreasure extends Node{
 		Method.foodSupport();
 		
 	
-		
+		if(ctx.camera.getPitch()<50){
+			ctx.camera.setPitch(90);
+		}
 		DeltaQuester.numSteps = 5;
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
