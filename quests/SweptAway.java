@@ -137,8 +137,20 @@ public class SweptAway extends Node {
 	
 	public int bankItems[] = {14062,14057,14064,14068};
 	public int bankItemAmount[] = {1,1,1,1};
-	
+	boolean q = true;
 	public void execute() {
+		if(q){
+			TaskListing.taskRemove.clear();
+			TaskListing.taskListData.add("Start quest by speaking to Maggie in Draynor");
+			TaskListing.taskListData.add("Speak to Aggie and solve her sweeping puzzle");
+			TaskListing.taskListData.add("Speak to Hetty about the broom situation");
+			TaskListing.taskListData.add("Solve Hetty's crate puzzle");
+			TaskListing.taskListData.add("Speak to Betty about her wand");
+			TaskListing.taskListData.add("Solve the animal puzzle and bring Betty her wand");
+			TaskListing.taskListData.add("Speak to Maggie and finish quest");
+			TaskListing.updateTasks();
+			q = false;
+		}
 		Method.resetTeleporting();
 		Method.foodSupport();
 		DeltaQuester.numSteps = 10;
@@ -156,20 +168,32 @@ public class SweptAway extends Node {
 		if((ctx.settings.get(2198) & 0x1F) ==18){
 			DeltaQuester.progress = 10;
 			Method.state("The Swept Away quest has been completed.");
+			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation","Solve Hetty's crate puzzle","Speak to Betty about her wand","Solve the animal puzzle and bring Betty her wand","Speak to Maggie and finish quest");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
 		if((ctx.settings.get(2198)>>25 & 0x7) ==5||(ctx.settings.get(2198) & 0x7) ==6||(ctx.settings.get(2198) & 0xF) ==8){
 			DeltaQuester.progress = 9;
 			cs1();//Speak to Maggie for the last time.
+			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation","Solve Hetty's crate puzzle","Speak to Betty about her wand","Solve the animal puzzle and bring Betty her wand");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if((ctx.settings.get(2198)>>23 & 0x1) ==1||(ctx.settings.get(2198)>>24 & 0x1) ==1||(ctx.settings.get(2198)>>25 & 0x1) ==1){
 			DeltaQuester.progress = 8;
 			cs6();//Bring Betty her wand after completing the puzzle
+			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation","Solve Hetty's crate puzzle","Speak to Betty about her wand");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if((ctx.settings.get(2198)>>8 & 0x7) ==6){
 			DeltaQuester.progress = 7;
 			cs5();//Speak to Betty about the wand
+			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation","Solve Hetty's crate puzzle");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if((ctx.settings.get(2198)>>8 & 0x7) ==4||(ctx.settings.get(2198)>>8 & 0x1) ==1){
 				if(hasOintment){
@@ -190,14 +214,21 @@ public class SweptAway extends Node {
 		if((ctx.settings.get(2198)>>8 & 0x1) ==1 || (ctx.settings.get(2198)>>9 & 0x1) ==1){
 			DeltaQuester.progress = 4;
 			cs4();//Solve the crate puzzle Hetty needed us to do.
+			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
 		if((ctx.settings.get(2198)>>11 & 0x1) ==1){
 			DeltaQuester.progress = 3;
 			cs3();//Speak to Hetty about the broom situation
+			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2198)&0x1F) == 20){
 			DeltaQuester.progress = 2;
 			cs2();//Speak to Aggie and solve her puzzle with the brooms
+			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2198)&0xFF) == 0||(ctx.settings.get(2198)&0xFF) == 5||(ctx.settings.get(2198)&0xFF) == 10){
 			DeltaQuester.progress = 1;

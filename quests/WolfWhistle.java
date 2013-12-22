@@ -98,7 +98,23 @@ public class WolfWhistle extends Node{
 	public WolfWhistle(MethodContext ctx) {
 		super(ctx);
 	}
+	boolean q = true;
 	public void execute() {
+		if(q){
+			TaskListing.taskRemove.clear();
+			TaskListing.taskListData.add("Start quest by speaking to Pikkupstix");
+			TaskListing.taskListData.add("Speak to Scaletrix");
+			TaskListing.taskListData.add("Tell Pikkupstix about the kidnapping");
+			TaskListing.taskListData.add("Search drawers for the pouch");
+			TaskListing.taskListData.add("Buy hare meat from the pet owner");
+			TaskListing.taskListData.add("Search the corpse in the mountains for the amulet");
+			TaskListing.taskListData.add("Bring the items to Pikkupstix");
+			TaskListing.taskListData.add("Create the special pouch");
+			TaskListing.taskListData.add("Show Pikkupstix the new pouch");
+			TaskListing.taskListData.add("Speak to Scaletrix and finish the quest");
+			TaskListing.updateTasks();
+			q = false;
+		}
 			Method.foodSupport();
 			DeltaQuester.numSteps = 12;
 			failsafe();
@@ -115,52 +131,80 @@ public class WolfWhistle extends Node{
 			if((ctx.settings.get(2506)&0x3F)==35){
 				DeltaQuester.progress = 12;
 				Method.state("The Wolf Whistle quest has been completed.");
+				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping","Search drawers for the pouch","Buy hare meat from the pet owner","Search the corpse in the mountains for the amulet","Bring the items to Pikkupstix","Create the special pouch","Show Pikkupstix the new pouch","Speak to Scaletrix and finish the quest");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+			
 				Method.sleep(2000);
 				DeltaQuester.e = true;
 			}else
 			if((ctx.settings.get(2506)&0x1F)==30){
 				DeltaQuester.progress = 11;
-				cs11();
+				cs11();//Speak to Scaletrix and finish the quest
+				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping","Search drawers for the pouch","Buy hare meat from the pet owner","Search the corpse in the mountains for the amulet","Bring the items to Pikkupstix","Create the special pouch","Show Pikkupstix the new pouch");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+			
 			}else
 			if((ctx.settings.get(2506)&0x1F)==25){
 				DeltaQuester.progress = 10;
-				cs10();
+				cs10();//Show Pikkupstix your pouch
+				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping","Search drawers for the pouch","Buy hare meat from the pet owner","Search the corpse in the mountains for the amulet","Bring the items to Pikkupstix","Create the special pouch");
+				TaskListing.removeTasks(TaskListing.taskRemove);
 			}else
 			if((ctx.settings.get(2506)&0x1F)==20){
 				DeltaQuester.progress = 9;
-				cs9();
+				cs9();//Crete the special pouch by using the obelisk
+				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping","Search drawers for the pouch","Buy hare meat from the pet owner","Search the corpse in the mountains for the amulet","Bring the items to Pikkupstix");
+				TaskListing.removeTasks(TaskListing.taskRemove);
 			}else
 			if((ctx.settings.get(2506)>>12&0x1)==1){
 				DeltaQuester.progress = 8;
-				cs8();
+				cs8();//Still bringing the items
+			
 			}else
 			if((ctx.settings.get(2506)>>8&0x1)==1){
 				DeltaQuester.progress = 7;
-				cs7();
+				cs7();//Bring the items to Piikupstix
+				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping","Search drawers for the pouch","Buy hare meat from the pet owner","Search the corpse in the mountains for the amulet");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+			
 			}else
 			if((ctx.settings.get(2506)>>9&0x1)==1){
 				DeltaQuester.progress = 6;
-				cs6();
+				cs6();//Search the corpse in the mountains for an amulet
+				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping","Search drawers for the pouch","Buy hare meat from the pet owner");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+			
 			}else
 			if((ctx.settings.get(2506)>>10&0x1)==1){
 				DeltaQuester.progress = 5;
-				cs5();
+				cs5();//Buy hare meat from shop owner
+				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping","Search drawers for the pouch");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+			
 			}else
 			if((ctx.settings.get(2506)&0xF)==15){
 				DeltaQuester.progress = 4;
-				cs4();
+				cs4();//Search drawers in Pikkupstix's house for a pouch
+				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+			
 			}else
 			if((ctx.settings.get(2506)&0xF)==10){
 				DeltaQuester.progress = 3;
-				cs3();
+				cs3();//Go back and tell Pikkupstix about the kidnapping
+				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+			
 			}else
 			if((ctx.settings.get(2506)&0x7)==5){
 				DeltaQuester.progress = 2;
-				cs2();
+				cs2();//Speak to Scaletrix
+				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix");
+				TaskListing.removeTasks(TaskListing.taskRemove);
 			}else
 			if(ctx.settings.get(2506)>>15==1 || ctx.settings.get(2506)==0){
 				DeltaQuester.progress = 1;
-				cs1();
+				cs1();//Start the quest by speaking to Pikkupstix
 			}
 	}
 
@@ -409,7 +453,7 @@ public class WolfWhistle extends Node{
 
 	}
 
-	private void cs1() {
+	private void cs1() {//start the quest
 		Method Method = new Method(ctx);
 		 final String opt[] = {"Do you have"};
 		if (new Tile(2932,3446,0).distanceTo(ctx.players.local().getLocation())<7) {//stix region.

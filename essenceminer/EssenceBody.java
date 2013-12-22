@@ -40,6 +40,7 @@ public class EssenceBody extends PollingScript implements PaintListener{
 			new Tile(3253,3400,0)};
 	private final List<EssenceNode> nodeList = Collections.synchronizedList(new ArrayList<EssenceNode>());
 	private String state;
+	ArrayList test = new ArrayList();
 	@Override
 	public int poll() {
 		
