@@ -176,19 +176,7 @@ public class DivineMethod extends MethodProvider{
 				for(GameObject y: ctx.objects.select().name(name).nearest().first()){
 					DivineBody.state = o;
 							if (y.isOnScreen()) {
-								y.hover();
-								String menuItems[] = ctx.menu.getItems();
-								for(String opt: menuItems){
-									if(!actions.contains(opt))
-										actions.add(opt);
-								}
-								for(String text: actions){
-									if(text.contains(string)){
-										   y.interact(string);
-										   ctx.game.sleep(1000,1200);
-										
-									}
-								}
+								y.interact(string);
 							} else ctx.camera.turnTo(y);
 						
 						}

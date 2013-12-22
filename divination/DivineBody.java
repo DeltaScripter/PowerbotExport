@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
@@ -32,8 +33,8 @@ import divination.DivineData.wisps;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
-description = "Trains the Divination skill, harvests and converts energy to your choosing.",
-website = "http://www.powerbot.org/community/topic/1082019-delta-divinity/", version = 1.07
+description = "Trains the Divination Skill; harvests and converts energy to your choosing",
+website = "http://www.powerbot.org/community/topic/1082019-delta-divinity/", version = 1.08
 )
 public class DivineBody extends PollingScript implements PaintListener{
 
@@ -163,6 +164,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 	private Timer minutesA;
 	
 	DivineMethod Method = new DivineMethod(ctx);
+	DivineAntipattern anti = new DivineAntipattern(ctx);
 	
 	
 	@Override
@@ -200,6 +202,11 @@ public class DivineBody extends PollingScript implements PaintListener{
 		@Override
 		public void execute() {
 			calcAntiPattern();
+			anti.closeInteruptions();
+			//Adjust camera
+			if(ctx.camera.getPitch()<50){
+				ctx.camera.setPitch(90);
+			}
 			while(riftArea==null && Method.objIsNotNull("Energy Rift")){
 				state = "Setting rift area";
 				System.out.println("Setting rift area");
@@ -208,11 +215,11 @@ public class DivineBody extends PollingScript implements PaintListener{
 				break;
 			}
 			
-			while(ctx.players.local().getAnimation()==animationType){
+			while(ctx.players.local().getAnimation()!=-1){
+				waiting = new Timer(5500);
 				updateCounts();
 				calcAntiPattern();
 				state = "Converting memories..";
-				waiting = new Timer(3700);
 			}
 			if(!waiting.isRunning())
 			if(!Method.inventoryContains(memoryType) && !Method.backPackIsFull()){
@@ -222,14 +229,33 @@ public class DivineBody extends PollingScript implements PaintListener{
 				if(ctx.widgets.get(131,convertType).isVisible()){
 					if(convertType == 7 && ctx.widgets.get(131,39).getTextureId()==13827){
 						ctx.widgets.get(131,6).click();
-					}else ctx.widgets.get(131,convertType).click();
-					ctx.game.sleep(2000,2800);
+						waiting = new Timer(Random.nextInt(2700, 3000));
+					}else {
+						ctx.widgets.get(131,convertType).click();
+						waiting = new Timer(Random.nextInt(2700, 3000));
+					}
 				}else if(ctx.widgets.get(1186,2).isVisible()){
 					state = "Closing dialogue";
 					System.out.println("Closing dialogue");
 					Method.clickOnMap(ctx.players.local().getLocation());
-				}else Method.interactO("Energy Rift", "Convert memories", "Interacting with rift");
+				}else clickRift("Energy Rift", "Interacting with rift");
 			}
+			//if(waiting.isRunning())
+				//System.out.println("Timer: " + waiting.getRemaining());
+		}
+
+		private void clickRift(String name, String o) {
+			for(GameObject y: ctx.objects.select().name(name).nearest().first()){
+				DivineBody.state = o;
+					if(!waiting.isRunning())
+						if (y.isOnScreen()) {
+							ctx.mouse.move(y.getLocation().getMatrix(ctx).getPoint(Random.nextDouble() * 0.2D - 0.1D,+0.10D,+100));
+							System.out.println("Clicking with mouse: " + waiting.getRemaining());
+							ctx.mouse.click(true);
+							waiting = new Timer(Random.nextInt(2700, 3000));
+						} else ctx.camera.turnTo(y);
+					
+					}
 			
 		}
 

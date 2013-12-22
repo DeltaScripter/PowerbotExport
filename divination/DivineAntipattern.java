@@ -18,7 +18,7 @@ public class DivineAntipattern extends DivineNode{
 
 	@Override
 	public void execute() {
-		int number = rand.nextInt(0, 11);
+		int number = rand.nextInt(0, 65);
 		String st = "Performing antipattern technique";
 		switch(number){
 		
@@ -69,7 +69,13 @@ public class DivineAntipattern extends DivineNode{
 		
 		}
 	}
-
+	public void closeInteruptions(){
+		//Reach Divination level cap; become a member dialogue
+		while(ctx.widgets.get(1401,36).isVisible()){
+			DivineBody.state = "Closing 'Become a member!' advertisement";
+			ctx.widgets.get(1401,36).click();//close button
+		}
+	}
 	
 	
 }
