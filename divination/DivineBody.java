@@ -173,6 +173,10 @@ public class DivineBody extends PollingScript implements PaintListener{
 			DivineBody.state = "Dropping logs";
 			Method.interactInventory("Logs", "Drop", "Logs");
 		}
+		while(ctx.widgets.get(1477,54).isVisible()){
+			state = "Closing interface";
+			ctx.widgets.get(1477,54).getChild(2).click();
+		}
 		if(start){
 		for(DivineNode node: nodeList){
 			if(node.activate()){
