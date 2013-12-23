@@ -1,4 +1,4 @@
-package divination;
+package deltaartisan;
 
 import java.util.ArrayList;
 
@@ -11,14 +11,14 @@ import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Tile;
 
-public class DivineMethod extends MethodProvider{
+import divination.DivineBody;
+
+public class ArtisanMethod extends MethodProvider{
 
 	
-	
-	public DivineMethod(MethodContext ctx) {
+	public ArtisanMethod(MethodContext ctx) {
 		super(ctx);
 	}
-
 	public GameObject getObject(int i) {
 		for(GameObject obj : ctx.objects.select().id(i).nearest().first()){
 			return obj;
@@ -193,9 +193,9 @@ public class DivineMethod extends MethodProvider{
 				
 				return false;
 			}
-	public void interactInventory(final String name, final String string, final String o) {
+	public void interactInventory(final int i, final String string, final String o) {
 		ArrayList<String> actions = new ArrayList<String>();
-		for(Item t : ctx.backpack.select().name(name).first()){
+		for(Item t : ctx.backpack.select().id(i).first()){
 			if(ctx.hud.view(Window.BACKPACK) && ctx.widgets.get(1473,7).contains(
 				t.getComponent().getCenterPoint())){
 				t.hover();
@@ -225,4 +225,5 @@ public class DivineMethod extends MethodProvider{
 				}
 			}
 	}
+	
 }

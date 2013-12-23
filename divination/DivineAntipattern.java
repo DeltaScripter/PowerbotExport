@@ -11,6 +11,7 @@ public class DivineAntipattern extends DivineNode{
 	}
 
 		private Random rand = new Random();
+		DivineMethod m = new DivineMethod(ctx);
 	@Override
 	public boolean activate() {
 		return DivineBody.antiPattern;
@@ -18,6 +19,8 @@ public class DivineAntipattern extends DivineNode{
 
 	@Override
 	public void execute() {
+		
+		
 		int number = rand.nextInt(0, 65);
 		String st = "Performing antipattern technique";
 		switch(number){

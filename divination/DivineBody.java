@@ -169,7 +169,10 @@ public class DivineBody extends PollingScript implements PaintListener{
 	
 	@Override
 	public int poll() {
-		
+		while(Method.inventoryContains("Logs")){
+			DivineBody.state = "Dropping logs";
+			Method.interactInventory("Logs", "Drop", "Logs");
+		}
 		if(start){
 		for(DivineNode node: nodeList){
 			if(node.activate()){
