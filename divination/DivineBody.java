@@ -34,7 +34,7 @@ import divination.DivineData.wisps;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
 description = "Trains the Divination Skill; harvests and converts energy to your choosing",
-website = "http://www.powerbot.org/community/topic/1082019-delta-divinity/", version = 1.08
+topic = 1130348, version = 1.08, website = "http://www.powerbot.org/community/topic/1130348-delta-divinity/"
 )
 public class DivineBody extends PollingScript implements PaintListener{
 
@@ -146,9 +146,6 @@ public class DivineBody extends PollingScript implements PaintListener{
 	private boolean harvest = false;
 	private int convertType;
 	private int animationType;
-	private int initialExp;
-	private int expGained;
-	private int expPerHr;
 	private String location;
 	private String wispKind;
 	private String wispSpring;
@@ -162,6 +159,9 @@ public class DivineBody extends PollingScript implements PaintListener{
 	private Timer runtime;
 	private Timer secondsA;
 	private Timer minutesA;
+	private int initialExp;
+	private int expGained;
+	private int expPerHr;
 	
 	DivineMethod Method = new DivineMethod(ctx);
 	DivineAntipattern anti = new DivineAntipattern(ctx);
