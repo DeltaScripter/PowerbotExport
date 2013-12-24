@@ -224,8 +224,8 @@ public class DivineBody extends PollingScript implements PaintListener{
 				break;
 			}
 			
-			while(ctx.players.local().getAnimation()!=-1){
-				waiting = new Timer(3500);
+			while(ctx.players.local().getAnimation()==animationType){
+				waiting = new Timer(4500);
 				updateCounts();
 				calcAntiPattern();
 				state = "Converting memories..";
@@ -236,13 +236,10 @@ public class DivineBody extends PollingScript implements PaintListener{
 			}else
 			if(closeToObj(riftArea,"Walking to rift")){
 				if(ctx.widgets.get(131,convertType).isVisible()){
-					if(convertType == 7 && ctx.widgets.get(131,39).getTextureId()==13827){
-						ctx.widgets.get(131,6).click();
-						waiting = new Timer(Random.nextInt(2700, 3000));
-					}else {
-						ctx.widgets.get(131,convertType).click();
-						waiting = new Timer(Random.nextInt(2700, 3000));
-					}
+					
+					ctx.widgets.get(131,convertType).click();
+					waiting = new Timer(Random.nextInt(2700, 3000));
+					
 				}else if(ctx.widgets.get(1186,2).isVisible()){
 					state = "Closing dialogue";
 					System.out.println("Closing dialogue");
