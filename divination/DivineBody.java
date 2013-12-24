@@ -34,7 +34,7 @@ import divination.DivineData.wisps;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
 description = "Trains the Divination Skill; harvests and converts energy to your choosing",
-topic = 1130348, version = 1.08, website = "http://www.powerbot.org/community/topic/1130348-delta-divinity/"
+topic = 1130348, version = 1.09, website = "http://www.powerbot.org/community/topic/1130348-delta-divinity/"
 )
 public class DivineBody extends PollingScript implements PaintListener{
 
@@ -211,7 +211,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 			calcAntiPattern();
 			anti.closeInteruptions();
 			//Adjust camera
-			if(ctx.camera.getPitch()<50){
+			if(ctx.camera.getPitch()<65){
 				ctx.camera.setPitch(90);
 			}
 			while(riftArea==null && Method.objIsNotNull("Energy Rift")){

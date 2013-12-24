@@ -1,21 +1,14 @@
-/*package quests;
+/*package Method;
 
-import org.powerbot.core.script.job.Task;
-import org.powerbot.core.script.job.state.Node;
-import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.Settings;
-import org.powerbot.game.api.methods.interactive.NPCs;
-import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.GroundItems;
-import org.powerbot.game.api.methods.node.SceneEntities;
-import org.powerbot.game.api.methods.tab.Equipment;
-import org.powerbot.game.api.methods.tab.Inventory;
-import org.powerbot.game.api.methods.widget.Bank;
-import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.game.api.wrappers.interactive.NPC;
-import org.powerbot.game.api.wrappers.node.GroundItem;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.wrappers.Tile;
 
 public class DragonSlayer extends Node{
+
+	public DragonSlayer(MethodContext ctx) {
+		super(ctx);
+		// TODO Auto-generated constructor stub
+	}
 
 	public final Tile[] pathToGuild = new Tile[] { 
 			new Tile(3213, 3377, 0), new Tile(3208, 3376, 0), new Tile(3203, 3375, 0), 
@@ -197,7 +190,7 @@ public class DragonSlayer extends Node{
 	public int itemDPrice[] = {1500,1500,1000,1500,1500,4000,100};//contains specific prices to use upon purchasing specific items.
 	public String itemDString[] = {"Anti-dragon shield","Bowl (unfired)","Wizard's mind bomb","Crayfish cage","Silk","Plank","Steel nails"};//contains the names of the items needing to be purchased.
 
-	
+	Method Method = new Method(ctx);
 	public boolean activate() {
 		return DeltaQuester.scriptToStart==32;
 	}
@@ -206,46 +199,47 @@ public class DragonSlayer extends Node{
 		DeltaQuester.numSteps = 16;
 		Method.resetTeleporting();
 		Method.foodSupport();
-		if(Method.useBank && DeltaQuester.GEFeature){
-			Method.useBank(bankItems, 1, 90, 1);
-		}else
-		if (DeltaQuester.GEFeature ) {
-			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
-		}else if(Method.useBank && DeltaQuester.GEFeature){
-			Method.useBank(bankItems, 1, 90, 90);
-		}else if((Settings.get(2268)&0x1F) == 10){
+		//if(Method.useBank && DeltaQuester.GEFeature){
+		//	Method.useBank(bankItems, 1, 90, 1);
+		//}else
+		//if (DeltaQuester.GEFeature ) {
+		//	Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
+		//}else if(Method.useBank && DeltaQuester.GEFeature){
+		//	Method.useBank(bankItems, 1, 90, 90);
+		//}else
+			if((ctx.settings.get(2268)&0x1F) == 10){
 			DeltaQuester.progress = 16;
-			Quests.state("The Dragon Slayer quest has been completed.");
-			Task.sleep(2000);
+			Method.state("The Dragon Slayer quest has been completed.");
+			ctx.game.sleep(2000);
 			DeltaQuester.e = true;
 		}else
 		if(init){
 			init();//Determines what part of the quest the player is on(map pieces)
-		}else if((Settings.get(2268)&0x1F) == 9){
+		}else if((ctx.settings.get(2268)&0x1F) == 9){
 			DeltaQuester.progress = 15;
 			cs1();//Speak to Oziach
 		}else
-		if((Settings.get(2268)&0x3F) == 2||(Settings.get(2268)&0x3F) == 3||(Settings.get(2268)&0x7) == 6||(Settings.get(2268)&0x7) == 7||(Settings.get(2268)&0x1F) == 8){
-			if((Settings.get(2268)&0x1F) == 8){
+		if((ctx.settings.get(2268)&0x3F) == 2||(ctx.settings.get(2268)&0x3F) == 3||(ctx.settings.get(2268)&0x7) == 6||(ctx.settings.get(2268)&0x7) == 7||(ctx.settings.get(2268)&0x1F) == 8){
+			if((ctx.settings.get(2268)&0x1F) == 8){
 				DeltaQuester.progress = 14;
 				cs12();
 			}else
-			if((Settings.get(2268)&0x7) == 7){
+			if((ctx.settings.get(2268)&0x7) == 7){
 				DeltaQuester.progress = 13;
 				cs11();//Set sail for Crandor
-			}else if((Settings.get(2269)&0xFFFFF)==0 || (Settings.get(2269)&0x7)==4){
-			//if((Settings.get(3077)&0x1F)==16){
+			}else if((ctx.settings.get(2269)&0xFFFFF)==0 || (ctx.settings.get(2269)&0x7)==4){
+			//if((ctx.settings.get(3077)&0x1F)==16){
 				
 				if(hasMalzarMap){
 					if(hasLazarMap){
 						if(hasWormMap){
 							
-							if((Settings.get(2269)>>21&0x1)==1){//After speaking to Ned
-								if((Settings.get(2268)&0x7) == 6){
+							if((ctx.settings.get(2269)>>21&0x1)==1){//After speaking to Ned
+								if((ctx.settings.get(2268)&0x7) == 6){
 									DeltaQuester.progress = 12;
 									cs10();
 								}else
-								if((Settings.get(2268)&0x3F) == 3){
+								if((ctx.settings.get(2268)&0x3F) == 3){
 									DeltaQuester.progress = 11;
 									cs9();//Repair the ship
 								}else {
@@ -257,7 +251,7 @@ public class DragonSlayer extends Node{
 							cs7();//Speak to Ned about him being captain
 							}
 						}else
-						if((Settings.get(2269)>>23&0x1)==1){//Setting to determine if we spoke to the goblins in the village yet
+						if((ctx.settings.get(2269)>>23&0x1)==1){//Setting to determine if we spoke to the goblins in the village yet
 							DeltaQuester.progress = 8;
 							cs6();//Obtain Wormmap from the goblin in the jail
 						}else{
@@ -284,11 +278,11 @@ public class DragonSlayer extends Node{
 		}else if(Method.useBank){
 			Method.useBank(bankItems, 1,1,90);
 		}else
-		if((Settings.get(2268)&0x3F) == 1){
+		if((ctx.settings.get(2268)&0x3F) == 1){
 		DeltaQuester.progress = 2;
 		cs1();//Speak to Oziach about obtaining a Rune platebody
 		}else
-		if((Settings.get(2268)&0x3F) == 0){
+		if((ctx.settings.get(2268)&0x3F) == 0){
 		DeltaQuester.progress = 1;
 		cs0();//Begin the quest by speaking to the Guildmaster in Varrok
 		}
@@ -314,7 +308,7 @@ public class DragonSlayer extends Node{
 		}else
 		if(new Tile(2855,3239,0).canReach()){
 			Method.findPath(new Tile(2835,3258,0));
-		}else if((Settings.get(2269)>>10&0x1)==1){
+		}else if((ctx.settings.get(2269)>>10&0x1)==1){
 			cs11();//Set sail again
 		}else cs9();//Repair the ship
 		
@@ -322,7 +316,7 @@ public class DragonSlayer extends Node{
 
 	private void cs11() {
 		final String opt[] = {"Yes, let's"};
-		while(Settings.get(1114)==1){
+		while(ctx.settings.get(1114)==1){
 			Method.isChatting("Cutscene");
 		}
 		if(Method.useBank){
@@ -396,11 +390,11 @@ public class DragonSlayer extends Node{
 	private void cs8() {//Buy the ship
 		final String opt[] = {"Yep, sounds good","I'd like to buy"};
 		
-		if(!Method.teleporting && Inventory.getItem(960)==null && Inventory.getItem(1539)==null&&(Settings.get(2268)&0x7) != 7
-				&&(Settings.get(2268)&0x1F) != 8){
+		if(!Method.teleporting && Inventory.getItem(960)==null && Inventory.getItem(1539)==null&&(ctx.settings.get(2268)&0x7) != 7
+				&&(ctx.settings.get(2268)&0x1F) != 8){
 			Method.useBank = true;
 		}
-		if(Method.useBank&&(Settings.get(2268)&0x7) != 7&&(Settings.get(2268)&0x1F) != 8){
+		if(Method.useBank&&(ctx.settings.get(2268)&0x7) != 7&&(ctx.settings.get(2268)&0x1F) != 8){
 			Method.useBank(bankItems4, 1, 90, 0);
 		}else
 		if(new Tile(3043, 3203, 0).distanceTo()<6){//Location at docks
@@ -492,13 +486,13 @@ public class DragonSlayer extends Node{
 	private void cs4() {//Obtains Lazar's map piece
 		final String opt[] = {"I seek a piece"};
 		
-		if(!Method.teleporting && ((Settings.get(2269)>>17&0x1)!=1 || (Settings.get(2269)>>18&0x1)!=1||(Settings.get(2269)>>19&0x1)!=1||(Settings.get(2269)>>20&0x1)!=1)
+		if(!Method.teleporting && ((ctx.settings.get(2269)>>17&0x1)!=1 || (ctx.settings.get(2269)>>18&0x1)!=1||(ctx.settings.get(2269)>>19&0x1)!=1||(ctx.settings.get(2269)>>20&0x1)!=1)
 				&& (Inventory.getItem(1791)==null&&Inventory.getItem(1907)==null && Inventory.getItem(13431)==null&&Inventory.getItem(950)==null)){
 			Method.useBank = true;
 		}
 		if(Method.useBank){
 			Method.useBank(bankItems3, 5,1,90);
-		}else if((Settings.get(2269)&0x7)==4){//After speaking to the Oracle
+		}else if((ctx.settings.get(2269)&0x7)==4){//After speaking to the Oracle
 			 if(!Method.teleporting&& Inventory.getItem(1537)!=null){
 				hasLazarMap = true;
 			}else
@@ -514,10 +508,10 @@ public class DragonSlayer extends Node{
 					}
 				}else
 				if (new Tile(3049,9840,0).distanceTo() < 7) {
-					if((Settings.get(2269)>>18&0x1)==1){
-						if((Settings.get(2269)>>20&0x1)==1){
-							if((Settings.get(2269)>>19&0x1)==1){
-								if((Settings.get(2269)>>17&0x1)==1){
+					if((ctx.settings.get(2269)>>18&0x1)==1){
+						if((ctx.settings.get(2269)>>20&0x1)==1){
+							if((ctx.settings.get(2269)>>19&0x1)==1){
+								if((ctx.settings.get(2269)>>17&0x1)==1){
 									Method.interactO(25115, "Open", "Magic door");
 								}else Method.useItemOn(950,25115, "Door");
 							}else Method.useItemOn(13431,25115, "Door");
@@ -756,10 +750,10 @@ public class DragonSlayer extends Node{
 	private void cs1() {
 		final String opt[] = {"A dragon, that sounds","I thought you were going","The Guildmaster of the","Can you sell me a "};
 		
-		if(!Method.teleporting && Inventory.getItem(11279)==null && (Settings.get(2268)&0x1F) == 9){
+		if(!Method.teleporting && Inventory.getItem(11279)==null && (ctx.settings.get(2268)&0x1F) == 9){
 			Method.useBank = true;
 		}
-		if(Method.useBank && (Settings.get(2268)&0x1F) == 9){
+		if(Method.useBank && (ctx.settings.get(2268)&0x1F) == 9){
 			Method.useBank(bankItems6, 1, 1, 90);
 		}else
 		if(new Tile(3067, 3513, 0).distanceTo()<5){
@@ -790,18 +784,18 @@ public class DragonSlayer extends Node{
 			if(new Tile(3191,3361,0).canReach()){
 				Vars.DYNAMICV = false;
 				Method.skipPics();
-				if((Settings.get(2268)&0x3F) == 2){
+				if((ctx.settings.get(2268)&0x3F) == 2){
 					
-					if((Settings.get(2269)>>13&0x7)==5 && Widgets.get(1188).validate()){
+					if((ctx.settings.get(2269)>>13&0x7)==5 && Widgets.get(1188).validate()){
 						Method.findOption(opt3);
 					}else
-					if((Settings.get(2269)>>15&0x1)==1 && Widgets.get(1188).validate()){
+					if((ctx.settings.get(2269)>>15&0x1)==1 && Widgets.get(1188).validate()){
 						Method.findOption(opt2);
-					}else if((Settings.get(2269)>>10&0xF)==14 && Widgets.get(1188).validate()){
+					}else if((ctx.settings.get(2269)>>10&0xF)==14 && Widgets.get(1188).validate()){
 						Method.findOption(opt4);
-					}else if((Settings.get(2269)>>11&0x7)==6 && Widgets.get(1188).validate()){
+					}else if((ctx.settings.get(2269)>>11&0x7)==6 && Widgets.get(1188).validate()){
 						Method.findOption(opt5);
-					}else if((Settings.get(2269)>>10&0xF)==8 && Widgets.get(1188).validate()){
+					}else if((ctx.settings.get(2269)>>10&0xF)==8 && Widgets.get(1188).validate()){
 						Method.findOption(opt6);
 					}
 						

@@ -65,7 +65,8 @@ public class MineIsYours extends Node{
 			new Tile(2968, 3234, 0) };
 	
 	public final Tile[] pathToWorkshop = new Tile[] {
-			new Tile(2966, 3404, 0), new Tile(2965, 3399, 0), new Tile(2964, 3394, 0), 
+       //  new Tile(2965, 3399, 0),
+         new Tile(2964, 3394, 0), 
 			new Tile(2963, 3389, 0), new Tile(2965, 3384, 0), new Tile(2968, 3380, 0), 
 			new Tile(2973, 3378, 0), new Tile(2978, 3377, 0), new Tile(2982, 3374, 0), 
 			new Tile(2987, 3372, 0), new Tile(2991, 3369, 0), new Tile(2996, 3367, 0), 

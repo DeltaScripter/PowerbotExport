@@ -27,7 +27,7 @@ import org.powerbot.script.util.Timer;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Quester", 
-description = "Completes quests! See thread for supported quests.", hidden = false,
+description = "Completes quests! See thread for supported quests", hidden = false,
 website = "https://www.powerbot.org/community/topic/777386-delta-quester/",topic =816007, version = 1.6007)
 public class DeltaQuester extends PollingScript implements PaintListener{
 
@@ -141,6 +141,11 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			TaskListing.taskRemove.clear();//Clears the task list
 			TaskListing.updateTasks();
 			getController().stop();
+		}
+		while(ctx.widgets.get(1223,1).isVisible()){//Task completed dialogue
+			System.out.println("Closing TASK COMPLETE");
+			state = "Closing task complete dialogue";
+			ctx.widgets.get(1223,11).getChild(1).click();//close button
 		}
 		if(ready){
 		for(Node node : nodesList) {
@@ -316,7 +321,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
 						"Buyers and Cellars","Cook's Assistant","Clock Tower","Death Plateau","Demon Slayer","Druidic Ritual",
-						"Imp Catcher","Let Them Eat Pie","Monk's Friend","Pirate's Treasure","Swept Away",
+						"Imp Catcher","Let Them Eat Pie","Monk's Friend","Pirate's Treasure","Stolen Hearts","Swept Away",
 						"The Restless Ghost","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
 				};
 				
@@ -1049,6 +1054,15 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 		            	}
 		            	else if(name.equals("Demon Slayer")){
 		            		if((ctx.settings.get(3518) & 0x7F)==121){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}
+		            	else if(name.equals("Stolen Hearts")){
+		            		if((ctx.settings.get(2449)&0x7F)==105){
 		            			incompleteQuests.put( value, "complete" );  
 	            			if(index == i)
 	            				 if( incompleteQuests.containsKey( value ) )  {

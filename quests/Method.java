@@ -249,10 +249,11 @@ public class Method extends MethodProvider{
 	public void interactO(final int i, final String string, final String o) {
 		ArrayList<String> actions = new ArrayList<String>();
 		for(GameObject y: ctx.objects.select().id(i).nearest().first()){
+			//if(closeInterfaces())
 			if(y.isOnScreen()){
 			state("Interacting: " + string);
 			y.interact(string);
-			ctx.game.sleep(1200);
+			ctx.game.sleep(1800);
 			}else ctx.camera.turnTo(y);
 			/*
 					if (closeInterfaces() && y.isOnScreen()) {
@@ -445,6 +446,7 @@ public class Method extends MethodProvider{
 		if(ctx.combatBar.isExpanded()){
 			
 			if(!m.isInCombat()){
+				System.out.println("Clicking attack on enemy");
 				m.npcInteract(npc, "Attack");
 			}else
 				for(Action ab: ctx.combatBar.getActions()){
@@ -557,8 +559,8 @@ public class Method extends MethodProvider{
 	
 	public void pressContinue(){
 		 int widgetID[] = {1191,1184,1187};
-		 if(ctx.widgets.get(1186,2).isVisible()){
-			 ctx.widgets.get(1186,2).click();
+		 if(ctx.widgets.get(1186,3).isVisible()){
+			 ctx.widgets.get(1186,3).click();
 			 ctx.environment.sleep(1200);
 		 }else if(ctx.widgets.get(1189,4).isVisible()){
 			 ctx.widgets.get(1189,4).click();

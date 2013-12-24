@@ -123,9 +123,31 @@ public class StolenHearts extends Node{
 	public Method Method = new Method(ctx);
 	
 	
-	
+	boolean q = true;
 	public void execute() {
-			
+		if(ctx.camera.getPitch()<70)
+			ctx.camera.setPitch(90);
+		
+		while(ctx.widgets.get(669,17).isVisible()){
+			System.out.println("Closing hint dialogue");
+			ctx.widgets.get(669,19).click();
+			ctx.game.sleep(2000);
+		}
+		if(q){
+			TaskListing.taskRemove.clear();
+			TaskListing.taskListData.add("Start quest");
+			TaskListing.taskListData.add("Take Khnums examination");
+			TaskListing.taskListData.add("Report to Ozan");
+			TaskListing.taskListData.add("Follow Khnum");
+			TaskListing.taskListData.add("Talk to Khnum in his hide-out");
+			TaskListing.taskListData.add("Attempt to rescue prince at shore");
+			TaskListing.taskListData.add("Speak to gaurds in Alkharid");
+			TaskListing.taskListData.add("Find way into palace");
+			TaskListing.taskListData.add("Complete puzzle and steal the key");
+			TaskListing.taskListData.add("Finish the quest");
+			TaskListing.updateTasks();
+			q = false;
+		}
 		 /* The ctx.settings used in this script are:
 		 * 2449-main setting
 		 * 2450-puzzle
@@ -133,7 +155,7 @@ public class StolenHearts extends Node{
 		DeltaQuester.numSteps  =16;
 		Method.resetTeleporting();
 		Method.foodSupport();
-		
+	
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
 			if(!DeltaQuester.checkedBank){
@@ -145,6 +167,8 @@ public class StolenHearts extends Node{
 		if((ctx.settings.get(2449)&0x7F)==105){
 			DeltaQuester.progress = 16;
 			Method.state("The Stolen Hearts quest has been completed.");
+			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan","Follow Khnum","Talk to Khnum in his hide-out","Attempt to rescue prince at shore","Speak to gaurds in Alkharid","Find way into palace","Complete puzzle and steal the key","Finish the quest");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
@@ -155,14 +179,21 @@ public class StolenHearts extends Node{
 		if((ctx.settings.get(2449)&0x7F)==90||(ctx.settings.get(2449)&0x7F)==95){
 			DeltaQuester.progress = 14;
 			cs13();//Finish the cut scene conversation with Emir's death
+			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan","Follow Khnum","Talk to Khnum in his hide-out","Attempt to rescue prince at shore","Speak to gaurds in Alkharid","Find way into palace","Complete puzzle and steal the key");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2449)&0x7F)==85 ||(ctx.settings.get(2449)&0xFF)==213){
 			DeltaQuester.progress = 13;
+			
 			cs12();//Solve the puzzle and place the key in the display
+			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan","Follow Khnum","Talk to Khnum in his hide-out","Attempt to rescue prince at shore","Speak to gaurds in Alkharid","Find way into palace");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2449)&0x7F)==70||(ctx.settings.get(2449)&0x7F)==72||(ctx.settings.get(2449)&0x7F)==75||(ctx.settings.get(2449)&0x7F)==80){
 			DeltaQuester.progress = 12;
 			cs11();//Get's the player into the puzzle room + completes the conversation at that window ledge
+			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan","Follow Khnum","Talk to Khnum in his hide-out","Attempt to rescue prince at shore","Speak to gaurds in Alkharid");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2449)&0x7F)==65){
 			DeltaQuester.progress = 11;
@@ -175,10 +206,12 @@ public class StolenHearts extends Node{
 		if((ctx.settings.get(2449)&0x3F)==55){
 			DeltaQuester.progress = 9;
 			cs8();//Grabs the scroll after the fight in both situations(if you don't pick it up right away after the fight.)
+			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan","Follow Khnum","Talk to Khnum in his hide-out","Attempt to rescue prince at shore");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2449)&0x3F)==50){
 			DeltaQuester.progress = 8;
-			cs7();//Finish the conversations and dfeat the three enemies at the shore
+			cs7();//Finish the conversations and defeat the three enemies at the shore
 		}else
 		if((ctx.settings.get(2449)>>21&0x3)==2){
 		
@@ -188,6 +221,8 @@ public class StolenHearts extends Node{
 		if((ctx.settings.get(2449)&0x3F)==45){
 			DeltaQuester.progress = 7;
 			cs5();//Get ozan to the shore
+			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan","Follow Khnum","Talk to Khnum in his hide-out");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2449)>>5&0x1)==1||(ctx.settings.get(2449)>>5&0x3F)==53||(ctx.settings.get(2449)>>5&0x3F)==45||(ctx.settings.get(2449)>>5&0x3F)==13||(ctx.settings.get(2449)>>5&0x3F)==5||(ctx.settings.get(2449)>>5&0x3F)==1){
 			DeltaQuester.progress = 6;
@@ -196,18 +231,25 @@ public class StolenHearts extends Node{
 		if((ctx.settings.get(2449)&0x1F)==30){
 			DeltaQuester.progress = 5;
 			cs3();//Complete the initial conversation with Khnum and friends
+			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan","Follow Khnum");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2449)&0x1F)==25||(ctx.settings.get(2449)>>21 & 0xF) ==15){
 			DeltaQuester.progress = 4;
 			cs2();//Complete the trailing Khnum scene
+			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2449)&0x1F)==20){
 			DeltaQuester.progress = 3;
 			cs0();//Report to Ozan about finding Khnum's HQ
+			TaskListing.updateTaskRemove("Start quest","Take Khnums examination");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2449)&0x7)==5 ||(ctx.settings.get(2449)&0xF)==10||(ctx.settings.get(2449)&0xF)==15){
 			DeltaQuester.progress = 2;
 			cs1();//Speak to Khnum in his base and take his entry examination.
+			TaskListing.updateTaskRemove("Start quest");
 		}else
 		if((ctx.settings.get(2449)&0x1)==0){
 			DeltaQuester.progress = 1;
@@ -238,34 +280,44 @@ public class StolenHearts extends Node{
 	}
 
 	private void cs12() {
-		
 		if(Method.objIsNotNull(75870) && Method.getObject(75870).getLocation().distanceTo(ctx.players.local().getLocation())<10||
 				Method.objIsNotNull(75871) && Method.getObject(75871).getLocation().distanceTo(ctx.players.local().getLocation())<10){
+				if(ctx.widgets.get(1191,0).isVisible() || ctx.widgets.get(1184,0).isVisible()){
+					System.out.println("Closing dialogue");
+					Method.pressContinue();
+				}
 				if(Method.inventoryContains(25129)){//orb item
+					
+					if(!ctx.widgets.get(1189,2).isVisible())//The screen that appearrs after getting the puzzle completely
 				Method.interactO(76708, "Place", "Display");
+					else ctx.widgets.get(1189,3).click();
 			}else//Gather the key
 			if(ctx.widgets.get(1351,29).isVisible()){
-			if(ctx.widgets.get(1351,11).isVisible()){
-				System.out.println("clicking continue!");
-				ctx.widgets.get(1351,11).click(true);
-			}else if(ctx.widgets.get(1351,109).isVisible()){
+				System.out.println("Here");
+				if(ctx.widgets.get(1351,0).isVisible()){
 					Method.state("Finishing the puzzle");
-					dragMouse(ctx.widgets.get(1351,46).getCenterPoint(),ctx.widgets.get(1351,109).getCenterPoint());
+					dragMouse(ctx.widgets.get(1351,26).getCenterPoint(),ctx.widgets.get(1351,0).getCenterPoint());
 				}else if((ctx.settings.get(2450)>>14 &0x1) ==1){
 					if((ctx.settings.get(2450)>>18 &0x1) ==1){
 						if(!timer1.isRunning() ){
 							Method.state("Weighing weights");
-							ctx.widgets.get(1351,96).click();
+							ctx.widgets.get(1351,84).click();
 							timer1 = new Timer(6000);
 						}
-					}else dragMouse(ctx.widgets.get(1351,32).getCenterPoint(),ctx.widgets.get(1351,46).getCenterPoint());
+					}else dragMouse(ctx.widgets.get(1351,12).getCenterPoint(),ctx.widgets.get(1351,20).getCenterPoint());
 					
-				}else dragMouse(ctx.widgets.get(1351,34).getCenterPoint(),ctx.widgets.get(1351,52).getCenterPoint());
+				}else dragMouse(ctx.widgets.get(1351,6).getCenterPoint(),ctx.widgets.get(1351,26).getCenterPoint());
 			
-			} else Method.interactO(75870, "Inspect", "Puzzle");
+			} else {
+				System.out.println("Here7");
+				Method.interactO(75870, "Inspect", "Puzzle");
+			}
 				
 			
-		}else cs11();//get player to puzzle roo
+		}else {
+			System.out.println("Here4");
+			cs11();//get player to puzzle roo
+		}
 		
 	}
 	private void dragMouse(Point point, Point endLocation) {
@@ -435,9 +487,9 @@ public class StolenHearts extends Node{
 
 	private void cs9() {
 		
-		
 		if((ctx.settings.get(2449)>>23 & 0x3) ==3){//Ozan begins to follow us again(when it becomes this setting)
 			if(new Tile(3291, 3165, 0).distanceTo(ctx.players.local().getLocation())<8){
+				System.out.println("but.. we're in range ..");
 				Method.state("Within range");//We never actually get within range due to a setting change
 			}else if(Vars.DYNAMICV2){
 				Method.walking(pathToAlkharid, "Walking to Alkharid",false);
@@ -445,26 +497,30 @@ public class StolenHearts extends Node{
 				Vars.DYNAMICV2 = true;
 			}else if(!wait.isRunning()){
 					teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
-			}else Method.pressContinue();
+			}else {
+				Method.pressContinue();
+			}
 				
 			
-		}else cs7();//Speak to ozan again so he can start following us
+		}else {
+			cs7();//Speak to ozan again so he can start following us
+		}
 	
 	}
 
 	public void teleportTo(int loc, String teleName) {
 		
 		
-		if(ctx.widgets.get(1092).isValid() && !ctx.widgets.get(1184).isValid()){
+		if(ctx.widgets.get(1092).isValid() && ctx.widgets.get(1092,0).isVisible() && !ctx.widgets.get(1184).isValid()){
 			ctx.mouse.move(ctx.widgets.get(1092).getComponent(loc).getCenterPoint());
 			ctx.widgets.get(1092).getComponent(loc).click(true);
 			wait = new Timer(8000);
 		}else if(ctx.players.local().getAnimation()==-1)
 			ctx.widgets.get(1465,10).interact("Teleport");
-			
 		}
 	
 	private void cs8() {
+		System.out.println("Here");
 		if(!Method.teleporting &&Method.inventoryContains(25127)){
 			cs7();
 		}else if(!ctx.groundItems.select().id(25127).nearest().first().isEmpty()){
@@ -499,7 +555,7 @@ public class StolenHearts extends Node{
 			if(Method.npcIsNotNull(15897) || Method.npcIsNotNull(15899) || Method.npcIsNotNull(15898)){
 				try{
 				for(int i =0;i<= drs.length;){
-				if(Method.isInCombat()){
+				if(ctx.players.local().isInCombat()){
 					Method.basicFightNPC(drs[i]);
 				}else if(Method.npcIsNotNull(drs[i])){
 						Method.npcInteract(drs[i], "Attack");
