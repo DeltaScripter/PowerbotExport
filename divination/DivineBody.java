@@ -34,7 +34,7 @@ import divination.DivineData.wisps;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
 description = "Trains the Divination Skill; harvests and converts energy to your choosing",
-topic = 1130348, version = 1.09, website = "http://www.powerbot.org/community/topic/1130348-delta-divinity/"
+topic = 1130348, version = 1.1, website = "http://www.powerbot.org/community/topic/1130348-delta-divinity/"
 )
 public class DivineBody extends PollingScript implements PaintListener{
 
@@ -156,6 +156,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 	private Random rand = new Random();
 	private boolean start = false;
 	private Timer waiting = new Timer(0);
+	public static Timer wait = new Timer(0);//General use timer
 	private Timer runtime;
 	private Timer secondsA;
 	private Timer minutesA;
@@ -165,6 +166,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 	
 	DivineMethod Method = new DivineMethod(ctx);
 	DivineAntipattern anti = new DivineAntipattern(ctx);
+	public static boolean prioritizeNearbyWisps;
 	
 	
 	@Override
@@ -200,7 +202,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 		public convertMemories(MethodContext ctx) {
 			super(ctx);
 		}
-
+		
 		@Override
 		public boolean activate() {
 			return !harvest;
@@ -223,7 +225,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 			}
 			
 			while(ctx.players.local().getAnimation()!=-1){
-				waiting = new Timer(5500);
+				waiting = new Timer(3500);
 				updateCounts();
 				calcAntiPattern();
 				state = "Converting memories..";
@@ -244,7 +246,10 @@ public class DivineBody extends PollingScript implements PaintListener{
 				}else if(ctx.widgets.get(1186,2).isVisible()){
 					state = "Closing dialogue";
 					System.out.println("Closing dialogue");
+					if(!wait.isRunning()){
 					Method.clickOnMap(ctx.players.local().getLocation());
+					wait = new Timer(Random.nextInt(500, 1200));
+					}
 				}else clickRift("Energy Rift", "Interacting with rift");
 			}
 			//if(waiting.isRunning())
@@ -257,9 +262,8 @@ public class DivineBody extends PollingScript implements PaintListener{
 					if(!waiting.isRunning())
 						if (y.isOnScreen()) {
 							ctx.mouse.move(y.getLocation().getMatrix(ctx).getPoint(Random.nextDouble() * 0.2D - 0.1D,+0.10D,+100));
-							System.out.println("Clicking with mouse: " + waiting.getRemaining());
 							ctx.mouse.click(true);
-							waiting = new Timer(Random.nextInt(2700, 3000));
+							waiting = new Timer(Random.nextInt(1700, 2000));
 						} else ctx.camera.turnTo(y);
 					
 					}
@@ -268,7 +272,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 
 	   }
 	   private void calcAntiPattern() {
-			int number = rand.nextInt(0, 2);
+			int number = rand.nextInt(0, 3);
 			if(number == 1){
 				antiPattern = true;
 			}
@@ -303,6 +307,21 @@ public class DivineBody extends PollingScript implements PaintListener{
 				}else
 				if(!foundEnrichedSpring("Enriched sparkling spring"))
 				if(!foundEnrichedSpring("Enriched glowing spring"))
+					
+					if(prioritizeNearbyWisps && Method.npcIsNotNull(wispSpring) && 
+							Method.getNPC(wispSpring).getLocation().distanceTo(ctx.players.local().getLocation())<6){
+						if(closeToNpc(wispSpring,"Walking to spring")){
+							state = "Attempting to harvest spring";
+							Method.npcInteract(wispSpring, "Harvest");
+						}
+					}else
+					if(prioritizeNearbyWisps && Method.npcIsNotNull(wispKind) && 
+							Method.getNPC(wispKind).getLocation().distanceTo(ctx.players.local().getLocation())<6){
+						if(closeToNpc(wispKind,"Walking to wisp")){
+							state = "Attempting to convert wisp to spring";
+							Method.npcInteract(wispKind, "Harvest");
+						}
+					}else
 				if(Method.npcIsNotNull(wispSpring) && 
 						Method.getNPC(wispSpring).getLocation().distanceTo(ctx.players.local().getLocation())<12){
 					if(closeToNpc(wispSpring,"Walking to spring")){
@@ -360,7 +379,10 @@ public class DivineBody extends PollingScript implements PaintListener{
 				return true;
 			}else if(loc.distanceTo(ctx.players.local().getLocation())<8 && ctx.widgets.get(1186,1).isVisible()){
 				System.out.println("Cliking on map");
+				if(!wait.isRunning()){
 				Method.clickOnMap(loc);
+				wait = new Timer(Random.nextInt(700, 1700));
+				}
 			}else{
 				state = string;
 				ctx.movement.stepTowards(loc);
@@ -427,6 +449,7 @@ private void setMouse(Graphics g) {
 		g.drawString("Current level: " + level, 20, 190);
 		g.drawString("XP Gained: " + expGained + " XP : P/Hr(" +expHr+"K)" , 20, 210);
 		g.drawString("Location: " + location, 20, 230);
+		g.drawString("Prioritize nearby wisps: " + prioritizeNearbyWisps, 20, 250);
 		//g.drawString("XP per hour: "+ expPerHr, 20, 230);
 		}
 		
@@ -453,10 +476,15 @@ private void setMouse(Graphics g) {
 	class DeltaDivinityGUI extends JFrame {
 		public DeltaDivinityGUI() {
 			initComponents();
+			priorCheckButton.setSelected(true);
 		}
 
 		private void strtBtnActionPerformed(ActionEvent e) {
 			String convChoice = convertList.getSelectedItem().toString();
+			if(priorCheckButton.isSelected()){
+				prioritizeNearbyWisps = true;
+			}else prioritizeNearbyWisps = false;
+			
 			if(convChoice=="Divine Energy"){
 				convertType = convert.DIVINEENERGY.getID();
 				animationType = animation.TODIVINEENERGY.getID();
@@ -475,22 +503,30 @@ private void setMouse(Graphics g) {
 
 		private void initComponents() {
 			label1 = new JLabel();
-			convertList = new JComboBox();
+			convertmemorylabel = new JLabel();
+			convertList = new JComboBox<String>();
+			priorCheckButton = new JCheckBox();
 			strtBtn = new JButton();
-			label3 = new JLabel();
 
 			//======== this ========
-			setTitle("");
-			setFont(new Font("Dialog", Font.BOLD, 15));
 			Container contentPane = getContentPane();
 
 			//---- label1 ----
-			label1.setText("Convert memories into: ");
+			label1.setText("Delta Divinity");
+			label1.setFont(label1.getFont().deriveFont(label1.getFont().getStyle() | Font.BOLD, label1.getFont().getSize() + 6f));
+
+			//---- convertmemorylabel ----
+			convertmemorylabel.setText("Convert memories into: ");
 
 			//---- convertList ----
-			convertList.setModel(new DefaultComboBoxModel(new String[] {
-					"Divine Energy","Divinity Experience","Enhanced Experience"
+			convertList.setModel(new DefaultComboBoxModel<String>(new String[] {
+				"Divine Energy",
+				"Divine Experience",
+				"Enhanced Experience"
 			}));
+
+			//---- priorCheckButton ----
+			priorCheckButton.setText("Prioritize nearby wisps");
 
 			//---- strtBtn ----
 			strtBtn.setText("START");
@@ -501,52 +537,59 @@ private void setMouse(Graphics g) {
 				}
 			});
 
-			//---- label3 ----
-			label3.setText("Delta Divinity");
-			label3.setFont(label3.getFont().deriveFont(label3.getFont().getStyle() | Font.BOLD, label3.getFont().getSize() + 5f));
-
 			GroupLayout contentPaneLayout = new GroupLayout(contentPane);
 			contentPane.setLayout(contentPaneLayout);
 			contentPaneLayout.setHorizontalGroup(
 				contentPaneLayout.createParallelGroup()
 					.addGroup(contentPaneLayout.createSequentialGroup()
-						.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+						.addGroup(contentPaneLayout.createParallelGroup()
 							.addGroup(contentPaneLayout.createSequentialGroup()
-								.addGap(0, 0, Short.MAX_VALUE)
-								.addComponent(strtBtn))
+								.addGap(119, 119, 119)
+								.addComponent(label1))
 							.addGroup(contentPaneLayout.createSequentialGroup()
-								.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(label3)
-								.addGap(95, 95, 95))
-							.addGroup(GroupLayout.Alignment.LEADING, contentPaneLayout.createSequentialGroup()
-								.addContainerGap()
-								.addComponent(label1)
-								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-								.addComponent(convertList, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)))
-						.addContainerGap(14, Short.MAX_VALUE))
+								.addGap(20, 20, 20)
+								.addGroup(contentPaneLayout.createParallelGroup()
+									.addGroup(contentPaneLayout.createSequentialGroup()
+										.addComponent(convertmemorylabel)
+										.addGap(27, 27, 27)
+										.addComponent(convertList, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE))
+									.addGroup(contentPaneLayout.createSequentialGroup()
+										.addComponent(priorCheckButton)
+										.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+										.addComponent(strtBtn)))))
+						.addContainerGap())
 			);
 			contentPaneLayout.setVerticalGroup(
 				contentPaneLayout.createParallelGroup()
 					.addGroup(contentPaneLayout.createSequentialGroup()
 						.addContainerGap()
-						.addComponent(label3)
-						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-						.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-							.addComponent(convertList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(label1))
+						.addComponent(label1)
 						.addGap(18, 18, 18)
-						.addComponent(strtBtn)
-						.addContainerGap(6, Short.MAX_VALUE))
+						.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+							.addComponent(convertmemorylabel)
+							.addComponent(convertList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+						.addGroup(contentPaneLayout.createParallelGroup()
+							.addGroup(contentPaneLayout.createSequentialGroup()
+								.addComponent(priorCheckButton)
+								.addGap(0, 21, Short.MAX_VALUE))
+							.addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+								.addGap(0, 21, Short.MAX_VALUE)
+								.addComponent(strtBtn)))
+						.addContainerGap())
 			);
-			setSize(340, 155);
+			pack();
 			setLocationRelativeTo(getOwner());
+			// JFormDesigner - End of component initialization  //GEN-END:initComponents
 		}
 
 		private JLabel label1;
+		private JLabel convertmemorylabel;
 		private JComboBox<String> convertList;
+		private JCheckBox priorCheckButton;
 		private JButton strtBtn;
-		private JLabel label3;
 	}
+
 
 	
 	

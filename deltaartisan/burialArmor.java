@@ -44,7 +44,7 @@ public class burialArmor extends ArtisanNode{
 	@Override
 	public void execute() {
 		m.calcExpHr();
-		
+		ArtisanBody.calcAntipattern();
 		if(ctx.players.local().getAnimation()!=-1){
 			clickTimer = new Timer(6000);
 			ArtisanBody.state = "Smithing...";

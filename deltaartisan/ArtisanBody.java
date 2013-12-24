@@ -124,7 +124,7 @@ public class ArtisanBody extends PollingScript implements PaintListener{
 	        }
 	    }
 	
-	   private void calcAntipattern() {
+	   static void calcAntipattern() {
 			int number = Random.nextInt(0, 2);
 			if(number == 1){
 				antiPattern = true;
