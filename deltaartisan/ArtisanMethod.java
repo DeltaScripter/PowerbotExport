@@ -6,6 +6,7 @@ import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
+import org.powerbot.script.methods.Skills;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Npc;
@@ -18,6 +19,12 @@ public class ArtisanMethod extends MethodProvider{
 	
 	public ArtisanMethod(MethodContext ctx) {
 		super(ctx);
+	}
+	public void calcExpHr() {
+		int current = ctx.skills.getExperience(Skills.SMITHING);
+		int diff = current - ArtisanBody.initialExp;
+		ArtisanBody.expGained = diff;
+		
 	}
 	public GameObject getObject(int i) {
 		for(GameObject obj : ctx.objects.select().id(i).nearest().first()){
