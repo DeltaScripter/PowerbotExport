@@ -87,7 +87,7 @@ public class DruidicRitual extends Node{
 		}else
 		 if(Vars.useBank && (ctx.settings.get(2694) & 0xFF)!=136){
 			Method.useBank(bankItems,bankItemAmount);
-			}else
+			}else 
 		if (DeltaQuester.GEFeature && (ctx.settings.get(2694) & 0xFF)!=136) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else{

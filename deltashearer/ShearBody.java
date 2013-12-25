@@ -17,14 +17,13 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Tile;
-import org.powerbot.script.wrappers.Widget;
 
 
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Sheep", 
 description = "Shears sheep, makes balls of wool, banks the wool. For crafting xp; start with shears", 
-website = "", version = 1, hidden = false)
+website = "http://www.powerbot.org/community/topic/1131596-delta-sheep/",topic = 1131596, version = 1)
 public class ShearBody extends PollingScript implements PaintListener{
 
 	public ShearBody(){
@@ -176,10 +175,12 @@ public class ShearBody extends PollingScript implements PaintListener{
 							npcInteract(sheepID.get(index), "Shear");
 							wait = new Timer(1500);
 						}else if(m.npcIsNotNull(sheepID.get(index))&& m.getNPC(sheepID.get(index)).getLocation().distanceTo(player)<10){
-							System.out.println("Getting to sheep: " + sheepID.get(index) + " at the location: " +m.getNPC(sheepID.get(index)).getLocation());
 							ctx.movement.stepTowards(m.getNPC(sheepID.get(index)).getLocation());
 							wait = new Timer(3000);
-						}else index++;
+						}else {
+							state = "Waiting for sheep..";
+							index++;
+						}
 					}
 					
 					

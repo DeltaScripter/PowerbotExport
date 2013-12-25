@@ -103,12 +103,14 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					 addNode(new ClockTower(ctx));
 					 addNode(new MonksFriend(ctx));
 					 addNode(new PlagueCity(ctx));
+					 addNode(new TheKnightsSword(ctx));
 			}
 		});
 		getExecQueue(State.STOP).add(new Runnable() {
 			@Override
 			public void run() {
 				log.info("Now shutting down.");
+				
 				TaskListing.taskRemove.clear();//Clears the task list
 				TaskListing.updateTasks();
 				qList.clear();
@@ -120,7 +122,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 				checkedBank = false;
 				Method.depoBank = false;
 				Method.hasFood = true;
-				ready  =false;
+				ready = false;
 			}
 		});
 	}
@@ -323,7 +325,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 						"Buyers and Cellars","Cook's Assistant","Clock Tower","Death Plateau","Demon Slayer","Druidic Ritual",
 						"Gunnar's Ground",
 						"Imp Catcher","Let Them Eat Pie","Monk's Friend","Pirate's Treasure","Stolen Hearts","Swept Away",
-						"The Restless Ghost","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
+						"The Knight's Sword","The Restless Ghost","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
 				};
 				
 				@Override
@@ -417,7 +419,10 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 				String quest = queueListModel.get(index).toString();
 				System.out.println(queueListModel.get(index).toString());
 				
-			
+				if(quest == "The Knight's Sword"){
+					rewardExpModel.addElement("Smithing XP: 12,725");
+					index++;
+				}
 				if(quest == "Druidic Ritual"){
 					rewardExpModel.addElement("Herblore XP: 250");
 					rewardItemModel.addElement("Grimy Guam x 15");
@@ -532,6 +537,9 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					index++;
 				}else if(quest == "The Blood Pact"){
 					requirementsList.setText(requirementsList.getText() + quest + ":\nDo not start this quest underground\nYou will need a ranged weapon equipped\nAbility to defeat 3 level 3 enemies\n\n");
+					index++;
+				}else if(quest == "The Knight's Sword"){
+					requirementsList.setText(requirementsList.getText() + quest + ":\nRedberry pie x 1\nIron bars x 2\n\nLevel 10 mining\nAbility to survive high-level enemies\nFalador lodestone activated");
 					index++;
 				}else if(quest == "The Restless Ghost"){
 					requirementsList.setText(requirementsList.getText() + quest + ":\nThere are no requirements for this quest\n\n");
@@ -1019,6 +1027,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 		        	   String name = list.getModel().getElementAt(i).toString();
 		        	//   "Swept Away","The Blood Pact",
 					//	"The Restless Ghost","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
+		        	   
 		            	if(name.equals("Buyers and Cellars")){
 		            		if((ctx.settings.get(2085) & 0x7FF) == 1930){
 		            			System.out.println("Done buyers and cellars");
@@ -1039,6 +1048,13 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 		            		 
 		            	}else if(name.equals("Clock Tower")){
 		            		if((ctx.settings.get(2197)&0xF)==8){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+			            		 if( incompleteQuests.containsKey( value ) )  
+			            		 {setForeground( Color.green );} 
+	            		}
+		            	}else if(name.equals("The Knight's Sword")){
+		            		if((ctx.settings.get(2547) & 0x7) ==7){
 		            			incompleteQuests.put( value, "complete" );  
 	            			if(index == i)
 			            		 if( incompleteQuests.containsKey( value ) )  

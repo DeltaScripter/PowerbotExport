@@ -53,6 +53,9 @@ public class TaskListing {
 		}
 
 		private void taskListPropertyChange(PropertyChangeEvent e) {
+			if(DeltaQuester.e)
+				this.dispose();
+			
 			taskList.removeAll();
 			taskList.setModel(taskListModel);
 		}

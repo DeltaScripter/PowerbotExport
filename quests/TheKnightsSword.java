@@ -1,30 +1,29 @@
-/*package quests;
+package quests;
 
-import org.powerbot.core.script.job.Task;
-import org.powerbot.core.script.job.state.Node;
-import org.powerbot.game.api.methods.Game;
-import org.powerbot.game.api.methods.Settings;
-import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.NPCs;
-import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.SceneEntities;
-import org.powerbot.game.api.methods.tab.Inventory;
-import org.powerbot.game.api.methods.tab.Skills;
-import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.game.api.wrappers.interactive.NPC;
-import org.powerbot.game.api.wrappers.node.SceneObject;
+
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.Skills;
+import org.powerbot.script.wrappers.Tile;
+
+import quests.Vars.TeleportLode;
+import quests.Vars.TeleportType;
 
 public class TheKnightsSword extends Node{
 
+	public TheKnightsSword(MethodContext ctx) {
+		super(ctx);
+	}
+
+
 	public final Tile[] pathToSquire = new Tile[] { 
-			new Tile(2965, 3405, 0), new Tile(2965, 3399, 0), new Tile(2964, 3393, 0), 
+			new Tile(2965, 3399, 0), new Tile(2964, 3393, 0), 
 			new Tile(2964, 3387, 0), new Tile(2964, 3381, 0), new Tile(2962, 3375, 0), 
 			new Tile(2963, 3369, 0), new Tile(2964, 3363, 0), new Tile(2964, 3357, 0), 
 			new Tile(2963, 3351, 0), new Tile(2965, 3345, 0), new Tile(2971, 3341, 0), 
 			new Tile(2977, 3339, 0), new Tile(2981,3341,0) };
 	
 	public final Tile[] pathToReldo = { 
-		new Tile(3212, 3373, 0), new Tile(3211, 3379, 0), new Tile(3211, 3385, 0), 
+			new Tile(3211, 3379, 0), new Tile(3211, 3385, 0), 
 		new Tile(3211, 3391, 0), new Tile(3211, 3397, 0), new Tile(3211, 3403, 0), 
 		new Tile(3211, 3409, 0), new Tile(3211, 3415, 0), new Tile(3211, 3421, 0), 
 		new Tile(3211, 3427, 0), new Tile(3211, 3433, 0), new Tile(3212, 3439, 0), 
@@ -56,76 +55,116 @@ public class TheKnightsSword extends Node{
 	public boolean hasBlurite = false;
 	public Tile init;
 	
-	public int itemsArray[] = {0,0,0};//contains the states of items needing to be purchased.
-	public int itemDID[] = {2325,1265,2352};//contains the ids of the items needing to be purchased.
-	public int itemDAmount[] = {1,1,2};
-	public int itemDPrice[] = {2500,1800,2500};//contains specific prices to use upon purchasing specific items.
-	public String itemDString[] = {"Redberry pie", "Bronze pickaxe", "Iron bar"};//contains the names of the items needing to be purchased.
+	public int itemsArray[] = {0,0};//contains the states of items needing to be purchased.
+	public int itemDID[] = {2325,2352};//contains the ids of the items needing to be purchased.
+	public int itemDAmount[] = {1,2};
+	public int itemDPrice[] = {3500,2500};//contains specific prices to use upon purchasing specific items.
+	public String itemDString[] = {"Redberry pie", "Iron bar"};//contains the names of the items needing to be purchased.
 	public boolean inits = false;
 	
 	public int bankItems[] = {2325,1265,2351,2351,666,667,668};
+	public int bankItemAmount[] = {1,1,2,1,1,1,1,1};
 	public boolean activate() {
 		return DeltaQuester.scriptToStart==25;
 	}
 
-	
+	Method Method = new Method(ctx);
+	Vars Vars = new Vars();
+	boolean q = true;
 	public void execute() {
+		if(q){
+			TaskListing.taskRemove.clear();
+			TaskListing.taskListData.add("Start the quest");
+			TaskListing.taskListData.add("Speak to Reldo about the dwarves");
+			TaskListing.taskListData.add("Give Thurgo the redberry pie");
+			TaskListing.taskListData.add("Speak to Thurgo about the sword");
+			TaskListing.taskListData.add("Speak to the squire in Falador");
+			TaskListing.taskListData.add("Retrieve the portrait");
+			TaskListing.taskListData.add("Mine blurite ore and hand it over (finish quest)");
+			
+			TaskListing.updateTasks();
+			q = false;
+		}
 		//Settings used, 2547 for main body.
 		Method.foodSupport();
-		Quests.getSettings(2547);
 		DeltaQuester.numSteps = 8;
-		Method.resetTeleporting();
+		
 		if(!inits){
 			if(!Method.FaladorLodeIsActive() || !Method.VarrokLodeIsActive()){
 				Method.state("You require Varrok and Falador lodestone, skipping quest");
-				Task.sleep(2000);
+				ctx.game.sleep(2000);
 				DeltaQuester.e = true;
-			}else if(Skills.getLevel(Skills.MINING)<10){
+			}else if(ctx.skills.getLevel(Skills.MINING)<10){
 				Method.state("Mining level of 10 is required, skipping quest");
-				Task.sleep(2000);
+				ctx.game.sleep(2000);
 				DeltaQuester.e = true;
 			}else inits = true;
-		}else if(Method.useBank && (Settings.get(2547) & 0x7) !=7){
-			Method.useBank(bankItems, 20,1,90);
-		}else
-		if (DeltaQuester.GEFeature && (Settings.get(2547) & 0x7) !=7) {
+		}
+		
+		if(DeltaQuester.checkedBank)
+			Method.determineBank(bankItems);
+		
+		if(!DeltaQuester.checkedBank && (ctx.settings.get(2547) & 0x7) !=7){
+			Method.checkBank();
+		}else  if(Vars.useBank && (ctx.settings.get(2547) & 0x7) !=7){
+			Method.useBank(bankItems,bankItemAmount);
+			}else 
+		if (DeltaQuester.GEFeature && (ctx.settings.get(2547) & 0x7) !=7) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
-		}else if(Method.useBank && (Settings.get(2547) & 0x7) !=7){
-			Method.useBank(bankItems, 20,90,2);
-		}else
-			if((Settings.get(2547) & 0x7) ==7){
+		}else 
+			if((ctx.settings.get(2547) & 0x7) ==7){
 				DeltaQuester.progress = 8;
-				Quests.state("The Knight's Sword quest has been completed.");
-				Task.sleep(2000);
+				Method.state("The Knight's Sword quest has been completed.");
+				TaskListing.updateTaskRemove("Start the quest","Speak to Reldo about the dwarves","Give Thurgo the redberry pie","Speak to Thurgo about the sword","Speak to the squire in Falador","Mine blurite ore and hand it over (finish quest)");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+				ctx.game.sleep(2000);
 				DeltaQuester.e = true;
 			}else
-			if((Settings.get(2547) & 0x7) ==6){
+			if((ctx.settings.get(2547) & 0x7) ==6){
 				DeltaQuester.progress = 7;
 				cs4();//mine the blurite and then craft the sword + return it.
+				TaskListing.updateTaskRemove("Start the quest","Speak to Reldo about the dwarves","Give Thurgo the redberry pie","Speak to Thurgo about the sword","Speak to the squire in Falador");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+			
 			}else
-			if((Settings.get(2547) & 0x7) ==5){
+			if((ctx.settings.get(2547) & 0x7) ==5){
 				DeltaQuester.progress = 6;
 				cs3();//Find a portrait and then give it to Thurgo.
+				TaskListing.updateTaskRemove("Start the quest","Speak to Reldo about the dwarves","Give Thurgo the redberry pie","Speak to Thurgo about the sword","Speak to the squire in Falador","Retrieve the portrait");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+			
 			}else
-			if((Settings.get(2547) & 0x7) ==4){
+			if((ctx.settings.get(2547) & 0x7) ==4){
 				DeltaQuester.progress = 5;
 				cs0();//Ask the squire about what Thurgo said.
+				TaskListing.updateTaskRemove("Start the quest","Speak to Reldo about the dwarves","Give Thurgo the redberry pie","Speak to Thurgo about the sword");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+			
 			}else
-			if((Settings.get(2547) & 0x3) ==3){
+			if((ctx.settings.get(2547) & 0x3) ==3){
 				DeltaQuester.progress = 4;
 				cs2();//Speak to Thurgo about the sword.
+				TaskListing.updateTaskRemove("Start the quest","Speak to Reldo about the dwarves","Give Thurgo the redberry pie");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+			
 			}else
-			if((Settings.get(2547) & 0x3) ==2){
+			if((ctx.settings.get(2547) & 0x3) ==2){
 				DeltaQuester.progress = 3;
 				cs2();//Feed Thurgo the redberry pie.
+				TaskListing.updateTaskRemove("Start the quest","Speak to Reldo about the dwarves");
+				TaskListing.removeTasks(TaskListing.taskRemove);
+			
 			}else
-			if((Settings.get(2547) & 0x1) ==1){
+			if((ctx.settings.get(2547) & 0x1) ==1){
 				DeltaQuester.progress = 2;
 				cs1();//Speak to Reldo about the dwarves.
+				TaskListing.updateTaskRemove("Start the quest");
+				TaskListing.removeTasks(TaskListing.taskRemove);
 			}else
-			if((Settings.get(2547) & 0x1) ==0){
+			if((ctx.settings.get(2547) & 0x1) ==0){
 				DeltaQuester.progress = 1;
 				cs0();//Start the quest.
+				
 			}
 		
 	}
@@ -134,195 +173,187 @@ public class TheKnightsSword extends Node{
 
 
 	private void cs4() {
+		Tile player = ctx.players.local().getLocation();
 		if(hasSword){
 			cs0();
-		}else if(!Method.teleporting&& Inventory.getItem(667)!=null ){
-			Quests.DYNAMICV = false;
+		}else if(!Method.teleporting&& Method.inventoryContains(667)){
+			Vars.DYNAMICV = false;
 			hasSword = true;
 		}else if(hasBlurite){
 			cs2();
 		}else
-		if(!Method.teleporting && Inventory.getItem(668)!=null){
+		if(!Method.teleporting && Method.inventoryContains(668)){
 				hasBlurite = true;
 		}else if(init!=null){
-			Quests.state("" + (init.getX() - Players.getLocal().getLocation().getX()) + " " + ( init.getY() - Players.getLocal().getLocation().getY()));
-			if(new Tile(init.getX()+39, init.getY()+18,0).distanceTo()<7){
-				Quests.DYNAMICV = false;
-				Quests.interactO(2561, "Mine");
+			Method.state("" + (init.getX() - player.getX()) + " " + ( init.getY() - player.getY()));
+			if(new Tile(init.getX()+39, init.getY()+18,0).distanceTo(player)<7){
+				Vars.DYNAMICV = false;
+				Method.interactO(2561, "Mine","Ore");
 			}else
-			if(new Tile(init.getX()+23, init.getY()+30,0).distanceTo()<7){
-				new Tile(init.getX()+39, init.getY()+18,0).clickOnMap();
+			if(new Tile(init.getX()+23, init.getY()+30,0).distanceTo(player)<7){
+				Method.clickOnMap(new Tile(init.getX()+39, init.getY()+18,0));
 			}else
-			if(new Tile(init.getX()-2, init.getY()+29,0).distanceTo()<7){
-				new Tile(init.getX()+23, init.getY()+30,0).clickOnMap();
+			if(new Tile(init.getX()-2, init.getY()+29,0).distanceTo(player)<7){
+				Method.clickOnMap(new Tile(init.getX()+23, init.getY()+30,0));
 			}else
-			if(new Tile(init.getX()-14, init.getY()+25,0).distanceTo()<7){
+			if(new Tile(init.getX()-14, init.getY()+25,0).distanceTo(player)<7){
 				
-				new Tile(init.getX()+0, init.getY()+30,0).clickOnMap();
+				Method.clickOnMap(new Tile(init.getX()+0, init.getY()+30,0));
 			}else
-			if(new Tile(init.getX()-15, init.getY()+11,0).distanceTo()<10){
+			if(new Tile(init.getX()-15, init.getY()+11,0).distanceTo(player)<10){
 			
-				new Tile(init.getX()-14, init.getY()+25,0).clickOnMap();
+				Method.clickOnMap(new Tile(init.getX()-14, init.getY()+25,0));
 			}else
-			if(new Tile(init.getX()-13, init.getY()-1,0).distanceTo()<5){
+			if(new Tile(init.getX()-13, init.getY()-1,0).distanceTo(player)<5){
 				
-				new Tile(init.getX()-15, init.getY()+11,0).clickOnMap();
+				Method.clickOnMap(new Tile(init.getX()-15, init.getY()+11,0));
 		}else {
-			if(Players.getLocal().isIdle())
-			new Tile(init.getX()-13, init.getY()-1,0).clickOnMap();
+			if(ctx.players.local().isIdle())
+				Method.clickOnMap(new Tile(init.getX()-13, init.getY()-1,0));
 		}
 		
-		}else if(SceneEntities.getNearest(31128)!=null){//Inside the cave.
-			Task.sleep(1500);
-			init = Players.getLocal().getLocation();
-		}else if(new Tile(3007,3151,0).distanceTo()<14){
-			if(new Tile(3007,3151,0).distanceTo()<6){
-				Quests.interactO(9472, "Climb-down");
-			}else Quests.findPath(new Tile(3007,3151,0));
+		}else if(Method.objIsNotNull(31128)){//Inside the cave.
+			ctx.game.sleep(1500);
+			init = ctx.players.local().getLocation();
+		}else if(new Tile(3007,3151,0).distanceTo(player)<14){
+			if(new Tile(3007,3151,0).distanceTo(player)<6){
+				Method.interactO(9472, "Climb-down","Ladder");
+			}else Method.findPath(new Tile(3007,3151,0),"Finding a path");
 		}else cs2();
 		
 	}
 
 
 	private void cs3() {
-		NPC King = NPCs.getNearest(605);
-		SceneObject cabinet = SceneEntities.getNearest(2271);
-		SceneObject opencabinet = SceneEntities.getNearest(2272);
+		Tile player = ctx.players.local().getLocation();
+		//NPC King = NPCs.getNearest(605);
+		//SceneObject cabinet = SceneEntities.getNearest(2271);
+		//SceneObject opencabinet = SceneEntities.getNearest(2272);
 			if(hasPortrait){
 			cs2();
-		}else if(!Method.teleporting && Inventory.getItem(666)!=null){
+		}else if(!Method.teleporting && Method.inventoryContains(666)){
 			hasPortrait = true;
 		}else
-		if(Game.getPlane()==2 && new Tile(2982,3335,2).canReach()){
-			if(new Tile(2982,3335,2).distanceTo()<5){
-				while(Widgets.get(1186).validate()){
-					Quests.clickContinue();
+		if(ctx.game.getPlane()==2 && new Tile(2982,3335,2).getMatrix(ctx).isReachable()){
+			if(new Tile(2982,3335,2).distanceTo(player)<5){
+				while(ctx.widgets.get(1186).isValid()){
+					Method.pressContinue();
 				}
-				if ((King != null && cabinet != null) || opencabinet!=null) {
-					if ((cabinet!=null &&King.getLocation().distance(cabinet.getLocation()) > 3)|| opencabinet!=null) {
-						Quests.DYNAMICV = false;
-						Quests.state("HERE");
-						Quests.interactO(2271, "Open");
-						Quests.interactO(2272, "Search");
+				if ((Method.npcIsNotNull(605) && Method.objIsNotNull(2271)) || Method.objIsNotNull(2272)) {
+					if ((Method.objIsNotNull(2271) &&Method.getNPC(605).getLocation().distanceTo(Method.getObject(2271).getLocation()) > 3)|| Method.objIsNotNull(2272)) {
+						Vars.DYNAMICV = false;
+						Method.state("HERE");
+						Method.interactO(2271, "Open","Cabinet");
+						Method.interactO(2272, "Search","Cabinet");
 					} else
-						Quests.state("Waiting for the king to move farther away.");
+						Method.state("Waiting for the king to move farther away.");
 				}
-			}else new Tile(2982,3335,2).clickOnMap();
+			}else Method.clickOnMap(new Tile(2982,3335,2));
 		}else
-		if(Game.getPlane()==2){
-			Quests.interactO(11714, "Open");
+		if(ctx.game.getPlane()==2){
+			Method.interactO(11714, "Open","");
 		}else
-		if(Game.getPlane()==1 && (new Tile(2989,3339,1).canReach())){
-			if(new Tile(2982,3338,1).distanceTo()<5){
-				Quests.interactO(11734, "Climb");
-			}else new Tile(2982,3338,1).clickOnMap();
-		}else if(Game.getPlane()==1 && (new Tile(2993,3341,1).canReach())){
-			Quests.interactO(11714, "Open");
+		if(ctx.game.getPlane()==1 && (new Tile(2989,3339,1).getMatrix(ctx).isReachable())){
+			if(new Tile(2982,3338,1).distanceTo(player)<5){
+				Method.interactO(11734, "Climb","");
+			}else Method.clickOnMap(new Tile(2982,3338,1));
+		}else if(ctx.game.getPlane()==1 && (new Tile(2993,3341,1).getMatrix(ctx).isReachable())){
+			Method.interactO(11714, "Open","");
 		}else
-		if(new Tile(2993,3342,0).canReach()){
-			if(new Tile(2993,3342,0).distanceTo()<4){
-			Quests.interactO(11727, "Climb");
-			}else new Tile(2993,3342,0).clickOnMap();
+		if(new Tile(2993,3342,0).getMatrix(ctx).isReachable()){
+			if(new Tile(2993,3342,0).distanceTo(player)<4){
+			Method.interactO(11727, "Climb","");
+			}else Method.clickOnMap(new Tile(2993,3342,0));
 		}else
-		if(new Tile(2987,3341,0).canReach()){
-			Quests.interactO(11714, "Open");
+		if(new Tile(2987,3341,0).getMatrix(ctx).isReachable()){
+			Method.interactO(11714, "Open","");
 		}else
-		if(new Tile(2984,3341,0).canReach()){
-			new Tile(2985,3341,0).clickOnMap();
-			Quests.interactO(11714, "Open");
-		}else if(new Tile(2981,3341,0).distanceTo()<9){
-			Quests.interactO(11716, "Open");
+		if(new Tile(2984,3341,0).getMatrix(ctx).isReachable()){
+			Method.clickOnMap(new Tile(2985,3341,0));
+			Method.interactO(11714, "Open","");
+		}else if(new Tile(2981,3341,0).distanceTo(player)<9){
+			Method.interactO(11716, "Open","");
 		}else cs0();
 		
 	}
 
 
 	private void cs2() {
-		if(new Tile(2998, 3145, 0).distanceTo()<13){
-			if(NPCs.getNearest(604).getLocation().distanceTo()<7){
-				while(Widgets.get(1186).validate()){
-					Quests.clickContinue();
+		final String opt[] = {"Something else","Would you like some red"}; 
+		Tile player = ctx.players.local().getLocation();
+		
+		if(new Tile(2998, 3145, 0).distanceTo(player)<13){
+			if(Method.npcIsNotNull(604))//Thurgo
+			if(Method.getNPC(604).getLocation().distanceTo(player)<7){
+				while(ctx.widgets.get(1186,0).isVisible()){
+					Method.pressContinue();
 				}
-				if(Quests.tActive()){
-					Quests.DYNAMICV = false;
-					if(Quests.chatting()){
-						Quests.clickContinue();
-					}else if(Quests.findOption("Something else")){
-						Quests.clickOption(1188, Quests.value);
-					}else if(Quests.findOption("Would you like some red")){
-						Quests.clickOption(1188, Quests.value);
+				if(!Method.findOption(opt))
+					if(!Method.isChatting("Thurgo")){
+						Vars.DYNAMICV = false;
+						Method.speakTo(604, "Thurgo");
 					}
-				}else Quests.speakTo(604);//Speak to Thurgo
-			}else NPCs.getNearest(604).getLocation().clickOnMap();
-		}else if(Quests.DYNAMICV){
-			Quests.walking(pathToDwarfSmith, "Walking to Thurgo the dwarf", false);
-		}else if(Quests.FALADORLODE.distanceTo()<5 || Quests.PORTSARIMLODE.distanceTo()<5){
-			Quests.DYNAMICV = true;
-		}else if((Settings.get(3) >> 8 & 1)==1){
-			Method.teleportTo(48);//Port Sarim lodestone
-		}else Method.teleportTo(46);
+			
+			}else Method.clickOnMap(Method.getNPC(604).getLocation());
+		}else if(Vars.DYNAMICV){
+			Method.walking(pathToDwarfSmith, "Walking to Thurgo the dwarf", false);
+		}else if(TeleportLode.FALADOR.getTile().distanceTo(player)<5 || TeleportLode.PORTSARIM.getTile().distanceTo(player)<5){
+			Vars.DYNAMICV = true;
+		}else if((ctx.settings.get(3) >> 8 & 1)==1){
+			Method.teleportTo(TeleportType.PORTSARIM.getTeleport(),"Port Sarim");//Port Sarim lodestone
+		}else Method.teleportTo(TeleportType.FALADOR.getTeleport(),"Falador");
 		
 	}
 
 
 	private void cs1() {
-		if(new Tile(3210, 3488, 0).distanceTo()<7 || ((NPCs.getNearest(647)!=null) && NPCs.getNearest(647).getLocation().distanceTo()<5)){
-			if(new Tile(3210,3492,0).canReach()){
-				if(Quests.tActive()){
-					Quests.DYNAMICV = false;
-					if(Quests.chatting()){
-						Quests.clickContinue();
-					}else if(Quests.findOption("I'd like to talk")){
-						Quests.clickOption(1188, Quests.value);
-					}else if(Quests.findOption("What do you know")){
-						Quests.clickOption(1188, Quests.value);
+		final String opt[] = {"I'd like to talk","What do you know"}; 
+		Tile player = ctx.players.local().getLocation();
+		
+		if(new Tile(3210, 3488, 0).distanceTo(player)<7 || ((Method.npcIsNotNull(647)) && Method.getNPC(647).getLocation().distanceTo(player)<5)){
+			if(new Tile(3210,3492,0).getMatrix(ctx).isReachable()){
+				if(!Method.findOption(opt))
+					if(!Method.isChatting("Reldo")){
+						Vars.DYNAMICV = false;
+						Method.speakTo(647, "Reldo");
 					}
-				}else Quests.speakTo(647);//Reldo
-			}else Quests.interactO(15536, "Open");
-		}else if(Quests.DYNAMICV){
-			Quests.walking(pathToReldo, "Walking to Reldo", false);
-		}else if(Quests.varrokLode.distanceTo()<5){
-			Quests.DYNAMICV = true;
-		}else Method.teleportTo(51);//Varrok
+			}else Method.interactO(15536, "Open","Door");
+		}else if(Vars.DYNAMICV){
+			Method.walking(pathToReldo, "Walking to Reldo", false);
+		}else if(TeleportLode.VARROCK.getTile().distanceTo(player)<5){
+			Vars.DYNAMICV = true;
+		}else Method.teleportTo(TeleportType.VARROCK.getTeleport(),"Varrock");//Varrok
 		
 	}
 
 
 	private void cs0() {//Start the quest.
-		 
-		if(new Tile(2977,3339,0).distanceTo()<10){
-			while(Widgets.get(1186).validate()){
-				Quests.clickContinue();
+		final String opt[] = {"Ok, I'll give it a go.","So would these dwarves","I can make a new","And how is life","Chat",}; 
+		Tile player = ctx.players.local().getLocation(); 
+		
+		if(new Tile(2977,3339,0).distanceTo(player)<10){
+			while(ctx.widgets.get(1186,0).isVisible()){
+				Method.pressContinue();
 			}
-			if(Quests.tActive()){
-				Quests.DYNAMICV = false;
-				if(Quests.chatting()){
-					Quests.clickContinue();
-				}else if(Quests.findOption("Chat")){
-					Quests.clickOption(1188, Quests.value);
-				}else if(Quests.findOption("And how is life")){
-					Quests.clickOption(1188, Quests.value);
-				}else if(Quests.findOption("I can make a new")){
-					Quests.clickOption(1188, Quests.value);
-				}else if(Quests.findOption("So would these dwarves")){
-					Quests.clickOption(1188, Quests.value);
-				}else if(Quests.findOption("Ok, I'll give it a go.")){
-					Quests.clickOption(1188, Quests.value);
+			if(!Method.findOption(opt))
+				if(!Method.isChatting("Squire")){
+					Vars.DYNAMICV = false;
+					Method.speakTo(606, "Squire");
+					System.out.println("Clicking squire");
 				}
-			}else Quests.speakTo(606);//Speak to the squire
-		}else if(Quests.DYNAMICV){
-			Quests.walking(pathToSquire, "Walking to the squire", false);
-		}else if(Quests.FALADORLODE.distanceTo()<6){
-			Quests.DYNAMICV = true;
-		}else if((Settings.get(3) >> 7 & 1)==1){
-			Method.teleportTo(46);//Falador tele
+			
+		}else if(Vars.DYNAMICV){
+			Method.walking(pathToSquire, "Walking to the squire", false);
+		}else if(TeleportLode.FALADOR.getTile().distanceTo(player)<6){
+			Vars.DYNAMICV = true;
+		}else if((ctx.settings.get(3) >> 7 & 1)==1){
+			Method.teleportTo(TeleportType.FALADOR.getTeleport(),"Falador");//Falador tele
 		}else {
-			Quests.state("Falador lodestone is not activated.");
-			Task.sleep(1500);
+			Method.state("Falador lodestone is not activated.");
+			ctx.game.sleep(1500);
 			DeltaQuester.e = true;
 		}
 		
 	}
 
 }
-*/

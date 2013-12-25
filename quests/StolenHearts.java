@@ -158,7 +158,7 @@ public class StolenHearts extends Node{
 	
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
-			if(!DeltaQuester.checkedBank){
+			if(!DeltaQuester.checkedBank && (ctx.settings.get(2449)&0x7F)!=105){
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.settings.get(2449)&0x7F)!=105){
