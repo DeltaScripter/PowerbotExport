@@ -34,7 +34,7 @@ import divination.DivineData.wisps;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
 description = "Trains the Divination Skill; harvests and converts energy to your choosing",
-topic = 1130348, version = 1.1, website = "http://www.powerbot.org/community/topic/1130348-delta-divinity/"
+topic = 1130348, version = 1.12, website = "http://www.powerbot.org/community/topic/1130348-delta-divinity/"
 )
 public class DivineBody extends PollingScript implements PaintListener{
 
@@ -225,21 +225,20 @@ public class DivineBody extends PollingScript implements PaintListener{
 			}
 			
 			while(ctx.players.local().getAnimation()==animationType){
-				waiting = new Timer(4500);
+				waiting = new Timer(3500);
 				updateCounts();
 				calcAntiPattern();
 				state = "Converting memories..";
 			}
-			
+			if(!waiting.isRunning())
 			if(!Method.inventoryContains(memoryType) && !Method.backPackIsFull()){//if you're ready to gather more memories..
 				harvest = true;
 			}else
 			if(closeToObj(riftArea,"Walking to rift")){
 				if(ctx.widgets.get(131,convertType).isValid()&&
 						ctx.widgets.get(131,convertType).isVisible()){
-					System.out.println("Here" + 	ctx.widgets.get(131,convertType));
 					ctx.widgets.get(131,convertType).click();
-					ctx.game.sleep(Random.nextInt(600, 1200));
+					waiting = new Timer(1000);
 					
 				}else if(ctx.widgets.get(1186,2).isVisible()){
 					state = "Closing dialogue";
