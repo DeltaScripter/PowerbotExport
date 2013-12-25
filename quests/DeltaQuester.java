@@ -321,6 +321,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
 						"Buyers and Cellars","Cook's Assistant","Clock Tower","Death Plateau","Demon Slayer","Druidic Ritual",
+						"Gunnar's Ground",
 						"Imp Catcher","Let Them Eat Pie","Monk's Friend","Pirate's Treasure","Stolen Hearts","Swept Away",
 						"The Restless Ghost","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
 				};
@@ -1045,6 +1046,14 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 	            		}
 		            	}else if(name.equals("Death Plateau")){
 		            		if((ctx.settings.get(2337) & 0x1FF) ==449){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Gunnar's Ground")){
+		            		if((ctx.settings.get(2111) & 0x7F) == 100){
 		            			incompleteQuests.put( value, "complete" );  
 	            			if(index == i)
 	            				 if( incompleteQuests.containsKey( value ) )  {

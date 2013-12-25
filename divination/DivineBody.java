@@ -230,15 +230,14 @@ public class DivineBody extends PollingScript implements PaintListener{
 				calcAntiPattern();
 				state = "Converting memories..";
 			}
-			if(waiting.isRunning()){
-				state = "Waiting.." + waiting.getRemaining();
-			}else
+			
 			if(!Method.inventoryContains(memoryType) && !Method.backPackIsFull()){//if you're ready to gather more memories..
 				harvest = true;
 			}else
 			if(closeToObj(riftArea,"Walking to rift")){
-				if(ctx.widgets.get(131,convertType).isVisible()){
-					
+				if(ctx.widgets.get(131,convertType).isValid()&&
+						ctx.widgets.get(131,convertType).isVisible()){
+					System.out.println("Here" + 	ctx.widgets.get(131,convertType));
 					ctx.widgets.get(131,convertType).click();
 					ctx.game.sleep(Random.nextInt(600, 1200));
 					
@@ -490,7 +489,7 @@ private void setMouse(Graphics g) {
 			if(convChoice=="Divinity Experience"){
 				convertType = convert.DIVINITYEXP.getID();
 				animationType = animation.TODIVINEEXP.getID();
-			}
+			}			 
 			if(convChoice=="Enhanced Experience"){
 				convertType = convert.BOTH.getID();
 				animationType = animation.TODIVINEEXP.getID();
@@ -519,7 +518,7 @@ private void setMouse(Graphics g) {
 			//---- convertList ----
 			convertList.setModel(new DefaultComboBoxModel<String>(new String[] {
 				"Divine Energy",
-				"Divine Experience",
+				"Divinity Experience",
 				"Enhanced Experience"
 			}));
 

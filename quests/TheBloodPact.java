@@ -1,9 +1,12 @@
 package quests;
 
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
+
+import divination.DivineBody;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -38,9 +41,9 @@ public class TheBloodPact extends Node{
 		Method.foodSupport();
 	
 		
-		if(DeltaQuester.checkedBank)
-			Method.determineBank(bankItems);
-			if(!DeltaQuester.checkedBank&& (ctx.settings.get(2334)&0x3F)!=60){
+		//if(DeltaQuester.checkedBank)
+		//	Method.determineBank(bankItems);
+			if(DeltaQuester.checkedBank&& (ctx.settings.get(2334)&0x3F)!=60){
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.settings.get(2334)&0x3F)!=60){
@@ -229,7 +232,14 @@ public class TheBloodPact extends Node{
 			}
 		}else
 		if(new Tile(3246,3198,0).distanceTo(ctx.players.local().getLocation())<9){
-			Method.interactO(2745, "Climb-down", "Catacomb");
+			for(GameObject y: ctx.objects.select().name("Catacomb entrance").nearest().first()){//Enters the catacomb
+						if (y.isOnScreen()) {
+							ctx.mouse.move(y.getLocation().getMatrix(ctx).getPoint(Random.nextDouble() * 0.2D - 0.1D,+0.10D,+100));
+							ctx.mouse.click(true);
+							ctx.game.sleep(Random.nextInt(700, 1200));
+						} else ctx.camera.turnTo(y);
+					
+					}
 			Method.sleep(4000);
 		}else cs0();//get the player to the catacombs
 		

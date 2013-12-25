@@ -87,7 +87,7 @@ public class DivineData {
 	}
 	public enum convert{
 		
-		DIVINEENERGY(1),DIVINITYEXP(6),BOTH(7);
+		DIVINEENERGY(29),DIVINITYEXP(26),BOTH(39);
 		
 		int id;
 		convert(int id){
