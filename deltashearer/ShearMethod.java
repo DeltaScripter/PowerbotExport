@@ -22,6 +22,9 @@ public class ShearMethod extends MethodProvider{
 	Timer timer = new Timer(0);
 	
 	public void teleportTo(int loc, String teleName) {
+		while(ctx.bank.isOpen())
+			ctx.bank.close();
+		
 		if(!timer.isRunning()){
 		if(ctx.widgets.get(1092,loc).isVisible()){//lodestone screen
 			ctx.mouse.move(ctx.widgets.get(1092).getComponent(loc).getCenterPoint());

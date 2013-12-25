@@ -225,7 +225,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 			}
 			
 			while(ctx.players.local().getAnimation()==animationType){
-				waiting = new Timer(3500);
+				waiting = new Timer(4500);
 				updateCounts();
 				calcAntiPattern();
 				state = "Converting memories..";

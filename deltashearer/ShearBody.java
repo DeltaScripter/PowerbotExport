@@ -10,25 +10,32 @@ import java.util.List;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.Skills;
 import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
+import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.Widget;
 
 
 
 
-@org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "DeltaShearer", 
-description = "In  development crafting exp", 
-website = "", version = 1, hidden = true)
+@org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Sheep", 
+description = "Shears sheep, makes balls of wool, banks the wool. For crafting xp; start with shears", 
+website = "", version = 1, hidden = false)
 public class ShearBody extends PollingScript implements PaintListener{
 
 	public ShearBody(){
 		getExecQueue(State.START).add(new Runnable() {
 			@Override
 			public void run() {
+				sheepID.add(1765);
+				sheepID.add(43);
+				sheepID.add(5157);
+				sheepID.add(5160);
+				sheepID.add(5161);
 				   addNode(new spinWools(ctx));
 				   addNode(new Shear(ctx));
 			}
@@ -43,6 +50,7 @@ public class ShearBody extends PollingScript implements PaintListener{
 	private String state;
 	public boolean spinWool = false;
 	public Timer wait = new Timer(0);
+	ArrayList<Integer> sheepID = new ArrayList<Integer>();
 	public ShearMethod m = new ShearMethod(ctx);
 	@Override
 	public int poll() {
@@ -77,7 +85,6 @@ public class ShearBody extends PollingScript implements PaintListener{
 				for(String text: actions){
 					if(text.contains(string)){
 						if(t.interact(string)){
-						System.out.println("Using " + string + " with item: " + o);
 						ctx.game.sleep(2000);
 						}
 					}
@@ -113,14 +120,21 @@ public class ShearBody extends PollingScript implements PaintListener{
 			
 			return false;
 		}
-	   
+		public void npcInteract(int i, String string) {
+			ArrayList<String> actions = new ArrayList<String>();
+			for(Npc n : ctx.npcs.select().id(i).nearest().first()){
+					if (n.isOnScreen()) {
+						n.interact(string);
+					} else ctx.camera.turnTo(n);
+				}
+		}
 		class Shear extends ShearNode{
 
 			public Shear(MethodContext ctx) {
 				super(ctx);
 			}
 			Tile sheepArea = new Tile(3197,3291,0);
-			int[] sheep = {1765,43,5160};
+		
 			Timer wait = new Timer(0);
 			boolean teleported = false;
 			@Override
@@ -130,26 +144,42 @@ public class ShearBody extends PollingScript implements PaintListener{
 
 			@Override
 			public void execute() {
+				//npcInteract(sheepID.get(1),"");
+				
 				Tile player = ctx.players.local().getLocation();
 				if(m.backPackIsFull()){
 					spinWool = true;
 				}
-				
 				if(sheepArea.getMatrix(ctx).isReachable()){
-				
 					
-					if(!wait.isRunning() && !ctx.players.local().isInMotion())
-					for(int sheepID: sheep){
+					
+					for(int index = 0; index < sheepID.size();){
+						 player = ctx.players.local().getLocation();
+						if(ctx.widgets.get(1092,0).isVisible())
+							break;
+						if(m.backPackIsFull())
+							break;
+						
+						
+						//System.out.println("Sheep is null?: " + !m.npcIsNotNull(sheepID.get(index)));
+						//if(m.npcIsNotNull(sheepID.get(index)))
+						//System.out.println("How far is sheep?: " + m.getNPC(sheepID.get(index)).getLocation().distanceTo(player));
+						
 						state = "Shearing sheep";
+						if(!wait.isRunning())
 						if(ctx.players.local().getAnimation()!=-1){
 							System.out.println("Shearing sheep");
 							wait = new Timer(2500);
-						}else if(m.npcIsNotNull(sheepID) && m.getNPC(sheepID).getLocation().distanceTo(player)<6){
-							System.out.println("Clicking sheep");
-							m.npcInteract(sheepID, "Shear");
+						}else if(m.npcIsNotNull(sheepID.get(index)) && m.getNPC(sheepID.get(index)).getLocation().distanceTo(player)<6){
+							System.out.println("Clicking sheep: "+ sheepID.get(index));
+							teleported = false;
+							npcInteract(sheepID.get(index), "Shear");
 							wait = new Timer(1500);
-						}else if(m.npcIsNotNull(sheepID))
-							m.clickOnMap(m.getNPC(sheepID).getLocation());
+						}else if(m.npcIsNotNull(sheepID.get(index))&& m.getNPC(sheepID.get(index)).getLocation().distanceTo(player)<10){
+							System.out.println("Getting to sheep: " + sheepID.get(index) + " at the location: " +m.getNPC(sheepID.get(index)).getLocation());
+							ctx.movement.stepTowards(m.getNPC(sheepID.get(index)).getLocation());
+							wait = new Timer(3000);
+						}else index++;
 					}
 					
 					
@@ -158,13 +188,11 @@ public class ShearBody extends PollingScript implements PaintListener{
 					m.interactO("Stile", "Climb-over", "Stile");
 				}else if(teleported){
 					state = "Walking to sheep pen";
-					System.out.println("Walking to the sheep pen");
 					ctx.movement.newTilePath(pathToSheep).traverse();
 				}else if(new Tile(3233,3221,0).distanceTo(player)<10){//lummbridge area
 					teleported = true;
 				}else {
 					state = "Teleporting to Lummbridge";
-					System.out.println("Teleporting");
 					m.teleportTo(47, "");//tele to lummbridge
 				}
 			}
@@ -199,35 +227,51 @@ public class ShearBody extends PollingScript implements PaintListener{
 				spinWool = false;
 			}else
 			if(!m.inventoryContains("Wool") && m.inventoryContains("Ball of wool")){
-				state = "Dropping ball of wool(s)";
-				m.interactInventory("Ball of wool", "Drop", "Ball of wool");
+				state = "Going to bank balls of wool";
+				if(ctx.game.getPlane()==2){
+					if(new Tile(3209,3220,2).distanceTo(player)<6){
+						if(ctx.bank.isOpen()){
+							ctx.bank.deposit(1759, 27);//ball of wool
+						}else ctx.bank.open();
+					}else ctx.movement.stepTowards((new Tile(3209,3220,2)));
+				}else if(ctx.game.getPlane()==1){
+					if(new Tile(3205,3209,1).distanceTo(player)<6){//stairs to bank
+						teleported = false;
+						m.interactO("Staircase", "Climb-up", "Stairs");
+					}else ctx.movement.stepTowards(new Tile(3205,3209,1));//stairs
+				}else getTo1Floor();
 			}else
 			if(!wait.isRunning())
 			if(ctx.game.getPlane()==1){
 				if(wheelArea.distanceTo(player)<6){
 					if(clickWhoolItem.isVisible()){
 						if(currentItemSelected.getText().contains("Ball of wool")){
+							teleported = false;
 							spinButton.click();
 							wait = new Timer(2000);
 						}else clickWhoolItem.click();
 					}else
 					m.interactO("Spinning Wheel", "Spin", "Wheel");
 				}else m.clickOnMap(wheelArea);
-			}else if(new Tile(3206,3228,0).distanceTo(player)<8){
+			}else getTo1Floor();
+		}
+
+		private void getTo1Floor() {
+			Tile player = ctx.players.local().getLocation();
+			 if(new Tile(3206,3228,0).distanceTo(player)<8){
 				System.out.println("Climbing stairs");
 				state = "Climbing stairs";
 				m.interactO("Staircase", "Climb", "Stairs");
 			}else if(teleported){
-				System.out.println("Walking to castle");
 				state = "Walking to the castle";
 				ctx.movement.newTilePath(pathToCastle).traverse();
 			}else if(new Tile(3233,3221,0).distanceTo(player)<10){//lummbridge area
 				teleported = true;
 			}else {
 				state  ="Teleporting to Lummbridge";
-				System.out.println("Teleporting");
 				m.teleportTo(47, "");//tele to lummbridge
 			}
+			
 		}
 		   
 		   
@@ -238,5 +282,6 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 		g.setFont(myFont);
 		g.setColor(Color.green);
 		g.drawString("State: "+state, 20, 130);
+		g.drawString("Crafting level: " + ctx.skills.getLevel(Skills.CRAFTING), 20, 150);
 	}
 }
