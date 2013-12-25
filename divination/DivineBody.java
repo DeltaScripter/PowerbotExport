@@ -213,7 +213,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 			calcAntiPattern();
 			anti.closeInteruptions();
 			//Adjust camera
-			if(ctx.camera.getPitch()<65){
+			if(ctx.camera.getPitch()<50){
 				ctx.camera.setPitch(90);
 			}
 			while(riftArea==null && Method.objIsNotNull("Energy Rift")){
@@ -230,15 +230,17 @@ public class DivineBody extends PollingScript implements PaintListener{
 				calcAntiPattern();
 				state = "Converting memories..";
 			}
-			if(!waiting.isRunning())
-			if(!Method.inventoryContains(memoryType) && !Method.backPackIsFull()){
+			if(waiting.isRunning()){
+				state = "Waiting.." + waiting.getRemaining();
+			}else
+			if(!Method.inventoryContains(memoryType) && !Method.backPackIsFull()){//if you're ready to gather more memories..
 				harvest = true;
 			}else
 			if(closeToObj(riftArea,"Walking to rift")){
 				if(ctx.widgets.get(131,convertType).isVisible()){
 					
 					ctx.widgets.get(131,convertType).click();
-					waiting = new Timer(Random.nextInt(2700, 3000));
+					ctx.game.sleep(Random.nextInt(600, 1200));
 					
 				}else if(ctx.widgets.get(1186,2).isVisible()){
 					state = "Closing dialogue";
@@ -256,11 +258,10 @@ public class DivineBody extends PollingScript implements PaintListener{
 		private void clickRift(String name, String o) {
 			for(GameObject y: ctx.objects.select().name(name).nearest().first()){
 				DivineBody.state = o;
-					if(!waiting.isRunning())
 						if (y.isOnScreen()) {
 							ctx.mouse.move(y.getLocation().getMatrix(ctx).getPoint(Random.nextDouble() * 0.2D - 0.1D,+0.10D,+100));
 							ctx.mouse.click(true);
-							waiting = new Timer(Random.nextInt(1700, 2000));
+							ctx.game.sleep(Random.nextInt(700, 1200));
 						} else ctx.camera.turnTo(y);
 					
 					}
