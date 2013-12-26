@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.Skills;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.util.Random;
@@ -163,14 +164,17 @@ public class DivineBody extends PollingScript implements PaintListener{
 	private int initialExp;
 	private int expGained;
 	private int expPerHr;
-	
+	static int level;
+	static int xpToLevel;
 	DivineMethod Method = new DivineMethod(ctx);
 	DivineAntipattern anti = new DivineAntipattern(ctx);
 	public static boolean prioritizeNearbyWisps;
+	public static boolean catchChronicles = true;
 	
 	
 	@Override
 	public int poll() {
+		//System.out.println("Harvest: " +harvest);
 		while(Method.inventoryContains("Logs")){
 			DivineBody.state = "Dropping logs";
 			Method.interactInventory("Logs", "Drop", "Logs");
@@ -178,6 +182,10 @@ public class DivineBody extends PollingScript implements PaintListener{
 		while(ctx.widgets.get(1477,54).isVisible()){
 			state = "Closing interface";
 			ctx.widgets.get(1477,54).getChild(2).click();
+		}
+		while(ctx.widgets.get(1401,35).isVisible()){//become a member!
+			state = "Closing interface";
+			ctx.widgets.get(1401,35).click();
 		}
 		if(start){
 		for(DivineNode node: nodeList){
@@ -291,16 +299,28 @@ public class DivineBody extends PollingScript implements PaintListener{
 					state = "Harvesting spring";
 					calcAntiPattern();
 					updateCounts();
+					if(foundChronicle())
+						break;
 				}
 				while(Method.backPackIsFull()){
 					state = "backpack is full";
 					harvest = false;
 					break;
 				}
+				
+				if(Method.inventoryContains("Chronicle fragment"))
+				while(Method.inventoryStackSize("Chronicle fragment")==10){
+					state = "Destroying Chronicle fragments";
+					if(ctx.widgets.get(1183,6).isVisible()){//are you sure?(destroy chronicles)
+						ctx.widgets.get(1183,6).click();//yes button
+					}else
+					Method.interactInventory("Chronicle fragment", "Destroy", "Fragement");
+				}
 				if(ctx.widgets.get(131,1).isVisible()){
 					state = "Closing interference";
 					Method.clickOnMap(ctx.players.local().getLocation());
 				}else
+				if(!foundChronicle())//catches chronicles if they appear
 				if(!foundEnrichedSpring("Enriched sparkling spring"))
 				if(!foundEnrichedSpring("Enriched glowing spring"))
 					
@@ -330,11 +350,30 @@ public class DivineBody extends PollingScript implements PaintListener{
 						state = "Attempting to convert wisp to spring";
 						Method.npcInteract(wispKind, "Harvest");
 					}
-				}else ctx.movement.findPath(riftArea).traverse();
+				}else{
+					ctx.movement.findPath(riftArea).traverse();
+					ctx.game.sleep(Random.nextInt(600, 1200));
+				}
 				
 			}
 			
 		
+
+			private boolean foundChronicle() {
+				Tile local = ctx.players.local().getLocation();
+				if(catchChronicles){
+					
+					if(!wait.isRunning())
+					if(Method.npcIsNotNull("Chronicle fragment")){
+						
+						if(Method.getNPC("Chronicle fragment").getLocation().distanceTo(local)<7){
+							state = "Chronicle within range";
+							Method.npcInteract("Chronicle fragment","Capture");
+						}else return false;
+					}else return false;
+				}
+				return false;
+			}
 
 			private boolean foundEnrichedSpring(String string) {
 				if(Method.npcIsNotNull(string)){
@@ -365,7 +404,9 @@ public class DivineBody extends PollingScript implements PaintListener{
 			
 		}
 		private void updateCounts() {
+			 level = ctx.skills.getLevel(Skills.DIVINATION);
 			paleECount = Method.inventoryGetCount(memoryType);
+			xpToLevel = ctx.skills.getExperienceAt(level+1) - ctx.skills.getExperience(Skills.DIVINATION);
 			calcExpHr();
 			
 		}
@@ -420,7 +461,6 @@ private void setMouse(Graphics g) {
 		
 		mouseX = (int) ctx.mouse.getLocation().getX();
 		mouseY = (int) ctx.mouse.getLocation().getY();
-		int level = ctx.skills.getLevel(25);
 		setMouse(g);
 		//g.drawImage(paint, mouseX-950,mouseY-600, null);
 		int seconds = (int)(runtime.getElapsed()/1000);
@@ -441,11 +481,12 @@ private void setMouse(Graphics g) {
 		g.setFont(myFont);
 		g.setColor(Color.CYAN);
 		g.drawString("Runtime: " +hours+":"+minHold +":" + secHold, 20, 150);
-		g.drawString("Energy in inventory: " + paleECount, 20, 170);
+		g.drawString("XP left: "+xpToLevel + "XP", 20, 170);
 		g.drawString("Current level: " + level, 20, 190);
 		g.drawString("XP Gained: " + expGained + " XP : P/Hr(" +expHr+"K)" , 20, 210);
 		g.drawString("Location: " + location, 20, 230);
 		g.drawString("Prioritize nearby wisps: " + prioritizeNearbyWisps, 20, 250);
+		g.drawString("Capture & destroy chronicles: " + catchChronicles, 20, 270);
 		//g.drawString("XP per hour: "+ expPerHr, 20, 230);
 		}
 		
@@ -477,6 +518,11 @@ private void setMouse(Graphics g) {
 
 		private void strtBtnActionPerformed(ActionEvent e) {
 			String convChoice = convertList.getSelectedItem().toString();
+			
+			if(chronicleCheckButton2.isSelected()){
+				catchChronicles = true;
+			}else catchChronicles = false;
+			
 			if(priorCheckButton.isSelected()){
 				prioritizeNearbyWisps = true;
 			}else prioritizeNearbyWisps = false;
@@ -498,11 +544,14 @@ private void setMouse(Graphics g) {
 		}
 
 		private void initComponents() {
+			// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+			// Generated using JFormDesigner Evaluation license - Christian Day
 			label1 = new JLabel();
 			convertmemorylabel = new JLabel();
 			convertList = new JComboBox<String>();
 			priorCheckButton = new JCheckBox();
 			strtBtn = new JButton();
+			chronicleCheckButton2 = new JCheckBox();
 
 			//======== this ========
 			Container contentPane = getContentPane();
@@ -516,9 +565,9 @@ private void setMouse(Graphics g) {
 
 			//---- convertList ----
 			convertList.setModel(new DefaultComboBoxModel<String>(new String[] {
-				"Divine Energy",
-				"Divinity Experience",
-				"Enhanced Experience"
+					"Divine Energy",
+					"Divinity Experience",
+					"Enhanced Experience"
 			}));
 
 			//---- priorCheckButton ----
@@ -532,6 +581,9 @@ private void setMouse(Graphics g) {
 					strtBtnActionPerformed(e);
 				}
 			});
+
+			//---- chronicleCheckButton2 ----
+			chronicleCheckButton2.setText("Capture and destroy chronicles");
 
 			GroupLayout contentPaneLayout = new GroupLayout(contentPane);
 			contentPane.setLayout(contentPaneLayout);
@@ -550,8 +602,10 @@ private void setMouse(Graphics g) {
 										.addGap(27, 27, 27)
 										.addComponent(convertList, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE))
 									.addGroup(contentPaneLayout.createSequentialGroup()
-										.addComponent(priorCheckButton)
-										.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+										.addGroup(contentPaneLayout.createParallelGroup()
+											.addComponent(priorCheckButton)
+											.addComponent(chronicleCheckButton2))
+										.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
 										.addComponent(strtBtn)))))
 						.addContainerGap())
 			);
@@ -568,15 +622,16 @@ private void setMouse(Graphics g) {
 						.addGroup(contentPaneLayout.createParallelGroup()
 							.addGroup(contentPaneLayout.createSequentialGroup()
 								.addComponent(priorCheckButton)
-								.addGap(0, 21, Short.MAX_VALUE))
+								.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+								.addComponent(chronicleCheckButton2)
+								.addGap(0, 16, Short.MAX_VALUE))
 							.addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-								.addGap(0, 21, Short.MAX_VALUE)
+								.addGap(0, 46, Short.MAX_VALUE)
 								.addComponent(strtBtn)))
 						.addContainerGap())
 			);
 			pack();
 			setLocationRelativeTo(getOwner());
-			// JFormDesigner - End of component initialization  //GEN-END:initComponents
 		}
 
 		private JLabel label1;
@@ -584,6 +639,7 @@ private void setMouse(Graphics g) {
 		private JComboBox<String> convertList;
 		private JCheckBox priorCheckButton;
 		private JButton strtBtn;
+		private JCheckBox chronicleCheckButton2;
 	}
 
 

@@ -39,6 +39,8 @@ public class ImpCatcher extends Node {
 	
 	boolean q = true;
 	public void execute() {
+		if(ctx.camera.getPitch()<60)
+			ctx.camera.setPitch(90);
 		DeltaQuester.numSteps = 3;
 		if(q){
 			TaskListing.taskRemove.clear();

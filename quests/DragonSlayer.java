@@ -1,4 +1,7 @@
-/*package Method;
+package quests;
+
+import lodestoneActivator.Data.TeleportLode;
+import lodestoneActivator.Data.TeleportType;
 
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.Tile;
@@ -7,7 +10,6 @@ public class DragonSlayer extends Node{
 
 	public DragonSlayer(MethodContext ctx) {
 		super(ctx);
-		// TODO Auto-generated constructor stub
 	}
 
 	public final Tile[] pathToGuild = new Tile[] { 
@@ -191,6 +193,7 @@ public class DragonSlayer extends Node{
 	public String itemDString[] = {"Anti-dragon shield","Bowl (unfired)","Wizard's mind bomb","Crayfish cage","Silk","Plank","Steel nails"};//contains the names of the items needing to be purchased.
 
 	Method Method = new Method(ctx);
+	Vars Vars = new Vars();
 	public boolean activate() {
 		return DeltaQuester.scriptToStart==32;
 	}
@@ -264,7 +267,7 @@ public class DragonSlayer extends Node{
 					}
 				}else{
 					DeltaQuester.progress = 5;
-					cs3();//Obtains Malzar's mpa piece
+					//cs3();//Obtains Malzar's mpa piece
 				}
 			//}else {
 			//	DeltaQuester.progress = 4;
@@ -276,11 +279,13 @@ public class DragonSlayer extends Node{
 		cs0();//Speak to the Guildmaster and gather more information
 		}
 		}else if(Method.useBank){
-			Method.useBank(bankItems, 1,1,90);
+			System.out.println("Attempting to use bank");
+			//Method.useBank(bankItems, 1,1,90);
 		}else
 		if((ctx.settings.get(2268)&0x3F) == 1){
 		DeltaQuester.progress = 2;
-		cs1();//Speak to Oziach about obtaining a Rune platebody
+		System.out.println("Now onto cs1");
+		//cs1();//Speak to Oziach about obtaining a Rune platebody
 		}else
 		if((ctx.settings.get(2268)&0x3F) == 0){
 		DeltaQuester.progress = 1;
@@ -292,23 +297,22 @@ public class DragonSlayer extends Node{
 	private void cs12() {//742 Elvarg ID
 		Method.skipPics();
 		if(!Method.isChatting("People"))
-		if(new Tile(2855,9636,0).canReach()){
+		if(new Tile(2855,9636,0).getMatrix(ctx).isReachable()){
 			Vars.DYNAMICV = false;
-			if(Players.getLocal().getInteracting()!=null){
+			if(ctx.players.local().getInteracting()!=null){
 				Method.basicFightNPC(742);
 			}else Method.npcInteract(742, "Attack");
 		}else
-		if(new Tile(2845,9636,0).distanceTo()<4){
+		if(new Tile(2845,9636,0).distanceTo(ctx.players.local().getLocation())<4){
 			Method.interactO(25161, "Climb", "Rocks");
-		}else if(SceneEntities.getNearest(31130)!=null){
-			new Tile(2845,9636,0).clickOnMap();
+		}else if(Method.objIsNotNull(31130)){
+			Method.clickOnMap(new Tile(2845,9636,0));
 		}else
-		if(new Tile(2835,3258,0).distanceTo()<4){
+		if(new Tile(2835,3258,0).distanceTo(ctx.players.local().getLocation())<4){
 			Method.interactO(25154, "Enter", "Hole");
 		}else
-		if(new Tile(2855,3239,0).canReach()){
-			Method.findPath(new Tile(2835,3258,0));
-		}else if((ctx.settings.get(2269)>>10&0x1)==1){
+		if(new Tile(2855,3239,0).getMatrix(ctx).isReachable()){
+			ctx.movement.findPath(new Tile(2835,3258,0));
 			cs11();//Set sail again
 		}else cs9();//Repair the ship
 		
@@ -320,68 +324,68 @@ public class DragonSlayer extends Node{
 			Method.isChatting("Cutscene");
 		}
 		if(Method.useBank){
-			Method.useBank(bankItems5, 23, 1, 90);
-		}else if(Bank.isOpen()){
-			Bank.close();
-		}else
-		if(!Method.teleporting && Inventory.getItem(1535)!=null){
+			System.out.println("Attempting to use bank here2");
+			//Method.useBank(bankItems5, 23, 1, 90);
+		}else// if(Bank.isOpen()){
+			//Bank.close();
+		//}else
+		if(!Method.teleporting && Method.inventoryContains(1535)){
 			Method.combineItems(1535, 1536);
 		}else if(hasShieldEquip){
 			
-			if(new Tile(3047,3207,1).canReach()){
+			if(new Tile(3047,3207,1).getMatrix(ctx).isReachable()){
 				if(!Method.findOption(opt))
 					if(!Method.isChatting("Ned")){
 						Method.speakTo(6082, "Ned");
 					}
 			}else
-			if(new Tile(3047,3204,0).distanceTo()<7){
+			if(new Tile(3047,3204,0).distanceTo(ctx.players.local().getLocation())<7){
 				Method.interactO(2593, "Cross", "Gangplank");
 			}else cs8();//Get the player to the docks
 			
-		}else if(Equipment.getItem(1540)!=null){
+		}else if(Method.EquipmentContains(1540)){
 			hasShieldEquip  =true;
 		}else Method.interactInventory(1540, "Wear", "Dragon Shield");
 		
 	}
 
 	private void cs10() {
-		if(!Method.teleporting && (Inventory.getItem(1540)==null&&Inventory.getItem(1538)==null)){
+		if(!Method.teleporting && (!Method.inventoryContains(1540)&&!Method.inventoryContains(1538))){
 			Method.useBank = true;
 		}
-		if(Method.useBank){
-			Method.useBank(bankItems5, 22, 1, 90);
-		}else if(Bank.isOpen()){
-			Bank.close();
-		}else
-		if(!Method.teleporting && Inventory.getItem(1535)!=null){
+		//if(Method.useBank){
+		//	Method.useBank(bankItems5, 22, 1, 90);
+		//}else if(Bank.isOpen()){
+		///	Bank.close();
+		//}else
+		if(!Method.teleporting && Method.inventoryContains(1535)){
 			Method.combineItems(1535, 1536);
 		}else if(hasShieldEquip){
 			cs7();//Speak to Ned
-		}else if(Equipment.getItem(1540)!=null){
+		}else if(Method.EquipmentContains(1540)){
 			hasShieldEquip  =true;
 		}else Method.interactInventory(1540, "Wear", "Dragon Shield");
 		
 	}
 
 	private void cs9() {//Repair the ship
-		if(Method.useBank && !new Tile(3048,3208,0).canReach()){
-			Method.useBank(bankItems4, 2, 90, 0);
-		}else
+		//if(Method.useBank && !new Tile(3048,3208,0).getMatrix(ctx).isReachable()){
+			//Method.useBank(bankItems4, 2, 90, 0);
+	//	}else
 		if(!hasStuff){
-			if(!Method.teleporting && Inventory.getItem(960)!=null && Inventory.getItem(1539)!=null){
+			if(!Method.teleporting && Method.inventoryContains(960) && Method.inventoryContains(1539)){
 				hasStuff =true;
 			}else Method.useBank = true;
 		}else
-		if(new Tile(3048,3208,0).canReach()){
+		if(new Tile(3048,3208,0).getMatrix(ctx).isReachable()){
 			Vars.DYNAMICV = false;
-			Task.sleep(1200);
 			Method.useBank = true;
 			Method.interactO(25036, "Repair", "Hole");
 		}else
-		if(new Tile(3047,3207,1).canReach()){
+		if(new Tile(3047,3207,1).getMatrix(ctx).isReachable()){
 			Method.interactO(2590, "Climb", "Ladder");
 		}else
-		if(new Tile(3047,3204,0).distanceTo()<7){
+		if(new Tile(3047,3204,0).distanceTo(ctx.players.local().getLocation())<7){
 			Method.interactO(2593, "Cross", "Gangplank");
 		}else cs8();//Get the player to the docks
 		
@@ -390,14 +394,14 @@ public class DragonSlayer extends Node{
 	private void cs8() {//Buy the ship
 		final String opt[] = {"Yep, sounds good","I'd like to buy"};
 		
-		if(!Method.teleporting && Inventory.getItem(960)==null && Inventory.getItem(1539)==null&&(ctx.settings.get(2268)&0x7) != 7
+		if(!Method.teleporting && !Method.inventoryContains(960) && !Method.inventoryContains(1539)&&(ctx.settings.get(2268)&0x7) != 7
 				&&(ctx.settings.get(2268)&0x1F) != 8){
 			Method.useBank = true;
 		}
-		if(Method.useBank&&(ctx.settings.get(2268)&0x7) != 7&&(ctx.settings.get(2268)&0x1F) != 8){
-			Method.useBank(bankItems4, 1, 90, 0);
-		}else
-		if(new Tile(3043, 3203, 0).distanceTo()<6){//Location at docks
+		//if(Method.useBank&&(ctx.settings.get(2268)&0x7) != 7&&(ctx.settings.get(2268)&0x1F) != 8){
+		//	Method.useBank(bankItems4, 1, 90, 0);
+		//}else
+		if(new Tile(3043, 3203, 0).distanceTo(ctx.players.local().getLocation())<6){//Location at docks
 			
 			if(!Method.findOption(opt))
 				if(!Method.isChatting("Klarense")){
@@ -406,19 +410,20 @@ public class DragonSlayer extends Node{
 			
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToDocks, "Walking to the docks in Port Sarim", false);
-		}else if(Vars.PORTSARIMLODE.distanceTo()<10|| Vars.FALADORLODE.distanceTo()<10){
+		}else if(TeleportLode.PORTSARIM.getTile().distanceTo(ctx.players.local().getLocation())<10|| 
+				TeleportLode.FALADOR.getTile().distanceTo(ctx.players.local().getLocation())<10){
 			Vars.DYNAMICV = true;
 		}else if(Method.isPortSarimLodeAct()){
-			Method.teleportTo(Vars.PORTSARIMTELEPORT);
-		}else Method.teleportTo(Vars.FALADORETELEPORT);
+			Method.teleportTo(TeleportType.PORTSARIM.getTeleport(),"Port Sarim");
+		}else Method.teleportTo(TeleportType.FALADOR.getTeleport(),"Falador");
 		
 	}
 
 	private void cs7() {//Speaks to Ned
 		final String opt[] = {"Will you take me to","You're a sailor? Could","Talk about something"};
 		
-		if(new Tile(3103, 3257, 0).distanceTo()<7){
-			if(new Tile(3100,3257,0).canReach()){
+		if(new Tile(3103, 3257, 0).distanceTo(ctx.players.local().getLocation())<7){
+			if(new Tile(3100,3257,0).getMatrix(ctx).isReachable()){
 				Vars.DYNAMICV  =false;
 				if(!Method.findOption(opt))
 					if(!Method.isChatting("Ned")){
@@ -427,21 +432,22 @@ public class DragonSlayer extends Node{
 			}else Method.interactO(1239, "Open", "Door");
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToNed, "Walking to Ned", false);
-		}else if(Vars.DRAYNORLODE.distanceTo()<10 || Vars.LUMMBRIDGELODE.distanceTo()<10){
+		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(ctx.players.local().getLocation())<10 || 
+				TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().getLocation())<10){
 			Vars.DYNAMICV = true;
 		}else if(Method.DraynorLodeIsActive()){
-			Method.teleportTo(Vars.DRAYNORTELEPORT);
-		}else Method.teleportTo(Vars.LUMBRIDGETELEPORT);
+			Method.teleportTo(TeleportType.DRAYNOR.getTeleport(),"Draynor");
+		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),"Lumbridge");
 		
 	}
 
 	private void cs6() {//Speaks to the goblin in the jail
 		final String opt[] = {"Alright then, ","I suppose I could pay you","I believe you've got a"};
 		
-		 if(!Method.teleporting&& Inventory.getItem(1536)!=null){
+		 if(!Method.teleporting&& Method.inventoryContains(1536)){
 				hasWormMap = true;
 			}else
-		if(new Tile(3012,3189,0).canReach() &&new Tile(3012,3189,0).distanceTo()<5){
+		if(new Tile(3012,3189,0).getMatrix(ctx).isReachable() &&new Tile(3012,3189,0).distanceTo(ctx.players.local().getLocation())<5){
 			Vars.DYNAMICV = false;
 			Method.skipPics();
 			if(!Method.findOption(opt))
@@ -449,26 +455,26 @@ public class DragonSlayer extends Node{
 					Method.speakTo(745, "Goblin");
 				}
 		}else
-		if(new Tile(3010, 3198, 0).distanceTo()<4){
-			if(new Tile(3012,3189,0).canReach()){
-				new Tile(3012,3189,0).clickOnMap();
+		if(new Tile(3010, 3198, 0).distanceTo(ctx.players.local().getLocation())<4){
+			if(new Tile(3012,3189,0).getMatrix(ctx).isReachable()){
+				Method.clickOnMap(new Tile(3012,3189,0));
 			}else Method.interactO(40108, "Open", "Door");
 			
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToJail, "Walking to Port Sarim jail", false);
-		}else if(Vars.FALADORLODE.distanceTo()<10 || Vars.PORTSARIMLODE.distanceTo()<10){
+		}else if(TeleportLode.FALADOR.getTile().distanceTo(ctx.players.local().getLocation())<10 || TeleportLode.PORTSARIM.getTile().distanceTo(ctx.players.local().getLocation())<10){
 			Vars.DYNAMICV = true;
 		}else if(Method.isPortSarimLodeAct()){
-			Method.teleportTo(Vars.PORTSARIMTELEPORT);
-		}else Method.teleportTo(Vars.FALADORETELEPORT);
+			Method.teleportTo(TeleportType.PORTSARIM.getTeleport(),"Port Sarim");
+		}else Method.teleportTo(TeleportType.FALADOR.getTeleport(),"Falador");
 		
 		
 	}
 
 	private void cs5() {
 		final String opt[] = {"I've heard that one of your"};
-		if(new Tile(2956, 3513, 0) .distanceTo()<7){
-			if(new Tile(2957,3514,0).canReach()){
+		if(new Tile(2956, 3513, 0) .distanceTo(ctx.players.local().getLocation())<7){
+			if(new Tile(2957,3514,0).getMatrix(ctx).isReachable()){
 				Vars.DYNAMICV = false;
 				if(!Method.findOption(opt))
 					if(!Method.isChatting("Goblin")){
@@ -477,9 +483,9 @@ public class DragonSlayer extends Node{
 			}else Method.interactO(77970, "Open", "Door");
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToGoblinVillage, "Walking to the goblin generals", false);
-		}else if(Vars.FALADORLODE.distanceTo()<10){
+		}else if(TeleportLode.FALADOR.getTile().distanceTo(ctx.players.local().getLocation())<10){
 			Vars.DYNAMICV = true;
-		}else Method.teleportTo(Vars.FALADORETELEPORT);
+		}else Method.teleportTo(TeleportType.FALADOR.getTeleport(),"Falador");
 		
 	}
 
@@ -487,27 +493,28 @@ public class DragonSlayer extends Node{
 		final String opt[] = {"I seek a piece"};
 		
 		if(!Method.teleporting && ((ctx.settings.get(2269)>>17&0x1)!=1 || (ctx.settings.get(2269)>>18&0x1)!=1||(ctx.settings.get(2269)>>19&0x1)!=1||(ctx.settings.get(2269)>>20&0x1)!=1)
-				&& (Inventory.getItem(1791)==null&&Inventory.getItem(1907)==null && Inventory.getItem(13431)==null&&Inventory.getItem(950)==null)){
+				&& (!Method.inventoryContains(1791)&&!Method.inventoryContains(1907) && !Method.inventoryContains(13431)&&!Method.inventoryContains(950))){
 			Method.useBank = true;
 		}
-		if(Method.useBank){
-			Method.useBank(bankItems3, 5,1,90);
-		}else if((ctx.settings.get(2269)&0x7)==4){//After speaking to the Oracle
-			 if(!Method.teleporting&& Inventory.getItem(1537)!=null){
+	//	if(Method.useBank){
+		//	Method.useBank(bankItems3, 5,1,90);
+		//}else 
+			if((ctx.settings.get(2269)&0x7)==4){//After speaking to the Oracle
+			 if(!Method.teleporting&& Method.inventoryContains(1537)){
 				hasLazarMap = true;
 			}else
-			if(SceneEntities.getNearest(25115)!=null){
-				if(new Tile(3053,9841,0).canReach()){
-					if(new Tile(3055,9841,0).distanceTo()<5){
+			if(Method.objIsNotNull(25115)){
+				if(new Tile(3053,9841,0).getMatrix(ctx).isReachable()){
+					if(new Tile(3055,9841,0).distanceTo(ctx.players.local().getLocation())<5){
 						Vars.DYNAMICV = false;
 						Method.skipPics();
-						if(!Widgets.get(1186).validate()){
+						if(!ctx.widgets.get(1186).isValid()){
 						Method.interactO(2587,"Open", "Chest");
 						Method.interactO(2588,"Search", "Chest");
 						}
 					}
 				}else
-				if (new Tile(3049,9840,0).distanceTo() < 7) {
+				if (new Tile(3049,9840,0).distanceTo(ctx.players.local().getLocation()) < 7) {
 					if((ctx.settings.get(2269)>>18&0x1)==1){
 						if((ctx.settings.get(2269)>>20&0x1)==1){
 							if((ctx.settings.get(2269)>>19&0x1)==1){
@@ -518,20 +525,20 @@ public class DragonSlayer extends Node{
 						}else Method.useItemOn(1907,25115, "Door");
 					}else Method.useItemOn(1791,25115, "Door");
 					
-				} else Method.findPath(new Tile(3049,9840,0));
+				} else ctx.movement.findPath(new Tile(3049,9840,0)).traverse();
 			}
-			else if(new Tile(3017, 3449, 0).distanceTo()<7){//Location outside Dwarven Mines
+			else if(new Tile(3017, 3449, 0).distanceTo(ctx.players.local().getLocation())<7){//Location outside Dwarven Mines
 				if(!Method.isChatting("Dwarf"))
 				Method.interactO(30942, "Climb-down", "Ladder");
 			}else if(Vars.DYNAMICV){
 				Method.walking(pathToDwarvenMine, "Walking to the Dwarven Mines", false);
-			}else if(Vars.FALADORLODE.distanceTo()<10){
+			}else if(TeleportLode.FALADOR.getTile().distanceTo(ctx.players.local().getLocation())<10){
 				Vars.DYNAMICV = true;
-			}else Method.teleportTo(Vars.FALADORETELEPORT);
+			}else Method.teleportTo(TeleportType.FALADOR.getTeleport(),"Falador");
 			
 			
 			
-		}else if(new Tile(3011, 3503, 0).distanceTo()<5){
+		}else if(new Tile(3011, 3503, 0).distanceTo(ctx.players.local().getLocation())<5){
 			Vars.DYNAMICV = false;
 			if(!Method.findOption(opt))
 			if(!Method.isChatting("Oracle")){
@@ -539,39 +546,39 @@ public class DragonSlayer extends Node{
 			}
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToOracle, "Walking to the Oracle", false);
-		}else if(Vars.FALADORLODE.distanceTo()<10){
+		}else if(TeleportLode.FALADOR.getTile().distanceTo(ctx.players.local().getLocation())<10){
 			Vars.DYNAMICV = true;
-		}else Method.teleportTo(Vars.FALADORETELEPORT);
+		}else Method.teleportTo(TeleportType.FALADOR.getTeleport(),"Falador");
 		
 	}
 
 	private void init() {//Determines what part of the quest 
-		if(new Tile(3269, 3167, 0).distanceTo()<6){
-			if(Bank.isOpen()){
-				if(Bank.getItem(1535)!=null || Inventory.getItem(1535)!=null){
+		if(new Tile(3269, 3167, 0).distanceTo(ctx.players.local().getLocation())<6){
+			if(ctx.bank.isOpen()){
+				if(Method.bankContains(1535) || Method.inventoryContains(1535)){
 					hasMalzarMap = true;
 				}
-				if(Bank.getItem(1537)!=null || Inventory.getItem(1537)!=null){
+				if(Method.bankContains(1537) || Method.inventoryContains(1537)){
 					hasLazarMap = true;
 				}
-				if(Bank.getItem(1536)!=null || Inventory.getItem(1536)!=null){
+				if(Method.bankContains(1536) || Method.inventoryContains(1536)){
 					hasWormMap = true;
 				}
-				if(Bank.getItem(1538)!=null || Inventory.getItem(1538)!=null){
+				if(Method.bankContains(1538) || Method.inventoryContains(1538)){
 					hasWormMap = true;
 					hasLazarMap = true;
 					hasMalzarMap = true;
 				}
 				init = false;
-			}else Bank.open();
+			}else ctx.bank.open();
 		}else if(Vars.DYNAMICV3){
 			Method.walking(Paths.pathToBank2, "Walking to Alkharid bank", false);
-		}else if(Vars.LUMMBRIDGELODE.distanceTo()<10){
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().getLocation())<10){
 			Vars.DYNAMICV3 = true;
-		}else Method.teleportTo(Vars.LUMBRIDGETELEPORT);
+		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),"Lumbridge");
 		
 	}
-
+/*
 	private void cs3() {//Obtains Malzar's map piece
 		NPC smallrat = NPCs.getNearest(6088);
 		NPC ghost = NPCs.getNearest(6094);
@@ -588,176 +595,176 @@ public class DragonSlayer extends Node{
 		
 		if(Method.useBank){
 			Method.useBank(bankItems2, 20,1,90);
-		}else if(!Method.teleporting && Players.getLocal().getInteracting()==null && Inventory.getItem(526)!=null){
+		}else if(!Method.teleporting && Players.getLocal().getInteracting()==null && Method.inventoryContains((526)!=null){
 			Method.interactInventory(526, "Drop", "Bones");
-		}else if(!Method.teleporting&& Inventory.getItem(1535)!=null){
+		}else if(!Method.teleporting&& Method.inventoryContains((1535)!=null){
 			hasMalzarMap = true;
-		}else if(new Tile(2936,9656,0).canReach()){
+		}else if(new Tile(2936,9656,0).getMatrix(ctx).isReachable()){
 			Vars.DYNAMICV = false;
 			Method.skipPics();
 			Method.interactO(2603, "Open", "Chest");
 			Method.interactO(2604, "Search", "Chest");
-		}else if(new Tile(2929,9652,0).canReach()){
+		}else if(new Tile(2929,9652,0).getMatrix(ctx).isReachable()){
 			
 			if(hasGreenKey){
-				if(new Tile(2936,9655,0).distanceTo()<6){
+				if(new Tile(2936,9655,0).distanceTo(ctx.players.local().getLocation())<6){
 				Method.interactO(2601, "Open", "Green door");
-				}else new Tile(2936,9655,0).clickOnMap();
+				}else Method.clickOnMap(new Tile(2936,9655,0));
 			}else
-			if(!Method.teleporting && Inventory.getItem(1548)!=null){
+			if(!Method.teleporting && Method.inventoryContains(1548)){
 				hasGreenKey = true;
 			}else
 			if(greenkey!=null){
 				Method.interactG(greenkey.getId(), "Take", "Green key");
 			}else
-			if(Players.getLocal().getInteracting()!=null){
+			if(ctx.players.local().isIdle()){
 				Method.basicFightNPC(demon.getId());
 			}else if(demon!=null){
-				if(demon.getLocation().distanceTo()<7){//moves closer to the demon
+				if(demon.getLocation().distanceTo(ctx.players.local().getLocation())<7){//moves closer to the demon
 				Method.npcInteract(demon.getId(), "Attack");
 				}else demon.getLocation().clickOnMap();
 			}
 			
-		}else if(new Tile(2930,9644,0).canReach()){
+		}else if(new Tile(2930,9644,0).getMatrix(ctx).isReachable()){
 			
 			if(hasPurpleKey){
 				Method.interactO(2600, "Open", "Magenta door");
 			}else
-			if(!Method.teleporting && Inventory.getItem(1547)!=null){
+			if(!Method.teleporting && Method.inventoryContains(1547)){
 				hasPurpleKey = true;
 			}else
 			if(purplekey!=null){
 				Method.interactG(purplekey.getId(), "Take", "Purple key");
 			}else
-			if(Players.getLocal().getInteracting()!=null){
+			if(ctx.players.local().isIdle()){
 				Method.basicFightNPC(melzar.getId());
 			}else Method.npcInteract(melzar.getId(), "Attack");
 			
-		}else if(SceneEntities.getNearest(31130)!=null && new Tile(2933,9640,0).canReach()){
+		}else if(Method.objIsNotNull(31130) && new Tile(2933,9640,0).getMatrix(ctx).isReachable()){
 			if(hasBlueKey){
 				Method.interactO(2599, "Open", "Blue door");
 			}else
-			if(!Method.teleporting && Inventory.getItem(1546)!=null){
+			if(!Method.teleporting && Method.inventoryContains(1546)){
 				hasBlueKey = true;
 			}else
 			if(bluekey!=null){
 				Method.interactG(bluekey.getId(), "Take", "Blue key");
 			}else
-			if(Players.getLocal().getInteracting()!=null){
+			if(ctx.players.local().isIdle()){
 				Method.basicFightNPC(zombie.getId());
 			}else Method.npcInteract(zombie.getId(), "Attack");
 			
-		}else if(new Tile(2924,3248,2).canReach()||new Tile(2938,3241,2).canReach()||new Tile(2939,3239,1).canReach()
-				||new Tile(2938,3240,0).canReach()){
+		}else if(new Tile(2924,3248,2).getMatrix(ctx).isReachable()||new Tile(2938,3241,2).getMatrix(ctx).isReachable()||new Tile(2939,3239,1).getMatrix(ctx).isReachable()
+				||new Tile(2938,3240,0).getMatrix(ctx).isReachable()){
 			
-			if(new Tile(2938,3240,0).canReach()){
+			if(new Tile(2938,3240,0).getMatrix(ctx).isReachable()){
 				Method.interactO(2605, "Climb-down", "Ladder");
 			}else
-			if(new Tile(2939,3239,1).canReach()){
+			if(new Tile(2939,3239,1).getMatrix(ctx).isReachable()){
 				Method.interactO(1746, "Climb-down", "Ladder");
 			}else
-			if(new Tile(2938,3240,2).distanceTo()<2){
+			if(new Tile(2938,3240,2).distanceTo(ctx.players.local().getLocation())<2){
 				Method.interactO(1746, "Climb-down", "Ladder");
-			}else new Tile(2938,3240,2).clickOnMap();
-		}else if(new Tile(2934,3253,2).canReach()){//third level, skeletons
+			}else Method.clickOnMap(new Tile(2938,3240,2));
+		}else if(new Tile(2934,3253,2).getMatrix(ctx).isReachable()){//third level, skeletons
 			
 			if(hasYellowKey){//enters to the above location
-				if(new Tile(2923,3250,2).distanceTo()<2){
+				if(new Tile(2923,3250,2).distanceTo(ctx.players.local().getLocation())<2){
 					Method.interactO(2598, "Open", "Yellow door");
-				}else Method.findPath(new Tile(2923,3250,2));
+				}else ctx.movement.findPath(new Tile(2923,3250,2)).traverse();
 			}else
-			if(!Method.teleporting && Inventory.contains(1545)){
+			if(!Method.teleporting && Method.inventoryContains(1545)){
 				hasYellowKey = true;
 			}else if(yellowkey!=null){//pick up the orange key off the ground
-				if(yellowkey.getLocation().distanceTo()<8){
+				if(yellowkey.getLocation().distanceTo(ctx.players.local().getLocation())<8){
 					Method.interactG(yellowkey.getId(), "Take", "Yellow key");
 				}else yellowkey.getLocation().clickOnMap();
 			}else
-			if(Players.getLocal().getInteracting()!=null){//fights a the skeleton to obtain the orange key
+			if(ctx.players.local().isIdle()){//fights a the skeleton to obtain the orange key
 				Method.basicFightNPC(6091);
 			}else if(skeleton!=null){
-				if(skeleton.getLocation().distanceTo()<8){
+				if(skeleton.getLocation().distanceTo(ctx.players.local().getLocation())<8){
 					Method.npcInteract(skeleton.getId(), "Attack");
 				}else skeleton.getLocation().clickOnMap();
 			}
 			
 			
-		}else if(new Tile(2933,3254,1).canReach()){//the final location in the second level(ghosts)
+		}else if(new Tile(2933,3254,1).getMatrix(ctx).isReachable()){//the final location in the second level(ghosts)
 			Method.interactO(1747, "Climb", "Ladder");
-		}else if(new Tile(2926,3255,1).canReach()){//second level; where the ghosts are
+		}else if(new Tile(2926,3255,1).getMatrix(ctx).isReachable()){//second level; where the ghosts are
 			
 			if(hasOrangeKey){//enters to the above location
-				if(new Tile(2930,3253,1).distanceTo()<2){
+				if(new Tile(2930,3253,1).distanceTo(ctx.players.local().getLocation())<2){
 					Method.interactO(2597, "Open", "Orange door");
-				}else Method.findPath(new Tile(2930,3253,1));
+				}else ctx.movement.findPath(new Tile(2930,3253,1));
 			}else
-			if(!Method.teleporting && Inventory.contains(1544)){
+			if(!Method.teleporting && Method.inventoryContains(1544)){
 				hasOrangeKey = true;
 			}else if(orangekey!=null){//pick up the orange key off the ground
-				if(orangekey.getLocation().distanceTo()<8){
+				if(orangekey.getLocation().distanceTo(ctx.players.local().getLocation())<8){
 					Method.interactG(orangekey.getId(), "Take", "Red key");
 				}else orangekey.getLocation().clickOnMap();
 			}else
-			if(Players.getLocal().getInteracting()!=null){//fights a the ghost to obtain the orange key
+			if(ctx.players.local().isIdle()){//fights a the ghost to obtain the orange key
 				Method.basicFightNPC(ghost.getId());
 			}else if(ghost!=null){
-				if(ghost.getLocation().distanceTo()<8){
-					if(ghost.getLocation().canReach()){
+				if(ghost.getLocation().distanceTo(ctx.players.local().getLocation())<8){
+					if(ghost.getLocation().getMatrix(ctx).isReachable()){
 					Method.npcInteract(ghost.getId(), "Attack");
 					}else Method.interactO(1530, "Open", "Door");
 				}else ghost.getLocation().clickOnMap();
 			}
 			
 		}else
-		if(new Tile(2941, 3248, 0).distanceTo()<8||new Tile(2937,3249,0).canReach()||hasRedKey){
-			if(new Tile(2925,3256,0).canReach()){
-				if(new Tile(2927,3256,0).distanceTo()<2){
+		if(new Tile(2941, 3248, 0).distanceTo(ctx.players.local().getLocation())<8||new Tile(2937,3249,0).getMatrix(ctx).isReachable()||hasRedKey){
+			if(new Tile(2925,3256,0).getMatrix(ctx).isReachable()){
+				if(new Tile(2927,3256,0).distanceTo(ctx.players.local().getLocation())<2){
 				Method.interactO(1747, "Climb", "Ladder");
-				}else Method.findPath(new Tile(2927,3256,0));
+				}else ctx.movement.findPath(new Tile(2927,3256,0)).traverse();
 			}else
 			if(hasRedKey){
-				if(new Tile(2926,3253,0).distanceTo()<2){
+				if(new Tile(2926,3253,0).distanceTo(ctx.players.local().getLocation())<2){
 					Method.interactO(2596, "Open", "Red door");
-				}else Method.findPath(new Tile(2926,3253,0));
+				}else ctx.movement.findPath(new Tile(2926,3253,0)).traverse();
 			}else
-			if(new Tile(2937,3249,0).canReach()){
-				if(!Method.teleporting && Inventory.contains(1543)){
+			if(new Tile(2937,3249,0).getMatrix(ctx).isReachable()){
+				if(!Method.teleporting && Method.inventoryContains(1543)){
 					hasRedKey = true;
 				}else if(redkey!=null){
-					if(redkey.getLocation().distanceTo()<8){
+					if(redkey.getLocation().distanceTo(ctx.players.local().getLocation())<8){
 						Method.interactG(1543, "Take", "Red key");
 					}else redkey.getLocation().clickOnMap();
 				}else
-				if(Players.getLocal().getInteracting()!=null){
+				if(!ctx.players.local().isIdle()){
 					Method.basicFightNPC(smallrat.getId());
 				}else if(smallrat!=null){
-					if(smallrat.getLocation().distanceTo()<8){
+					if(smallrat.getLocation().distanceTo(ctx.players.local().getLocation())<8){
 						Method.npcInteract(smallrat.getId(), "Attack");
 					}else smallrat.getLocation().clickOnMap();
 				}
 			}else Method.interactO(2595, "Open", "Door");
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToMaze, "Walking to Melzar's maze", false);
-		}else if (Vars.PORTSARIMLODE.distanceTo()<10 || Vars.FALADORLODE.distanceTo()<10){
+		}else if (TeleportLode.PORTSARIM.getTile().distanceTo(ctx.players.local().getLocation())<10 || TeleportLode.FALADOR.getTile().distanceTo(ctx.players.local().getLocation())<10){
 			Vars.DYNAMICV = true;
 		}else if(Method.isPortSarimLodeAct()){
-			Method.teleportTo(Vars.PORTSARIMTELEPORT);
-		}else Method.teleportTo(Vars.FALADORETELEPORT);
+			Method.teleportTo(TeleportType.PORTSARIM.getTeleport(),"Port Sarim");
+		}else Method.teleportTo(TeleportType.FALADOR.getTeleport(),"Falador");
 		
 	}
 
-
+*/
 	private void cs1() {
 		final String opt[] = {"A dragon, that sounds","I thought you were going","The Guildmaster of the","Can you sell me a "};
 		
-		if(!Method.teleporting && Inventory.getItem(11279)==null && (ctx.settings.get(2268)&0x1F) == 9){
+		if(!Method.teleporting && !Method.inventoryContains(11279) && (ctx.settings.get(2268)&0x1F) == 9){
 			Method.useBank = true;
 		}
-		if(Method.useBank && (ctx.settings.get(2268)&0x1F) == 9){
-			Method.useBank(bankItems6, 1, 1, 90);
-		}else
-		if(new Tile(3067, 3513, 0).distanceTo()<5){
-			if(new Tile(3068,3516,0).canReach()){
+		//if(Method.useBank && (ctx.settings.get(2268)&0x1F) == 9){
+		//	Method.useBank(bankItems6, 1, 1, 90);
+		//}else
+		if(new Tile(3067, 3513, 0).distanceTo(ctx.players.local().getLocation())<5){
+			if(new Tile(3068,3516,0).getMatrix(ctx).isReachable()){
 				Vars.DYNAMICV = false;
 				if(!Method.findOption(opt))
 					if(!Method.isChatting("Oziach")){
@@ -766,9 +773,9 @@ public class DragonSlayer extends Node{
 			}else Method.interactO(37123, "Open", "Door");
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToOziach, "Walking to Oziach", false);
-		}else if(Vars.VARROKLODE.distanceTo()<10){
+		}else if(TeleportLode.VARROCK.getTile().distanceTo(ctx.players.local().getLocation())<10){
 			Vars.DYNAMICV = true;
-		}else Method.teleportTo(Vars.VARROKTELEPORT);
+		}else Method.teleportTo(TeleportType.VARROCK.getTeleport(),"Varrock");
 		
 	}
 
@@ -780,22 +787,22 @@ public class DragonSlayer extends Node{
 		final String opt5[]= {"Where is Thalzar's map","How can I find the route","About my quest to kill"};
 		final String opt6[]= {"Where is Lozar's map","How can I find the route","About my quest to kill"};
 		
-		if(new Tile(3191,3364,0).distanceTo()<8){
-			if(new Tile(3191,3361,0).canReach()){
+		if(new Tile(3191,3364,0).distanceTo(ctx.players.local().getLocation())<8){
+			if(new Tile(3191,3361,0).getMatrix(ctx).isReachable()){
 				Vars.DYNAMICV = false;
 				Method.skipPics();
 				if((ctx.settings.get(2268)&0x3F) == 2){
 					
-					if((ctx.settings.get(2269)>>13&0x7)==5 && Widgets.get(1188).validate()){
+					if((ctx.settings.get(2269)>>13&0x7)==5 && ctx.widgets.get(1188).isValid()){
 						Method.findOption(opt3);
 					}else
-					if((ctx.settings.get(2269)>>15&0x1)==1 && Widgets.get(1188).validate()){
+					if((ctx.settings.get(2269)>>15&0x1)==1 && ctx.widgets.get(1188).isValid()){
 						Method.findOption(opt2);
-					}else if((ctx.settings.get(2269)>>10&0xF)==14 && Widgets.get(1188).validate()){
+					}else if((ctx.settings.get(2269)>>10&0xF)==14 && ctx.widgets.get(1188).isValid()){
 						Method.findOption(opt4);
-					}else if((ctx.settings.get(2269)>>11&0x7)==6 && Widgets.get(1188).validate()){
+					}else if((ctx.settings.get(2269)>>11&0x7)==6 && ctx.widgets.get(1188).isValid()){
 						Method.findOption(opt5);
-					}else if((ctx.settings.get(2269)>>10&0xF)==8 && Widgets.get(1188).validate()){
+					}else if((ctx.settings.get(2269)>>10&0xF)==8 && ctx.widgets.get(1188).isValid()){
 						Method.findOption(opt6);
 					}
 						
@@ -810,10 +817,10 @@ public class DragonSlayer extends Node{
 			}else Method.interactO(1805, "Open", "Door");
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToGuild, "Walking to the Champions Guild", false);
-		}else if(Vars.VARROKLODE.distanceTo()<10){
+		}else if(TeleportLode.VARROCK.getTile().distanceTo(ctx.players.local().getLocation())<10){
 			Vars.DYNAMICV = true;
-		}else Method.teleportTo(Vars.VARROKTELEPORT);
+		}else Method.teleportTo(TeleportType.VARROCK.getTeleport(),"Varrock");
 	}
 	
 }
-*/
+

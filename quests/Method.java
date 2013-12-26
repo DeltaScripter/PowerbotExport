@@ -22,6 +22,7 @@ import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
+
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
@@ -100,7 +101,21 @@ public class Method extends MethodProvider{
 			}else npcInteract(2241, "Exchange");
 		} else getToExchange();
 	}
+
+	public boolean bankContains(int id) {
+		ArrayList<Integer> bankItems = new ArrayList<Integer>();
 		
+		while(!ctx.bank.isOpen()){
+			ctx.bank.open();
+		}
+		for(Item item : ctx.bank.select()){
+			if(!bankItems.contains(item.getId())){
+				bankItems.add(item.getId());
+			}
+		}
+		return bankItems.contains(id);
+	}
+	   
 	public boolean isChatting(final String p) {
 		int[] widgets = {1184,1191,1187};
 		
@@ -245,7 +260,36 @@ public class Method extends MethodProvider{
     public boolean isInCombat() {
         return ctx.players.local().getInteracting()!=null;
     }
-    
+    public void interactO(final String name, final String string, final String o) {
+		ArrayList<String> actions = new ArrayList<String>();
+		for(GameObject y: ctx.objects.select().name(name).nearest().first()){
+			//if(closeInterfaces())
+			if(y.isOnScreen()){
+			state("Interacting: " + string);
+			y.interact(string);
+			ctx.game.sleep(1800);
+			}else ctx.camera.turnTo(y);
+			/*
+					if (closeInterfaces() && y.isOnScreen()) {
+						y.hover();
+						String menuItems[] = ctx.menu.getItems();
+						for(String opt: menuItems){
+							if(!actions.contains(opt))
+								actions.add(opt);
+							state("Investigating options..");
+						}
+						for(String text: actions){
+							if(text.contains(string)){
+								   y.interact(string);
+								  // sleep(2000);
+								state("Using " + string + " on: " + o);
+							}
+						}
+					} else ctx.camera.turnTo(y);
+				*/
+				}
+		
+	}
 	public void interactO(final int i, final String string, final String o) {
 		ArrayList<String> actions = new ArrayList<String>();
 		for(GameObject y: ctx.objects.select().id(i).nearest().first()){

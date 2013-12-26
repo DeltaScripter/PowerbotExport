@@ -225,4 +225,15 @@ public class DivineMethod extends MethodProvider{
 				}
 			}
 	}
+
+	public int inventoryStackSize(String name) {
+		if(ctx.hud.view(Window.BACKPACK)){
+		
+		ItemQuery<Item> g;
+		g = null;
+		g = ctx.backpack.select().name(name);
+		return g.count(true);
+		}
+		return 0;
+	}
 }

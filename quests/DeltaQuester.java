@@ -23,7 +23,9 @@ import java.util.List;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.PollingScript;
+import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
+import org.powerbot.script.wrappers.GroundItem;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Quester", 
@@ -104,6 +106,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					 addNode(new MonksFriend(ctx));
 					 addNode(new PlagueCity(ctx));
 					 addNode(new TheKnightsSword(ctx));
+					 addNode(new ErnestTheChicken(ctx));
 			}
 		});
 		getExecQueue(State.STOP).add(new Runnable() {
@@ -137,6 +140,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 
 
 	public int poll() {
+		
 		
 		if(g){
 			log.info("shutting down");
@@ -323,7 +327,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
 						"Buyers and Cellars","Cook's Assistant","Clock Tower","Death Plateau","Demon Slayer","Druidic Ritual",
-						"Gunnar's Ground",
+						"Ernest The Chicken","Gunnar's Ground",
 						"Imp Catcher","Let Them Eat Pie","Monk's Friend","Pirate's Treasure","Stolen Hearts","Swept Away",
 						"The Knight's Sword","The Restless Ghost","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
 				};
@@ -429,6 +433,12 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					rewardItemModel.addElement("Eye of Newt x 15");
 					index++;
 				}
+				if(quest == "Ernest The Chicken"){
+					rewardItemModel.addElement("Eggs x 10");
+					rewardItemModel.addElement("Feathers x 400");
+					rewardItemModel.addElement("Coins x 3000");
+					index++;
+				}
 				if(quest == "Cook's Assistant"){
 					rewardExpModel.addElement("Cooking XP: 300");
 					rewardItemModel.addElement("Sardines x 20");
@@ -508,6 +518,10 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			for(int index = 0; index < queueListModel.size();){
 				String quest = queueListModel.get(index).toString();
 				
+				if(quest == "Ernest The Chicken"){
+					requirementsList.setText(requirementsList.getText() + quest + ":\n-Empty inventory preferably\n\n");
+					index++;
+				}else
 				if(quest == "Druidic Ritual"){
 					requirementsList.setText(requirementsList.getText() + quest + ":\n-5gp\n-Vial x 1\n-Fishing rod x 1\n-Chisel x 1\n\n");
 					index++;
@@ -539,7 +553,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					requirementsList.setText(requirementsList.getText() + quest + ":\nDo not start this quest underground\nYou will need a ranged weapon equipped\nAbility to defeat 3 level 3 enemies\n\n");
 					index++;
 				}else if(quest == "The Knight's Sword"){
-					requirementsList.setText(requirementsList.getText() + quest + ":\nRedberry pie x 1\nIron bars x 2\n\nLevel 10 mining\nAbility to survive high-level enemies\nFalador lodestone activated");
+					requirementsList.setText(requirementsList.getText() + quest + ":\nRedberry pie x 1\nIron bars x 2\n\nLevel 10 mining\nAbility to survive high-level enemies\nFalador lodestone activated\n\n");
 					index++;
 				}else if(quest == "The Restless Ghost"){
 					requirementsList.setText(requirementsList.getText() + quest + ":\nThere are no requirements for this quest\n\n");

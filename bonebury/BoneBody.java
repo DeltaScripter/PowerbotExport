@@ -17,7 +17,7 @@ import org.powerbot.script.wrappers.Item;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta BoneBury", 
 description = "Buries bones from your bank! start script with the type of bones you want to use in your inventory.", 
-website = "", version = 1)
+website = "http://www.powerbot.org/community/topic/1131685-delta-burier-buries-your-bones/",topic =1131685, version = 1)
 public class BoneBody extends PollingScript implements PaintListener{
 
 	public BoneBody(){
