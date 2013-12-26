@@ -1,4 +1,4 @@
-package divination;
+package deltafarmer;
 
 import java.util.ArrayList;
 
@@ -6,19 +6,44 @@ import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
+import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.GameObject;
+import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Tile;
 
-public class DivineMethod extends MethodProvider{
+public class FarmMethod extends MethodProvider{
 
 	
 	
-	public DivineMethod(MethodContext ctx) {
+	public FarmMethod(MethodContext ctx) {
 		super(ctx);
 	}
-
+	Timer timer = new Timer(0);
+	public void teleportTo(int loc, String teleName) {
+		while(ctx.bank.isOpen())
+			ctx.bank.close();
+		
+		if(!timer.isRunning()){
+		if(ctx.widgets.get(1092,loc).isVisible()){//lodestone screen
+			ctx.mouse.move(ctx.widgets.get(1092).getComponent(loc).getCenterPoint());
+			ctx.widgets.get(1092).getComponent(loc).click(true);
+			timer = new Timer(6000);
+		}else {
+				if (ctx.players.local().getAnimation() == -1){
+					ctx.widgets.get(1465,10).hover();
+					for(String t: ctx.menu.getItems()){
+						if(t.contains("Teleport")){
+							ctx.widgets.get(1465,10).click();//select lodestone button
+							timer = new Timer(1000);
+						}
+					}
+				
+				}
+		}		
+		}
+	}
 	public GameObject getObject(int i) {
 		for(GameObject obj : ctx.objects.select().id(i).nearest().first()){
 			return obj;
@@ -104,7 +129,7 @@ public class DivineMethod extends MethodProvider{
 						for(String text: actions){
 							if(text.contains(string)){
 								  n.interact(string);
-								  ctx.game.sleep(1300,2800);
+								  ctx.game.sleep(700,1000);
 								   break;
 								
 							}
@@ -171,10 +196,17 @@ public class DivineMethod extends MethodProvider{
 			
 				return g.count(false);
 			}
-			public void interactO(final String name, final String string, final String o) {
+			public void useItemOn(String item, int obj, String string) {
+				if(ctx.backpack.isItemSelected()){
+					interactO(obj, "Use", string);
+				}else if(inventoryContains(item))
+					interactInventory(item,"Use","Item");
+				
+			}
+			public void interactO(final int cropID, final String string, final String o) {
 				ArrayList<String> actions = new ArrayList<String>();
-				for(GameObject y: ctx.objects.select().name(name).nearest().first()){
-					DivineBody.state = o;
+				for(GameObject y: ctx.objects.select().id(cropID).nearest().first()){
+			
 							if (y.isOnScreen()) {
 								y.interact(string);
 							} else ctx.camera.turnTo(y);

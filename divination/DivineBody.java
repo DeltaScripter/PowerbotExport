@@ -35,7 +35,7 @@ import divination.DivineData.wisps;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
 description = "Trains the Divination Skill; harvests and converts energy to your choosing",
-topic = 1130348, version = 1.12, website = "http://www.powerbot.org/community/topic/1130348-delta-divinity/"
+topic = 1130348, version = 1.13, website = "http://www.powerbot.org/community/topic/1130348-delta-divinity/"
 )
 public class DivineBody extends PollingScript implements PaintListener{
 
@@ -245,6 +245,13 @@ public class DivineBody extends PollingScript implements PaintListener{
 			if(closeToObj(riftArea,"Walking to rift")){
 				if(ctx.widgets.get(131,convertType).isValid()&&
 						ctx.widgets.get(131,convertType).isVisible()){
+					if(convertType == convert.BOTH.getID()){
+						if(ctx.widgets.get(131,39).getTextureId()==13827){
+							animationType = animation.TODIVINEENERGY.getID();
+							convertType = convert.DIVINEENERGY.getID();
+							harvest = true;
+						}
+					}
 					ctx.widgets.get(131,convertType).click();
 					waiting = new Timer(1000);
 					
@@ -271,7 +278,6 @@ public class DivineBody extends PollingScript implements PaintListener{
 						} else ctx.camera.turnTo(y);
 					
 					}
-			
 		}
 
 	   }
@@ -323,7 +329,6 @@ public class DivineBody extends PollingScript implements PaintListener{
 				if(!foundChronicle())//catches chronicles if they appear
 				if(!foundEnrichedSpring("Enriched sparkling spring"))
 				if(!foundEnrichedSpring("Enriched glowing spring"))
-					
 					if(prioritizeNearbyWisps && Method.npcIsNotNull(wispSpring) && 
 							Method.getNPC(wispSpring).getLocation().distanceTo(ctx.players.local().getLocation())<6){
 						if(closeToNpc(wispSpring,"Walking to spring")){
@@ -350,9 +355,8 @@ public class DivineBody extends PollingScript implements PaintListener{
 						state = "Attempting to convert wisp to spring";
 						Method.npcInteract(wispKind, "Harvest");
 					}
-				}else{
-					ctx.movement.findPath(riftArea).traverse();
-					ctx.game.sleep(Random.nextInt(600, 1200));
+				}else if(!ctx.movement.findPath(riftArea).traverse()){
+					Method.clickOnMap(riftArea);
 				}
 				
 			}
@@ -420,9 +424,10 @@ public class DivineBody extends PollingScript implements PaintListener{
 				Method.clickOnMap(loc);
 				wait = new Timer(Random.nextInt(700, 1700));
 				}
-			}else{
+			}else {
 				state = string;
-				ctx.movement.stepTowards(loc);
+				ctx.movement.stepTowards(loc.randomize(2,5));
+				ctx.game.sleep(1800,2600);
 				//ctx.movement.findPath(loc).traverse();
 			}
 			return false;
@@ -449,11 +454,12 @@ private void setMouse(Graphics g) {
 	@Override
 	public void repaint(Graphics g) {
 		double runtimeHold;
-		String expHr = "";
+		
 		if(start){
 		runtimeHold = runtime.getElapsed();
 		runtimeHold = 3600000/runtimeHold;
 		expPerHr = (int)runtimeHold * expGained;
+		String expHr = "";
 		expHr = ""+ expPerHr;
 		if(expHr.length()>3)
 		expHr = expHr.substring(0, expHr.length() - 3);
