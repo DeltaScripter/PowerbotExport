@@ -148,6 +148,7 @@ public class FarmBody extends PollingScript implements PaintListener{
 					
 				}else if((ctx.settings.get(12)>>8 & 0xF) <=3){///Falador east allotment empty
 					System.out.println("Attempting to plant seed in fally south");
+					plantSeedsFalador(new Tile(3056,3306,0),7517,((ctx.settings.get(12)>>8 & 0xF) <3));
 					
 				}
 				
@@ -225,8 +226,9 @@ public class FarmBody extends PollingScript implements PaintListener{
 			if(alotLoc.distanceTo(local)<3){
 			if(condition){
 				state = "Clearing dead crops";
-				for(int i: cropTypeID)
-					Method.interactO(i, "Clear", "Potato");
+					Method.interactO(8550, "Clear", "Potato");
+					waitHarvest = new Timer(Random.nextInt(1900, 2500));
+				
 			}else{
 				teleported = false;
 				state = "Harvesting " + cropTypeID;

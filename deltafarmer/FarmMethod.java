@@ -206,8 +206,21 @@ public class FarmMethod extends MethodProvider{
 			public void interactO(final int cropID, final String string, final String o) {
 				ArrayList<String> actions = new ArrayList<String>();
 				for(GameObject y: ctx.objects.select().id(cropID).nearest().first()){
+					
+							if (y.isOnScreen()) {
+								y.interact(string);
+							} else ctx.camera.turnTo(y);
+						
+						}
+				
+			}
+			public void interactO(final String cropID, final String string, final String o) {
+				ArrayList<String> actions = new ArrayList<String>();
+				
+				for(GameObject y: ctx.objects.select().name(cropID).nearest().first()){
 			
 							if (y.isOnScreen()) {
+								
 								y.interact(string);
 							} else ctx.camera.turnTo(y);
 						

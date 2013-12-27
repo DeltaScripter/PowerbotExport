@@ -22,6 +22,7 @@ import org.powerbot.script.PollingScript;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.Skills;
 import org.powerbot.script.wrappers.GameObject;
+import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
@@ -35,7 +36,7 @@ import divination.DivineData.wisps;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
 description = "Trains the Divination Skill; harvests and converts energy to your choosing",
-topic = 1130348, version = 1.13, website = "http://www.powerbot.org/community/topic/1130348-delta-divinity/"
+topic = 1130348, version = 1.14, website = "http://www.powerbot.org/community/topic/1130348-delta-divinity/"
 )
 public class DivineBody extends PollingScript implements PaintListener{
 
@@ -145,7 +146,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 	private final List<DivineNode> nodeList = Collections.synchronizedList(new ArrayList<DivineNode>());
 	public static String state;
 	private boolean harvest = false;
-	private int convertType;
+	public static int convertType;
 	private int animationType;
 	private String location;
 	private String wispKind;
@@ -156,7 +157,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 	public static boolean antiPattern;
 	private Random rand = new Random();
 	private boolean start = false;
-	private Timer waiting = new Timer(0);
+	public static Timer waiting = new Timer(0);
 	public static Timer wait = new Timer(0);//General use timer
 	private Timer runtime;
 	private Timer secondsA;
@@ -182,6 +183,10 @@ public class DivineBody extends PollingScript implements PaintListener{
 		while(ctx.widgets.get(1477,54).isVisible()){
 			state = "Closing interface";
 			ctx.widgets.get(1477,54).getChild(2).click();
+		}
+		while(ctx.widgets.get(1223,11).isVisible()){//task complete
+			state = "Closing interface";
+			ctx.widgets.get(1223,11).click();//close button
 		}
 		while(ctx.widgets.get(1401,35).isVisible()){//become a member!
 			state = "Closing interface";
@@ -226,7 +231,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 			anti.closeInteruptions();
 			//Adjust camera
 			if(ctx.camera.getPitch()<50){
-				ctx.camera.setPitch(90);
+				ctx.camera.setPitch(Random.nextInt(70, 90));
 			}
 			while(riftArea==null && Method.objIsNotNull("Energy Rift")){
 				state = "Setting rift area";
@@ -242,7 +247,8 @@ public class DivineBody extends PollingScript implements PaintListener{
 				calcAntiPattern();
 				state = "Converting memories..";
 			}
-			if(!waiting.isRunning())
+			if(!waiting.isRunning() || ctx.widgets.get(131,convertType).isValid()&&
+					ctx.widgets.get(131,convertType).isVisible())
 			if(!Method.inventoryContains(memoryType) && !Method.backPackIsFull()){//if you're ready to gather more memories..
 				harvest = true;
 			}else
@@ -257,7 +263,9 @@ public class DivineBody extends PollingScript implements PaintListener{
 						}
 					}
 					ctx.widgets.get(131,convertType).click();
-					waiting = new Timer(1000);
+					waiting = new Timer(Random.nextInt(700, 1200));
+					ctx.game.sleep(Random.nextInt(200, 1000));
+					
 					
 				}else if(ctx.widgets.get(1186,2).isVisible()){
 					state = "Closing dialogue";
@@ -273,24 +281,34 @@ public class DivineBody extends PollingScript implements PaintListener{
 		}
 
 		private void clickRift(String name, String o) {
+			if(!ctx.players.local().isInMotion())
 			for(GameObject y: ctx.objects.select().name(name).nearest().first()){
 				DivineBody.state = o;
-						if (y.isOnScreen()) {
+				if(ctx.menu.isOpen())
+					for(String option: ctx.menu.getItems()){
+						if(option.contains("Convert memories")){
+							//System.out.println("Clicking the option: " + option);
+						ctx.menu.click(ctx.menu.filter("Convert memories",""));
+						waiting = new Timer(Random.nextInt(2200, 2800));
+						}
+					}//in case menu wasn't open
+						if (y.isOnScreen() && ctx.players.local().isIdle()) {
 							ctx.mouse.move(y.getLocation().getMatrix(ctx).getPoint(Random.nextDouble() * 0.2D - 0.1D,+0.10D,+100));
 							ctx.mouse.click(true);
-							ctx.game.sleep(Random.nextInt(700, 1200));
+							waiting = new Timer(Random.nextInt(700, 1200));
 						} else ctx.camera.turnTo(y);
 					
 					}
 		}
 
 	   }
-	   private void calcAntiPattern() {
-			int number = rand.nextInt(0, 2);
+	   private boolean calcAntiPattern() {
+			int number = rand.nextInt(0,5);
 			if(number == 1){
 				antiPattern = true;
+				return true;
 			}
-			
+			return false;
 		}
 		class harvestWisp extends DivineNode{
 
@@ -307,11 +325,44 @@ public class DivineBody extends PollingScript implements PaintListener{
 				calcAntiPattern();
 				
 				
-				while(ctx.players.local().getAnimation()==animation.HARVESTINGSPRING2.getID()){
+				while(ctx.players.local().getAnimation()!=-1){
 					ArrayList<String> itemList = new ArrayList<String>();
 					state = "Harvesting spring";
 					if(foundChronicle())
 						break;
+					if(Method.backPackIsFull()){
+						state = "backpack is full";
+						harvest = false;
+						break;
+					}
+					
+					int backPackItems;
+					backPackItems = Method.inventoryGetCount(memoryType);
+					if(backPackItems>=Random.nextInt(17, 20) && 
+							Method.objIsNotNull("Energy Rift") &&Method.getObject("Energy Rift").isOnScreen()){
+						state = "Right-clicking rift";
+						if(!ctx.menu.isOpen()){
+							System.out.println("menu isn't open: " + backPackItems);
+							ctx.mouse.click(Method.getObject("Energy Rift").getCenterPoint(),false);
+							ctx.game.sleep(Random.nextInt(1000, 1600));
+						}else{
+							System.out.println("menu is open");
+							String[] items = ctx.menu.getItems();
+							itemList.add("nothing");//for preventing null errors
+							for(String item: items){
+								if(!itemList.contains(item)){
+									if(item.contains("Convert memories")){
+									itemList.add("Convert memories");
+									}
+								}
+							}
+							if(!itemList.contains("Convert memories")){//if we mis-cliked and got the wrong menu to pop up..
+								System.out.println("can't find menu option");
+								ctx.mouse.click(Method.getObject("Energy Rift").getCenterPoint(),false);
+							ctx.game.sleep(Random.nextInt(1800, 2600));
+							}
+						}
+					}else
 					if(Method.npcIsNotNull(wispKind)){
 						if(Method.getNPC(wispKind).getLocation().distanceTo(ctx.players.local().getLocation())<7){
 							if(ctx.menu.isOpen()){
@@ -327,16 +378,20 @@ public class DivineBody extends PollingScript implements PaintListener{
 								if(!itemList.contains("Harvest"))//if we mis-cliked and got the wrong menu to pop up..
 									if(Method.getNPC(wispKind).isOnScreen()){
 										   ctx.mouse.click(Method.getNPC(wispKind).getCenterPoint(),false);//try click another wisp
+										   System.out.println("Not the correct menu, clicked again");
 										}
 								}else if(Method.npcIsNotNull(wispSpring) && Method.getNPC(wispSpring).isOnScreen()&&
 										Method.getNPC(wispSpring).getLocation().distanceTo(ctx.players.local().getLocation())>1){
+									ctx.game.sleep(Random.nextInt(1350, 2000));
+									state = "Right-clicking spring";
 									ctx.mouse.click(Method.getNPC(wispSpring).getCenterPoint(),false);
 								}else if(Method.getNPC(wispKind).isOnScreen()){
+									ctx.game.sleep(Random.nextInt(1350, 2000));
+									state = "Right-clicking wisp";
 							     ctx.mouse.click(Method.getNPC(wispKind).getCenterPoint(),false);
 							}
 						}
 					}
-					calcAntiPattern();
 					updateCounts();
 					
 				}
@@ -347,7 +402,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 				}
 				
 				if(Method.inventoryContains("Chronicle fragment"))
-				while(Method.inventoryStackSize("Chronicle fragment")==5){
+				while(Method.inventoryStackSize("Chronicle fragment")>9){
 					state = "Destroying Chronicle fragments";
 					if(ctx.widgets.get(1183,6).isVisible()){//are you sure?(destroy chronicles)
 						ctx.widgets.get(1183,6).click();//yes button
@@ -363,7 +418,8 @@ public class DivineBody extends PollingScript implements PaintListener{
 				if(!foundEnrichedSpring("Enriched glowing spring"))
 					if(prioritizeNearbyWisps && Method.npcIsNotNull(wispSpring) && 
 							Method.getNPC(wispSpring).getLocation().distanceTo(ctx.players.local().getLocation())<6){
-						if(closeToNpc(wispSpring,"Walking to spring")){
+						if(closeToNpc(wispSpring,"Walking to spring") && !waiting.isRunning()&&
+								ctx.players.local().isIdle()){
 							state = "Attempting to harvest spring";
 							Method.npcInteract(wispSpring, "Harvest");
 						}
@@ -376,12 +432,15 @@ public class DivineBody extends PollingScript implements PaintListener{
 							if(option.contains("Harvest")){
 								//System.out.println("Clicking the option: " + option);
 							ctx.menu.click(ctx.menu.filter("Harvest",""));
-							ctx.game.sleep(Random.nextInt(2600, 3300));
+							ctx.game.sleep(Random.nextInt(2900, 3600));
 							}
 						}//in case menu wasn't open
-						if(closeToNpc(wispKind,"Walking to wisp")){
+						if(closeToNpc(wispKind,"Walking to wisp") && !waiting.isRunning()
+								&& ctx.players.local().isIdle()){
 							state = "Attempting to convert wisp to spring";
+							System.out.println("Clicking on wisp");
 							Method.npcInteract(wispKind, "Harvest");
+							
 						}
 					}else
 				if(Method.npcIsNotNull(wispSpring) && 
@@ -441,15 +500,17 @@ public class DivineBody extends PollingScript implements PaintListener{
 			}
 
 			private boolean closeToNpc(String name, String string) {
+				if(Method.npcIsNotNull(name))
 				if(Method.getNPC(name).getLocation().distanceTo(ctx.players.local().getLocation())<7){
 					return true;
 				}else {
 					state = string;
+					
 					if(Method.getNPC(name).isOnScreen()){
 						System.out.println("Clicking on npc to get closer");
 						Method.getNPC(name).click();
 					}else if(!ctx.movement.findPath(Method.getNPC(name).getLocation()).traverse()){
-					Method.clickOnMap(Method.getNPC(name).getLocation());
+					Method.clickOnMap(Method.getNPC(name).getLocation().randomize(4, 7));
 					}
 					//ctx.movement.findPath(Method.getNPC(name).getLocation()).traverse();
 					ctx.game.sleep(2000,2400);
@@ -472,7 +533,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 			}else if(loc.distanceTo(ctx.players.local().getLocation())<8 && ctx.widgets.get(1186,1).isVisible()){
 				System.out.println("Cliking on map");
 				if(!wait.isRunning()){
-				Method.clickOnMap(loc);
+				Method.clickOnMap(loc.randomize(1, 2));
 				wait = new Timer(Random.nextInt(700, 1700));
 				}
 			}else {

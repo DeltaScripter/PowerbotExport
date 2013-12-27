@@ -6,6 +6,8 @@ import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
+import org.powerbot.script.util.Random;
+import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Npc;
@@ -104,7 +106,7 @@ public class DivineMethod extends MethodProvider{
 						for(String text: actions){
 							if(text.contains(string)){
 								  n.interact(string);
-								  ctx.game.sleep(1300,2800);
+								  DivineBody.waiting = new Timer(Random.nextInt(1500, 2154));
 								   break;
 								
 							}
