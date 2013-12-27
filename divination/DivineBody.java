@@ -398,8 +398,9 @@ public class DivineBody extends PollingScript implements PaintListener{
 					if(Method.getNPC(name).isOnScreen()){
 						System.out.println("Clicking on npc to get closer");
 						Method.getNPC(name).click();
-					}else
-					ctx.movement.stepTowards(Method.getNPC(name).getLocation());
+					}else if(!ctx.movement.findPath(Method.getNPC(name).getLocation()).traverse()){
+					Method.clickOnMap(Method.getNPC(name).getLocation());
+					}
 					//ctx.movement.findPath(Method.getNPC(name).getLocation()).traverse();
 					ctx.game.sleep(2000,2400);
 				}
