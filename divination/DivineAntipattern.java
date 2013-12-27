@@ -21,7 +21,7 @@ public class DivineAntipattern extends DivineNode{
 	public void execute() {
 		
 		
-		int number = rand.nextInt(0, 30);
+		int number = rand.nextInt(0, 23);
 		String st = "Performing antipattern technique";
 		switch(number){
 		

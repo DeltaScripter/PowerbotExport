@@ -187,6 +187,10 @@ public class DivineBody extends PollingScript implements PaintListener{
 			state = "Closing interface";
 			ctx.widgets.get(1401,35).click();
 		}
+		while(ctx.widgets.get(1186).isValid()){//after collecting limit of 10 chronicles..
+			state = "Closing chronicle interface";
+			Method.clickOnMap(ctx.players.local().getLocation().randomize(3, 5));
+		}
 		if(start){
 		for(DivineNode node: nodeList){
 			if(node.activate()){
@@ -282,7 +286,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 
 	   }
 	   private void calcAntiPattern() {
-			int number = rand.nextInt(0, 3);
+			int number = rand.nextInt(0, 2);
 			if(number == 1){
 				antiPattern = true;
 			}
@@ -301,12 +305,40 @@ public class DivineBody extends PollingScript implements PaintListener{
 			@Override
 			public void execute() {
 				calcAntiPattern();
+				
+				
 				while(ctx.players.local().getAnimation()==animation.HARVESTINGSPRING2.getID()){
+					ArrayList<String> itemList = new ArrayList<String>();
 					state = "Harvesting spring";
-					calcAntiPattern();
-					updateCounts();
 					if(foundChronicle())
 						break;
+					if(Method.npcIsNotNull(wispKind)){
+						if(Method.getNPC(wispKind).getLocation().distanceTo(ctx.players.local().getLocation())<7){
+							if(ctx.menu.isOpen()){
+								String[] items = ctx.menu.getItems();
+								itemList.add("nothing");//for preventing null errors
+								for(String item: items){
+									if(!itemList.contains(item)){
+										if(item.contains("Harvest")){
+										itemList.add("Harvest");
+										}
+									}
+								}
+								if(!itemList.contains("Harvest"))//if we mis-cliked and got the wrong menu to pop up..
+									if(Method.getNPC(wispKind).isOnScreen()){
+										   ctx.mouse.click(Method.getNPC(wispKind).getCenterPoint(),false);//try click another wisp
+										}
+								}else if(Method.npcIsNotNull(wispSpring) && Method.getNPC(wispSpring).isOnScreen()&&
+										Method.getNPC(wispSpring).getLocation().distanceTo(ctx.players.local().getLocation())>1){
+									ctx.mouse.click(Method.getNPC(wispSpring).getCenterPoint(),false);
+								}else if(Method.getNPC(wispKind).isOnScreen()){
+							     ctx.mouse.click(Method.getNPC(wispKind).getCenterPoint(),false);
+							}
+						}
+					}
+					calcAntiPattern();
+					updateCounts();
+					
 				}
 				while(Method.backPackIsFull()){
 					state = "backpack is full";
@@ -315,7 +347,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 				}
 				
 				if(Method.inventoryContains("Chronicle fragment"))
-				while(Method.inventoryStackSize("Chronicle fragment")==10){
+				while(Method.inventoryStackSize("Chronicle fragment")==5){
 					state = "Destroying Chronicle fragments";
 					if(ctx.widgets.get(1183,6).isVisible()){//are you sure?(destroy chronicles)
 						ctx.widgets.get(1183,6).click();//yes button
@@ -337,7 +369,16 @@ public class DivineBody extends PollingScript implements PaintListener{
 						}
 					}else
 					if(prioritizeNearbyWisps && Method.npcIsNotNull(wispKind) && 
-							Method.getNPC(wispKind).getLocation().distanceTo(ctx.players.local().getLocation())<6){
+							Method.getNPC(wispKind).getLocation().distanceTo(ctx.players.local().getLocation())<7){
+						//Belows selects the menu item, if the menu is open
+						if(ctx.menu.isOpen())
+						for(String option: ctx.menu.getItems()){
+							if(option.contains("Harvest")){
+								//System.out.println("Clicking the option: " + option);
+							ctx.menu.click(ctx.menu.filter("Harvest",""));
+							ctx.game.sleep(Random.nextInt(2600, 3300));
+							}
+						}//in case menu wasn't open
 						if(closeToNpc(wispKind,"Walking to wisp")){
 							state = "Attempting to convert wisp to spring";
 							Method.npcInteract(wispKind, "Harvest");
@@ -345,6 +386,15 @@ public class DivineBody extends PollingScript implements PaintListener{
 					}else
 				if(Method.npcIsNotNull(wispSpring) && 
 						Method.getNPC(wispSpring).getLocation().distanceTo(ctx.players.local().getLocation())<12){
+					//Belows selects the menu item, if the menu is open
+					if(ctx.menu.isOpen())
+						for(String option: ctx.menu.getItems()){
+							if(option.contains("Harvest")){
+								System.out.println("Clicking the option: " + option);
+							ctx.menu.click(ctx.menu.filter("Harvest",""));
+							ctx.game.sleep(Random.nextInt(3200, 3600));
+							}
+						}
 					if(closeToNpc(wispSpring,"Walking to spring")){
 						state = "Attempting to harvest spring";
 						Method.npcInteract(wispSpring, "Harvest");
@@ -417,7 +467,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 		}
 		private boolean closeToObj(Tile loc, String string) {
 			if(loc!=null)
-			if(loc.distanceTo(ctx.players.local().getLocation())<5){
+			if(loc.distanceTo(ctx.players.local().getLocation())<8){
 				return true;
 			}else if(loc.distanceTo(ctx.players.local().getLocation())<8 && ctx.widgets.get(1186,1).isVisible()){
 				System.out.println("Cliking on map");
