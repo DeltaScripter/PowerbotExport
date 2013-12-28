@@ -195,6 +195,17 @@ public class DivineMethod extends MethodProvider{
 				
 				return false;
 			}
+			public boolean inventoryContains(int ID) {
+				if(!ctx.hud.isVisible(Window.BACKPACK)){
+					ctx.hud.view(Window.BACKPACK);
+					sleep(2000);
+				}
+					while (!ctx.backpack.select().id(ID).first().isEmpty()) {
+						return true;
+					}
+				
+				return false;
+			}
 	public void interactInventory(final String name, final String string, final String o) {
 		ArrayList<String> actions = new ArrayList<String>();
 		for(Item t : ctx.backpack.select().name(name).first()){
@@ -234,6 +245,16 @@ public class DivineMethod extends MethodProvider{
 		ItemQuery<Item> g;
 		g = null;
 		g = ctx.backpack.select().name(name);
+		return g.count(true);
+		}
+		return 0;
+	}
+	public int inventoryStackSize(int ID) {
+		if(ctx.hud.view(Window.BACKPACK)){
+		
+		ItemQuery<Item> g;
+		g = null;
+		g = ctx.backpack.select().id(ID);
 		return g.count(true);
 		}
 		return 0;

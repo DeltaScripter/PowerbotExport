@@ -24,6 +24,8 @@ import org.powerbot.script.methods.Skills;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.util.GeItem;
+import org.powerbot.script.util.GeItem.Price;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 
@@ -62,10 +64,12 @@ public class DivineBody extends PollingScript implements PaintListener{
 				addNode(new DivineAntipattern(ctx));
 				
 			}
-
+			
 			private void initilizeLocVariables() {
 				
 				if(Method.npcIsNotNull(wisps.PALEWISP.getName())){
+					price = 100;
+					energyType = memories.PALEENERGY.getID();
 					location = "Lummbridge";
 					wispKind = wisps.PALEWISP.getName();
 					wispSpring = wisps.PALESPRING.getName();
@@ -73,66 +77,87 @@ public class DivineBody extends PollingScript implements PaintListener{
 					System.out.println(""+wispKind);
 				}
 				if(Method.npcIsNotNull(wisps.FLICKERINGWISP.getName())){
+					price = 140;
+					energyType = memories.FLICKERINGENERGY.getID();
 					location = "Falador";
 					wispKind = wisps.FLICKERINGWISP.getName();
 					wispSpring = wisps.FLICKERINGSPRING.getName();
 					memoryType = memories.FLICKERINGMEMORY.getName();
 				}
 				if(Method.npcIsNotNull(wisps.BRIGHTWISP.getName())){
+					price = 160;
+					energyType = memories.BRIGHTENERGY.getID();
 					location = "Varrock";
 					wispKind = wisps.BRIGHTWISP.getName();
 					wispSpring = wisps.BRIGHTSPRING.getName();
 					memoryType = memories.BRIGHTMEMORY.getName();
 				}
 				if(Method.npcIsNotNull(wisps.GLOWINGWISP.getName())){
+					price = 130;
+					energyType = memories.GLOWINGENERGY.getID();
 					location = "Seers' Village";
 					wispKind = wisps.GLOWINGWISP.getName();
 					wispSpring = wisps.GLOWINGSPRING.getName();
 					memoryType = memories.GLOWINGMEMORY.getName();
 				}
 				if(Method.npcIsNotNull(wisps.SPARKLINGWISP.getName())){
+					price = 140;
+					energyType = memories.SPARKLINGENERGY.getID();
 					location = "Golden Apple Tree";
 					wispKind = wisps.SPARKLINGWISP.getName();
 					wispSpring = wisps.SPARKLINGSPRING.getName();
 					memoryType = memories.SPARKLINGMEMORY.getName();
 				}
 				if(Method.npcIsNotNull(wisps.GLEAMINGWISP.getName())){
+					energyType = memories.GLEAMINGENERGY.getID();
 					location = "Shilo Village";
 					wispKind = wisps.GLEAMINGWISP.getName();
 					wispSpring = wisps.GLEAMINGSPRING.getName();
 					memoryType = memories.GLEAMINGMEMORY.getName();
 				}
 				if(Method.npcIsNotNull(wisps.VIBRANTWISP.getName())){
+					price = 95;
+					energyType = memories.VIBRANTENERGY.getID();
 					location = "Mobilizing Armies";
 					wispKind = wisps.VIBRANTWISP.getName();
 					wispSpring = wisps.VIBRANTSPRING.getName();
 					memoryType = memories.VIBRANTMEMORY.getName();
 				}
 				if(Method.npcIsNotNull(wisps.LUSTROUSWISP.getName())){
+					price = 100;
+					energyType = memories.LUMINOUSENERGY.getID();
 					location = "Slayer Tower";
 					wispKind = wisps.LUSTROUSWISP.getName();
 					wispSpring = wisps.LUSTROUSSPRING.getName();
 					memoryType = memories.LUSTROUSMEMORY.getName();
 				}
 				if(Method.npcIsNotNull(wisps.BRILLIANTWISP.getName())){
+					price = 110;
+					energyType = memories.BRILLIANTENERGY.getID();
 					location = "Mage Training Arena";
 					wispKind = wisps.BRILLIANTWISP.getName();
 					wispSpring = wisps.BRILLIANTSPRING.getName();
 					memoryType = memories.BRILLIANTMEMORY.getName();
 				}
 				if(Method.npcIsNotNull(wisps.RADIANTWISP.getName())){
+					price = 170;
+					energyType = memories.RADIANTENERGY.getID();
 					location = "Dragontooth Island";
 					wispKind = wisps.RADIANTWISP.getName();
 					wispSpring = wisps.RADIANTSPRING.getName();
 					memoryType = memories.RADIANTMEMORY.getName();
 				}
 				if(Method.npcIsNotNull(wisps.LUMINOUSWISP.getName())){
+					price = 180;
+					energyType = memories.LUMINOUSENERGY.getID();
 					location = "Sophanem";
 					wispKind = wisps.LUMINOUSWISP.getName();
 					wispSpring = wisps.LUMINOUSSPRING.getName();
 					memoryType = memories.LUMINOUSMEMORY.getName();
 				}
 				if(Method.npcIsNotNull(wisps.INCANDESCENTWISP.getName())){
+					price = 160;
+					energyType = memories.INCANDESCENTENERGY.getID();
 					location = "Poison Waste";
 					wispKind = wisps.INCANDESCENTWISP.getName();
 					wispSpring = wisps.INCANDESCENTSPRING.getName();
@@ -149,11 +174,13 @@ public class DivineBody extends PollingScript implements PaintListener{
 	public static int convertType;
 	private int animationType;
 	private String location;
+	GeItem energy;
 	private String wispKind;
 	private String wispSpring;
 	private String memoryType;
+	private int energyType;
+	private int price;
 	private Tile riftArea;
-	private int paleECount;
 	public static boolean antiPattern;
 	private Random rand = new Random();
 	private boolean start = false;
@@ -175,6 +202,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 	
 	@Override
 	public int poll() {
+		
 		//System.out.println("Harvest: " +harvest);
 		while(Method.inventoryContains("Logs")){
 			DivineBody.state = "Dropping logs";
@@ -521,14 +549,14 @@ public class DivineBody extends PollingScript implements PaintListener{
 		}
 		private void updateCounts() {
 			 level = ctx.skills.getLevel(Skills.DIVINATION);
-			paleECount = Method.inventoryGetCount(memoryType);
+			Method.inventoryGetCount(memoryType);
 			xpToLevel = ctx.skills.getExperienceAt(level+1) - ctx.skills.getExperience(Skills.DIVINATION);
 			calcExpHr();
 			
 		}
 		private boolean closeToObj(Tile loc, String string) {
 			if(loc!=null)
-			if(loc.distanceTo(ctx.players.local().getLocation())<8){
+			if(loc.distanceTo(ctx.players.local().getLocation())<7){
 				return true;
 			}else if(loc.distanceTo(ctx.players.local().getLocation())<8 && ctx.widgets.get(1186,1).isVisible()){
 				System.out.println("Cliking on map");
@@ -605,6 +633,8 @@ private void setMouse(Graphics g) {
 		g.drawString("Location: " + location, 20, 230);
 		g.drawString("Prioritize nearby wisps: " + prioritizeNearbyWisps, 20, 250);
 		g.drawString("Capture & destroy chronicles: " + catchChronicles, 20, 270);
+		if(Method.inventoryContains(energyType))
+		g.drawString("Money amount in energy: " + price * Method.inventoryStackSize(energyType) + "GP", 20, 290);
 		//g.drawString("XP per hour: "+ expPerHr, 20, 230);
 		}
 		

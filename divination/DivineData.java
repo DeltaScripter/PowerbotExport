@@ -60,15 +60,15 @@ public class DivineData {
 		PALEMEMORY(29384,"Pale memory"),PALEENERGY(29313, "Pale energy"),
 		FLICKERINGMEMORY(29385,"Flickering memory"),FLICKERINGENERGY(29314,"Flickering energy"),ENRICHEDFLICKERINGMEMORY(29396,"don't know"),
 		BRIGHTMEMORY(29386,"Bright memory"),BRIGHTENERGY(29315,"Bright energy"),
-		GLOWINGMEMORY(9999,"Glowing memory"),
-		SPARKLINGMEMORY(9999,"Sparkling memory"),
-		GLEAMINGMEMORY(9999,"Gleaming memory"),
-		VIBRANTMEMORY(9999,"Vibrant memory"),
-		LUSTROUSMEMORY(9999,"Lustrous memory"),
-		BRILLIANTMEMORY(9999,"Brilliant memory"),
-		RADIANTMEMORY(9999,"Radiant memory"),
-		LUMINOUSMEMORY(9999,"Luminous memory"),
-		INCANDESCENTMEMORY(9999,"Incandescent memory");
+		GLOWINGMEMORY(9999,"Glowing memory"),GLOWINGENERGY(29316,"Glowing energy"),
+		SPARKLINGMEMORY(9999,"Sparkling memory"),SPARKLINGENERGY(999,"Sparkling energy"),
+		GLEAMINGMEMORY(9999,"Gleaming memory"),GLEAMINGENERGY(999,"Gleaming energy"),
+		VIBRANTMEMORY(9999,"Vibrant memory"),VIBRANTENERGY(999,"Vibrant energy"),
+		LUSTROUSMEMORY(9999,"Lustrous memory"),LUSTROUSENERGY(999,"Lustrous energy"),
+		BRILLIANTMEMORY(9999,"Brilliant memory"),BRILLIANTENERGY(999,"Brilliant energy"),
+		RADIANTMEMORY(9999,"Radiant memory"),RADIANTENERGY(999,"Radiant energy"),
+		LUMINOUSMEMORY(9999,"Luminous memory"),LUMINOUSENERGY(999,"Luminous energy"),
+		INCANDESCENTMEMORY(9999,"Incandescent memory"),INCANDESCENTENERGY(999,"Incandescent energy"),;
 		
 		int id;
 		String name;
