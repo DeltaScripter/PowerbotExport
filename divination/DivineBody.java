@@ -412,6 +412,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 										Method.getNPC(wispSpring).getLocation().distanceTo(ctx.players.local().getLocation())>1){
 									ctx.game.sleep(Random.nextInt(1350, 2000));
 									state = "Right-clicking spring";
+									if(Method.npcIsNotNull(wispSpring))
 									ctx.mouse.click(Method.getNPC(wispSpring).getCenterPoint(),false);
 								}else if(Method.getNPC(wispKind).isOnScreen()){
 									ctx.game.sleep(Random.nextInt(1350, 2000));
