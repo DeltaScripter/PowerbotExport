@@ -37,7 +37,7 @@ import divination.DivineData.wisps;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
-description = "Trains the Divination Skill; harvests and converts energy to your choosing",
+description = "Collects all types of energy; harvests and uses energy to your choosing",
 topic = 1130348, version = 1.14, website = "http://www.powerbot.org/community/topic/1130348-delta-divinity/"
 )
 public class DivineBody extends PollingScript implements PaintListener{
@@ -62,6 +62,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 				addNode(new harvestWisp(ctx));
 				addNode(new convertMemories(ctx));
 				addNode(new DivineAntipattern(ctx));
+				addNode(new DivineChronicle(ctx));
 				
 			}
 			
@@ -173,14 +174,14 @@ public class DivineBody extends PollingScript implements PaintListener{
 	private boolean harvest = false;
 	public static int convertType;
 	private int animationType;
-	private String location;
+	public static String location;
 	GeItem energy;
 	private String wispKind;
 	private String wispSpring;
 	private String memoryType;
 	private int energyType;
 	private int price;
-	private Tile riftArea;
+	public static Tile riftArea;
 	public static boolean antiPattern;
 	private Random rand = new Random();
 	private boolean start = false;
@@ -198,6 +199,8 @@ public class DivineBody extends PollingScript implements PaintListener{
 	DivineAntipattern anti = new DivineAntipattern(ctx);
 	public static boolean prioritizeNearbyWisps;
 	public static boolean catchChronicles = true;
+	public static boolean depositChronicles = false;
+	private boolean catchAndDepoChronicles = true;
 	
 	
 	@Override
@@ -250,7 +253,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 		
 		@Override
 		public boolean activate() {
-			return !harvest;
+			return !harvest && !depositChronicles;
 		}
 
 		@Override
@@ -346,7 +349,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 
 			@Override
 			public boolean activate() {
-				return harvest;
+				return harvest && !depositChronicles;
 			}
 			@Override
 			public void execute() {
@@ -363,6 +366,8 @@ public class DivineBody extends PollingScript implements PaintListener{
 						harvest = false;
 						break;
 					}
+					if(ctx.widgets.get(1401,35).isVisible())//become a member
+						break;
 					
 					int backPackItems;
 					backPackItems = Method.inventoryGetCount(memoryType);
@@ -374,7 +379,6 @@ public class DivineBody extends PollingScript implements PaintListener{
 							ctx.mouse.click(Method.getObject("Energy Rift").getCenterPoint(),false);
 							ctx.game.sleep(Random.nextInt(1000, 1600));
 						}else{
-							System.out.println("menu is open");
 							String[] items = ctx.menu.getItems();
 							itemList.add("nothing");//for preventing null errors
 							for(String item: items){
@@ -417,6 +421,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 								}else if(Method.getNPC(wispKind).isOnScreen()){
 									ctx.game.sleep(Random.nextInt(1350, 2000));
 									state = "Right-clicking wisp";
+									if(Method.npcIsNotNull(wispKind))
 							     ctx.mouse.click(Method.getNPC(wispKind).getCenterPoint(),false);
 							}
 						}
@@ -430,9 +435,18 @@ public class DivineBody extends PollingScript implements PaintListener{
 					break;
 				}
 				
-				if(Method.inventoryContains("Chronicle fragment"))
+				if((catchAndDepoChronicles ||catchChronicles) && Method.inventoryContains("Chronicle fragment"))
 				while(Method.inventoryStackSize("Chronicle fragment")>9){
 					state = "Destroying Chronicle fragments";
+					if(ctx.widgets.get(1401,35).isVisible())//become a member
+						break;
+					if(ctx.widgets.get(1186,5).isVisible())//the screen that states you can't collect anymore -another method handles it
+						break;
+					
+					if(catchAndDepoChronicles){//Sets for starting to deposit the chronicles.
+						depositChronicles = true;
+						break;
+					}else
 					if(ctx.widgets.get(1183,6).isVisible()){//are you sure?(destroy chronicles)
 						ctx.widgets.get(1183,6).click();//yes button
 					}else
@@ -467,7 +481,6 @@ public class DivineBody extends PollingScript implements PaintListener{
 						if(closeToNpc(wispKind,"Walking to wisp") && !waiting.isRunning()
 								&& ctx.players.local().isIdle()){
 							state = "Attempting to convert wisp to spring";
-							System.out.println("Clicking on wisp");
 							Method.npcInteract(wispKind, "Harvest");
 							
 						}
@@ -536,7 +549,6 @@ public class DivineBody extends PollingScript implements PaintListener{
 					state = string;
 					
 					if(Method.getNPC(name).isOnScreen()){
-						System.out.println("Clicking on npc to get closer");
 						Method.getNPC(name).click();
 					}else if(!ctx.movement.findPath(Method.getNPC(name).getLocation()).traverse()){
 					Method.clickOnMap(Method.getNPC(name).getLocation().randomize(4, 7));
@@ -634,8 +646,9 @@ private void setMouse(Graphics g) {
 		g.drawString("Location: " + location, 20, 230);
 		g.drawString("Prioritize nearby wisps: " + prioritizeNearbyWisps, 20, 250);
 		g.drawString("Capture & destroy chronicles: " + catchChronicles, 20, 270);
+		g.drawString("Capture & deposit chronicles: " + catchAndDepoChronicles, 20, 290);
 		if(Method.inventoryContains(energyType))
-		g.drawString("Money amount in energy: " + price * Method.inventoryStackSize(energyType) + "GP", 20, 290);
+		g.drawString("Money amount in energy: " + price * Method.inventoryStackSize(energyType) + "GP", 20, 310);
 		//g.drawString("XP per hour: "+ expPerHr, 20, 230);
 		}
 		

@@ -20,7 +20,7 @@ public class DivineMethod extends MethodProvider{
 	public DivineMethod(MethodContext ctx) {
 		super(ctx);
 	}
-
+Timer timer = new Timer(0);
 	public GameObject getObject(int i) {
 		for(GameObject obj : ctx.objects.select().id(i).nearest().first()){
 			return obj;
@@ -238,7 +238,29 @@ public class DivineMethod extends MethodProvider{
 				}
 			}
 	}
-
+	public void teleportTo(int loc, String teleName) {
+		while(ctx.bank.isOpen())
+			ctx.bank.close();
+		DivineBody.state = "Teleporting to: " + teleName;
+		if(!timer.isRunning()){
+		if(ctx.widgets.get(1092,loc).isVisible()){//lodestone screen
+			ctx.mouse.move(ctx.widgets.get(1092).getComponent(loc).getCenterPoint());
+			ctx.widgets.get(1092).getComponent(loc).click(true);
+			timer = new Timer(6000);
+		}else {
+				if (ctx.players.local().getAnimation() == -1){
+					ctx.widgets.get(1465,10).hover();
+					for(String t: ctx.menu.getItems()){
+						if(t.contains("Teleport")){
+							ctx.widgets.get(1465,10).click();//select lodestone button
+							timer = new Timer(1000);
+						}
+					}
+				
+				}
+		}		
+		}
+	}
 	public int inventoryStackSize(String name) {
 		if(ctx.hud.view(Window.BACKPACK)){
 		
