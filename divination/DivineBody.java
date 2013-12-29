@@ -200,7 +200,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 	public static boolean prioritizeNearbyWisps;
 	public static boolean catchChronicles = true;
 	public static boolean depositChronicles = false;
-	private boolean catchAndDepoChronicles = true;
+	private boolean catchAndDepoChronicles = false;
 	
 	
 	@Override
