@@ -1,4 +1,4 @@
-package deltafarmer;
+package kebbithunter;
 
 import java.util.ArrayList;
 
@@ -9,42 +9,18 @@ import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.GameObject;
-import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Tile;
 
-public class FarmMethod extends MethodProvider{
+public class KebMethod extends MethodProvider{
 
 	
 	
-	public FarmMethod(MethodContext ctx) {
+	public KebMethod(MethodContext ctx) {
 		super(ctx);
 	}
-	Timer timer = new Timer(0);
-	public void teleportTo(int loc, String teleName) {
-		while(ctx.bank.isOpen())
-			ctx.bank.close();
-		
-		if(!timer.isRunning()){
-		if(ctx.widgets.get(1092,loc).isVisible()){//lodestone screen
-			ctx.mouse.move(ctx.widgets.get(1092).getComponent(loc).getCenterPoint());
-			ctx.widgets.get(1092).getComponent(loc).click(true);
-			timer = new Timer(6000);
-		}else {
-				if (ctx.players.local().getAnimation() == -1){
-					ctx.widgets.get(1465,10).hover();
-					for(String t: ctx.menu.getItems()){
-						if(t.contains("Teleport")){
-							ctx.widgets.get(1465,10).click();//select lodestone button
-							timer = new Timer(1000);
-						}
-					}
-				
-				}
-		}		
-		}
-	}
+Timer timer = new Timer(0);
 	public GameObject getObject(int i) {
 		for(GameObject obj : ctx.objects.select().id(i).nearest().first()){
 			return obj;
@@ -130,7 +106,7 @@ public class FarmMethod extends MethodProvider{
 						for(String text: actions){
 							if(text.contains(string)){
 								  n.interact(string);
-								  ctx.game.sleep(700,1000);
+								 // KebBody.waiting = new Timer(Random.nextInt(1500, 2154));
 								   break;
 								
 							}
@@ -187,6 +163,16 @@ public class FarmMethod extends MethodProvider{
 				}
 				return inventory.size()>=28;
 			}
+			public int inventoryGetCount(int id) {
+				if(!ctx.hud.isOpen(Window.BACKPACK) || !ctx.hud.isVisible(Window.BACKPACK))
+					ctx.hud.view(Window.BACKPACK);
+				
+				ItemQuery<Item> g;
+				g = null;
+				g = ctx.backpack.select().id(id);
+			
+				return g.count(false);
+			}
 			public int inventoryGetCount(String name) {
 				if(!ctx.hud.isOpen(Window.BACKPACK) || !ctx.hud.isVisible(Window.BACKPACK))
 					ctx.hud.view(Window.BACKPACK);
@@ -197,31 +183,11 @@ public class FarmMethod extends MethodProvider{
 			
 				return g.count(false);
 			}
-			public void useItemOn(String item, int obj, String string) {
-				if(ctx.backpack.isItemSelected()){
-					interactO(obj, "Use", string);
-				}else if(inventoryContains(item))
-					interactInventory(item,"Use","Item");
-				
-			}
-			public void interactO(final int cropID, final String string, final String o) {
+			public void interactO(final int id, final String string, final String o) {
 				ArrayList<String> actions = new ArrayList<String>();
-				for(GameObject y: ctx.objects.select().id(cropID).nearest().first()){
-					
+				for(GameObject y: ctx.objects.select().id(id).nearest().first()){
+					KebBody.state = o;
 							if (y.isOnScreen()) {
-								y.interact(string);
-							} else ctx.camera.turnTo(y);
-						
-						}
-				
-			}
-			public void interactO(final String cropID, final String string, final String o) {
-				ArrayList<String> actions = new ArrayList<String>();
-				
-				for(GameObject y: ctx.objects.select().name(cropID).nearest().first()){
-			
-							if (y.isOnScreen()) {
-								
 								y.interact(string);
 							} else ctx.camera.turnTo(y);
 						
@@ -239,27 +205,25 @@ public class FarmMethod extends MethodProvider{
 				
 				return false;
 			}
-	public void interactInventory(final String name, final String string, final String o) {
+			public boolean inventoryContains(int ID) {
+				if(!ctx.hud.isVisible(Window.BACKPACK)){
+					ctx.hud.view(Window.BACKPACK);
+					sleep(2000);
+				}
+					while (!ctx.backpack.select().id(ID).first().isEmpty()) {
+						return true;
+					}
+				
+				return false;
+			}
+	public void interactInventory(final int id, final String string, final String o) {
 		ArrayList<String> actions = new ArrayList<String>();
-		for(Item t : ctx.backpack.select().name(name).first()){
+		for(Item t : ctx.backpack.select().id(id).first()){
 			if(ctx.hud.view(Window.BACKPACK) && ctx.widgets.get(1473,7).contains(
 				t.getComponent().getCenterPoint())){
 				t.hover();
-				ctx.game.sleep(Random.nextInt(300, 500));
 				t.interact(string);
-				//String[] menuItems = ctx.menu.getItems();
-				//for(String opt: menuItems){
-					//if(!actions.contains(opt)){
-					//	actions.add(opt);
-				//	}
-			//	}
-				//for(String text: actions){
-				//	if(text.contains(string)){
-					//	if(t.interact(string)){
-					//	ctx.game.sleep(Random.nextInt(200, 500));
-					//	}
-					//}
-				//}
+				ctx.game.sleep(300,600);
 				 
 			}else
 			if(ctx.widgets.get(1473,7).getBoundingRect().getCenterY()>
@@ -272,13 +236,45 @@ public class FarmMethod extends MethodProvider{
 				}
 			}
 	}
-
+	public void teleportTo(int loc, String teleName) {
+		while(ctx.bank.isOpen())
+			ctx.bank.close();
+		KebBody.state = "Teleporting to: " + teleName;
+		if(!timer.isRunning()){
+		if(ctx.widgets.get(1092,loc).isVisible()){//lodestone screen
+			ctx.mouse.move(ctx.widgets.get(1092).getComponent(loc).getCenterPoint());
+			ctx.widgets.get(1092).getComponent(loc).click(true);
+			timer = new Timer(6000);
+		}else {
+				if (ctx.players.local().getAnimation() == -1){
+					ctx.widgets.get(1465,10).hover();
+					for(String t: ctx.menu.getItems()){
+						if(t.contains("Teleport")){
+							ctx.widgets.get(1465,10).click();//select lodestone button
+							timer = new Timer(1000);
+						}
+					}
+				
+				}
+		}		
+		}
+	}
 	public int inventoryStackSize(String name) {
 		if(ctx.hud.view(Window.BACKPACK)){
 		
 		ItemQuery<Item> g;
 		g = null;
 		g = ctx.backpack.select().name(name);
+		return g.count(true);
+		}
+		return 0;
+	}
+	public int inventoryStackSize(int ID) {
+		if(ctx.hud.view(Window.BACKPACK)){
+		
+		ItemQuery<Item> g;
+		g = null;
+		g = ctx.backpack.select().id(ID);
 		return g.count(true);
 		}
 		return 0;

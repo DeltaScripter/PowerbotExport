@@ -12,7 +12,9 @@ import org.powerbot.script.PollingScript;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Item;
+import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Tile;
 
 
@@ -30,16 +32,20 @@ public class gatherBody extends PollingScript implements PaintListener{
 				   initialSetting  = ctx.settings.get(setting);
 				   System.out.println("Init setting as: "+initialSetting);
 				   
+				   initialSetting2  = ctx.settings.get(setting2);
+				   System.out.println("Init2 setting as: "+initialSetting2);
+				   
 			}
 		});
 	}
 	
 	private final List<gatherNode> nodeList = Collections.synchronizedList(new ArrayList<gatherNode>());
 	private String state;
-	public int boneType;
-	public String boneName;
-	private int setting = 3936;
+	private int setting = 3820;
 	private int initialSetting;
+	
+	private int setting2 = 3936;
+	private int initialSetting2;
 	
 	@Override
 	public int poll() {
@@ -81,6 +87,8 @@ public class gatherBody extends PollingScript implements PaintListener{
 			ArrayList<String> talk = new ArrayList<String>();
 			ArrayList<String> teleport = new ArrayList<String>();
 			ArrayList<String> optionTalk = new ArrayList<String>();
+			ArrayList<Integer> settingList = new ArrayList<Integer>();
+			ArrayList<Integer> animList = new ArrayList<Integer>();
 			@Override
 			public void execute() {
 				state = "Observing your actions, master";
@@ -90,14 +98,35 @@ public class gatherBody extends PollingScript implements PaintListener{
 					System.out.println(""  +ctx.movement.getDestination());
 					}
 				}
+				if(ctx.mouse.isPressed()){
+					for(Npc npc: ctx.npcs.select().at(ctx.movement.getDestination())){
+						System.out.println("Clicked on NPC with ID: " + npc.getId()+ " name: "+npc.getName());
+					}
+					for(GameObject obj: ctx.objects.select().at(ctx.movement.getDestination())){
+						System.out.println("Clicked on obj with ID: " + obj.getId() + " name: "+obj.getName());
+					}
+				}
+				if(!ctx.players.local().isIdle()){
+					if(!animList.contains(ctx.players.local().getAnimation())){
+					System.out.println("Not Idle! animation is "+ctx.players.local().getAnimation());
+					animList.add(ctx.players.local().getAnimation());
+					}
+				}else animList.clear();
 				if(ctx.menu.isOpen()){
 					for(String i: ctx.menu.getItems()){
+						
 					System.out.println("Menu items: " + i);
 					}
 				}
-				if((ctx.settings.get(setting)!=initialSetting)){
+				if((ctx.settings.get(setting2)!=initialSetting2) && !settingList.contains(setting2)){
+					System.out.println("Setting2 changed: " + ctx.settings.get(setting2));
+					initialSetting = ctx.settings.get(setting2);
+					settingList.add(setting2);
+				}
+				if((ctx.settings.get(setting)!=initialSetting) && !settingList.contains(setting)){
 					System.out.println("Setting changed: " + ctx.settings.get(setting));
 					initialSetting = ctx.settings.get(setting);
+					settingList.add(setting);
 				}if(ctx.widgets.get(1500).isValid()){
 					System.out.println("Accept quest screen open!");
 					ctx.game.sleep(1200);
@@ -145,6 +174,8 @@ public class gatherBody extends PollingScript implements PaintListener{
 		g.setFont(myFont);
 		g.setColor(Color.green);
 		g.drawString("State: "+state, 20, 130);
-		g.drawString("Bone type: "+boneName, 20, 150);
+		g.drawString("Setting 1: "  +setting + " (primary) Current/inital value is: "+ initialSetting, 20, 150);
+		g.setColor(Color.red);
+		g.drawString("Setting 2: "  +setting2 + " current setting: "+initialSetting2, 20, 170);
 	}
 }

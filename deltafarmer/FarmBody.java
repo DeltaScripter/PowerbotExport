@@ -54,6 +54,7 @@ public class FarmBody extends PollingScript implements PaintListener{
 				addNode(new watcher(ctx));
 				addNode(new harvest(ctx));
 				addNode(new plantSeed(ctx));
+				addNode(new waitingActivities(ctx));
 				
 			}
 
@@ -87,8 +88,8 @@ public class FarmBody extends PollingScript implements PaintListener{
 	
 	//---
 	public Timer waitHarvest = new Timer(0);
-	public boolean harvest;
-	public boolean plantSeeds;
+	public static boolean harvest;
+	public static boolean plantSeeds;
 	public int seedTypeID = 5318;
 	public String seedTypeName = "Potato seed";
 	
@@ -98,6 +99,8 @@ public class FarmBody extends PollingScript implements PaintListener{
 	
 	@Override
 	public int poll() {
+		
+		//if equal to 7, diseased plants
 		System.out.println("plantseeds: "+plantSeeds);
 		while(ctx.widgets.get(1401,35).isVisible()){//become a member!
 			state = "Closing interface";
@@ -136,19 +139,21 @@ public class FarmBody extends PollingScript implements PaintListener{
 			public void execute() {
 
 				//figure out which allotment is empty..
-				if((ctx.settings.get(12)>>24 & 0xF) ==3){//Catherby south allotment empty
-					System.out.println("Attempting to plant seed in catherby south");
+				//if((ctx.settings.get(12)>>24 & 0xF) ==3){//Catherby south allotment empty
+				//	System.out.println("Attempting to plant seed in catherby south");
 					///plantSeed();
-				}else if((ctx.settings.get(12)>>16 & 0xF) <=3){//Catherby north allotment empty
-					System.out.println("Attempting to plant seed in catherby south");
+				//}else if((ctx.settings.get(12)>>16 & 0xF) <=3){//Catherby north allotment empty
+					//System.out.println("Attempting to plant seed in catherby south");
 					
-				}else if((ctx.settings.get(12) & 0xF) <=3){//Falador west allotment empty
+				//}else
+					if((ctx.settings.get(12) & 0xF) <=3){//Falador west allotment empty
 					System.out.println("PLHERE1");
-					plantSeedsFalador(new Tile(3049,3311,0),7517,(ctx.settings.get(12) & 0xF) <3);
+					plantSeedsFalador(new Tile(3052,3310,0),8550,(ctx.settings.get(12) & 0xF) <3);
 					
-				}else if((ctx.settings.get(12)>>8 & 0xF) <=3){///Falador east allotment empty
+				}else 
+					if((ctx.settings.get(12)>>8 & 0xF) <=3){///Falador east allotment empty
 					System.out.println("Attempting to plant seed in fally south");
-					plantSeedsFalador(new Tile(3056,3306,0),7517,((ctx.settings.get(12)>>8 & 0xF) <3));
+					plantSeedsFalador(new Tile(3056,3305,0),8551,((ctx.settings.get(12)>>8 & 0xF) <3));
 					
 				}
 				
@@ -165,8 +170,9 @@ public class FarmBody extends PollingScript implements PaintListener{
 				if(!waitHarvest.isRunning())
 					
 				if(alotLoc.distanceTo(local)<3){
+					
 					if(condition){//weeds
-						Method.interactO(8550,"Rake", "Weeds");
+						Method.interactO(patchID,"Rake", "Weeds");
 						waitHarvest = new Timer(1200);
 					}else{
 					teleported = false;
@@ -202,38 +208,54 @@ public class FarmBody extends PollingScript implements PaintListener{
 
 		@Override
 		public void execute() {
-			if((ctx.settings.get(12)>>24 & 0xF) >=9){//Catherby south allotment done
-				harvestCatherby(new Tile(2810,3461,0),cropTypeID,(ctx.settings.get(12)>>24 & 0xF) ==9);
-			}else if((ctx.settings.get(12)>>16 & 0xF) >=9){//Catherby north allotment done
-				harvestCatherby(new Tile(2807,3466,0),cropTypeID,(ctx.settings.get(12)>>16 & 0xF) ==9);
-			}else if((ctx.settings.get(12) & 0xF) >=9){//Falador west allotment done
-				harvestFalador(new Tile(3052,3310,0),cropTypeID,(ctx.settings.get(12) & 0xF) ==9);
-			}else if((ctx.settings.get(12)>>8 & 0xF) >=9){//Falador east allotment done
-				harvestFalador(new Tile(3057,3305,0),cropTypeID,(ctx.settings.get(12)>>8 & 0xF) ==9);
+			while(ctx.widgets.get(1188,12).isVisible()){
+				ctx.widgets.get(1188,12).click();
+				ctx.game.sleep(Random.nextInt(500,700));
+			}
+			//if((ctx.settings.get(12)>>24 & 0xF) >=9){//Catherby south allotment done
+			//	harvestCatherby(new Tile(2810,3461,0),cropTypeID,(ctx.settings.get(12)>>24 & 0xF) ==9);
+			//}else 
+			//	if((ctx.settings.get(12)>>16 & 0xF) >=9){//Catherby north allotment done
+				//harvestCatherby(new Tile(2807,3466,0),cropTypeID,(ctx.settings.get(12)>>16 & 0xF) ==9);
+			//}else
+				if((ctx.settings.get(12) & 0xF) >=7){//Falador west allotment done
+				harvestFalador(new Tile(3052,3310,0),8550,(ctx.settings.get(12) & 0xF) ==9,(ctx.settings.get(12) & 0xF) ==8,(ctx.settings.get(12) & 0xF) ==7);
+			}else if((ctx.settings.get(12)>>8 & 0xF) >=7){//Falador east allotment done
+				harvestFalador(new Tile(3057,3305,0),8551,(ctx.settings.get(12)>>8 & 0xF) ==9,(ctx.settings.get(12)>>8 & 0xF) ==8,(ctx.settings.get(12)>>8 & 0xF) ==7);
 			}
 			
 		}
 
-		private void harvestFalador(Tile alotLoc, int[] cropTypeID,boolean condition) {
+		private void harvestFalador(Tile alotLoc, int cropTypeID,boolean condition,boolean conditionDisease,boolean conditionDisease2) {
 			Tile local = ctx.players.local().getLocation();
+			Tile bank = new Tile(3012,3355,0);
 			System.out.println("Now trying to harvest Falador allotment");
 			
 			while(ctx.players.local().getAnimation()!=-1){
 				state = "Harvesting..";
 				waitHarvest = new Timer(5000);
 			}
+			if(Method.backPackIsFull()){
+				if(bank.distanceTo(local.getLocation())<6){
+					if(ctx.bank.isOpen()){
+						ctx.bank.deposit(1511, 28);//logs
+						ctx.bank.deposit(1942, 28);//potato
+					}else ctx.bank.open();
+				}else if(!ctx.movement.findPath(bank).traverse()){
+					System.out.println("Too far away to walk");
+				}
+			}else
 			if(!waitHarvest.isRunning())
 			if(alotLoc.distanceTo(local)<3){
-			if(condition){
-				state = "Clearing dead crops";
-					Method.interactO(8550, "Clear", "Potato");
+			if(condition || conditionDisease| conditionDisease2){
+				state = "Clearing damaged crops";
+					Method.interactO(cropTypeID, "Clear", "Potato");
 					waitHarvest = new Timer(Random.nextInt(1900, 2500));
 				
 			}else{
 				teleported = false;
 				state = "Harvesting " + cropTypeID;
-				for(int i: cropTypeID)
-					Method.interactO(i, "Harvest", "Potato");
+					Method.interactO(cropTypeID, "Harvest", "Potato");
 				waitHarvest = new Timer(1200);
 			}
 			}else if(alotLoc.distanceTo(local)<15){
@@ -294,27 +316,30 @@ public class FarmBody extends PollingScript implements PaintListener{
 
 		@Override
 		public void execute() {
-			
 			//If there is a vacant allotment..
-			if((ctx.settings.get(12)>>24 & 0xF) <=3){//Catherby south allotment empty
-				plantSeeds = true;
-			}else if((ctx.settings.get(12)>>16 & 0xF) <=3){//Catherby north allotment empty
-				plantSeeds = true;
-			}else if((ctx.settings.get(12) & 0xF) <=3){//Falador west allotment empty
+			//if((ctx.settings.get(12)>>24 & 0xF) <=3){//Catherby south allotment empty
+			//	plantSeeds = true;
+			//}else
+				//if((ctx.settings.get(12)>>16 & 0xF) <=3){//Catherby north allotment empty
+			//	plantSeeds = true;
+			//}else
+				if((ctx.settings.get(12) & 0xF) <=3){//Falador west allotment empty
 				plantSeeds = true;
 			}else if((ctx.settings.get(12)>>8 & 0xF) <=3){///Falador east allotment empty
 				plantSeeds = true;
 			}else plantSeeds = false;
 			
-			//If done growing..
-			if((ctx.settings.get(12)>>24 & 0xF) >=9){//Catherby south allotment done
-				System.out.println("setting harvest to true");
+			//If done growing, something inside allotment ready to be harvested
+				
+			//if((ctx.settings.get(12)>>24 & 0xF) >=9){//Catherby south allotment done
+			//	System.out.println("setting harvest to true");
+			//	harvest = true;
+			//}else if((ctx.settings.get(12)>>16 & 0xF) >=9){//Catherby north allotment done
+			//	harvest = true;
+		//	}else
+				if((ctx.settings.get(12) & 0xF) >=10 || ((ctx.settings.get(12)>>14 & 0x1)==1)){//Falador west allotment
 				harvest = true;
-			}else if((ctx.settings.get(12)>>16 & 0xF) >=9){//Catherby north allotment done
-				harvest = true;
-			}else if((ctx.settings.get(12) & 0xF) >=9){//Falador west allotment done
-				harvest = true;
-			}else if((ctx.settings.get(12)>>8 & 0xF) >=9){//Falador east allotment done
+			}else if((ctx.settings.get(12)>>8 & 0xF) >=10 || ((ctx.settings.get(12)>>15 & 0x1) ==1)){//Falador east allotment
 				harvest = true;
 			}else harvest = false;
 		updateCounts();
@@ -421,8 +446,8 @@ private void setMouse(Graphics g) {
 			g.drawString("Falador west patch state: Ready to harvest", 20, 330);
 		}else if((ctx.settings.get(12) & 0xF) <=3){
 			g.drawString("Falador west patch state: Ready for planting", 20, 330);
-		}else if((ctx.settings.get(12) & 0xF) ==9){
-			g.drawString("Falador west patch state: Dead plants", 20, 330);
+		}else if((ctx.settings.get(12)>>14 & 0x1)==1){
+			g.drawString("Falador west patch state: DISEASED", 20, 330);
 		}else g.drawString("Falador west patch state: Still growing...", 20, 330);
 		
 		if((ctx.settings.get(24)>>8 & 0x1) ==1)//farmer falador allotment WEST
@@ -434,8 +459,8 @@ private void setMouse(Graphics g) {
 			g.drawString("Falador east patch state: Ready to harvest", 20, 370);
 		}else if((ctx.settings.get(12)>>8 & 0xF) <=3){
 			g.drawString("Falador east patch state: Ready for planting", 20, 370);
-		}else if((ctx.settings.get(12)>>8 & 0xF) ==9){
-			g.drawString("Falador east patch state: Dead plants", 20, 370);
+		}else if((ctx.settings.get(12)>>15 & 0x1) ==1){
+			g.drawString("Falador east patch state: DISEASED", 20, 370);
 		}else g.drawString("Falador east patch state: Still growing...", 20, 370);
 		
 		if((ctx.settings.get(24)>>9 & 0x1) ==1)//farmer falador allotment EAST

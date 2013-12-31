@@ -107,6 +107,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					 addNode(new PlagueCity(ctx));
 					 addNode(new TheKnightsSword(ctx));
 					 addNode(new ErnestTheChicken(ctx));
+					 addNode(new DeathOfChivalry(ctx));
 			}
 		});
 		getExecQueue(State.STOP).add(new Runnable() {
@@ -299,6 +300,9 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 				if(GEWO) GEFeature = true;
 			}else if (qList.get(0) =="Plague City"&& scriptToStart!=38) {
 				scriptToStart=38;
+				if(GEWO) GEFeature = true;
+			}else if (qList.get(0) =="Death of Chivalry"&& scriptToStart!=39) {
+				scriptToStart=39;
 				if(GEWO) GEFeature = true;
 			}
 			
@@ -757,7 +761,6 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 						}
 
 						//---- requirementsLabel ----
-						requirementsLabel.setText("Below is a collection of requirements based on the quests you chose.");
 
 						GroupLayout panel5Layout = new GroupLayout(panel5);
 						panel5.setLayout(panel5Layout);

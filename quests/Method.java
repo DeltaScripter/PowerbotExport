@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
+import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.methods.Backpack;
 import org.powerbot.script.methods.Hud.Window;
@@ -215,6 +216,48 @@ public class Method extends MethodProvider{
 			}
 		}
 	}
+	public void interactInventory(final String name, final String string, final String o) {
+		ArrayList<String> actions = new ArrayList<String>();
+		
+		 if(!timer.isRunning()){
+		for(Item t : ctx.backpack.select().name(name).first()){
+			//System.out.println(ctx.widgets.get(1477,122).getChild(0).getBoundingRect().getCenterY());
+			if(ctx.hud.view(Window.BACKPACK) && closeInterfaces() && ctx.widgets.get(1473,7).contains(
+				t.getComponent().getCenterPoint())){
+				System.out.println("Hovering");
+				t.hover();
+				ctx.game.sleep(1200);
+				String[] menuItems = ctx.menu.getItems();
+				for(String opt: menuItems){
+					if(!actions.contains(opt)){
+						actions.add(opt);
+					}
+				}
+				for(String text: actions){
+					if(text.contains(string)){
+						if(closeInterfaces())
+						if(t.interact(string)){
+						System.out.println("Using " + string + " with item: " + o);
+						ctx.game.sleep(2000);
+						 timer = new Timer(2500);
+						}
+					}
+				}
+				 
+			}else
+			if(ctx.widgets.get(1473,7).getBoundingRect().getCenterY()>
+			t.getComponent().getBoundingRect().getCenterY()){
+				state("Scrolling through inventory");
+				ctx.mouse.move(ctx.widgets.get(1473, 7).getAbsoluteLocation());
+				ctx.mouse.scroll(false);
+			}else {
+				state("Scrolling through inventory");
+				ctx.mouse.move(ctx.widgets.get(1473, 7).getAbsoluteLocation());
+				ctx.mouse.scroll(true);
+				}
+			}
+		}else System.out.println("timer1 running");
+	}
 	public void interactInventory(final int i, final String string, final String o) {
 		ArrayList<String> actions = new ArrayList<String>();
 		
@@ -261,32 +304,34 @@ public class Method extends MethodProvider{
         return ctx.players.local().getInteracting()!=null;
     }
     public void interactO(final String name, final String string, final String o) {
-		ArrayList<String> actions = new ArrayList<String>();
+    	ArrayList<String> actions = new ArrayList<String>();
+    	
 		for(GameObject y: ctx.objects.select().name(name).nearest().first()){
 			//if(closeInterfaces())
-			if(y.isOnScreen()){
-			state("Interacting: " + string);
-			y.interact(string);
+			//if(y.isOnScreen()){
+			
+			if(!y.interact(name)){
+				System.out.println("Can't");
+			}else System.out.println("Can");
+			//if (closeInterfaces() && y.isOnScreen()) {
+				/*y.hover();
+				String menuItems[] = ctx.menu.getItems();
+				for(String opt: menuItems){
+					if(!actions.contains(opt))
+						actions.add(opt);
+					state("Investigating options..");
+				}
+				for(String text: actions){
+					if(text.contains(string)){
+						state("Interacting: " + string);
+						   y.interact(string);
+						  // sleep(2000);
+					}
+				}*/
+		//	} else ctx.camera.turnTo(y);
+		
 			ctx.game.sleep(1800);
-			}else ctx.camera.turnTo(y);
-			/*
-					if (closeInterfaces() && y.isOnScreen()) {
-						y.hover();
-						String menuItems[] = ctx.menu.getItems();
-						for(String opt: menuItems){
-							if(!actions.contains(opt))
-								actions.add(opt);
-							state("Investigating options..");
-						}
-						for(String text: actions){
-							if(text.contains(string)){
-								   y.interact(string);
-								  // sleep(2000);
-								state("Using " + string + " on: " + o);
-							}
-						}
-					} else ctx.camera.turnTo(y);
-				*/
+		//	}else ctx.camera.turnTo(y);
 				}
 		
 	}
@@ -340,7 +385,32 @@ public class Method extends MethodProvider{
 			}
 		return true;
 	}
-
+	public void npcInteract(String name, String string) {
+		ArrayList<String> actions = new ArrayList<String>();
+		if(!SpeakTotimer.isRunning()){
+		for(Npc n : ctx.npcs.select().name(name).nearest().first()){
+				if (closeInterfaces() && n.isOnScreen()) {
+					n.hover();
+					String menuItems[] = ctx.menu.getItems();
+					for(String opt: menuItems){
+						if(!actions.contains(opt))
+							actions.add(opt);
+					}
+					for(String text: actions){
+						if(text.contains(string)){
+							state("Interacting with " + n.getName() + " and using " + string);
+							 SpeakTotimer = new Timer(2400);
+							 System.out.println("interacting");
+							  n.interact(string);
+							   sleep(2000);
+							   break;
+							
+						}
+					}
+				} else ctx.camera.turnTo(n);
+			}
+		}
+	}
 	public void npcInteract(int i, String string) {
 		ArrayList<String> actions = new ArrayList<String>();
 		if(!SpeakTotimer.isRunning()){

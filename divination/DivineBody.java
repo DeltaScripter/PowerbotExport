@@ -35,7 +35,7 @@ import divination.DivineData.wisps;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
-description = "Collects all types of energy; harvests and uses energy to your choosing, earn 150-200k/hr!",
+description = "Collects all types of energy; harvests and uses energy to your choosing, earn 200-300k/hr!",
 topic = 1130348, version = 1.14, website = "http://www.powerbot.org/community/topic/1130348-delta-divinity/"
 )
 public class DivineBody extends PollingScript implements PaintListener{
@@ -546,6 +546,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 				}else {
 					state = string;
 					
+					if(Method.npcIsNotNull(name))
 					if(Method.getNPC(name).isOnScreen()){
 						Method.getNPC(name).click();
 					}else if(!ctx.movement.findPath(Method.getNPC(name).getLocation()).traverse()){
