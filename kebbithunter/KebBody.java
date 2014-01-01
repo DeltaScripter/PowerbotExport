@@ -190,7 +190,7 @@ public class KebBody extends PollingScript implements PaintListener{
 			
 			int backPackItems;
 			backPackItems = Method.inventoryGetCount(10117);
-			if(backPackItems >= Random.nextInt(24, 25)){
+			if(backPackItems >= Random.nextInt(22, 23)){
 				hunt = false;
 				System.out.println("Setting hunt to false");
 			}
