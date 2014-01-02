@@ -4,9 +4,11 @@ package quests;
 import features.GrandExchange;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 
+import org.powerbot.client.ItemSlot;
 import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.methods.Backpack;
@@ -54,7 +56,8 @@ public class Method extends MethodProvider{
 		
 	
 	
-		
+	
+
 	public void useGE(String[] name, int[] itemID, int[] itemPrice, int[] itemAmount){
 			
 			
@@ -103,6 +106,16 @@ public class Method extends MethodProvider{
 		} else getToExchange();
 	}
 
+	public int inventoryStackSize(int ID) {
+		if(ctx.hud.view(Window.BACKPACK)){
+		
+		ItemQuery<Item> g;
+		g = null;
+		g = ctx.backpack.select().id(ID);
+		return g.count(true);
+		}
+		return 0;
+	}
 	public boolean bankContains(int id) {
 		ArrayList<Integer> bankItems = new ArrayList<Integer>();
 		

@@ -108,6 +108,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					 addNode(new TheKnightsSword(ctx));
 					 addNode(new ErnestTheChicken(ctx));
 					 addNode(new DeathOfChivalry(ctx));
+					 addNode(new TowerOfLife(ctx));
 			}
 		});
 		getExecQueue(State.STOP).add(new Runnable() {
@@ -304,6 +305,9 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			}else if (qList.get(0) =="Death of Chivalry"&& scriptToStart!=39) {
 				scriptToStart=39;
 				if(GEWO) GEFeature = true;
+			}else if (qList.get(0) =="Tower of Life"&& scriptToStart!=40) {
+				scriptToStart=40;
+				if(GEWO) GEFeature = true;
 			}
 			
 		}else if(ready && qList.isEmpty()){
@@ -333,7 +337,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 						"Buyers and Cellars","Cook's Assistant","Clock Tower","Death Plateau","Demon Slayer","Druidic Ritual",
 						"Ernest The Chicken","Gunnar's Ground",
 						"Imp Catcher","Let Them Eat Pie","Monk's Friend","Pirate's Treasure","Stolen Hearts","Swept Away",
-						"The Knight's Sword","The Restless Ghost","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
+						"The Knight's Sword","The Restless Ghost","Tower of Life","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
 				};
 				
 				@Override

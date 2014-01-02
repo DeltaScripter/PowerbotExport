@@ -41,10 +41,10 @@ public class gatherBody extends PollingScript implements PaintListener{
 	
 	private final List<gatherNode> nodeList = Collections.synchronizedList(new ArrayList<gatherNode>());
 	private String state;
-	private int setting = 3820;
+	private int setting = 2190;
 	private int initialSetting;
 	
-	private int setting2 = 3936;
+	private int setting2 = 0;
 	private int initialSetting2;
 	
 	@Override
@@ -95,7 +95,7 @@ public class gatherBody extends PollingScript implements PaintListener{
 				if(ctx.movement.getDestination()!=null){
 					if(!path.contains(ctx.movement.getDestination())){
 						path.add(ctx.movement.getDestination());
-					System.out.println(""  +ctx.movement.getDestination());
+					System.out.println("new Tile"  +ctx.movement.getDestination() + ",");
 					}
 				}
 				if(ctx.mouse.isPressed()){
@@ -106,7 +106,7 @@ public class gatherBody extends PollingScript implements PaintListener{
 						System.out.println("Clicked on obj with ID: " + obj.getId() + " name: "+obj.getName());
 					}
 				}
-				if(!ctx.players.local().isIdle()){
+				if(ctx.players.local().getAnimation()!=-1){
 					if(!animList.contains(ctx.players.local().getAnimation())){
 					System.out.println("Not Idle! animation is "+ctx.players.local().getAnimation());
 					animList.add(ctx.players.local().getAnimation());
