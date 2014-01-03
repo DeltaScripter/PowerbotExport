@@ -42,7 +42,6 @@ public class KebBody extends PollingScript implements PaintListener{
 		getExecQueue(State.STOP).add(new Runnable() {
 			@Override
 			public void run() {
-				System.out.println("Shutting down.");
 				getController().stop();
 			}
 			});
@@ -107,8 +106,8 @@ public class KebBody extends PollingScript implements PaintListener{
 			state = "Closing interface";
 			ctx.widgets.get(1401,35).click();
 		}
-		while(ctx.widgets.get(1186).isValid()){//after collecting limit of 10 chronicles..
-			state = "Closing chronicle interface";
+		while(ctx.widgets.get(1186,0).isVisible()){//after collecting limit of 10 chronicles..
+			state = "Closing interface";
 			Method.clickOnMap(ctx.players.local().getLocation().randomize(3, 5));
 		}
 		for(KebNode node: nodeList){
@@ -144,7 +143,6 @@ public class KebBody extends PollingScript implements PaintListener{
 			Tile local = ctx.players.local().getLocation();
 			if(!Method.inventoryContains(10117)){//kebbit fur
 				hunt = true;
-				System.out.println("Setting hunt to true");
 			}
 			if(bankTile.distanceTo(local)<7){
 				if(ctx.bank.isOpen()){
@@ -192,7 +190,6 @@ public class KebBody extends PollingScript implements PaintListener{
 			backPackItems = Method.inventoryGetCount(10117);
 			if(backPackItems >= Random.nextInt(22, 23)){
 				hunt = false;
-				System.out.println("Setting hunt to false");
 			}
 			
 			if (new Tile(2871,3481,0).distanceTo(ctx.players.local().getLocation())>25){//kebbit area
@@ -331,7 +328,6 @@ public class KebBody extends PollingScript implements PaintListener{
 						wait = new Timer(Random.nextInt(1600, 1800));
 						}else ctx.camera.turnTo(pile);
 					}else if(!waitClickMap.isRunning()){
-						System.out.println("Walking towards object");
 						ctx.movement.stepTowards(pile.getLocation());
 						waitClickMap = new Timer(Random.nextInt(1800, 2200));
 					}
@@ -359,7 +355,6 @@ public class KebBody extends PollingScript implements PaintListener{
 					wait = new Timer(Random.nextInt(1700, 2500));
 					}else ctx.camera.turnTo(rock);
 				}else if(!waitClickMap.isRunning()){
-					System.out.println("Walking towards rock");
 					ctx.movement.stepTowards(rock.getLocation().randomize(2,3));
 					waitClickMap = new Timer(Random.nextInt(1800, 2800));
 				}
