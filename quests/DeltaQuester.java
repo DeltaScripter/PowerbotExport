@@ -109,6 +109,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					 addNode(new ErnestTheChicken(ctx));
 					 addNode(new DeathOfChivalry(ctx));
 					 addNode(new TowerOfLife(ctx));
+					 addNode(new GertrudesCat(ctx));
 			}
 		});
 		getExecQueue(State.STOP).add(new Runnable() {
@@ -335,7 +336,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
 						"Buyers and Cellars","Cook's Assistant","Clock Tower","Death Plateau","Demon Slayer","Druidic Ritual",
-						"Ernest The Chicken","Gunnar's Ground",
+						"Ernest The Chicken","Gertrude's Cat","Gunnar's Ground",
 						"Imp Catcher","Let Them Eat Pie","Monk's Friend","Pirate's Treasure","Stolen Hearts","Swept Away",
 						"The Knight's Sword","The Restless Ghost","Tower of Life","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
 				};

@@ -392,6 +392,9 @@ public class Method extends MethodProvider{
 			
 			if(ctx.widgets.get(index,0).isVisible()){
 				System.out.println("Closing an interaface");
+				if(index==1186){
+					pressContinue();
+				}else
 				clickOnMap(ctx.players.local().getLocation());
 				return false;
 			  }
@@ -608,6 +611,15 @@ public class Method extends MethodProvider{
 		if(closeInterfaces())
 		if(ctx.backpack.isItemSelected()){
 			interactO(obj, "Use", string);
+		}else if(inventoryContains(item))
+			interactInventory(item,"Use","Item");
+		
+	}
+	public void useItemOnNpc(int item, int npc, String string) {
+		state("Using item on npc");
+		if(closeInterfaces())
+		if(ctx.backpack.isItemSelected()){
+			npcInteract(npc,"Use");
 		}else if(inventoryContains(item))
 			interactInventory(item,"Use","Item");
 		

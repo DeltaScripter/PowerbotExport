@@ -1,22 +1,25 @@
-/*package quests;
+package quests;
 
-import org.powerbot.core.script.job.Task;
-import org.powerbot.core.script.job.state.Node;
-import org.powerbot.game.api.methods.Settings;
-import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.game.api.methods.interactive.NPCs;
-import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.GroundItems;
-import org.powerbot.game.api.methods.tab.Inventory;
-import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.game.api.wrappers.node.GroundItem;
+import lodestoneActivator.Data.TeleportLode;
+import lodestoneActivator.Data.TeleportType;
+
+import org.powerbot.script.methods.Hud.Window;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.util.Timer;
+import org.powerbot.script.wrappers.Tile;
+
 
 public class GertrudesCat extends Node{
 
+	public GertrudesCat(MethodContext ctx) {
+		super(ctx);
+	}
+	public boolean activate(){
+		return(DeltaQuester.scriptToStart==15);
+	}
 	//Walking paths.
 	public final Tile[] pathToGertrudeFV = new Tile[] { 
-			new Tile(3203,3375, 0),new Tile(3190,3377, 0),
+			new Tile(3190,3377, 0),
 			new Tile(3176,3382, 0), new Tile(3164,3391, 0),
 			new Tile(3161,3407, 0), new Tile(3151,3412, 0) };
 	
@@ -41,9 +44,10 @@ public class GertrudesCat extends Node{
 	public int itemDID[] = {1927,327};//contains the ids of the items needing to be purchased.
 	public int itemDAmount[] = {1,1};
 	public int itemDPrice[] = {700,1825};//contains specific prices to use upon purchasing specific items.
-	public String itemDString[] = {"Bucket of Milk", "Raw Sardine"};//contains the names of the items needing to be purchased.
+	public String itemDString[] = {"Bucket of milk", "Raw sardine"};//contains the names of the items needing to be purchased.
 	
-	
+	Method Method = new Method(ctx);
+	Vars Vars = new Vars();
 	//Other
 	public boolean init = false;
 	public int requiredItems[] = {0,0};
@@ -54,285 +58,209 @@ public class GertrudesCat extends Node{
 	
 	public boolean check = false;
 	public int bankItems[] = {13236,1552,1927,327,1573,1552};
+	public int bankItemAmount[] = {1,1,1,1,1,1};
+	
 	public void execute() {
-		/*
-		 * Settings used:
-		 * 2175-main steps
-		 * 
-		if(!init){
-			if(!Method.VarrokLodeIsActive()){
-				Method.state("Varrok lodestone must be active, skipping quest");
-				Task.sleep(2000);
-				DeltaQuester.e  =true;
-			}else init = true;
-		}else if(Method.useBank && (Settings.get(2175) & 0x7) !=6){
-			Method.useBank(bankItems, 1,1,90);
-		}else
-		if (DeltaQuester.GEFeature && (Settings.get(2175) & 0x7) !=6) {
-			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
-		}else{
-			Quests.checkForGates();
-			Quests.getSettings(2175);
-			if(Quests.varrokLode.distanceTo()<6)
-				Method.teleporting = false;
+	
+		
+		// * ctx.settings used:
+		// * 2175-main steps
+		// * /*
+		
+		
 			DeltaQuester.numSteps = 7;
+			if(DeltaQuester.checkedBank)
+				Method.determineBank(bankItems);
 			
-			if((Settings.get(2175) & 0x7) ==6){
+			if((ctx.settings.get(2175) & 0x7) ==6){
 				DeltaQuester.progress = 7;
 				DeltaQuester.state = "The Gertrudes Cat quest has been completed";
-				Task.sleep(2000);
+				ctx.game.sleep(2000);
 				DeltaQuester.e = true;
 			}else
-			if((Settings.get(2175) & 0x7) ==5){
+			if(!DeltaQuester.checkedBank){//should be if false
+				Method.checkBank();
+			}else
+		    if(Vars.useBank){
+				Method.useBank(bankItems, bankItemAmount);
+			}else
+			if (DeltaQuester.GEFeature) {
+				Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
+			}else
+			if((ctx.settings.get(2175) & 0x7) ==5){
 				DeltaQuester.progress = 6;
-				cS0();
+				cs0();//go back to Gertrude
 			}else
-			if((Settings.get(2175) & 0x7) ==4){
+			if((ctx.settings.get(2175) & 0x7) ==4){
 				DeltaQuester.progress = 5;
-				cS3();
+				cs3();//find the kittens in the crates
 			}else
-			if((Settings.get(2175) & 0x3) ==3){
-				DeltaQuester.progress = 4;
-				cS2();
-			}else
-			if((Settings.get(2175) & 0x3) ==2){
+			if((ctx.settings.get(2175) & 0x3) ==2 ||
+					(ctx.settings.get(2175) & 0x7) ==3){
 				DeltaQuester.progress = 3;
-				cS2();
+				cs2();//Go to the cat and feed it.
 			}else
-			if((Settings.get(2175) & 0x1) ==1){
-				cS1();//Bribe the punks.
+			if((ctx.settings.get(2175) & 0x1) ==1){
+				cs1();//Bribe the punks.
 			}else
-			if((Settings.get(2175) & 0x1) ==0){
+			if((ctx.settings.get(2175) & 0x1) ==0){
 				DeltaQuester.progress = 1;
-				cS0();//start the quest.
+				cs0();//start the quest.
 			}
-		}
+		
 		
 	}
 	
 
-	private void cS3() {
-			if(Inventory.getItem(13236)!=null){
-				if(new Tile(3309,3510,1).canReach()){
-					Quests.DYNAMICV = false;
-					if(Quests.tActive()){
-						//Test.
-					}else{
-					if(Inventory.getSelectedItem()!=null){
-						Quests.npcInteract(759, "Use");
-					}else Quests.interactInventory(13236, "Use");
+	private void cs3() {
+		 Tile local = ctx.players.local().getLocation();
+		
+			if(Method.inventoryContains(13236)){//kittens?
+				if(new Tile(3309,3510,1).getMatrix(ctx).isReachable() && ctx.game.getPlane()==1){//tree house, cat loc
+					Vars.DYNAMICV = false;
+					if(!Method.isChatting("Cat..")){
+						Method.useItemOnNpc(13236, 759, "Shizzle");//use kittens on cat
 					}
 					
-				} else if (new Tile(3298, 3499, 0).canReach()) {
-					if (new Tile(3310, 3507, 0).distanceTo() < 4) {
-						Quests.interactO(24354, "Climb");
-					} else
-						Quests.findPath(new Tile(3310, 3507, 0));
-				} else if (new Tile(3294, 3498, 0).distanceTo() < 6) {
-					Quests.interactO(31149, "Squeeze");
-				} else if (Quests.DYNAMICV) {
-					Quests.walking(pathToLumber, "Walking to Secret Hide-out",false);
-				} else if (Quests.varrokLode.distanceTo() < 5) {
-					Quests.DYNAMICV = true;
-				} else
-					Method.teleportTo(51);// Varrok teleport..
-			} else if (Quests.tActive()) {
-				Quests.clickContinue();
-			} else {
+				} else if (new Tile(3298, 3499, 0).getMatrix(ctx).isReachable()) {//pen area
+					if (new Tile(3310, 3507, 0).distanceTo(local) < 4) {//ladder loc
+						Method.interactO(24354, "Climb","Ladder");
+					} else ctx.movement.findPath(new Tile(3310, 3507, 0)).traverse();
+				}else cs1();//get to location
+			} else if(!Method.isChatting("Self")) {
 
-				if (new Tile(3301, 3505, 0).canReach()) {
+				if (new Tile(3301, 3505, 0).getMatrix(ctx).isReachable()) {//fence area
 					for (int num = 0; num < 7;) {
-						Quests.state("Gathering kittens");
-						if (Quests.tActive()) {
-							if (Widgets.get(1186).validate()) {
-								Quests.clickContinue();
+						if(ctx.hud.isVisible(Window.WORN_EQUIPMENT))
+							break;
+						Method.state("Gathering kittens: " + num);
+						if (ctx.widgets.get(1186,0).isVisible()) {
+							if (ctx.widgets.get(1186,0).isVisible()) {
+								Method.pressContinue();
 								num = 7;
-							} else
-								num++;
+							} else num++;
 						} else {
-					if (crateLoc[num].distanceTo()<3){
-						if(!Players.getLocal().isIdle() && !Players.getLocal().isMoving()){
-								num++;
-							}else if(Players.getLocal().isIdle()){
-								Quests.npcInteract(7740, "Search");
-							}
+					if (crateLoc[num].distanceTo(local)<3){
+						Method.npcInteract(7740, "Search");
+						ctx.game.sleep(2300,2500);
+						if(Method.playerText("You find nothing"))
+							num++;
 							
-					}else Quests.findPath(crateLoc[num]);
+					}else ctx.movement.findPath(crateLoc[num]).traverse();
 					}
 				}
 				
-			}else if(new Tile(3294,3498,0).distanceTo()<6){
-				Quests.interactO(31149, "Squeeze");
-			}else if (new Tile(3309,3510,1).canReach()){
-				Quests.interactO(24355, "Climb");
-			}else if(Quests.DYNAMICV){
-				Quests.walking(pathToLumber, "Walking to Secret Hide-out",false);
-			}else if(Quests.varrokLode.distanceTo()<5){
-				Quests.DYNAMICV = true;
-			}else Method.teleportTo(51);//Varrok teleport..
+			}else if(ctx.game.getPlane()==1){
+				Method.interactO(24355, "Climb-down", "Ladder");
+			}else cs1();
+				  
 			}
-				}
+		}
 			
 		
 	
-
-	private void cS2() {
-		if(!Method.teleporting){
+	Timer wait = new Timer(0);
+	private void cs2() {//seems to go into the cat location
+		 Tile local = ctx.players.local().getLocation();
+		 
 		if(requiredItems[0]==1){//Do we have a doogle leaf?
 			if(requiredItems[1]==1){//Do we have the ....sandwich?
-		if(new Tile(3310,3508,1).canReach()){
-			if(Settings.get(2175)==3){//If we need to feed the cat.
-			if (check){
-				if(Quests.chat(1186, 1, "Then she mews")){
-					check = false;
-				}else{
-				if(Quests.tActive()){
-				if(Quests.chat(1186, 1, "hungry")){
-					Quests.clickContinue();
-				}else if(Quests.chat(1186, 1, "")){
-					Quests.clickContinue();
-				}else if(Quests.chat(1184, 13, "") || Quests.chat(1191, 17, "")){
-					Quests.clickContinue();
-				}
-				}else if(Inventory.getItem(1552)!=null){
-					if(Inventory.getSelectedItem()!=null){
-						Quests.npcInteract(759, "Use");
-						Task.sleep(1200,1300);
-					}else Quests.interactInventory(1552, "Use");
-				}else Quests.state("Can't find food.");
-				}
-			}else{
-				if(Quests.tActive()){
-					if(Quests.chat(1186, 1, "hungry")){
-						check = true;
-					}else Quests.clickContinue();
-				}else {
-					Quests.state("Picking up cat..");
-					Quests.npcInteract(759, "Pick-up");
-					Task.sleep(2000,2300);
-				}
+		if(new Tile(3310,3508,1).getMatrix(ctx).isReachable() && ctx.game.getPlane()==1){//tree house I assume
+			while(ctx.widgets.get(1186,0).isVisible()){
+				Method.pressContinue();
 			}
-			}else{//We need to feed the cat fluid..
-				if (check){
-					if(Quests.tActive()){
-					if(Quests.chat(1186, 1, "thirsty")){
-						Quests.clickContinue();
-					}else if(Quests.chat(1186, 1, "again")){
-						check = false;
-					}else if(Quests.chat(1186, 1, "")){
-						Quests.clickContinue();
-					}else if(Quests.chat(1184, 13, "") || Quests.chat(1191, 17, "")){
-						Quests.clickContinue();
-					}
-					}else if(Inventory.getItem(1927)!=null){
-						if(Inventory.getSelectedItem()!=null){
-							Quests.npcInteract(759, "Use");
-						}else Quests.interactInventory(1927, "Use");
-					}else Quests.state("Can't find bucket of milk...");
-				}else{
-					if(Quests.tActive()){
-						if(Quests.chat(1186, 1, "thirsty")){
-							check = true;
-						}
-					}else {
-						Quests.state("Picking up cat..");
-						Quests.npcInteract(759, "Pick-up");
-					}
+			if((ctx.settings.get(2175) & 0x7)==3){//If we need to feed the cat.
+				if(!wait.isRunning()){
+				Method.useItemOnNpc(1552,759, "");//on the cat, sandwhich
+				wait = new Timer(2300);
+				}
+			}else if(!wait.isRunning()){
+				Method.useItemOnNpc(1927,759, "");//on the cat, milk
+				wait = new Timer(2300);
+			}
+		} else if (new Tile(3298,3501, 0).getMatrix(ctx).isReachable()) {// inside pen area?
+		if (new Tile(3310, 3507, 0).distanceTo(local) < 4) {// below  tree house, possibly
+					Method.interactO(24354, "Climb", "Ladder");
+			} else ctx.movement.findPath(new Tile(3310, 3507, 0)).traverse();
+
+			} else if (new Tile(3294, 3498, 0).distanceTo(local) < 6) {// just  outside  the  pen
+				Method.interactO(31149, "Squeeze", "Fence");
+				} else if (Vars.DYNAMICV) {
+					Method.walking(pathToLumber,"Walking to Secret Hide-out", false);
+				} else if (TeleportLode.VARROCK.getTile().distanceTo(local) < 10) {
+					Vars.DYNAMICV = true;
+				} else Method.teleportTo(TeleportType.VARROCK.getTeleport(),"Varrock");// Teleport To Varrock.//Varrok
+										
+
+				} else if (Method.inventoryContains(1552)) {//I assume the sandwhich
+					requiredItems[1] = 1;
+				} else if (!Method.isChatting("Self")) {
+					Method.skipPics();
+					Method.combineItems(327, 1573);// combine to make a sandwhich
+
+				}
+			} else if (Method.inventoryContains(1573)|| Method.inventoryContains(1552)) {//below gets the leaf
+				Vars.DYNAMICV = false;
+				requiredItems[0] = 1;
+			} else if (new Tile(3152, 3399, 0).distanceTo(local) < 15) {
+				if(Method.gItemIsNotNull(1573)){//woodle leaf
+					
+					if(Method.getGroundItem(1573).getLocation().distanceTo(local)<6){
+						Method.interactG(1573, "Take", "Woodle");
+						ctx.game.sleep(2300);
+					}else Method.clickOnMap(Method.getGroundItem(1573).getLocation().randomize(1, 2));
 				}
 				
-			}
-			
-		}else{
-		if(new Tile(3298,3499,0).canReach()){
-			if(new Tile(3310,3507,0).distanceTo()<4){
-				Quests.interactO(24354, "Climb");
-			}else Quests.findPath(new Tile(3310,3507,0));
-		}else if(new Tile(3294,3498,0).distanceTo()<6){
-			Quests.interactO(31149, "Squeeze");
-		}else if(Quests.DYNAMICV){
-			Quests.walking(pathToLumber, "Walking to Secret Hide-out",false);
-		}else if(Quests.varrokLode.distanceTo()<5){
-			Quests.DYNAMICV = true;
-		}else Method.teleportTo(51);//Varrok teleport..
-		}
-				} else if (Inventory.getItem(1552) != null) {
-					requiredItems[1] = 1;
-				} else if (Quests.tActive()) {
-					Quests.clickContinue();
-				} else if (Inventory.getSelectedItem() != null) {
-					Quests.interactInventory(327, "Use");
-				} else
-					Quests.interactInventory(1573, "Use");
-			} else if (Inventory.getItem(1573) != null|| Inventory.getItem(1552) != null) {
-				Quests.DYNAMICV = false;
-				requiredItems[0] = 1;
-			} else if (new Tile(3152, 3399, 0).distanceTo() < 15) {
-				GroundItem woodle = GroundItems.getNearest(1573);
-				if (woodle.isOnScreen() && !Players.getLocal().isMoving()) {
-					Mouse.click(Quests.getOnScreenPoint(woodle), true);
-				} else woodle.getLocation().clickOnMap();
-			} else if (Quests.DYNAMICV) {
-				Quests.walking(pathToGertrudeFV, "Walking to Gertrude",false);
-			} else if (Quests.varrokLode.distanceTo() < 6)
-				Quests.DYNAMICV = true;
-			else
-				Method.teleportTo(51);
-		} else
-			Method.teleportTo(51);
+			} else if (Vars.DYNAMICV) {
+				Method.walking(pathToGertrudeFV, "Walking to Gertrude",false);
+			} else if (TeleportLode.VARROCK.getTile().distanceTo(local)<10)
+				Vars.DYNAMICV = true;
+			else Method.teleportTo(TeleportType.VARROCK.getTeleport(),"Varrock");//Teleport To Varrock.
 	}
 
-	private void cS1() {
-		if(new Tile(3218, 3434,0).distanceTo()<6){
-			if(Quests.tActive()){
-				Quests.DYNAMICV = false;
-				if(Quests.chat(1184, 13, "") || Quests.chat(1191, 17, "")){
-					Quests.clickContinue();
-				}else if(Quests.findOption("What will make")){
-					Quests.clickOption(1188, Quests.value);
-				}else if(Quests.findOption("Okay then,")){
-					Quests.clickOption(1188, Quests.value);
+	private void cs1() {
+		 Tile local = ctx.players.local().getLocation();
+		 String opt[] = {"What will make","Okay then,"};
+		
+		if(new Tile(3218, 3434,0).distanceTo(local)<6){//by kids
+			Method.skipPics();
+			if(!Method.startQuestOpen())
+			if(!Method.findOption(opt)){
+				if(!Method.isChatting("Person")){
+					Vars.DYNAMICV = false;
+					Method.npcInteract(781, "Talk-to");//kids
 				}
-			}else if(NPCs.getNearest(781).isOnScreen())
-				Quests.speakTo(781);
-			else NPCs.getNearest(781).getLocation().clickOnMap();
-		}else if (Quests.DYNAMICV){
-			Quests.walking(pathToKidFV, "Walking to kids.",false);
-		}else if(Quests.varrokLode.distanceTo()<6)
-			Quests.DYNAMICV = true;
-		else Method.teleportTo(51);
+			}
+		}else if (Vars.DYNAMICV){
+			Method.walking(pathToKidFV, "Walking to kids.",false);
+		}else if(TeleportLode.VARROCK.getTile().distanceTo(local)<10)
+			Vars.DYNAMICV = true;
+		else Method.teleportTo(TeleportType.VARROCK.getTeleport(),"Varrock");
 		
 	}
 
-	private void cS0() {
+	private void cs0() {//get to and speaks to Gertrude
+		 Tile local = ctx.players.local().getLocation();
+		 String opt[] = {"Well, I"};
 		 
-		if(Widgets.get(1186).validate()){
-			Quests.clickContinue();
-		}
-		if(new Tile(3151,3412,0).distanceTo()<6){//Gertrudes Area.
-			if(Quests.tActive()){
-				Quests.DYNAMICV = false;
-				if (Quests.chat(1191, 17, "") || Quests.chat(1184, 13, "")) {
-					Quests.clickContinue();
-				} else if (Quests.findOption("Well, I")) {
-					Quests.clickOption(1188, Quests.value);
-				} else if (Widgets.get(1186).validate()) {
-					Quests.clickContinue();
+		if(new Tile(3151,3412,0).distanceTo(local)<6){//Gertrudes Area.
+			Method.skipPics();
+			if(!Method.startQuestOpen())
+			if(!Method.findOption(opt)){
+				if(!Method.isChatting("Person")){
+					Vars.DYNAMICV = false;
+					if(Method.npcIsNotNull(780) 
+							&& Method.getNPC(780).getLocation().getMatrix(ctx).isReachable()){
+					Method.npcInteract(780, "Talk-to");//Gertrude
+					}else Method.interactO(24376, "Open", "Door");
 				}
-			} else if (NPCs.getNearest(780).isOnScreen()){
-				if(NPCs.getNearest(780).getLocation().canReach())
-				Quests.speakTo(780);
-				else Quests.interactO(24376, "Open");
-			}else NPCs.getNearest(780).getLocation().clickOnMap();
-		}else if (Quests.DYNAMICV){
-			Quests.walking(pathToGertrudeFV, "Walking to Gertrude.",false);
-		}else if(Quests.varrokLode.distanceTo()<6)
-			Quests.DYNAMICV = true;
-		else Method.teleportTo(51);//Teleport To Varrock.
+			}
+		}else if (Vars.DYNAMICV){
+		    Method.walking(pathToGertrudeFV, "Walking to Gertrude.",false);
+		}else if(TeleportLode.VARROCK.getTile().distanceTo(local)<10)
+			Vars.DYNAMICV = true;
+		else Method.teleportTo(TeleportType.VARROCK.getTeleport(),"Varrock");//Teleport To Varrock.
 	}
 
 
-	public boolean activate(){
-		return(DeltaQuester.scriptToStart==15);
-	}
-
-}*/
+}
