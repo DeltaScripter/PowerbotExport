@@ -110,6 +110,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					 addNode(new DeathOfChivalry(ctx));
 					 addNode(new TowerOfLife(ctx));
 					 addNode(new GertrudesCat(ctx));
+					 addNode(new RuneMysteries(ctx));
 			}
 		});
 		getExecQueue(State.STOP).add(new Runnable() {
@@ -168,6 +169,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 				numSteps = 0;
 			 //Resets variables then reinitiates the queue
 				TaskListing.taskRemove.clear();//Clears the task list
+				Method.onlyItemsGE = false;
 				log.info("Finished quest: " + qList.get(0));
 			    DeltaQuester.qList.remove(0);
 				DeltaQuester.scriptToStart=100;
@@ -337,7 +339,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 				String[] values = {
 						"Buyers and Cellars","Cook's Assistant","Clock Tower","Death Plateau","Demon Slayer","Druidic Ritual",
 						"Ernest The Chicken","Gertrude's Cat","Gunnar's Ground",
-						"Imp Catcher","Let Them Eat Pie","Monk's Friend","Pirate's Treasure","Stolen Hearts","Swept Away",
+						"Imp Catcher","Let Them Eat Pie","Plague City","Monk's Friend","Pirate's Treasure","Stolen Hearts","Swept Away",
 						"The Knight's Sword","The Restless Ghost","Tower of Life","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
 				};
 				

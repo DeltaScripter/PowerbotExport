@@ -53,10 +53,22 @@ public class Method extends MethodProvider{
 		public static boolean depoBank = false;
 		private Vars Vars = new Vars();
 		GrandExchange Ge = new GrandExchange(ctx);
+		public static boolean onlyItemsGE = false;
 		
 	
 	
 	
+		public Npc getInteractingNPC()
+	    {
+	        final BasicNamedQuery<Npc> npcs = ctx.npcs.select();
+	       
+	        if(npcs != null && npcs.size() > 0)
+	            for(final Npc npc : npcs)
+	                if(npc.getInteracting() != null && npc.getInteracting().equals(ctx.players.local()))
+	                    return npc;
+	        return null;
+	    }
+	 
 
 	public void useGE(String[] name, int[] itemID, int[] itemPrice, int[] itemAmount){
 			
@@ -770,7 +782,8 @@ public class Method extends MethodProvider{
 		if(!ctx.hud.isVisible(Window.BACKPACK))
 			ctx.hud.view(Window.BACKPACK);
 		
-		int freespace = 28 - items.length;new Tile(3180, 3482, 0);
+		int freespace = 28 - items.length;
+		bankTile =new Tile(3180, 3482, 0);
 		int foodspace = freespace - 5;
 		System.out.println("bankTile: "+ bankTile + "DeltaQuester.number is : " + DeltaQuester.number);
 		if (bankTile.distanceTo(ctx.players.local().getLocation()) < 8) {
@@ -1190,6 +1203,16 @@ public class Method extends MethodProvider{
 	}
 	public void sleep(int amount){
 		ctx.environment.sleep(amount);
+	}
+
+
+	public boolean byCloseLoc(Tile loc, int dist) {
+		Tile local = ctx.players.local().getLocation();
+		
+		if(local.distanceTo(loc)<dist){
+			return true;
+		}else clickOnMap(loc);
+		return false;
 	}
 	
 

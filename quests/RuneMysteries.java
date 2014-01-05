@@ -1,28 +1,25 @@
-/*package quests;
+package quests;
 
 import java.awt.Graphics;
 
-import org.powerbot.core.script.job.Task;
-import org.powerbot.core.script.job.state.Node;
-import org.powerbot.core.script.util.Timer;
-import org.powerbot.game.api.methods.Settings;
-import org.powerbot.game.api.methods.Tabs;
-import org.powerbot.game.api.methods.Walking;
-import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.game.api.methods.interactive.NPCs;
-import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.SceneEntities;
-import org.powerbot.game.api.methods.tab.Equipment;
-import org.powerbot.game.api.methods.tab.Inventory;
-import org.powerbot.game.api.methods.widget.Camera;
-import org.powerbot.game.api.wrappers.Area;
-import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.game.api.wrappers.interactive.NPC;
-import org.powerbot.game.api.wrappers.node.SceneObject;
+import lodestoneActivator.Data.TeleportLode;
+import lodestoneActivator.Data.TeleportType;
+
+import org.powerbot.script.methods.Hud.Window;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.util.Timer;
+import org.powerbot.script.wrappers.Tile;
 
 public class RuneMysteries extends Node{
 
+	public RuneMysteries(MethodContext ctx) {
+		super(ctx);
+	}
+
+	public boolean activate() {
+		return (DeltaQuester.scriptToStart == 6);
+	}
+	
 	public boolean hasMindSpike = false;
 	public boolean equipStaff = false;
 	public boolean init = true;
@@ -65,170 +62,132 @@ public class RuneMysteries extends Node{
 			new Tile(3102, 3176, 0), new Tile(3102, 3171, 0), new Tile(3102, 3169, 0) };
 	
 	public boolean staffEquip = false;
+	Method Method = new Method(ctx);
+	Vars Vars = new Vars();
 	
 	public int bankItems[] = {26113,26114,26115,26109};
 	public void execute() {
-		/*
-		if((Settings.get(3294)&0x1F) == 10){
-			
-		cs1();	
+
+		if(ctx.camera.getPitch()>60)
+			ctx.camera.setPitch(50);
+			else if(ctx.camera.getPitch()<40)
+				ctx.camera.setPitch(50);
 		
-		}else cs0();
-		
-		
-		 * Settings used:
-		 * 3295-Main steps for quest
-		 * 0-Activation of auto-cast for a spell.
-		 * 
 		DeltaQuester.numSteps = 20;
-		Quests.getSettings(3295);
-		if(Method.useBank &&(Settings.get(3294) & 0x3FF) !=938){
-			Method.useBank(bankItems, 1,1,90);
-		}else
 		if(init){
-			init();
+			if(Method.EquipmentContains(26109)){//staff
+				hasMindSpike = true;
+				equipStaff = true;
+				staffEquip = true;
+				init = false;
+			}else init = false;
 		}else
-		if((Settings.get(3294) & 0x3FF) ==938){
+		if((ctx.settings.get(3294) & 0x3FF) ==938){
 			DeltaQuester.progress = 20;
 			DeltaQuester.state = "The Rune Mysteries quest has been completed.";
-			Task.sleep(2000);
+			ctx.game.sleep(2000);
 			DeltaQuester.e = true;
 		}else
-		if((Settings.get(3294) & 0x3FF) ==928||(Settings.get(3294) & 0x3FF) ==929){
+		if((ctx.settings.get(3294) & 0x3FF) ==928||(ctx.settings.get(3294) & 0x3FF) ==929){
 			DeltaQuester.progress = 19;
 			CS6();//Speak to Ariane one last time to finish the quest.
 		}else
-		if((Settings.get(3294) & 0x3FF) ==919 || (Settings.get(3294) & 0x3FF) ==920){
+		if((ctx.settings.get(3294) & 0x3FF) ==919 || (ctx.settings.get(3294) & 0x3FF) ==920){
 			DeltaQuester.progress = 18;
 			CS10();//Play the organ once 
 		}else
-		if((Settings.get(3294) & 0x3FF) ==918||(Settings.get(3294) & 0x3FF) ==908){
+		if((ctx.settings.get(3294) & 0x3FF) ==918||(ctx.settings.get(3294) & 0x3FF) ==908){
 			DeltaQuester.progress = 17;
 			CS10();//Return to the modern tower and annoy the wizards and speak to a wizard(not intentional)
 		}else
-		if((Settings.get(3294) & 0x3FF) ==898){
+		if((ctx.settings.get(3294) & 0x3FF) ==898){
 			DeltaQuester.progress = 16;
 			CS9();//Play the orb game in the secret tower.
 		}else
-		if((Settings.get(3294) & 0x3FF) ==888){
+		if((ctx.settings.get(3294) & 0x3FF) ==888){
 			DeltaQuester.progress = 15;
 			CS8();//Cross the fallen statue and enter the room at which you speak to Ariane again.
 		}else
-		if((Settings.get(3294) & 0x3FF) ==878){
+		if((ctx.settings.get(3294) & 0x3FF) ==878){
 			DeltaQuester.progress = 14;
 			CS8();//Enter the door after golem and push down the statue.
 		}else
-		if((Settings.get(3294) & 0x7F) ==101){
+		if((ctx.settings.get(3294) & 0x7F) ==101){
 			DeltaQuester.progress = 13;
 			CS7();//Speak to the golem and answer its questions.
 		}else
-		if((Settings.get(3294) & 0x7F) ==100){
+		if((ctx.settings.get(3294) & 0x7F) ==100){
 			DeltaQuester.progress = 12;
 			CS7();//Speak to Ariane initially upon entering the tower.
 		}else
-		if((Settings.get(3294) & 0x7F) ==90){
+		if((ctx.settings.get(3294) & 0x7F) ==90){
 			DeltaQuester.progress = 11;
 			CS6();//Walk to and enter the secret-old tower.
 		}else
-		if((Settings.get(3294) & 0x7F) ==80){
+		if((ctx.settings.get(3294) & 0x7F) ==80){
 			DeltaQuester.progress = 10;
 			CS2();//Speak to Ariane again with the newly found key.
 		}else
-		if((Settings.get(3294) & 0x7F) ==70){
+		if((ctx.settings.get(3294) & 0x7F) ==70){
 			DeltaQuester.progress = 9;
 			CS5();//Walk to organ and solve puzzle
 		}else
-		if((Settings.get(3294) & 0x3F) ==60){
+		if((ctx.settings.get(3294) & 0x3F) ==60){
 			DeltaQuester.progress = 8;
 			CS4();//Search for the book Ellaron mentioned
 		}else
-		if((Settings.get(3294) & 0x7FFF) ==28722){
+		if((ctx.settings.get(3294) & 0x7FFF) ==28722){
 			DeltaQuester.progress = 7;
 			CS3();//Speak to the wizard Ellaron
 		}else
-		if((Settings.get(3294) & 0x7FFF) ==28717){
+		if((ctx.settings.get(3294) & 0x7FFF) ==28717){
 			DeltaQuester.progress = 6;
 			CS2();//Speak to Ariane regardin what to do next.
 		}else
-		if((Settings.get(3294) & 0x7FFF) ==28712){
+		if((ctx.settings.get(3294) & 0x7FFF) ==28712){
 			DeltaQuester.progress = 5;
 			CS2();//Speak to Ariane regarding the issues.
 		}else
-		if((Settings.get(3294) & 0x3F) ==40){
+		if((ctx.settings.get(3294) & 0x3F) ==40){
 			DeltaQuester.progress = 4;
 			CS3();//Speak to the wizards in the tower
 		}else
-		if((Settings.get(3294) & 0x1F) ==30){
+		if((ctx.settings.get(3294) & 0x1F) ==30){
 			DeltaQuester.progress = 3;
-			CS2();//Speak to Ariane the wizards tower for the first time.
+			Method.state("Here up to");
+			//CS2();//Speak to Ariane the wizards tower for the first time.
 		}else
-		if((Settings.get(3294) & 0xF) ==10){
+		if((ctx.settings.get(3294) & 0xF) ==10){
 			DeltaQuester.progress = 2;
 			cs1();//Pick-up staff and complete the first puzzle(pull the orb in the circle)
 		}else
-		if((Settings.get(3294) & 0x1) ==0){
+		if((ctx.settings.get(3294) & 0x1) ==0){
 			DeltaQuester.progress = 1;
-			CS0();//Start the quest by speaking to Ariane
+			System.out.println("Here");
+			cs0();//Start the quest by speaking to Ariane
 		}
 	}
 	
 
-public Timer wait = new Timer(1);
-	private void cs1() {
-		SceneObject staff = SceneEntities.getNearest(79901);
-		NPC vortex = NPCs.getNearest(16141);
-		
-		if((Settings.get(3295)>>23&0x1)==1){
-			if((Settings.get(3295)>>24&0x1)==1){
-				if(staffEquip){
-					if((Settings.get(715)>>6&0x3)==2){
-						if(vortex!=null){
-							Quests.DYNAMICV = false;
-							if(Players.getLocal().getLocation().getY()!=vortex.getLocation().getY()-2|| vortex.getLocation().distanceTo()<3){
-							Method.state("Adjusting position.");
-									new Tile(vortex.getLocation().getX()+5,vortex.getLocation().getY()-3,0).clickOnMap();
-							}else if(Players.getLocal().isIdle()){
-								Method.state("Attacking vortex.");
-								vortex.interact("Attack");
-								Task.sleep(3000);
-							}
-						}
-						
-					}else setAutoCast();
-				}else if(Equipment.getItem(26109)!=null){
-					staffEquip  =true;
-				}else if(Inventory.getItem(26109)!=null){
-					Method.interactInventory(26109, "Wield", "Staff");
-				}
-			}else if(staff!=null){
-				if (staff.getLocation().distanceTo() < 6) {// Gather mind spike
-					Method.interactO(79901, "Take", "Mindspike");
-				} else staff.getLocation().clickOnMap();
-			}
-			
-		}else cs0();//Speak to Ariane
-		
-	}
-
-
+/*
 
 	private void setAutoCast() {
-		if(Tabs.ABILITY_BOOK.isOpen()){
+		if(ctx.hud.view(Window.MAGIC_ABILITIES)){
 			
-			if((Settings.get(682)&0x7)==4){
-				if(Widgets.get(275).getChild(19).getChild(0).visible()){
-					Widgets.get(275).getChild(19).getChild(0).interact("Auto");
-				}else Widgets.get(275).getChild(37).click(true);
-			}else Widgets.get(275).getChild(41).click(true);
+			if((ctx.settings.get(682)&0x7)==4){
+				if(ctx.widgets.get(275,19).getChild(0).isVisible()){
+					ctx.widgets.get(275,19).getChild(0).interact("Auto");
+				}else ctx.widgets.get(275,37).click(true);
+			}else ctx.widgets.get(275,41).click(true);
 			
 		}else Tabs.ABILITY_BOOK.open();
 		
-	}
+	}*/
 
 
 
-	private void cs0() {//Speaks to Ariane in the Wizards Tower
-		final String opt[] = {"What can I do","What's happening here"};
+	private void cslolcats() {//Speaks to Ariane in the Wizards Tower
+	/*	final String opt[] = {"What can I do","What's happening here"};
 		
 		Method.isChatting("People");
 		if(new Tile(3102,3171,0).distanceTo()<5){//Ariane's initial location
@@ -245,19 +204,19 @@ public Timer wait = new Timer(1);
 		}else if(Method.DraynorLodeIsActive()){
 			Method.teleportTo(Vars.DRAYNORTELEPORT);
 		}else Method.teleportTo(Vars.LUMBRIDGETELEPORT);
-		
+		*/
 	}
 
 
 
 	private void CS10() {
-		
-		if(Settings.get(3294)==137130902 || Settings.get(3294)==141325208||Settings.get(3294)==141325206 || Settings.get(3294)==141325207){//We must distract the wizards.
+		/*
+		if(ctx.settings.get(3294)==137130902 || ctx.settings.get(3294)==141325208||ctx.settings.get(3294)==141325206 || ctx.settings.get(3294)==141325207){//We must distract the wizards.
 			
 			if(new Tile(3103,3141,0).distanceTo()<5 && new Tile(3103,3141,0).canReach()){
-			Quests.DYNAMICV = false;
-				if(Widgets.get(193).validate()){
-					Widgets.get(193, 34).click(true);
+			Vars.DYNAMICV = false;
+				if(ctx.widgets.get(193).validate()){
+					ctx.widgets.get(193, 34).click(true);
 					
 				}else if(Quests.tActive()){
 					if(Quests.chatting()){
@@ -272,14 +231,14 @@ public Timer wait = new Timer(1);
 			}else if(  new Tile(3101,3158,0).distanceTo()<14 && new Tile(3101,3158,0).canReach()){
 				Quests.walkingReset();
 				Task.sleep(2700,2400);
-				if(!Widgets.get(1184).validate())
+				if(!ctx.widgets.get(1184).validate())
 				Quests.findPath(new Tile(3103,3141,0));
-			}else if(Quests.DYNAMICV){
+			}else if(Vars.DYNAMICV){
 				Quests.walking(Paths.pathToWizard, "Walking to the Wizards Tower",false);
 				//Quests.walkToNoDelay(Paths.pathToWizard, "Walking to the Wizard Tower");
-			}else if(Quests.LUMMBRIDGELODE.distanceTo()<5){
-				Quests.DYNAMICV = true;
-			}else Method.teleportTo(47);
+			}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local)<10){
+				Vars.DYNAMICV = true;
+			}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport());
 			
 		}else//Just finished the game and must speak with Ariane again.
 		if(Quests.tActive()){
@@ -292,13 +251,13 @@ public Timer wait = new Timer(1);
 		}else if(Quests.findOption("Okay, so what")){
 			Quests.clickOption(1188, Quests.value);
 		}
-		}else Quests.speakTo(16167);
+		}else Quests.speakTo(16167);*/
 	}
 
 
 
 	private void CS9() {
-
+/*
 		NPC greyOrb = NPCs.getNearest(16157);
 		SceneObject vortex = SceneEntities.getNearest(79907);
 		if(Camera.getPitch()<80)
@@ -306,7 +265,7 @@ public Timer wait = new Timer(1);
 		if(greyOrb!=null && vortex!=null){
 			double dist = greyOrb.getLocation().distance(vortex.getLocation());
 			if(dist<2){
-				Quests.DYNAMICV = false;
+				Vars.DYNAMICV = false;
 				Quests.state("Within acceptable range.");
 			}else dragOrb();
 		}else if(Quests.tActive()){
@@ -343,13 +302,13 @@ public Timer wait = new Timer(1);
 				Task.sleep(2300,2500);
 			}
 		}else greyOrb.getLocation().clickOnMap(); 
-
+*/
 	}
 
 
 
-	private void CS8() {
-		if(Settings.get(3294)==137130872){
+	private void CS8() {/*
+		if(ctx.settings.get(3294)==137130872){
 			SceneObject door = SceneEntities.getNearest(79914);
 			SceneObject something = SceneEntities.getNearest(80497);
 			
@@ -388,18 +347,18 @@ public Timer wait = new Timer(1);
 				}else if (!Quests.tActive())Quests.interactO(79938, "Climb-behind");
 			}else SceneEntities.getNearest(79938).getLocation().clickOnMap();
 		}else Quests.interactO(80306, "Open");
-		
+		*/
 	}
 
 
 
-	private void CS7() {
+	private void CS7() {/*
 	SceneObject fire = SceneEntities.getNearest(fireID);
 	
 	
 	if(fire!=null){
 		if(NPCs.getNearest(16171)!=null){
-			if(Settings.get(3294)==137130085){
+			if(ctx.settings.get(3294)==137130085){
 		if(NPCs.getNearest(16171).getLocation().distanceTo()<6){
 			if(Quests.tActive()){
 				if(Quests.chatting()){
@@ -435,19 +394,19 @@ public Timer wait = new Timer(1);
 		
 	}else if (new Tile(3133,3168,0).distanceTo()<9){//Outside the old tower.
 		Quests.interactO(79903, "Open");
-	}else if(Quests.DYNAMICV){
+	}else if(Vars.DYNAMICV){
 		Quests.walking(Paths.pathToRuins, "Walking to the ruins.",false);
 	}else if(Quests.LUMMBRIDGELODE.distanceTo()<6){
-		Quests.DYNAMICV = true;
-	}else Method.teleportTo(47);//Lummbridge teleport.
-		
+		Vars.DYNAMICV = true;
+	}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport());//Lummbridge teleport.
+		*/
 	}
 
 
 
-	private void CS6() {
+	private void CS6() {/*
 		if(new Tile(3129,3169,9).distanceTo()<6){
-			if(Settings.get(3294)==141325216 || Settings.get(3294)==141456289 || Settings.get(3294)==141521825){
+			if(ctx.settings.get(3294)==141325216 || ctx.settings.get(3294)==141456289 || ctx.settings.get(3294)==141521825){
 				if(Quests.tActive()){
 					if(Quests.chatting()){
 						Quests.clickContinue();
@@ -456,7 +415,7 @@ public Timer wait = new Timer(1);
 					}else Quests.clickContinue();
 				}else Quests.speakTo(16162);
 			}else
-			if(Widgets.get(1189).validate()){
+			if(ctx.widgets.get(1189).validate()){
 				Quests.clickContinue();
 			}else
 			if(Inventory.getSelectedItem()!=null){
@@ -466,57 +425,57 @@ public Timer wait = new Timer(1);
 					Task.sleep(2500,2600);
 				}
 			}else Quests.interactInventory(26113, "Use");
-		}else if(Quests.DYNAMICV){
+		}else if(Vars.DYNAMICV){
 			Quests.walking(Paths.pathToRuins, "Walking to the ruins.",false);
-		}else if(Quests.LUMMBRIDGELODE.distanceTo()<5){
-			Quests.DYNAMICV=true;
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local)<10){
+			Vars.DYNAMICV=true;
 		}else if(new Tile(3103,3141,0).distanceTo()<5){
 			new Tile(3103,3150,0).clickOnMap();
-		}else Method.teleportTo(47);
+		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport());*/
 	}
 
 
 
-	private void CS5() {
+	private void CS5() {/*
 		if(new Tile(3103,3141,0).distanceTo()<5 && new Tile(3103,3141,0).canReach()){
-			if(Settings.get(3294)==136605766){
-				if(Widgets.get(193).validate()){
+			if(ctx.settings.get(3294)==136605766){
+				if(ctx.widgets.get(193).validate()){
 				
 					for(int i= 0; i<=widgetKeys.length;){
 						Quests.state(""+(i)+": and "+ inputKeys[i] );
-						if(Widgets.get(193, 17).visible()){
+						if(ctx.widgets.get(193, 17).visible()){
 							break;
 						}else
 						if(failsafe(i)){
 							Quests.state("Made a mistake, restarting");
 							Task.sleep(1200,1300);
-							Widgets.get(193).getChild(145).click(true);
+							ctx.widgets.get(193).getChild(145).click(true);
 						}else
-						if(Widgets.get(193).getChild(widgetKeys[i]).getText().contains(inputKeys[i])){
+						if(ctx.widgets.get(193).getChild(widgetKeys[i]).getText().contains(inputKeys[i])){
 							if(i!=widgetKeys.length)
 							i++;
 							
 						}else if(inputKeys[i]=="B"){
 							Mouse.click(324,234,true);
-							//Widgets.get(193).getChild(51).click(true);
+							//ctx.widgets.get(193).getChild(51).click(true);
 							Task.sleep(200,300);
 						}else if(inputKeys[i]=="A#"){
-							Widgets.get(193).getChild(14).click(true);
+							ctx.widgets.get(193).getChild(14).click(true);
 							Task.sleep(200,300);
 						}else if(inputKeys[i]=="G#"){
-							Widgets.get(193).getChild(13).click(true);
+							ctx.widgets.get(193).getChild(13).click(true);
 							Task.sleep(1200,1300);
 						}else if(inputKeys[i]=="G"){
-							Widgets.get(193).getChild(7).click(true);
+							ctx.widgets.get(193).getChild(7).click(true);
 							Task.sleep(1200,1300);
 						}
 					}
-					if(Widgets.get(193, 17).visible()){
-						Quests.DYNAMICV=false;
-						Widgets.get(193).getChild(17).interact("Take");
+					if(ctx.widgets.get(193, 17).visible()){
+						Vars.DYNAMICV=false;
+						ctx.widgets.get(193).getChild(17).interact("Take");
 					}
 				}else
-				if(Widgets.get(1189).validate()){
+				if(ctx.widgets.get(1189).validate()){
 					Quests.clickContinue();
 				}else Quests.interactO(79497, "Play");
 			}else
@@ -526,28 +485,28 @@ public Timer wait = new Timer(1);
 		}else if(new Tile(3101,3158,0).distanceTo()<14 && new Tile(3101,3158,0).canReach()){
 			Quests.walkingReset();
 			Quests.findPath(new Tile(3103,3141,0));
-		}else if(Quests.DYNAMICV){
+		}else if(Vars.DYNAMICV){
 			Quests.walking(Paths.pathToWizard, "Walking to the Wizards Tower",false);
 			//Quests.walkToNoDelay(Paths.pathToWizard, "Walking to the Wizard Tower");
-		}else if(Quests.LUMMBRIDGELODE.distanceTo()<5){
-			Quests.DYNAMICV = true;
-		}else Method.teleportTo(47);
-		
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local)<10){
+			Vars.DYNAMICV = true;
+		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport());
+		*/
 	}
 
-
+/*
 	private boolean failsafe(int b) {
 	
-			if (!Widgets.get(193).getChild(127).getText().toString().equalsIgnoreCase("B") && b>2) {
+			if (!ctx.widgets.get(193).getChild(127).getText().toString().equalsIgnoreCase("B") && b>2) {
 				return true;
 			}
 		
 		return false;
 
 	}
+*/
 
-
-	private void CS4() {
+	private void CS4() {/*
 		if(new Tile(3114,3155,0).distanceTo()<4 &&new Tile(3114,3155,0).canReach()){
 			if(Inventory.getItem(26114)!=null || Inventory.getItem(26115)!=null){
 				Quests.state("Reading books.");
@@ -555,7 +514,7 @@ public Timer wait = new Timer(1);
 				Task.sleep(2300,2400);
 				Quests.interactInventory(26115, "Read");
 				Task.sleep(2300,2400);
-			}else if(Widgets.get(1186).validate()|| Widgets.get(1189).validate()){
+			}else if(ctx.widgets.get(1186).validate()|| ctx.widgets.get(1189).validate()){
 				Quests.state("Clicking continue");
 				Quests.clickContinue();
 			}else
@@ -563,23 +522,23 @@ public Timer wait = new Timer(1);
 		}else if(new Tile(3102,3153,0).distanceTo()<14 && new Tile(3102,3153,0).canReach()){
 			Quests.findPath(new Tile(3114,3155,0));
 			Quests.walkingReset();
-		}else if(Quests.DYNAMICV){
+		}else if(Vars.DYNAMICV){
 			Quests.walking(Paths.pathToWizard, "Walking to book case",false);
 			//Quests.walkToNoDelay(Paths.pathToWizard, "Walking to book case");
-		}else if(Quests.LUMMBRIDGELODE.distanceTo()<5){
-			Quests.DYNAMICV = true;
-		}else Method.teleportTo(47);
-		
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local)<10){
+			Vars.DYNAMICV = true;
+		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport());
+		*/
 	}
 
 
 
-	private void CS3() {
+	private void CS3() {/*
 		if(new Tile(3108,3158,2).canReach()){
-			if(Settings.get(3294)==136327208){
+			if(ctx.settings.get(3294)==136327208){
 				if(new Tile(3094,3159,2).distanceTo()<8){
 					if(Quests.tActive()){
-						Quests.DYNAMICV = false;
+						Vars.DYNAMICV = false;
 						if(Quests.chatting()){
 							Quests.clickContinue();
 						}else if(Quests.findOption("Have you seen")){
@@ -592,10 +551,10 @@ public Timer wait = new Timer(1);
 					}else Quests.speakTo(16179);
 				}else new Tile(3094,3159,2).clickOnMap();
 			}else
-			if(Settings.get(3294)==136323112){
+			if(ctx.settings.get(3294)==136323112){
 				if(new Tile(3100,3147,2).distanceTo()<5){
 					if(Quests.tActive()){
-						Quests.DYNAMICV = true;
+						Vars.DYNAMICV = true;
 						if(Quests.chatting()){
 							Quests.clickContinue();
 						}else if(Quests.findOption("Ariane says")){
@@ -608,7 +567,7 @@ public Timer wait = new Timer(1);
 			}else
 			if(new Tile(3108,3158,2).distanceTo()<6){
 			if(Quests.tActive()){
-				Quests.DYNAMICV = false;
+				Vars.DYNAMICV = false;
 				if(Quests.chatting()){
 					Quests.clickContinue();
 				}else if(Quests.findOption("Ariane says")){
@@ -632,17 +591,21 @@ public Timer wait = new Timer(1);
 			Quests.walkingReset();
 			Quests.interactO(79770, "Ascend");
 			Task.sleep(4200,4300);
-		}else if(Quests.DYNAMICV){
+		}else if(Vars.DYNAMICV){
 			Quests.walking(Paths.pathToWizard, "Walking to Wizards Tower",false);
 			//Quests.walkToNoDelay(Paths.pathToWizard, "Walking to the Wizards Tower");
-		}else if(Quests.LUMMBRIDGELODE.distanceTo()<5){
-			Quests.DYNAMICV = true;
-		}else Method.teleportTo(47);
-		
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local)<10){
+			Vars.DYNAMICV = true;
+		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport());
+		*/
 	}
 
 	private void CS2() {
-		if(new Tile(3102,3186,0).distanceTo()<8){
+		Tile local  =ctx.players.local().getLocation();
+		String opt[] = {"We should find out","I've got the key to the","I'll get right","Then let's","Wizard Traiborn said",
+				"I've spoken to some","I'll get on","What do you"};
+		/*
+		if(new Tile(3102,3186,0).distanceTo(local)<8){
 			if(Quests.tActive()){
 				Quests.walkingReset();
 				if(Quests.chatting()){
@@ -665,72 +628,88 @@ public Timer wait = new Timer(1);
 					Quests.clickOption(1188, Quests.value);
 				}
 			}else Quests.speakTo(16161);//speak to Ariane
-		}else if(Quests.DYNAMICV){
+		}else if(Vars.DYNAMICV){
 			if(ariane2Area.contains(Players.getLocal().getLocation())){
 				Quests.state("Walking to final destination");
 				Walking.findPath(new Tile(3103,3187,0)).traverse();
 			}else
 			Quests.walking(Paths.pathToWizard, "Walking to Ariane",false);
-		}else if(Quests.LUMMBRIDGELODE.distanceTo()<5){
-			Quests.DYNAMICV  =true;
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local)<10){
+			Vars.DYNAMICV  =true;
 		}else if(new Tile(3103,3141,0).distanceTo()<5){
 			new Tile(3103,3150,0).clickOnMap();
-		}else Method.teleportTo(47);//teleport to lummbridge.
-		
+		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport());//teleport to lummbridge.
+		*/
 	}
 
-	private void init() {
-		//Equipment.getItem(26109)!=null
-			if(Equipment.getItem(26109)!=null){
-				hasMindSpike = true;
-				equipStaff = true;
-				init = false;
-			}else init = false;
+	public Timer wait = new Timer(1);
+	private void cs1() {
+		Tile local  =ctx.players.local().getLocation();
 		
-		
-	}
-
-	private void CS0() {
-		if(Settings.get(82)==1018){//cut scenes....
-			Quests.clickContinue();
-		}else
-		if(new Tile(3102,3170,0).distanceTo()<5){//Ariane location.
-			Quests.walkingReset();
-			if(Quests.startQuestOpen()){
-				Quests.clickAcceptQuest();
-			}else
-			if(Quests.tActive()){
-				Quests.DYNAMICV = true;
-				if(Quests.chatting()){
-					Quests.clickContinue();
-				}else if(Quests.findOption("What's happening")){
-					Quests.clickOption(1188,Quests.value);
-				}else if(Quests.findOption("What can")){
-					Quests.clickOption(1188,Quests.value);
-				}
-			}else Quests.speakTo(16160);
-		}else if(Quests.DYNAMICV){
-			if(arianeArea.contains(Players.getLocal().getLocation())){//Walk closer to Ariane if in area.
-				Walking.findPath(new Tile(3102,3171,0)).traverse();
-			}else
-			Quests.walking(Paths.pathToWizard, "Walking to Ariane",false);
-		}else if(Quests.LUMMBRIDGELODE.distanceTo()<5){
-			Quests.DYNAMICV = true;
-		}else Method.teleportTo(47);
-		
-	}
-
-	public boolean activate() {
-		return (DeltaQuester.scriptToStart == 6);
-	}
-	
-	public void onRepaint(Graphics g) {
-		if (DeltaQuester.scriptToStart==6){
-	 Quests.t.draw(g);
+		while(Method.inventoryContains(26109)){
+			Method.interactInventory(26109, "Wield", "Staff");
 		}
 		
+		if((ctx.settings.get(3295)>>23&0x1)==1){
+			if((ctx.settings.get(3295)>>24&0x1)==1){//if didn't pick up staff
+				if(staffEquip){
+				//	if((ctx.settings.get(715)>>6&0x3)==2){
+						if(Method.npcIsNotNull(16141)){
+							Tile vortex = Method.getNPC(16141).getLocation();
+							Vars.DYNAMICV = false;
+							if(Method.getInteractingNPC()==null && ctx.players.local().isIdle()){
+								 if(!wait.isRunning()){
+										System.out.println("Attacking vortex");
+										Method.state("Attacking vortex");
+										Method.npcInteract(16141, "Attack");
+										wait = new Timer(1500);
+									}else System.out.println("Players busy");
+							}else
+							if(vortex.distanceTo(local)<3){
+								System.out.println("Adjustin g pos");
+							  Method.state("Adjusting position; " +vortex.distanceTo(local));
+							new Tile(local.getX()+3,local.getY()-3,0).getMatrix(ctx).click();
+							ctx.game.sleep(1200);
+							}else System.out.println("Waiting on orb..");
+						}
+						
+					//}else setAutoCast();
+				}else if(Method.EquipmentContains(26109)){//staff
+					staffEquip = true;
+				}
+			}else if(Method.objIsNotNull(79901)){//staff
+				if (Method.getObject(79901).getLocation().distanceTo(local) < 6) {// Gather mind spike
+					Method.interactO(79901, "Take", "Mindspike");
+				} else Method.clickOnMap(Method.getObject(79901).getLocation());//staff loc
+			}
+			
+		}else cs0();//Speak to Ariane
+		
 	}
-
-	
+	private void cs0() {
+		Tile local  =ctx.players.local().getLocation();
+		String opt[] = {"What's happening","What can",
+				"We should find out","I've got the key to the","I'll get right","Then let's","Wizard Traiborn said",
+				"I've spoken to some","I'll get on","What do you"};
+		if(ctx.settings.get(82)==1018){//cut scenes....
+		Method.pressContinue();
+		}else
+		if(new Tile(3102,3170,0).distanceTo(local)<6){//Ariane location.
+			if(!Method.startQuestOpen())
+				if(!Method.findOption(opt)){
+					Vars.DYNAMICV = false;
+					if(!Method.isChatting("Self")){
+						Method.npcInteract(16160, "Talk to");
+					}
+				}
+		}else if(Vars.DYNAMICV){
+			if(new Tile(3102,3171,0).distanceTo(local)<20){//Walk closer to Ariane if in area.
+				ctx.movement.findPath(new Tile(3102,3171,0)).traverse();
+			}else Method.walking(pathToArianeWizardTower, "Walking to Ariane",false);
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local)<10){
+			Vars.DYNAMICV = true;
+		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),"Lumbridge");
+		
+	}
+		
 }
-*/

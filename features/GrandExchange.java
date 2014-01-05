@@ -149,9 +149,15 @@ public class GrandExchange extends MethodProvider{
 			}
 			for (int col : collect) {
 				if (ctx.widgets.get(105, col).getItemId() != -1) {
-					DeltaQuester.state = "Selecting item in collection box";
-					ctx.widgets.get(105, col).click();
-				}
+					if(Method.onlyItemsGE && ctx.widgets.get(105, col).interact("Collect-items")){
+						DeltaQuester.state = "Taking item out as an item from collection box";
+						ctx.widgets.get(105, col).interact("Collect-items");
+					}else{
+						DeltaQuester.state = "Selecting item in collection box";
+						ctx.widgets.get(105, col).click();
+					
+					  }
+					}
 			}
 		}else {
 			DeltaQuester.state = "Opening collection area";
