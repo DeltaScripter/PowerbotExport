@@ -111,6 +111,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					 addNode(new TowerOfLife(ctx));
 					 addNode(new GertrudesCat(ctx));
 					 addNode(new RuneMysteries(ctx));
+					 addNode(new Biohazard(ctx));
 			}
 		});
 		getExecQueue(State.STOP).add(new Runnable() {
@@ -311,6 +312,9 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			}else if (qList.get(0) =="Tower of Life"&& scriptToStart!=40) {
 				scriptToStart=40;
 				if(GEWO) GEFeature = true;
+			}else if (qList.get(0) =="Biohazard"&& scriptToStart!=41) {
+				scriptToStart=41;
+				if(GEWO) GEFeature = true;
 			}
 			
 		}else if(ready && qList.isEmpty()){
@@ -337,7 +341,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
-						"Buyers and Cellars","Cook's Assistant","Clock Tower","Death Plateau","Demon Slayer","Druidic Ritual",
+						"Buyers and Cellars","Biohazard","Cook's Assistant","Clock Tower","Death Plateau","Demon Slayer","Druidic Ritual",
 						"Ernest The Chicken","Gertrude's Cat","Gunnar's Ground",
 						"Imp Catcher","Let Them Eat Pie","Plague City","Monk's Friend","Pirate's Treasure","Stolen Hearts","Swept Away",
 						"The Knight's Sword","The Restless Ghost","Tower of Life","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
@@ -506,6 +510,9 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					rewardItemModel.addElement("Law Runes x 8");
 					rewardExpModel.addElement("Woodcutting XP: 2000");
 					index++;
+				}else if(quest == "Biohazard"){
+					rewardExpModel.addElement("Theiving XP: 1250");
+					index++;
 				}else if(quest == "Stolen Hearts"){
 					rewardItemModel.addElement("Coins x 2500");
 					rewardItemModel.addElement("250XP Combat lamp x 1");
@@ -586,6 +593,12 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					index++;
 				}else if(quest == "Gunnar's Ground"){
 					requirementsList.setText(requirementsList.getText() + quest + ":\nLevel 5 Crafting\n\n");
+					index++;
+				}else if(quest == "Biohazard"){
+					requirementsList.setText(requirementsList.getText() + quest + ":\nPlague City quest completed\nArdougne lodestone activated\nAbility to defeat a level 48 Mourner\nPriest gown top x 1 (make sure to only have one!)\nPriest gown bottom x 1\nThe Grand Exchange feature will not buy these two items\n\n");
+					index++;
+				}else if(quest == "Plague City"){
+					requirementsList.setText(requirementsList.getText() + quest + ":\nArdougne lodestone activated\nDwellberries x 1\nRope x 1\nBucket of water x 4\nChocolate dust x 1\nSnape grass x 1\nBucket of milk x 1\nSpade x 1\n\n");
 					index++;
 				}else index++;
 			}
@@ -1249,6 +1262,30 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 	            		}
 		            	}else if(name.equals("Wolf Whistle")){
 		            		if((ctx.settings.get(2506)&0x3F)==35){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Tower of Life")){
+		            		if((ctx.settings.get(2190)&0x7FF)==1362){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Plague City")){
+		            		if((ctx.settings.get(2386)&0x1F)==29){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Biohazard")){
+		            		if((ctx.settings.get(2535)&0x1F)==16){
 		            			incompleteQuests.put( value, "complete" );  
 	            			if(index == i)
 	            				 if( incompleteQuests.containsKey( value ) )  {

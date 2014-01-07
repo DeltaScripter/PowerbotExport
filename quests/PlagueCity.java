@@ -418,7 +418,7 @@ public int bankItemAmount[] = {1,1,4,1,1,1,1};
 				openDoor(new Tile(2570,3333,0), 34811);
 			}else Method.clickOnMap(new Tile(2572,3333,0));
 			
-		}else if(!Method.teleporting && Method.inventoryContains(1510)){
+		}else if(Method.inventoryContains(1510)){
 			hasPaint = true;
 		}else
 		if(new Tile(2575,3333,0).distanceTo(ctx.players.local().getLocation())<2){

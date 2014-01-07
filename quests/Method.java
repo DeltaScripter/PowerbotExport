@@ -28,6 +28,7 @@ import org.powerbot.script.wrappers.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
+import unicow.DeltaUniBody;
 
 public class Method extends MethodProvider{
 
@@ -69,7 +70,43 @@ public class Method extends MethodProvider{
 	        return null;
 	    }
 	 
-
+		Timer waitClick = new Timer(0);
+		public void fightNPC(int id) {
+			if(ctx.combatBar.isExpanded()){
+				
+				if(getInteractingNPC()==null){//if not in combat
+					for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
+						if(enemy.getLocation().distanceTo(ctx.players.local().getLocation())<7){
+							npcInteract(enemy.getId(),"Attack");
+						}else ctx.movement.stepTowards(enemy.getLocation());
+					}
+				}else
+			for(int i = 0; i<9;){
+				foodSupport();
+				state("Fighting NPC");
+				if(ctx.players.local().getHealthPercent()<60){
+					System.out.println("Health percent less than 60, breaking for loop");
+					break;
+				}
+				
+				if(getInteractingNPC()==null){
+					System.out.println("Breaking for loop, not in combat");
+					break;
+				}
+				if(ctx.combatBar.getActionAt(i).isReady()){
+					if(!waitClick.isRunning()){
+					System.out.println("Clicking action: "+ ctx.combatBar.getActionAt(i).getId());
+					ctx.combatBar.getActionAt(i).getComponent().click();
+					  waitClick = new Timer(750);
+					}
+				}else i++;
+				
+			}	
+				
+				
+			}else state("Please open the action bar to continue");
+			
+		}
 	public void useGE(String[] name, int[] itemID, int[] itemPrice, int[] itemAmount){
 			
 			
@@ -204,6 +241,7 @@ public class Method extends MethodProvider{
 		DeltaQuester.state = message;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void speakTo(final int id, final String p) {
 		if(!SpeakTotimer.isRunning()){
 		
@@ -228,13 +266,13 @@ public class Method extends MethodProvider{
 			DeltaQuester.health = (barHealth/maxHealth)*100;
 		}
 		 
-		 if(ctx.players.local().getInteracting()!=null){
+		 if(getInteractingNPC()!=null){//if fighting
 				combatTimer = new Timer(4000);
 		}
 		if(DeltaQuester.FOOD_FEATURE && DeltaQuester.health<75){
 			if(hasFood){
-			if(!teleporting && inventoryContains(DeltaQuester.FOOD_ID)){
-				state("Food support initiated.");
+			if(inventoryContains(DeltaQuester.FOOD_ID)){
+				state("Food support initiated");
 				interactInventory(DeltaQuester.FOOD_ID, "Eat","Food");
 				ctx.environment.sleep(1700, 2000);
 				}else hasFood = false;
@@ -406,9 +444,11 @@ public class Method extends MethodProvider{
 				System.out.println("Closing an interaface");
 				if(index==1186){
 					pressContinue();
-				}else
+				}else{
+					state("Clicking on map to close dialogue");
 				clickOnMap(ctx.players.local().getLocation());
 				return false;
+				}
 			  }
 			}
 		return true;
@@ -558,6 +598,7 @@ public class Method extends MethodProvider{
 			
 		for(int i: widgetsInterference){
 			if(ctx.widgets.get(i,0).isVisible()){
+				state("Clicking on map to close dialogue");
 				clickOnMap(ctx.players.local().getLocation());
 			}
 		}
@@ -1211,7 +1252,10 @@ public class Method extends MethodProvider{
 		
 		if(local.distanceTo(loc)<dist){
 			return true;
-		}else clickOnMap(loc);
+		}else {
+			state("Walking to location");
+			clickOnMap(loc);
+		}
 		return false;
 	}
 	
