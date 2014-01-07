@@ -23,9 +23,7 @@ import java.util.List;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.PollingScript;
-import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.GroundItem;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Quester", 
