@@ -107,18 +107,32 @@ public class GrandExchange extends MethodProvider{
 
 	private void typeItem(String name) {
 		DeltaQuester.state = "Inside typing item";
-		final int spot[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+		Component[] spot = null;
+		Component results = ctx.widgets.get(389, 4);
 		Method Method = new Method(ctx);
 		if(ctx.widgets.get(389,11).isVisible()){//magnifying glass button is visible
 			if(ctx.widgets.get(389,7).getText().equals(name + "*")){
+				spot = ctx.widgets.get(389,4).getChildren();//grabs all items in search result
 				for (int s = 0; s < spot.length;) {
-					if(!ctx.widgets.get(105).isValid())
+					System.out.println("Searching for item:(num results: " + spot.length);
+					if(!ctx.widgets.get(105).isValid())//assume ge?
 						break;
-					
+				
 					Method.state("Searching for item");
 					if (ctx.widgets.get(389, 4).getChild(s).getText().equals(name)) {
-						ctx.widgets.get(389, 4).getChild(s).click();
-						break;
+						if(results.getBoundingRect().contains(ctx.widgets.get(389, 4).getChild(s).getAbsoluteLocation())){
+							System.out.println("Clicking option");
+							ctx.widgets.get(389, 4).getChild(s).click();
+						}else
+						if(results.getAbsoluteLocation().y>ctx.widgets.get(389, 4).getChild(s).getAbsoluteLocation().y){
+							System.out.println("scrolling list down");
+							ctx.mouse.move(results);
+							ctx.mouse.scroll(false);
+						}else {
+							System.out.println("scrolling mouse");
+							ctx.mouse.move(results);
+							ctx.mouse.scroll(true);
+						}
 					}else s++;
 
 				}
@@ -129,6 +143,7 @@ public class GrandExchange extends MethodProvider{
 				ctx.environment.sleep(1200);
 			}
 		}else {
+			System.out.println("Opening the textbox");
 			ctx.widgets.get(105,11).click();//open the textbox
 			ctx.keyboard.sleep(800);
 		}

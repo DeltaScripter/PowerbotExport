@@ -111,7 +111,9 @@ Timer timer = new Timer(0);
 								
 							}
 						}
-					} else ctx.camera.turnTo(n);
+					} else {
+						ctx.camera.turnTo(n.getLocation().randomize(2, 3));
+					}
 				}
 		}
 		public void npcInteract(int i, String string) {
@@ -259,6 +261,22 @@ Timer timer = new Timer(0);
 				
 				}
 		}		
+		}
+	}
+	public void pressContinue(){
+		 int widgetID[] = {1191,1184,1187};
+		 if(ctx.widgets.get(1186,3).isVisible()){
+			 ctx.widgets.get(1186,3).click();
+			 ctx.environment.sleep(1200);
+		 }else if(ctx.widgets.get(1189,4).isVisible()){
+			 ctx.widgets.get(1189,4).click();
+			 ctx.environment.sleep(1200);
+		 }
+		for(int both : widgetID){
+		    if(ctx.widgets.get(both,14).isVisible()){
+		    	ctx.widgets.get(both, 14).click();
+		    	ctx.environment.sleep(500);
+		    }
 		}
 	}
 	public int inventoryStackSize(String name) {

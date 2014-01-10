@@ -1356,7 +1356,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 		g.drawString("Time: "+(int)(timeSec.getElapsed()/1000), 68,57);
 		g.drawString("Food Support: " + FOOD_FEATURE, 18, 430);
 		g.drawString("useBank: " + Vars.useBank, 18, 450);
-		g.drawString("Health: " + health+ "%", 18, 470);
+		g.drawString("Health: " + (int)health+ "%", 18, 470);
 		//g.drawString("ranOnce: " + Vars.ranOnce,20, 332);
 		//g.drawString("e: " + e, 20, 354);
 		

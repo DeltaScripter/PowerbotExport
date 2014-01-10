@@ -35,7 +35,7 @@ import divination.DivineData.wisps;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
-description = "Collects all types of energy; harvests and uses energy to your choosing, earn 200-300k/hr!",
+description = "Collects all types of energy; harvest and uses energy to your choosing, earn 200-300k/hr!",
 topic = 1130348, version = 1.14, website = "http://www.powerbot.org/community/topic/1130348-delta-divinity/"
 )
 public class DivineBody extends PollingScript implements PaintListener{
@@ -204,26 +204,26 @@ public class DivineBody extends PollingScript implements PaintListener{
 	@Override
 	public int poll() {
 		
-		//System.out.println("Harvest: " +harvest);
 		while(Method.inventoryContains("Logs")){
 			DivineBody.state = "Dropping logs";
 			Method.interactInventory("Logs", "Drop", "Logs");
 		}
 		while(ctx.widgets.get(1477,54).isVisible()){
-			state = "Closing interface";
+			state = "Closing interface tasks";
 			ctx.widgets.get(1477,54).getChild(2).click();
 		}
 		while(ctx.widgets.get(1223,11).isVisible()){//task complete
-			state = "Closing interface";
+			state = "Closing interface task complete";
 			ctx.widgets.get(1223,11).click();//close button
 		}
 		while(ctx.widgets.get(1401,35).isVisible()){//become a member!
-			state = "Closing interface";
+			state = "Closing interface member advertisement";
 			ctx.widgets.get(1401,35).click();
 		}
 		while(ctx.widgets.get(1186).isValid()){//after collecting limit of 10 chronicles..
 			state = "Closing chronicle interface";
-			Method.clickOnMap(ctx.players.local().getLocation().randomize(3, 5));
+			//Method.clickOnMap(ctx.players.local().getLocation().randomize(3, 5));
+			Method.pressContinue();
 		}
 		if(start){
 		for(DivineNode node: nodeList){
@@ -259,8 +259,8 @@ public class DivineBody extends PollingScript implements PaintListener{
 			calcAntiPattern();
 			anti.closeInteruptions();
 			//Adjust camera
-			if(ctx.camera.getPitch()<50){
-				ctx.camera.setPitch(Random.nextInt(70, 90));
+			if(ctx.camera.getPitch()<30){
+				ctx.camera.setPitch(Random.nextInt(50, 70));
 			}
 			while(riftArea==null && Method.objIsNotNull("Energy Rift")){
 				state = "Setting rift area";
@@ -296,11 +296,12 @@ public class DivineBody extends PollingScript implements PaintListener{
 					ctx.game.sleep(Random.nextInt(200, 1000));
 					
 					
-				}else if(ctx.widgets.get(1186,2).isVisible()){
+				}else if(ctx.widgets.get(1186,2).isVisible()){//garbage
 					state = "Closing dialogue";
 					System.out.println("Closing dialogue");
 					if(!wait.isRunning()){
-					Method.clickOnMap(ctx.players.local().getLocation());
+						Method.pressContinue();
+						//Method.clickOnMap(ctx.players.local().getLocation().randomize(2, 3));
 					wait = new Timer(Random.nextInt(500, 1200));
 					}
 				}else clickRift("Energy Rift", "Interacting with rift");
@@ -321,11 +322,14 @@ public class DivineBody extends PollingScript implements PaintListener{
 						waiting = new Timer(Random.nextInt(2200, 2800));
 						}
 					}//in case menu wasn't open
-						if (y.isOnScreen() && ctx.players.local().isIdle()) {
+						if (y.isOnScreen()) {
 							ctx.mouse.move(y.getLocation().getMatrix(ctx).getPoint(Random.nextDouble() * 0.2D - 0.1D,+0.10D,+100));
 							ctx.mouse.click(true);
 							waiting = new Timer(Random.nextInt(700, 1200));
-						} else ctx.camera.turnTo(y);
+						} else {
+							ctx.camera.setPitch(40);
+							ctx.camera.turnTo(y);
+						}
 					
 					}
 		}
@@ -452,7 +456,8 @@ public class DivineBody extends PollingScript implements PaintListener{
 				}
 				if(ctx.widgets.get(131,1).isVisible()){
 					state = "Closing interference";
-					Method.clickOnMap(ctx.players.local().getLocation());
+					//Method.clickOnMap(ctx.players.local().getLocation());
+					Method.pressContinue();
 				}else
 				if(!foundChronicle())//catches chronicles if they appear
 				if(!foundEnrichedSpring("Enriched sparkling spring"))
@@ -541,7 +546,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 
 			private boolean closeToNpc(String name, String string) {
 				if(Method.npcIsNotNull(name))
-				if(Method.getNPC(name).getLocation().distanceTo(ctx.players.local().getLocation())<7){
+				if(Method.getNPC(name).getLocation().distanceTo(ctx.players.local().getLocation())<8){
 					return true;
 				}else {
 					state = string;
@@ -568,12 +573,13 @@ public class DivineBody extends PollingScript implements PaintListener{
 		}
 		private boolean closeToObj(Tile loc, String string) {
 			if(loc!=null)
-			if(loc.distanceTo(ctx.players.local().getLocation())<7){
+			if(loc.distanceTo(ctx.players.local().getLocation())<18){
 				return true;
 			}else if(loc.distanceTo(ctx.players.local().getLocation())<8 && ctx.widgets.get(1186,1).isVisible()){
-				System.out.println("Cliking on map");
+				System.out.println("Getting rid of dialogue");
 				if(!wait.isRunning()){
-				Method.clickOnMap(loc.randomize(1, 2));
+				Method.pressContinue();
+				//Method.clickOnMap(loc.randomize(1, 2));
 				wait = new Timer(Random.nextInt(700, 1700));
 				}
 			}else {
