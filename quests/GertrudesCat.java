@@ -67,7 +67,7 @@ public class GertrudesCat extends Node{
 		// * 2175-main steps
 		// * /*
 		
-		
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 			DeltaQuester.numSteps = 7;
 			if(DeltaQuester.checkedBank)
 				Method.determineBank(bankItems);

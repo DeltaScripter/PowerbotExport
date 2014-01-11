@@ -39,7 +39,7 @@ public class GoblinDiplomacy extends Node{
 	
 	public void execute(){
 		DeltaQuester.numSteps  =5;
-		
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		while(ctx.settings.get(1114)==1){
 			Method.pressContinue();
 			if(ctx.settings.get(2137)==6){

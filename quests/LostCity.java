@@ -107,6 +107,7 @@ public class LostCity extends Node{
 
 	
 	public void execute() {
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		DeltaQuester.numSteps = 5;
 		while(ctx.settings.get(1045)!=0){//The setting used when the mini boat appears.
 			Method.state("Now sailing");

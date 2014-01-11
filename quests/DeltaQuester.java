@@ -64,6 +64,12 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 	public static boolean g = false;
     public Timer time;
     public Timer timeSec;//seconds
+    
+    //time
+    private Timer runtime;
+	private Timer secondsA;
+	private Timer minutesA;
+    
 	public int minute;
 	public double second;
 	private boolean ready = false;
@@ -78,7 +84,10 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			@Override
 			public void run() {
 				timeSec = new Timer(0);
-				
+				//other time fromDD
+				runtime = new Timer(0);
+				secondsA = new Timer(0);
+				minutesA = new Timer(0);
 				initiateGui();
 				//qList.add("The Restless Ghost");
 				     addNode(new TheBloodPact(ctx));
@@ -1339,6 +1348,18 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 		//mouseX = (int) ctx.mouse.getLocation().getX();
 		//mouseY = (int) ctx.mouse.getLocation().getY();
 		//setMouse(g);
+		int seconds = (int)(runtime.getElapsed()/1000);
+		int minutes = (int)(seconds/60);
+		int hours = (int)(minutes/60);
+		int secHold = (int)(secondsA.getElapsed()/1000);
+		int minHold = (int)(minutesA.getElapsed()/60000);
+		
+		if(secHold>=60)
+			secondsA = new Timer(0);
+		if(minHold>=60)
+			minutesA = new Timer(0);
+		
+		
 		g.setColor(Color.DARK_GRAY);
 		g.drawRect(20,334, 185, 7);
 		g.setColor(Color.green);
@@ -1353,7 +1374,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 		g.drawString("Next quest: " + qList.get(1).toString(), 18, 390);
 		g.drawString("" + (int)((double)progress/numSteps*100) +"%", 215, 340);
 		g.drawString("GEFeature: " + GEWO, 18, 410);
-		g.drawString("Time: "+(int)(timeSec.getElapsed()/1000), 68,57);
+		g.drawString("Runtime: " +hours+":"+minHold +":" + secHold, 68,57);
 		g.drawString("Food Support: " + FOOD_FEATURE, 18, 430);
 		g.drawString("useBank: " + Vars.useBank, 18, 450);
 		g.drawString("Health: " + (int)health+ "%", 18, 470);

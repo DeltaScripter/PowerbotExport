@@ -63,6 +63,7 @@ public class DruidicRitual extends Node{
 	
 	boolean q = true;
 	public void execute() {
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		if(q){
 			TaskListing.taskRemove.clear();
 			TaskListing.taskListData.add("Start quest by speaking to Sanfew");
@@ -280,7 +281,6 @@ public class DruidicRitual extends Node{
 							Vars.DYNAMICV = false;
 							collectWater();
 						}else{
-							Method.state("Hete");
 							if(ctx.widgets.get(1184).isValid()&& ctx.widgets.get(1184,13).getText().contains("We need to find")){
 								spoke = true;
 							}

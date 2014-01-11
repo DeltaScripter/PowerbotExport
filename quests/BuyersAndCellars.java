@@ -58,6 +58,7 @@ public class BuyersAndCellars extends Node {
 		 * 2085-steps for quest
 		 * 1297-More possibilities for starting quest and ending quest.
 		 */
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		Method.resetTeleporting();
 		DeltaQuester.numSteps =9;
 	

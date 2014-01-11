@@ -54,6 +54,7 @@ public class ElementalWorkshop1 extends Node{
 
 	public void execute() {
 		Method.foodSupport();
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		DeltaQuester.numSteps = 10;
 		//if(Method.useBank && (ctx.settings.get(2675)>>20&0x1)!=1){
 		//	Method.useBank(bankItems, 1,1,90);

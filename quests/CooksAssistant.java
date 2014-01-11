@@ -76,6 +76,7 @@ public final Tile[] pathToCook = new Tile[] {
 	public Vars Vars = new Vars();
 	boolean q = true;//only runs once.
 	public void execute() {
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		if(q){
 			TaskListing.taskRemove.clear();
 			TaskListing.taskListData.add("Start quest by speaking to the cook");

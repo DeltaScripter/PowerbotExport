@@ -71,7 +71,7 @@ public class GunnarsGround extends Node{
 	
 	public void execute() {
 		DeltaQuester.numSteps = 13;
-		
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		
 		
 		

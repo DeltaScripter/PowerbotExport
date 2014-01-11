@@ -42,7 +42,7 @@ public class TowerOfLife extends Node{
 	public boolean hasParts3 = false;
 	@Override
 	public void execute() {
-		
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		if((ctx.settings.get(2190)&0x7FF)==1362){
 			Method.state("The Tower of Life quest has been completed");
 			ctx.environment.sleep(2000);

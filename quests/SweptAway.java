@@ -139,6 +139,7 @@ public class SweptAway extends Node {
 	public int bankItemAmount[] = {1,1,1,1};
 	boolean q = true;
 	public void execute() {
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		if(q){
 			TaskListing.taskRemove.clear();
 			TaskListing.taskListData.add("Start quest by speaking to Maggie in Draynor");

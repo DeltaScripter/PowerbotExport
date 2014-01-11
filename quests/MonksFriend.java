@@ -55,6 +55,7 @@ public class MonksFriend extends Node{
 	
 	@Override
 	public void execute() {
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		Method.resetTeleporting();
 		DeltaQuester.numSteps =8;
 		

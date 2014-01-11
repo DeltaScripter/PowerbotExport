@@ -1258,6 +1258,13 @@ public class Method extends MethodProvider{
 		}
 		return false;
 	}
+	public void setGeneralCamera() {
+		if(ctx.camera.getPitch()<50){
+			state("Setting camera pitch");
+			ctx.camera.setPitch(60);
+		}
+		
+	}
 	
 
 

@@ -39,8 +39,7 @@ public class ImpCatcher extends Node {
 	
 	boolean q = true;
 	public void execute() {
-		if(ctx.camera.getPitch()<60)
-			ctx.camera.setPitch(90);
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		DeltaQuester.numSteps = 3;
 		if(q){
 			TaskListing.taskRemove.clear();

@@ -60,6 +60,7 @@ public class ClockTower extends Node{
 
 	
 	public void execute() {
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		Method.resetTeleporting();
 		Method.foodSupport();
 		DeltaQuester.numSteps = 6;

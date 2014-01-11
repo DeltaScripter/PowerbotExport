@@ -97,6 +97,7 @@ boolean q = true;
 
 	
 	public void execute() {
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		Method.resetTeleporting();
 		DeltaQuester.numSteps =13;
 		Method.foodSupport();

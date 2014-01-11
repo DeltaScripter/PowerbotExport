@@ -36,7 +36,7 @@ public class TaskListing {
 					updateTasks();
 				}
 			}
-		}else System.out.println("Nothing to remove: " + taskRemove.get(taskRemove.size()-1).toString());
+		}//else System.out.println("Nothing to remove: " + taskRemove.get(taskRemove.size()-1).toString());
 	}
 	public static void updateTaskRemove(String... tasks) {
 		for(String t: tasks){

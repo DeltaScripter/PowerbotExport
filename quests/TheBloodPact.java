@@ -39,7 +39,7 @@ public class TheBloodPact extends Node{
 	public void execute() {
 		DeltaQuester.numSteps = 8;
 		Method.foodSupport();
-	
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		
 		//if(DeltaQuester.checkedBank)
 		//	Method.determineBank(bankItems);

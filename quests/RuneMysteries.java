@@ -67,7 +67,7 @@ public class RuneMysteries extends Node{
 	
 	public int bankItems[] = {26113,26114,26115,26109};
 	public void execute() {
-
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		if(ctx.camera.getPitch()>60)
 			ctx.camera.setPitch(50);
 			else if(ctx.camera.getPitch()<40)

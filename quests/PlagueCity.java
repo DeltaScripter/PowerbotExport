@@ -46,7 +46,7 @@ public int bankItemAmount[] = {1,1,4,1,1,1,1};
 	@Override
 	public void execute() {
 		
-		
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		DeltaQuester.numSteps = 12;
 		if(!init){
 			Method.state("Initializing");

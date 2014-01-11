@@ -100,6 +100,7 @@ public class Biohazard extends Node{
 	
 	public void execute() {
 		Method.foodSupport();
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		local = ctx.players.local().getLocation();
 	
 		if(DeltaQuester.checkedBank&&(ctx.settings.get(2535)&0x1F)==0)//only whenequal to 0, can't tele during quest at times

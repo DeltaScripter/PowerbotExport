@@ -47,6 +47,7 @@ public class ErnestTheChicken extends Node{
 	private Vars Vars = new Vars();
 	boolean q =true;
 	public void execute() {
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		if(q){
 			TaskListing.taskRemove.clear();
 			TaskListing.taskListData.add("Start quest");
@@ -62,8 +63,6 @@ public class ErnestTheChicken extends Node{
 		Method.foodSupport();
 		DeltaQuester.numSteps = 4;
 		
-		if(ctx.camera.getPitch()<60)
-			ctx.camera.setPitch(80);
 		
 		if(DeltaQuester.checkedBank && (ctx.settings.get(2183) & 0x3) != 3)
 			Method.determineBank(bankItems);
@@ -172,30 +171,21 @@ public class ErnestTheChicken extends Node{
 			Vars.DYNAMICV = false;
 			solvePuzzle();
 		}else{
-		System.out.println("h1");
 		if(new Tile(3095,3359,0).getMatrix(ctx).isReachable()){
-			System.out.println("h2");
 		Method.interactO(133, "Climb","Object");
 		}else{
-			System.out.println("h3");
 		if(new Tile(3098,3360,0).getMatrix(ctx).isReachable()){//outside the secret room that leads to basement..
-			System.out.println("h4");
-			if(new Tile(3098,3360,0).distanceTo(local.getLocation())<5){	System.out.println("h5");
+			if(new Tile(3098,3360,0).distanceTo(local.getLocation())<5){
 				Method.interactO(47711, "Search","Object");
-			}else {	System.out.println("h6");
 				ctx.movement.findPath(new Tile(3098,3360,0)).traverse();
 			}
 		}else if(new Tile(3103,3365,0).getMatrix(ctx).isReachable()){//door outside of tube room.
-			System.out.println("h7");
 			if (new Tile(3103,3365,0).distanceTo(local.getLocation())<5){//checks distance.
-				System.out.println("h8");
 				Method.interactO(47512, "Open", "Doors");//open door leading to secret b shelf.
 			}else {
-				System.out.println("h9");
 				ctx.movement.findPath(new Tile(3103,3364,0)).traverse();//walks to the door if too far.
 			}
 		}else if(new Tile(3107,3368,0).getMatrix(ctx).isReachable()){
-			System.out.println("h10");
 			Method.interactO(47511, "Open","Door");
 		}
 
@@ -475,7 +465,7 @@ public class ErnestTheChicken extends Node{
 								if(!timer.isRunning())//below grabs the poison off the table
 								for(GroundItem poison: ctx.groundItems.select().name("Poison").nearest().first()){//the poison
 									if (poison.isOnScreen()) {
-										System.out.println("...yeah: " +poison.getLocation().getMatrix(ctx).getInteractPoint().getX());
+										//System.out.println("...yeah: " +poison.getLocation().getMatrix(ctx).getInteractPoint().getX());
 										ctx.mouse.move(poison.getLocation().getMatrix(ctx).getPoint(.457D, .368D, -400));
 										ctx.mouse.click(true);
 										timer = new Timer(2000);

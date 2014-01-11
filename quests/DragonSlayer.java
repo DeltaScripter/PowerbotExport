@@ -199,6 +199,7 @@ public class DragonSlayer extends Node{
 	}
 
 	public void execute() {
+		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		DeltaQuester.numSteps = 16;
 		Method.resetTeleporting();
 		Method.foodSupport();

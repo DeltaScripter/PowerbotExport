@@ -324,8 +324,12 @@ public class KebBody extends PollingScript implements PaintListener{
 				for(GameObject pile: findPile){
 					if(pile.getLocation().distanceTo(local)<9){
 						if(pile.isOnScreen()){
-						pile.interact(action);
+						if(pile.interact(action)){
 						wait = new Timer(Random.nextInt(1600, 1800));
+						}else {
+							ctx.camera.turnTo(pile.getLocation().randomize(2, 3));
+							ctx.camera.setPitch(30);
+						}
 						}else ctx.camera.turnTo(pile);
 					}else if(!waitClickMap.isRunning()){
 						ctx.movement.stepTowards(pile.getLocation());
@@ -351,8 +355,12 @@ public class KebBody extends PollingScript implements PaintListener{
 			for(GameObject rock: findRock){
 				if(rock.getLocation().distanceTo(local)<15){
 					if(rock.isOnScreen()){
-					rock.interact("Inspect");
+					if(rock.interact("Inspect")){
 					wait = new Timer(Random.nextInt(1700, 2500));
+					}else {
+						ctx.camera.turnTo(rock.getLocation().randomize(2, 3));
+						ctx.camera.setPitch(30);
+					}
 					}else ctx.camera.turnTo(rock);
 				}else if(!waitClickMap.isRunning()){
 					ctx.movement.stepTowards(rock.getLocation().randomize(2,3));
