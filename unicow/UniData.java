@@ -32,7 +32,7 @@ public class UniData {
 	}
 	public enum items{
 		
-		RINGOFDUNGEONEERING(15707),COWHIDE(1739),
+		RINGOFDUNGEONEERING(15707),ARDOUGNECAPE1(15345),COWHIDE(1739),
 		HORN(237);
 		
 		int id;

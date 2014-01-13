@@ -102,6 +102,7 @@ public class VampyreSlayer extends Node{
 	    if(Vars.useBank && (ctx.settings.get(2170)&0x7)!=7){
 			Method.useBank(bankItems, bankItemAmount);
 		}else if (DeltaQuester.GEFeature && (ctx.settings.get(2170)&0x7)!=7) {
+			Method.onlyItemsGE = true;
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else if(!DeltaQuester.exchangeBank){//should be if  false
 			Method.exchangeBank(1918,1917,3);
@@ -159,11 +160,11 @@ public class VampyreSlayer extends Node{
 						if(Method.npcIsNotNull(9357)&&Method.getNPC(9357).getLocation().distanceTo(local.getLocation())<5||
 								 Method.npcIsNotNull(9356)&& Method.getNPC(9356).getLocation().distanceTo(local.getLocation())<5){
 							if(!Method.isChatting("Self"))
-							if(local.getInteracting()!=null){
-								Method.basicFightNPC(9357);
-								Method.basicFightNPC(9356);
+							if(Method.getInteractingNPC()!=null){
+								Method.fightNPC(9357);
+								Method.fightNPC(9356);
 							}else {
-								if(Method.npcIsNotNull(9357))
+								if(Method.npcIsNotNull(9357))//vampyre(s)
 								Method.getNPC(9357).interact("Attack");
 								if(Method.npcIsNotNull(9356))
 								Method.getNPC(9356).interact("Attack");

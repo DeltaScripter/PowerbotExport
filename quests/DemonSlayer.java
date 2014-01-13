@@ -215,7 +215,7 @@ public class DemonSlayer extends Node {
 						Method.npcInteract(16724, "Attack");
 					}else if(!Method.isInCombat()){
 						Method.npcInteract(16724, "Attack");
-					}else Method.basicFightNPC(16724);
+					}else Method.fightNPC(16724);
 					
 				}
 			}else if(silverEquip){
@@ -266,7 +266,7 @@ public class DemonSlayer extends Node {
 				if(local.getAppearance().equals(18019)){
 					Vars.DYNAMICV = false;
 					Method.npcInteract(16723, "Attack");
-				}else Method.basicFightNPC(16723);
+				}else Method.fightNPC(16723);
 				
 			}else Method.clickOnMap(new Tile(init.getX()+27,init.getY()-20,0));
 		}else
@@ -302,7 +302,7 @@ public class DemonSlayer extends Node {
 				
 				if(local.getAppearance().equals(18019)){
 					Method.npcInteract(16723, "Attack");
-				}else Method.basicFightNPC(16723);
+				}else Method.fightNPC(16723);
 				
 			}else Method.clickOnMap(new Tile(init.getX()+14,init.getY()-13,0));
 		}else { for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
@@ -336,7 +336,7 @@ public class DemonSlayer extends Node {
 				
 				if(local.getAppearance().equals(18019)){
 					Method.npcInteract(16723, "Attack");
-				}else Method.basicFightNPC(16723);
+				}else Method.fightNPC(16723);
 				
 			}else Method.clickOnMap(new Tile(init.getX(),init.getY()-11,0));
 		}else { 
@@ -443,7 +443,7 @@ public class DemonSlayer extends Node {
 		if(spokeToBody){
 			if(!Method.isInCombat()){
 				Method.npcInteract(16721, "Attack");
-			}else Method.basicFightNPC(16721);
+			}else Method.fightNPC(16721);
 		}else if(ctx.widgets.get(1184).isValid() && ctx.widgets.get(1184).getComponent(13).getText().contains("There are") || local.isInCombat()){
 			Method.pressContinue();
 			spokeToBody = true;

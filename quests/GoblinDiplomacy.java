@@ -27,9 +27,9 @@ public class GoblinDiplomacy extends Node{
 	public boolean init = false;
 	//G.E
 	public int itemsArray[] = {0,0,0};//contains the states of items needing to be purchased.
-	public int itemDID[] = {289,1767,1769};//contains the ids of the items needing to be purchased.
+	public int itemDID[] = {288,1767,1769};//contains the ids of the items needing to be purchased.
 	public int itemDAmount[] = {3,1,1};
-	public int itemDPrice[] = {4000,4000,4500};//contains specific prices to use upon purchasing specific items.
+	public int itemDPrice[] = {6000,6000,6500};//contains specific prices to use upon purchasing specific items.
 	public String itemDString[] = {"Goblin mail", "Blue dye", "Orange dye"};//contains the names of the items needing to be purchased.
 	
 	public Vars Vars = new Vars();
@@ -61,6 +61,7 @@ public class GoblinDiplomacy extends Node{
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if (DeltaQuester.GEFeature) {
+			Method.onlyItemsGE = true;
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else if(!DeltaQuester.exchangeBank){
 			Method.exchangeBank(289,288,3);
@@ -110,9 +111,12 @@ public class GoblinDiplomacy extends Node{
 
 	private void createMails() {
 		if(ctx.settings.get(1114)==0){
-	if(Method.inventoryContains(286) && Method.inventoryContains(288) &&Method.inventoryContains(1769)){
+	while(Method.inventoryContains(288) &&Method.inventoryContains(1769)){
+		System.out.println("Combining items 1");
 		Method.combineItems(288, 1769);
-	}else if (!Method.inventoryContains(287) &&Method.inventoryContains(288) &&Method.inventoryContains(1767)){
+	}
+	while(Method.inventoryContains(288) &&Method.inventoryContains(1767)){
+		System.out.println("Combining items 2");
 		Method.combineItems(288, 1767);
 	}
 		}

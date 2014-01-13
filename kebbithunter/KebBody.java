@@ -328,7 +328,6 @@ public class KebBody extends PollingScript implements PaintListener{
 						wait = new Timer(Random.nextInt(1600, 1800));
 						}else {
 							ctx.camera.turnTo(pile.getLocation().randomize(2, 3));
-							ctx.camera.setPitch(30);
 						}
 						}else ctx.camera.turnTo(pile);
 					}else if(!waitClickMap.isRunning()){
@@ -359,7 +358,6 @@ public class KebBody extends PollingScript implements PaintListener{
 					wait = new Timer(Random.nextInt(1700, 2500));
 					}else {
 						ctx.camera.turnTo(rock.getLocation().randomize(2, 3));
-						ctx.camera.setPitch(30);
 					}
 					}else ctx.camera.turnTo(rock);
 				}else if(!waitClickMap.isRunning()){

@@ -7,12 +7,10 @@ import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.methods.Hud.Window;
-import org.powerbot.script.methods.Players;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.Action;
-import org.powerbot.script.wrappers.Actor;
 import org.powerbot.script.wrappers.GameObject;
+import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Tile;
@@ -28,16 +26,31 @@ public class UniMethod extends MethodProvider{
 		ctx.game.sleep(Random.nextInt(30, 60));
 	}
 	
+	public int inventoryStackSize(int ID) {
+		if(ctx.hud.view(Window.BACKPACK)){
+		
+		ItemQuery<Item> g;
+		g = null;
+		g = ctx.backpack.select().id(ID);
+		return g.count(true);
+		}
+		return 0;
+	}
 	public void npcInteract(int id, String string) {
 		ArrayList<String> actions = new ArrayList<String>();
 		for(Npc n : ctx.npcs.select().id(id).nearest().first()){
 				if (n.isOnScreen()) {
 					n.hover();
 					n.interact(string);
-				} else ctx.camera.turnTo(n);
+				} else ctx.camera.turnTo(n.getLocation().randomize(2, 3));
 			}
 	}
-	
+	public GroundItem getGroundItem(int i) {
+		for(GroundItem item : ctx.groundItems.select().id(i).nearest().first()){
+			return item;
+		}
+		return null;
+	}
 	public Npc getInteractingNPC()
     {
         final BasicNamedQuery<Npc> npcs = ctx.npcs.select();
@@ -66,7 +79,7 @@ public class UniMethod extends MethodProvider{
 		
 		if(ctx.combatBar.isExpanded()){
 			
-			if(getInteractingNPC()==null){//if not in combat
+			if(getInteractingNPC()==null && !waitClick.isRunning()){//if not in combat
 				for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
 					if(enemy.getLocation().distanceTo(ctx.players.local().getLocation())<7){
 						DeltaUniBody.state = "Attacking npc";
@@ -74,22 +87,43 @@ public class UniMethod extends MethodProvider{
 					}else ctx.movement.stepTowards(enemy.getLocation());
 				}
 			}else
-		for(int i = Random.nextInt(0, 1); i<9;){
-			
-			if(ctx.players.local().getHealthPercent()<60)
+		for(int i = 0; i<9;){
+			DeltaUniBody.state = "Fighting NPC";
+			if(ctx.players.local().getHealthPercent()<50){
+				System.out.println("Breaking; too low health");
 				break;
+			}
 			
 			if(getInteractingNPC()==null){
 				System.out.println("Breaking for loop, not in combat");
+				waitClick = new Timer(2000);
 				break;
 			}
+			if(ctx.widgets.get(1184,0).isVisible())
+				break;
+			
+			if(!ctx.players.local().isInCombat()){//in case we can't reach the cow + its attacking us
+				for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
+					if(enemy.getLocation().distanceTo(ctx.players.local().getLocation())<7&& !waitClick.isRunning()){
+						DeltaUniBody.state = "Attacking npc";
+						npcInteract(enemy.getId(),"Attack");
+					}else ctx.movement.stepTowards(enemy.getLocation());
+				}
+			}else
 			if(ctx.combatBar.getActionAt(i).isReady()){
 				if(!waitClick.isRunning()){
-				System.out.println("Clicking action: "+ ctx.combatBar.getActionAt(i).getId());
-				ctx.combatBar.getActionAt(i).getComponent().click();
-				  waitClick = new Timer(Random.nextInt(750, 1500));
-				}
+				
+							if (ctx.combatBar.getActionAt(i).select(true)) {
+								i++;
+								waitClick = new Timer(Random.nextInt(750, 1500));
+							} else {
+								ctx.combatBar.getActionAt(i).getComponent().click();
+								i++;
+								waitClick = new Timer(Random.nextInt(750, 1500));
+							}
+						}
 			}else i++;
+			
 			
 		}	
 			
@@ -192,8 +226,12 @@ public class UniMethod extends MethodProvider{
 	
 					if (y.isOnScreen()) {
 						if(!interactO.isRunning()){
-						y.interact(string);
-						interactO = new Timer(Random.nextInt(1700, 2300));
+							if(y.interact(string)){
+								interactO = new Timer(Random.nextInt(1700, 2300));
+							}else {
+								ctx.camera.setPitch(Random.nextInt(60, 80));
+								ctx.camera.turnTo(y.getLocation().randomize(2, 3));
+							}
 						}
 					} else ctx.camera.turnTo(y);
 				
@@ -223,5 +261,16 @@ public class UniMethod extends MethodProvider{
 				}
 		}		
 		}
+	}
+
+	public void walk(Tile[] path, String dest) {
+		DeltaUniBody.state = dest;
+		ctx.movement.newTilePath(path).randomize(1, 2).traverse();
+		
+	}
+
+	public void state(String string) {
+		DeltaUniBody.state = string;
+		
 	}
 }

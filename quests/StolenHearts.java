@@ -556,9 +556,9 @@ public class StolenHearts extends Node{
 			if(Method.npcIsNotNull(15897) || Method.npcIsNotNull(15899) || Method.npcIsNotNull(15898)){
 				try{
 				for(int i =0;i<= drs.length;){
-				if(ctx.players.local().isInCombat()){
-					Method.basicFightNPC(drs[i]);
-				}else if(Method.npcIsNotNull(drs[i])){
+				if(Method.getInteractingNPC()!=null){//if fighting
+					Method.fightNPC(drs[i]);
+				}else if(Method.npcIsNotNull(drs[i])){//one of the npcs
 						Method.npcInteract(drs[i], "Attack");
 					}else i++;
 				}

@@ -29,9 +29,7 @@ public class UniBank extends UniNode{
 			while(Method.inventoryGetCount(10878)>=1){
 				Method.interactInventory(10878, "Drop", "Bag");
 			}
-			while(Method.inventoryGetCount(526)>=1){
-				Method.interactInventory(526, "Drop", "bones");
-			}
+		
 			while(Method.inventoryGetCount(10859)>=1){
 				Method.interactInventory(10859, "Drop", "tea");
 			}
@@ -39,20 +37,27 @@ public class UniBank extends UniNode{
 				if(ctx.bank.open()){
 					
 					if(!Method.bankContains(items.COWHIDE.getID())||
-							!Method.bankContains(items.HORN.getID())){
+							(!Method.bankContains(items.HORN.getID())&&
+									Method.inventoryGetCount(items.HORN.getID())<1)||
+							!Method.bankContains(379)){//lobster
+						System.out.println("Out of some item, shuttong down");
 						DeltaUniBody.e  =true;
+					}
+					while(Method.inventoryGetCount(238)>=1){
+						DeltaUniBody.state = "Depositing noted horns";
+						ctx.bank.deposit(238, 28);//noted horns
 					}
 					
 					if(Method.inventoryGetCount(items.HORN.getID())==1){
-						if(Method.inventoryGetCount(items.COWHIDE.getID())==11){
-							if(Method.inventoryGetCount(379)>=15){
+						if(Method.inventoryGetCount(items.COWHIDE.getID())==15){
+							if(Method.inventoryGetCount(379)>=10){
 								ctx.bank.close();
 								DeltaUniBody.bank = false;
-							}else ctx.bank.withdraw(379, 15);
+							}else ctx.bank.withdraw(379, 10);
 							
-						}else if(Method.inventoryGetCount(items.COWHIDE.getID())>11){
+						}else if(Method.inventoryGetCount(items.COWHIDE.getID())>15){
 							ctx.bank.deposit(items.COWHIDE.getID(), 28);
-						}else ctx.bank.withdraw(items.COWHIDE.getID(), 11-Method.inventoryGetCount(items.COWHIDE.getID()));
+						}else ctx.bank.withdraw(items.COWHIDE.getID(), 15-Method.inventoryGetCount(items.COWHIDE.getID()));
 							
 					}else
 					if(Method.inventoryGetCount(items.HORN.getID())>1){

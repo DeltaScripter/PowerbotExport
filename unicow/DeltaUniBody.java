@@ -9,15 +9,8 @@ import java.util.List;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.PollingScript;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.Skills;
 import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.Component;
-import org.powerbot.script.wrappers.Item;
-import org.powerbot.script.wrappers.Npc;
-import org.powerbot.script.wrappers.Tile;
-
 import unicow.UniData.items;
 
 
@@ -34,6 +27,9 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 			public void run() {
 				addNode(new UniMain(ctx));
 				addNode(new UniBank(ctx));
+				runtime = new Timer(0);
+				secondsA = new Timer(0);
+				minutesA = new Timer(0);
 			}
 		});
 	}
@@ -49,6 +45,10 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 	//profit an hour
 	int tempNum = 0;
 	Timer hornCounter = new Timer(0);
+	
+	private Timer runtime;
+	private Timer secondsA;
+	private Timer minutesA;
 	@Override
 	public int poll() {
 		
@@ -63,14 +63,19 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 			if(ctx.bank.close())
 			if(ctx.hud.view(Window.WORN_EQUIPMENT)){
 				if(Method.equipItemIsNotNull(items.RINGOFDUNGEONEERING.getID())){
+					System.out.println("Found Dungeoneering ring");
 					UniBank.dungeoneeringRing = true;
+				}
+				if(Method.equipItemIsNotNull(items.ARDOUGNECAPE1.getID())){
+					System.out.println("Found Ardougne cloak");
+					UniMain.ardougneCloak = true;
 				}
 				init = true;
 			}
 		
 		}
 		if(!hornCounter.isRunning())
-		System.out.println("Counter: " + hornCounter.getElapsed());
+		//System.out.println("Counter: " + hornCounter.getElapsed());
 		for(UniNode node: nodeList){
 			if(node.activate()){
 				node.execute();
@@ -99,17 +104,26 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 private Font myFont = new Font("Consolas",Font.BOLD,14);
 	@Override
 	public void repaint(Graphics g) {
+		int seconds = (int)(runtime.getElapsed()/1000);
+		int minutes = (int)(seconds/60);
+		int hours = (int)(minutes/60);
+		int secHold = (int)(secondsA.getElapsed()/1000);
+		int minHold = (int)(minutesA.getElapsed()/60000);
 		
+		if(secHold>=60)
+			secondsA = new Timer(0);
+		if(minHold>=60)
+			minutesA = new Timer(0);
 	
 	    double time;
 	    if(!ctx.bank.isOpen())
 	    	once = false;
 	    if(ctx.bank.isOpen() && !once){
-	    	int hornCount = Method.inventoryGetCount(items.HORN.getID());
+	    	int hornCount = Method.inventoryGetCount(items.HORN.getID()) + Method.inventoryStackSize(items.HORN.getID()+1);
 	    	if(!hornCounter.isRunning()){
 	    		    time = ((hornCounter.getElapsed())/1000);
 	    		    time = 3600/time;
-	    		    profit = time*(hornCount*3300);
+	    		    profit = time*(hornCount*2720);
 	    		    System.out.println("Profit per hour: "+ profit);
 	    		    hornCounter = new Timer(0);
 	    		    once = true;
@@ -124,5 +138,7 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 		if(profit>0)
 		g.drawString("Money per hour: "+(int)profit + "GP", 20, 170);
 		else g.drawString("Money per hour: Waiting..", 20, 170);
+		g.setColor(Color.CYAN);
+		g.drawString("Runtime: " +hours+":"+minHold +":" + secHold, 20, 110);
 	}
 }

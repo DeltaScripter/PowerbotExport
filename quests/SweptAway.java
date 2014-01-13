@@ -410,7 +410,7 @@ private void cs5() {
 		if( new Tile(3017, 3258, 0).distanceTo(local.getLocation())<7){
 			
 			if(ctx.players.local().isInCombat()){
-				Method.basicFightNPC(175);
+				Method.fightNPC(175);//the mugger
 			}else
 			if(BettyArea.contains(local.getLocation()) || new Tile(3014,3258,0).getMatrix(ctx).isReachable()){
 				Vars.DYNAMICV = false;

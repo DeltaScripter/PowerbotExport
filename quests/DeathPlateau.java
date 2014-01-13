@@ -159,16 +159,16 @@ public class DeathPlateau extends Node{
 
 	}
 	
-	private void cs6() {
+	private void cs6() {//speak to nd destroy the troll
 		Player local = ctx.players.local();
 		final String opt[] = {"Prepare to die"};
 		
-		if(Method.npcIsNotNull(15101)){
-		if(local.isInCombat()){
+		if(Method.npcIsNotNull(15101)){//troll
+		if(Method.getInteractingNPC()!=null){//being attacked
 			Vars.DYNAMICV = false;
-			Method.basicFightNPC(15101);//hostile troll
+			Method.fightNPC(15101);//hostile troll
 		}else Method.npcInteract(15101, "Attack");
-		}else if (Method.npcIsNotNull(15100)){
+		}else if (Method.npcIsNotNull(15100)){//troll with another id(non-hostile one)
 			Vars.DYNAMICV = false;
 			if(!Method.findOption(opt)) 
 			if(!Method.isChatting("Troll")){

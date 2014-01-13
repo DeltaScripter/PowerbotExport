@@ -402,11 +402,12 @@ public class Method extends MethodProvider{
 		ArrayList<String> actions = new ArrayList<String>();
 		for(GameObject y: ctx.objects.select().id(i).nearest().first()){
 			//if(closeInterfaces())
-			if(y.isOnScreen()){
+			if(y.isOnScreen() && y.interact(string)){
 			state("Interacting: " + string);
-			y.interact(string);
 			ctx.game.sleep(1800);
-			}else ctx.camera.turnTo(y);
+			}else {
+				ctx.camera.turnTo(y.getLocation().randomize(2, 3));
+			}
 			/*
 					if (closeInterfaces() && y.isOnScreen()) {
 						y.hover();
@@ -834,8 +835,8 @@ public class Method extends MethodProvider{
 				while(inventoryContains(destroyItemID)){
 					if(ctx.bank.isOpen())//close bank if open
 						ctx.bank.close();
-					if(ctx.widgets.get(1183,5).isVisible()){//if the destroy screen is open
-						ctx.widgets.get(1183,5).click();//click 'yes' to destroy item
+					if(ctx.widgets.get(1183,16).isVisible()){//if the destroy screen is open
+						ctx.widgets.get(1183,16).click();//click 'yes' to destroy item
 						ctx.game.sleep(1000);
 					}else interactInventory(destroyItemID,"Destroy","Item");
 				}
@@ -941,9 +942,10 @@ public class Method extends MethodProvider{
 					if (item.isOnScreen()) {
 						state("Performing action on ground item: " + string2);
 						ctx.mouse.move(item.getCenterPoint());
-							item.interact(string);
+							if(item.interact(string)){
 							ctx.environment.sleep(500,600);
 							break;
+							}else ctx.camera.turnTo(item.getLocation().randomize(2, 3));
 						
 					} else ctx.camera.turnTo(item);
 					break;
