@@ -2,10 +2,10 @@ package quests;
 
 
 import features.GrandExchange;
+import features.Web;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Random;
 
 
 import org.powerbot.client.ItemSlot;
@@ -16,6 +16,7 @@ import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Condition;
+import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Action;
 import org.powerbot.script.wrappers.GameObject;
@@ -32,7 +33,6 @@ import src.pathfinder.core.util.Structure;
 import src.pathfinder.core.wrapper.PathNode;
 import src.pathfinder.core.wrapper.TilePath;
 import src.pathfinder.impl.Pathfinder;
-import unicow.DeltaUniBody;
 
 public class Method extends MethodProvider{
 
@@ -47,7 +47,6 @@ public class Method extends MethodProvider{
 		static boolean hasFood = true;
 		public static boolean useBank =true;
 		public static int bankDecide = 5;
-		public static Random rand = new Random();
 		
 		static Timer timer = new Timer(0);
 		private Timer interactO = new Timer(0);
@@ -1206,7 +1205,7 @@ public class Method extends MethodProvider{
 		System.out.println("Inside decide bank");
 		if(DeltaQuester.number!=0 && DeltaQuester.number!=1){
 		System.out.println("Creating random numer!");
-		DeltaQuester.number = rand.nextInt(2);
+		DeltaQuester.number = Random.nextInt(0,2);
 		}
 		switch(DeltaQuester.number){
 		
@@ -1318,6 +1317,8 @@ public class Method extends MethodProvider{
 				}
 			}
 			for(int t = 0; t<bankItems.length;){
+				if(!ctx.bank.isOpen())
+					break;
 				if(inventoryContains(bankItems[t])){
 					for(Item item: ctx.backpack.select().id(bankItems[t])){
 						if(item.getStackSize()>2){
@@ -1351,6 +1352,8 @@ public class Method extends MethodProvider{
 				}
 			}
 			while(DeltaQuester.FOOD_FEATURE && inventoryGetCount(DeltaQuester.FOOD_ID)<foodAmount){
+				if(!ctx.bank.isOpen())
+					break;
 				System.out.println("Withdrawing food amount: " + foodAmount);
 				ctx.game.sleep(1200);
 				ctx.bank.withdraw(DeltaQuester.FOOD_ID, foodAmount);
@@ -1373,14 +1376,21 @@ public class Method extends MethodProvider{
 		return new Tile(Structure.TILE.getX(hash),Structure.TILE.getY(hash),Structure.TILE.getZ(hash));
 	}
 	
-	Pathfinder pf = new Pathfinder();
-	Timer wait = new Timer(0);
-	
+	/*
 	public void walkToLocation(Tile end) {
-		state("Walking to location: " + end);
+		Web web = new Web(ctx, ctx.players.local().getLocation(), end);
+		if(!wait.isRunning())
+		if(web.getPath() != null && web.getEnd().distanceTo(ctx.players.local()) > 4) {
+			web.walk();
+			wait = new Timer(Random.nextInt(2000,3000));
+		}
+		/*
+		//state("Walking to location: " + end);
+		ctx.game.sleep(4000);
 		Tile local = ctx.players.local().getLocation();
 		TilePath path = pf.findPath(Structure.TILE.getHash(local.getX(),local.getY(),local.getPlane()),Structure.TILE.getHash(end.getX(),end.getY(), end.getPlane()) , 500l, false);
 		
+		if(path!=null)
 		for(int i = 0;i< path.size();){
 			local = ctx.players.local().getLocation();
 			if(ctx.hud.isVisible(Window.FRIENDS)){
@@ -1388,18 +1398,22 @@ public class Method extends MethodProvider{
 				break;
 			}
 			PathNode p = path.get(i);
+			System.out.println("End: "+local.distanceTo(end));
+			
+			
 			if(!wait.isRunning())
-			if(toTile(p.getHash()).distanceTo(local)>17){
-			ctx.movement.newTilePath(toTile(p.getHash())).traverse();
-			wait = new Timer(2000);
-			}else {
-				System.out.println("Incrementing: " + i);
+			if(toTile(p.getHash()).distanceTo(local)>12||
+					local.distanceTo(end)>12){
+			clickOnMap(toTile(p.getHash()));
+			wait = new Timer(4000);
+			}else{
+				//System.out.println("Incrementing: " + i);
 				i++;
 			}
 		}
 		
 		
-	}
+	}*/
 	
 
 

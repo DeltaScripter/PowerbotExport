@@ -349,7 +349,7 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 			
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
-						"Buyers and Cellars","Biohazard","Cook's Assistant","Clock Tower","Death Plateau","Demon Slayer","Druidic Ritual",
+						"Buyers and Cellars","Biohazard","Cook's Assistant","Clock Tower","Death Plateau","Demon Slayer","Dragon Slayer","Druidic Ritual",
 						"Ernest The Chicken","Gertrude's Cat","Gunnar's Ground","Goblin Diplomacy",
 						"Imp Catcher","Let Them Eat Pie","Plague City","Monk's Friend","Pirate's Treasure","Stolen Hearts","Swept Away",
 						"The Knight's Sword","The Restless Ghost","Tower of Life","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
@@ -543,6 +543,11 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					rewardExpModel.addElement("Mining XP: 2425");
 					rewardItemModel.addElement("Adrougne teleport spell");
 					index++;
+				}else if(quest == "Dragon Slayer"){
+					rewardExpModel.addElement("Strength XP: 18,650");
+					rewardExpModel.addElement("Defence XP: 18,650");
+					rewardItemModel.addElement("Ability to wear a rune platebody");
+					index++;
 				}else index++;
 			}
 			rewardItemList.setModel(rewardItemModel);
@@ -617,6 +622,9 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					index++;
 				}else if(quest == "Plague City"){
 					requirementsList.setText(requirementsList.getText() + quest + ":\nArdougne lodestone activated\nDwellberries x 1\nRope x 1\nBucket of water x 4\nChocolate dust x 1\nSnape grass x 1\nBucket of milk x 1\nSpade x 1\n\n");
+					index++;
+				}else if(quest == "Dragon Slayer"){
+					requirementsList.setText(requirementsList.getText() + quest + ":\nAbility to defeat a high level dragon\nVarrock lodestone activated\nDraynor lodestone activated\nPort Sarim lodestone activated\nFalador lodestone activated\nAnti-dragon shield x 1\nBowl (unfired) x 1\nWizard's mind bomb x 1\nCrayfish cage x 1\nSilk x 1\nPlank x 3\nSteel nails x 90\n\n");
 					index++;
 				}else index++;
 			}
@@ -1304,6 +1312,14 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 	            		}
 		            	}else if(name.equals("Biohazard")){
 		            		if((ctx.settings.get(2535)&0x1F)==16){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Dragon Slayer")){
+		            		if((ctx.settings.get(2268)&0x1F) == 10){
 		            			incompleteQuests.put( value, "complete" );  
 	            			if(index == i)
 	            				 if( incompleteQuests.containsKey( value ) )  {

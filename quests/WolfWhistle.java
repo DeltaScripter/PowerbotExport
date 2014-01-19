@@ -126,7 +126,7 @@ public class WolfWhistle extends Node{
 			if(!DeltaQuester.checkedBank && (ctx.settings.get(2506)&0x3F)!=35){
 				Method.checkBank();
 			}else
-		    if(Vars.useBank && (ctx.settings.get(2506)&0x3F)!=35){
+		   if(Vars.useBank && (ctx.settings.get(2506)&0x3F)!=35){
 				Method.useBank(bankItems, bankItemAmount);
 			}else
 			if((ctx.settings.get(2506)&0x3F)==35){
@@ -336,11 +336,16 @@ public class WolfWhistle extends Node{
 			Method.interactO(DEADBODY_ID, "Search","Body");
 		} else {
 			if (Vars.hasBeenPT) {
+				Method.state("Walking to bones location");
+				//Method.walkToLocation(new Tile(2853, 3479, 0));
+				
 				Method.walking(pathToBonesFPS,"Walking to bones location.",false);
 			} else {
 				if (new Tile(2931,3434,0).distanceTo(ctx.players.local().getLocation())<6) {
 					Vars.hasBeenPT = true;
 				} else if(Vars.DYNAMICV){
+					Method.state("Walking to bones location");
+					//Method.walkToLocation(new Tile(2852, 3477, 0));
 					Method.walking(pathToBonesFTA,"Walking to bones location.",false);
 				}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<6||
 						TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().getLocation())<6){
@@ -370,8 +375,12 @@ public class WolfWhistle extends Node{
 			if (Vars.hasBeenInMS1) {
 				if (ctx.game.getPlane()==1) {
 					Method.interactO(STIXSTAIRSTOP_ID, "Climb","Stairs");
-				}else 
-				Method.walking(pathToPetShopFMS,"Walking to the pet shop.",false);
+				}else {
+					Method.state("Walking to the pet shop");
+					//Method.walkToLocation(new Tile(2932, 3433, 0));
+					Method.walking(pathToPetShopFMS,"Walking to the pet shop.",false);
+				}
+				//Method.walking(pathToPetShopFMS,"Walking to the pet shop.",false);
 			} else {
 				if (new Tile(2929,3447,0).distanceTo(ctx.players.local().getLocation())<6  && ctx.game.getPlane()==0) {
 					Vars.hasBeenInMS1 = true;
@@ -379,6 +388,8 @@ public class WolfWhistle extends Node{
 					if (ctx.game.getPlane()==1) {
 						Method.interactO(STIXSTAIRSTOP_ID, "Climb","Stairs");
 					} else if(Vars.DYNAMICV){
+						Method.state("Walking to pet shop");
+						//Method.walkToLocation(new Tile(2931, 3433, 0));
 						Method.walking(pathToPetFT,"Walking to the pet shop.",false);
 					}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<6||
 							TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().getLocation())<6){
@@ -466,6 +477,8 @@ public class WolfWhistle extends Node{
 						Method.speakTo(6988, "Pikkupstix");
 					}
 		} else if(Vars.DYNAMICV){
+			Method.state("Walking to Pikkupstix");
+			//Method.walkToLocation(new Tile(2929, 3449, 0));
 			Method.walking(pathToMrStix,"Walking to Pikkupstix",false);
 		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<6||
 				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().getLocation())<6){

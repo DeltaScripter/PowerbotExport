@@ -2,7 +2,10 @@ package quests;
 
 
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.util.Random;
+import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Tile;
+
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -210,9 +213,8 @@ public class DragonSlayer extends Node{
 	}
 	
 	public void execute() {
-		Method.walkToLocation(new Tile(3181,3481, 0));
 	
-		/*
+		
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		DeltaQuester.numSteps = 16;
 		Method.resetTeleporting();
@@ -257,8 +259,7 @@ public class DragonSlayer extends Node{
 									DeltaQuester.progress = 12;
 									if(Method.goBank){
 										Method.bankItems(bankItems3, bankItemAmount3);//planks & nails, not needed, need to test is it grabs the stuff below
-									}else
-									cs10();//equips sheild & speaks to ned
+									}else cs10();//equips sheild & speaks to ned
 								}else
 								if((ctx.settings.get(2268)&0x3F) == 3){
 									DeltaQuester.progress = 11;
@@ -320,11 +321,19 @@ public class DragonSlayer extends Node{
 		DeltaQuester.progress = 1;
 		cs0();//Begin the quest by speaking to the Guildmaster in Varrok
 		}
-		*/
+		
 	}
 
 	private void cs12() {//742 Elvarg ID
 		Method.skipPics();
+		
+		if(!hasShieldEquip)
+		if(Method.EquipmentContains(1540)){
+			hasShieldEquip  =true;
+		}else if(Method.inventoryContains(1540)){
+			Method.interactInventory(1540, "Wear", "Dragon Shield");
+		}
+		if(hasShieldEquip)
 		if(!Method.isChatting("People"))
 		if(new Tile(2855,9636,0).getMatrix(ctx).isReachable()){//elvarg's room
 			Vars.DYNAMICV = false;
