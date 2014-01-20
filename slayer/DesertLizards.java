@@ -21,7 +21,7 @@ public class DesertLizards extends SlayerNode{
 	}
 
 	private int[] bankItems = {1823,6696};//water skins & ice cooler
-	private int[] amountOfItem = {20,6};
+	private int[] amountOfItem = {6,70};
 	@Override
 	public void execute() {
 		Tile local = ctx.players.local().getLocation();
@@ -30,6 +30,7 @@ public class DesertLizards extends SlayerNode{
 			m.bankItems(bankItems, amountOfItem);
 		}else 
 		if(!m.inventoryContains(1823)||!m.inventoryContains(6696)){//water skins, ice cooler
+			System.out.println("Inventory doesn't have desert equipment, setting banking");
 			slayerbody.goBank = true;
 		}else
 		if(new Tile(3413,3034,0).distanceTo(local)<20){//liz area

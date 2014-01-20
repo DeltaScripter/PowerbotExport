@@ -59,6 +59,14 @@ public class SMethod extends MethodProvider{
 		 }
 		
 	}
+	public boolean backPackIsFull() {
+		ArrayList<Integer> inventory = new ArrayList<Integer>();
+		for(Item i : ctx.backpack.getAllItems()){
+				if(i.getId()!=-1)
+				inventory.add(i.getId());
+		}
+		return inventory.size()>=28;
+	}
 	private boolean teleBank = false;
 	private boolean once = false;
 	public void bankItems(int[] bankItems, int[] amountOfItem) {
@@ -67,6 +75,10 @@ public class SMethod extends MethodProvider{
 		if(new Tile(2947,3368, 0).distanceTo(ctx.players.local().getLocation())<6){
 		if(ctx.bank.isOpen()){
 			
+			if(backPackIsFull()){
+				System.out.println("Inventory is full, depositing.");
+				ctx.bank.deposit(slayerbody.FOODID, bankItems.length);
+			}
 			/*while(!once){
 				if(!ctx.bank.isOpen()){
 					System.out.println("Bank is closed, breaking");

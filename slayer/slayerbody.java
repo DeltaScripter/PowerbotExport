@@ -19,7 +19,7 @@ import org.powerbot.script.wrappers.Tile;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Slayer", 
-description = "Completes slayer assignments, currently in development - please consult thread", version = 1, website = "", hidden = false)
+description = "Completes slayer assignments, currently in development - please consult thread", version = 1, website = "", hidden = true)
 public class slayerbody extends PollingScript implements PaintListener{
 
 	
