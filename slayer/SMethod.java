@@ -3,6 +3,7 @@ package slayer;
 import java.util.ArrayList;
 
 import org.powerbot.script.lang.BasicNamedQuery;
+import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.methods.Hud.Window;
@@ -14,7 +15,10 @@ import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Tile;
 
 import quests.DeltaQuester;
+import quests.Paths;
 import quests.Vars;
+import quests.Vars.TeleportLode;
+import quests.Vars.TeleportType;
 
 public class SMethod extends MethodProvider{
 
@@ -54,6 +58,103 @@ public class SMethod extends MethodProvider{
 			 return name;
 		 }
 		
+	}
+	private boolean teleBank = false;
+	private boolean once = false;
+	public void bankItems(int[] bankItems, int[] amountOfItem) {
+		ArrayList<Integer> itemsInBank= new ArrayList<Integer>();
+		
+		if(new Tile(2947,3368, 0).distanceTo(ctx.players.local().getLocation())<6){
+		if(ctx.bank.isOpen()){
+			
+			/*while(!once){
+				if(!ctx.bank.isOpen()){
+					System.out.println("Bank is closed, breaking");
+					break;
+				}
+				if(ctx.bank.depositInventory()){
+					state("Depositing");
+					once = true;
+				}
+			}*/
+			
+			//Find all items in bank and store them
+			for(Item bankItem: ctx.bank.select()){
+				if(!itemsInBank.contains(bankItem.getId()))
+					itemsInBank.add(bankItem.getId());
+			}
+			//Grabs the items we need from the bank
+			for(int i = 0; i<bankItems.length;){
+				
+				if(!ctx.bank.isOpen())
+					break;
+				
+				if(!itemsInBank.contains(bankItems[i])){
+					System.out.println("Cannot find item with ID: " + bankItems[i]);
+					i++;
+				}else
+				if(itemIsStackable(bankItems[i])>amountOfItem[i]){
+					i++;
+				}else if(inventoryGetCount(bankItems[i])==amountOfItem[i]){
+					i++;
+				}else if(inventoryGetCount(bankItems[i])>amountOfItem[i]){
+					state("Depositing item of overabundunce");
+					ctx.bank.deposit(bankItems[i],(inventoryGetCount(bankItems[i])-amountOfItem[i]) );
+				}else {
+					System.out.println("Amount of item currently in inventory: "+inventoryGetCount(bankItems[i]));
+					ctx.bank.withdraw(bankItems[i], (amountOfItem[i]-inventoryGetCount(bankItems[i])));
+					ctx.game.sleep(2000);
+				}
+			}
+			while(inventoryGetCount(slayerbody.FOODID)<(28 - (bankItems.length+5))){
+				state("Attempting to withdraw food");
+				if(!ctx.bank.isOpen()){
+					System.out.println("Bank is closed, breaking");
+					break;
+				}
+				if(!itemsInBank.contains(slayerbody.FOODID)){
+					System.out.println("Out of food!, breaking out of loop");
+					break;
+				}
+				System.out.println("Taking out "+(28 - (bankItems.length+5) -inventoryGetCount(slayerbody.FOODID))+ " of food");
+				ctx.bank.withdraw(slayerbody.FOODID, ((28 - (bankItems.length+5)) -inventoryGetCount(slayerbody.FOODID)));
+			}
+			once = false;
+			slayerbody.goBank = false;
+			
+		}else{
+			state("Opening bank");
+			ctx.bank.open();
+		}
+	 }else if(teleBank){
+		   walkTo(new Tile(2947,3368, 0),"Falador west bank");
+		}else if(TeleportLode.FALADOR.getTile().distanceTo(ctx.players.local().getLocation())<10){
+			teleBank = true;
+		}else teleportTo(TeleportType.FALADOR.getTeleport(),"Falador");
+		
+	}
+
+	private int itemIsStackable(int id) {
+		for(Item i:ctx.backpack.select().id(id)){
+			return i.getStackSize();
+		}
+		return 0;
+	}
+
+	public int inventoryGetCount(int i) {
+		if(!ctx.hud.isOpen(Window.BACKPACK) || !ctx.hud.isVisible(Window.BACKPACK))
+			ctx.hud.open(Window.BACKPACK);
+		
+		ItemQuery<Item> g;
+		g = null;
+		g = ctx.backpack.select().id(i);
+		for(Item h:ctx.backpack.select().id(i)){
+		 if(h.getStackSize()>2){
+			 return h.getStackSize();
+		 }
+		}
+	
+		return g.count(false);
 	}
 	private Web web;
 	Timer wait = new Timer(0);
@@ -106,8 +207,13 @@ public class SMethod extends MethodProvider{
 		}
 		
 	}
+	private Timer clickOnMap = new Timer(0);
 	public void clickOnMap (Tile loc){
+		if(!clickOnMap.isRunning()){
 		ctx.movement.stepTowards(ctx.movement.getClosestOnMap(loc));
+		clickOnMap = new Timer(Random.nextInt(1200, 2500));
+		}
+		
 	}
 	
 	private Timer timer = new Timer(0);
@@ -120,6 +226,7 @@ public class SMethod extends MethodProvider{
 			if(ctx.widgets.get(i,0).isVisible()){
 				state("Clicking on map to close dialogue");
 				clickOnMap(ctx.players.local().getLocation());
+				timer = new Timer(2000);
 			}
 		}
 		
@@ -271,8 +378,10 @@ public class SMethod extends MethodProvider{
 			if(ctx.combatBar.getActionAt(i).isReady()){
 				if(!waitClick.isRunning()){
 				//System.out.println("Clicking action: "+ ctx.combatBar.getActionAt(i).getId());
-				ctx.combatBar.getActionAt(i).getComponent().click();
-				  waitClick = new Timer(750);
+					if(!ctx.combatBar.getActionAt(i).select()){
+					ctx.combatBar.getActionAt(i).getComponent().click();
+				    waitClick = new Timer(Random.nextInt(980, 1300));
+					}else  waitClick = new Timer(Random.nextInt(980, 1300));
 				}
 			}else i++;
 			
@@ -299,7 +408,9 @@ public class SMethod extends MethodProvider{
 				System.out.println("Health percent less than 60, breaking for loop");
 				break;
 			}
-			if(specialFinish && getInteractingNPC().getHealthPercent()<2){
+			
+			if(specialFinish && getInteractingNPC()!=null
+					&& getInteractingNPC().getHealthPercent()<2){
 				System.out.println("Breaking for special move");
 				break;
 			}
@@ -343,6 +454,19 @@ public class SMethod extends MethodProvider{
 				}
 			}
 		}
+	}
+	public boolean inventoryContains(String i) {
+		if(!ctx.hud.isVisible(Window.BACKPACK)){
+			while (ctx.bank.isOpen()){
+				ctx.bank.close();
+			}
+			ctx.hud.view(Window.BACKPACK);
+		}
+			while (!ctx.backpack.select().name(i).isEmpty()) {
+				return true;
+			}
+		
+		return false;
 	}
 	public boolean inventoryContains(int i) {
 		if(!ctx.hud.isVisible(Window.BACKPACK)){

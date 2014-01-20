@@ -19,7 +19,7 @@ import org.powerbot.script.wrappers.Tile;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Slayer", 
-description = "Slays shizzle", version = 1, website = "", hidden = true)
+description = "Completes slayer assignments, currently in development - please consult thread", version = 1, website = "", hidden = false)
 public class slayerbody extends PollingScript implements PaintListener{
 
 	
@@ -38,6 +38,7 @@ public class slayerbody extends PollingScript implements PaintListener{
 				public void run() {
 					gainedExp = ctx.skills.getExperience(Skills.SLAYER);
 					addNode(new determineTask(ctx));
+					addNode(new getRequiredItems(ctx));
 					addNode(new Turael(ctx));
 					
 					addNode(new Banshee(ctx));
@@ -60,6 +61,7 @@ public class slayerbody extends PollingScript implements PaintListener{
 					addNode(new Bears(ctx));
 					addNode(new CaveBugs(ctx));
 					addNode(new Zombies(ctx));
+					addNode(new Skeletons(ctx));
 				}
 				
 			});
@@ -67,6 +69,7 @@ public class slayerbody extends PollingScript implements PaintListener{
 	}
 	public static final int FOODID = 373;
 	public static final boolean FOOD_FEATURE = true;
+	public static boolean goBank = false;
 	private int gainedExp = 0;
 	
 	private String taskState = "Unknown";
@@ -143,10 +146,12 @@ public class slayerbody extends PollingScript implements PaintListener{
 				currentTask = "Banshees";
 		    }else if((ctx.settings.get(2091)>>push&0x1F)==2){//Crawling hands
 				currentTask = "Crawling hands";
-			}else if((ctx.settings.get(2091)>>push&0x1F)==3){
-				currentTask = "Unknown: 3";
+			}else if((ctx.settings.get(2091)>>push&0x1F)==3){//Skeletons
+				currentTask = "Skeletons";
 			}else if((ctx.settings.get(2091)>>push&0x1F)==4){
 				currentTask = "Unknown: 4";
+				System.out.println("Unknown found: 4");
+				getController().stop();
 			}else if((ctx.settings.get(2091)>>push&0x1F)==5){//Goblins
 				currentTask = "Goblins";
 		    }else if((ctx.settings.get(2091)>>push&0x1F)==6){//Dogs
@@ -177,12 +182,16 @@ public class slayerbody extends PollingScript implements PaintListener{
 				currentTask = "Birds";
 		    }else if((ctx.settings.get(2091)>>push&0x1F)==19){
 				currentTask = "Unknown: 19";
+				System.out.println("Unknown found: 19");
+				getController().stop();
 		    }else if((ctx.settings.get(2091)>>push&0x1F)==20){//Monkeys
 				currentTask = "Monkeys";
 			}else if((ctx.settings.get(2091)>>push&0x1F)==21){//Cave slime, needs a torch, and antipoison
 				currentTask = "Cave slime";
 		    }else if((ctx.settings.get(2091)>>push&0x1F)==22){
 				currentTask = "Unknown: 22";
+				System.out.println("Unknown found: 22");
+				getController().stop();
 		    }else if((ctx.settings.get(2091)>>push&0x1F)==23){//Trolls
 				currentTask = "Trolls";
 		    }else if((ctx.settings.get(2091)>>push&0x1F)==24){//Grotworms

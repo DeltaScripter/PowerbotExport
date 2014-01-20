@@ -20,10 +20,18 @@ public class DesertLizards extends SlayerNode{
 		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==15 && ctx.settings.get(183)!=0;
 	}
 
+	private int[] bankItems = {1823,6696};//water skins & ice cooler
+	private int[] amountOfItem = {20,6};
 	@Override
 	public void execute() {
 		Tile local = ctx.players.local().getLocation();
 		
+		if(slayerbody.goBank){
+			m.bankItems(bankItems, amountOfItem);
+		}else 
+		if(!m.inventoryContains(1823)||!m.inventoryContains(6696)){//water skins, ice cooler
+			slayerbody.goBank = true;
+		}else
 		if(new Tile(3413,3034,0).distanceTo(local)<20){//liz area
 			for(Npc liz: ctx.npcs.select().id(2806,2808).nearest().first()){
 				if(m.getInteractingNPC()==null){

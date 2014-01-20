@@ -23,7 +23,7 @@ public class Scorpians extends SlayerNode{
 	public void execute() {
 		Tile local = ctx.players.local().getLocation();
 		
-		if(new Tile(3297,3293,0).distanceTo(local)<18){//scorpian area
+		if(new Tile(3297,3293,0).distanceTo(local)<30){//scorpian area
 			if(ctx.players.local().isInCombat())
 				teleported = false;
 			m.fightNPC(107, "Attack");//scorpians 

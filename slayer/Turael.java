@@ -19,11 +19,23 @@ public class Turael extends SlayerNode{
 
 	SMethod m = new SMethod(ctx);
 	private boolean teleported = false;
+	private boolean emergency = false;
 	@Override
-	public void execute() {
+	public void execute() {//8009
 		final String opt[] = {"No thanks","No, that's okay"};
 		Tile local = ctx.players.local().getLocation();
 		
+		if(m.getInteractingNPC()!=null&&new Tile(2909,3419,0).distanceTo(local)>30){
+			System.out.println("Player is still being attacked, boolean now true");
+			emergency = true;
+		}
+		if(emergency){
+			
+			if(new Tile(2963,3379,0).distanceTo(local)<30){//falador area
+				emergency = false;
+			}else m.interactInventory(8009,"Break", "Falador tablet");
+			
+		}else
 		if(new Tile(2909,3419,0).distanceTo(local)<7){
 			teleported = false;
 			if(!m.findOption(opt))

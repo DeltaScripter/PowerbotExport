@@ -16,6 +16,9 @@ public class CaveBugs extends SlayerNode{
 
 	SMethod m = new SMethod(ctx);
 	private boolean teleported = false;
+	
+	private int[] bankItems = {596};//unlit torch
+	private int[] amountOfItem = {1};
 	@Override
 	public boolean activate() {
 		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==14&&ctx.settings.get(183)!=0;
@@ -25,6 +28,14 @@ public class CaveBugs extends SlayerNode{
 	public void execute() {//1831-1832
 		Tile local = ctx.players.local().getLocation();
 		
+		if(slayerbody.goBank){
+			m.bankItems(bankItems, amountOfItem);
+		}else if(m.inventoryContains(596)){//unlit torch
+			m.interactInventory(596, "Light", "Torch");
+		}else
+		if(!m.inventoryContains(594)){//lit torch
+			slayerbody.goBank = true;
+		}else 
 		if(new Tile(3182,9548,0).distanceTo(local)<25){
 			for(Npc gob: ctx.npcs.select().id(1832).nearest().first()){
 				if(!ctx.players.local().isInMotion()&& m.getInteractingNPC()==null){
