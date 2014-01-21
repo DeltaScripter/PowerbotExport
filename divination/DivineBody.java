@@ -208,19 +208,19 @@ public class DivineBody extends PollingScript implements PaintListener{
 			DivineBody.state = "Dropping logs";
 			Method.interactInventory("Logs", "Drop", "Logs");
 		}
-		while(ctx.widgets.get(1477,54).isVisible()){
+		while(ctx.widgets.get(1477,54).isValid() &&ctx.widgets.get(1477,54).isVisible()){
 			state = "Closing interface tasks";
 			ctx.widgets.get(1477,54).getChild(2).click();
 		}
-		while(ctx.widgets.get(1223,11).isVisible()){//task complete
+		while(ctx.widgets.get(1223,11).isValid()&&ctx.widgets.get(1223,11).isVisible()){//task complete
 			state = "Closing interface task complete";
 			ctx.widgets.get(1223,11).click();//close button
 		}
-		while(ctx.widgets.get(1401,35).isVisible()){//become a member!
+		while(ctx.widgets.get(1401,35).isValid()&&ctx.widgets.get(1401,35).isVisible()){//become a member!
 			state = "Closing interface member advertisement";
 			ctx.widgets.get(1401,35).click();
 		}
-		while(ctx.widgets.get(1186).isValid()){//after collecting limit of 10 chronicles..
+		while(ctx.widgets.get(1186,1).isValid()&&ctx.widgets.get(1186,0).isVisible()){//after collecting limit of 10 chronicles..
 			state = "Closing chronicle interface";
 			//Method.clickOnMap(ctx.players.local().getLocation().randomize(3, 5));
 			Method.pressContinue();
@@ -284,13 +284,13 @@ public class DivineBody extends PollingScript implements PaintListener{
 			if(closeToObj(riftArea,"Walking to rift")){
 				if(ctx.widgets.get(131,convertType).isValid()&&
 						ctx.widgets.get(131,convertType).isVisible()){
-					if(convertType == convert.BOTH.getID()){
-						if(ctx.widgets.get(131,39).getTextureId()==13827){
-							animationType = animation.TODIVINEENERGY.getID();
-							convertType = convert.DIVINEENERGY.getID();
-							harvest = true;
-						}
-					}
+					//if(convertType == convert.BOTH.getID()){
+						//if(ctx.widgets.get(131,39).getTextureId()==13827){
+							//animationType = animation.TODIVINEENERGY.getID();
+							//convertType = convert.DIVINEENERGY.getID();
+							//harvest = true;
+						//}
+					//}
 					ctx.widgets.get(131,convertType).click();
 					waiting = new Timer(Random.nextInt(700, 1200));
 					ctx.game.sleep(Random.nextInt(200, 1000));
@@ -412,7 +412,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 								if(!itemList.contains("Harvest"))//if we mis-cliked and got the wrong menu to pop up..
 									if(Method.getNPC(wispKind).isOnScreen()){
 										   ctx.mouse.click(Method.getNPC(wispKind).getCenterPoint(),false);//try click another wisp
-										   System.out.println("Not the correct menu, clicked again");
+										   //System.out.println("Not the correct menu, clicked again");
 										}
 								}else if(Method.npcIsNotNull(wispSpring) && Method.getNPC(wispSpring).isOnScreen()&&
 										Method.getNPC(wispSpring).getLocation().distanceTo(ctx.players.local().getLocation())>1){
@@ -456,8 +456,10 @@ public class DivineBody extends PollingScript implements PaintListener{
 				}
 				if(ctx.widgets.get(131,1).isVisible()){
 					state = "Closing interference";
+					ctx.widgets.get(131,14).click();
+					ctx.game.sleep(Random.nextInt(200, 500));
 					//Method.clickOnMap(ctx.players.local().getLocation());
-					Method.pressContinue();
+				//	Method.pressContinue();
 				}else
 				if(!foundChronicle())//catches chronicles if they appear
 				if(!foundEnrichedSpring("Enriched sparkling spring"))

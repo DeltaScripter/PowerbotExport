@@ -39,7 +39,7 @@ public class UniMain extends UniNode{
 	Timer take = new Timer(0);//taking horn
 	UniMethod Method = new UniMethod(ctx);
 	final Tile altarLoc = new Tile(3019,4408,0);//5603 - unicow
-	int foodID = 379;
+	int foodID = 373;
 	public int r1 = 0;//for random nums when click
 	public int r0 = 0;
 	public int decide = 0;

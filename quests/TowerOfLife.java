@@ -214,14 +214,14 @@ public class TowerOfLife extends Node{
 			}
 		}else if(new Tile(2646,3220,0).getMatrix(ctx).isReachable()){//base of tower
 			
-			if(Method.inventoryStackSize(10870)>=4&&//fluid
+			if(Method.inventoryGetCount(10870)>=4&&//fluid
 						Method.inventoryGetCount(10876)>=5){//metal bars
 					hasParts3 =true;
 				}else
-			if(Method.inventoryStackSize(10870)<4){//fluid
+			if(Method.inventoryGetCount(10870)<4){//fluid
 				gatherPart(21915);//box of fluid
 			}else
-			if(Method.inventoryStackSize(10876)<5){//metal bars
+			if(Method.inventoryGetCount(10876)<5){//metal bars
 				gatherPart(21908);//box of metal bars
 			}
 			

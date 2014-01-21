@@ -18,12 +18,12 @@ import java.util.zip.ZipFile;
  */
 public class GameRegion {
 
-    private static final String DOWNLOAD_URL = "https://github.com/Overflow-Powerbot/Pathfinder/raw/master/MapData.zip";
+    //private static final String DOWNLOAD_URL = "https://github.com/Overflow-Powerbot/Pathfinder/raw/master/MapData.zip";
 
-    private static final File DIRECTORY = new File(System.getProperty("java.io.tmpdir") + File.separator + "RSPathfinderCache");
-    private static final File ZIPPED = new File(DIRECTORY, "MapData.zip");
-    private static final File INDEX = new File(DIRECTORY, "MapData.idx");
-    private static final File DATA = new File(DIRECTORY, "MapData.dat");
+   // private static final File DIRECTORY = new File(System.getProperty("java.io.tmpdir") + File.separator + "RSPathfinderCache");
+   // //private static final File ZIPPED = new File(DIRECTORY, "MapData.zip");
+   // private static final File INDEX = new File(DIRECTORY, "MapData.idx");
+   // private static final File DATA = new File(DIRECTORY, "MapData.dat");
 
 
     private static final HashMap<Integer, GameRegion> GAME_REGION_MAP = new HashMap<Integer, GameRegion>();
@@ -63,12 +63,12 @@ public class GameRegion {
         }
         FileInputStream dataStream = null;
         try {
-            dataStream = new FileInputStream(DATA);
+           // dataStream = new FileInputStream(DATA);
             mapData = new int[4][64][64];
             if (regionData != null) {
-                dataStream.skip(regionData.getIndex());
+               // dataStream.skip(regionData.getIndex());
                 byte[] data = new byte[regionData.getSize()];
-                dataStream.read(data);
+                //dataStream.read(data);
                 ByteBuffer buffer = ByteBuffer.wrap(data);
                 for (int plane = 0; plane < 4; plane++) {
                     for (int tx = 0; tx < 64; tx++) {
@@ -129,7 +129,7 @@ public class GameRegion {
 
     public static synchronized boolean init() {
         if (!loaded) {
-            if (!checkFiles() && !updateFiles()) {
+            /*if (!checkFiles() && !updateFiles()) {
                 return false;
             }
             FileInputStream indexStream = null;
@@ -151,16 +151,16 @@ public class GameRegion {
                     } catch (IOException e) {
                     }
                 }
-            }
+            }*/
             loaded = true;
         }
         return true;
     }
-
+/*
     private static boolean checkFiles() {
         return (DIRECTORY.exists() || DIRECTORY.mkdir()) && (INDEX.exists() && DATA.exists());
     }
-
+*/
     private static void writeFile(final int bufferSize, final InputStream inputStream, final OutputStream outputStream) throws IOException {
         byte[] buffer = new byte[bufferSize];
         int read;
@@ -168,7 +168,7 @@ public class GameRegion {
             outputStream.write(buffer, 0, read);
         }
     }
-
+/*
     private static boolean updateFiles() {
         try {
             Logger.getGlobal().info("[Pathfinder] Updating map data");
@@ -204,7 +204,7 @@ public class GameRegion {
             ZIPPED.delete();
         }
         return false;
-    }
+    }*/
 
     private static class RegionData {
 

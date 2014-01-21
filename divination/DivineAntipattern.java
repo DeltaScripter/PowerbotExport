@@ -153,8 +153,6 @@ public class DivineAntipattern extends DivineNode{
 		case 14:
 			DivineBody.state = st;
 			ctx.camera.setAngle(Random.nextInt(30, 60));
-			ctx.game.sleep(100,400);
-			ctx.camera.setPitch(65);
 			ctx.game.sleep(1800,2400);
 			DivineBody.antiPattern = false;
 			break;
@@ -162,8 +160,8 @@ public class DivineAntipattern extends DivineNode{
 		case 15:
 			DivineBody.state = st;
 			ctx.camera.setAngle(Random.nextInt(30, 60));
-			ctx.game.sleep(200,600);
-			ctx.camera.setPitch(Random.nextInt(70, 80));
+			ctx.game.sleep(1200,1600);
+			ctx.camera.setAngle(Random.nextInt(70, 80));
 			ctx.game.sleep(1400,2600);
 			DivineBody.antiPattern = false;
 			break;

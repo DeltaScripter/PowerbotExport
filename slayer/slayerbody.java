@@ -12,9 +12,11 @@ import org.powerbot.script.PollingScript;
 import org.powerbot.script.Script.State;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.Skills;
+import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.wrappers.TilePath;
 
 
 
@@ -88,6 +90,10 @@ public class slayerbody extends PollingScript implements PaintListener{
 			taskState = "Completed";
 		}else taskState = "Not complete";
 		
+		for(Tile i: SMethod.path){
+			g.drawRect(i.getX(), i.getY(), 20, 20);
+		}
+		
 		g.drawString("Task state: " + taskState, 57, 123);
 		g.drawString("Type of task: " + currentTask, 57, 143);
 		g.drawString("Amount left: " + ctx.settings.get(183), 57, 163);
@@ -103,10 +109,18 @@ public class slayerbody extends PollingScript implements PaintListener{
 	            }
 	        }
 	    }
+	 ArrayList<Tile> pather = new ArrayList<Tile>();
 	SMethod m = new SMethod(ctx);
+	boolean fixed = false;
+	boolean once = false;
+	Tile[] arr;
 	@Override
 	public int poll() {
 		m.setGeneralCamera();
+		m.walkTo(new Tile(3229, 3218, 0),"");
+		
+		
+		/*
 		m.foodSupport();
 		
 		while(ctx.widgets.get(1262,18).isVisible()){
@@ -126,7 +140,7 @@ public class slayerbody extends PollingScript implements PaintListener{
 				node.execute();
 			}
 		}
-	 
+	 */
 		return 100;
 	}
 	class determineTask extends SlayerNode{

@@ -128,7 +128,7 @@ public class SMethod extends MethodProvider{
 					System.out.println("Out of food!, breaking out of loop");
 					break;
 				}
-				System.out.println("Taking out "+(28 - (bankItems.length+5) -inventoryGetCount(slayerbody.FOODID))+ " of food");
+				System.out.println("Taking out "+(28 - (bankItems.length) -inventoryGetCount(slayerbody.FOODID))+ " of food");
 				ctx.bank.withdraw(slayerbody.FOODID, ((28 - (bankItems.length+5)) -inventoryGetCount(slayerbody.FOODID)));
 			}
 			once = false;
@@ -199,7 +199,9 @@ public class SMethod extends MethodProvider{
 			}
 		return false;
 	}
-	public void walkTo (Tile dest, String destName) {
+	static ArrayList<Tile> path = new ArrayList<Tile>();
+	public ArrayList<Tile> walkTo (Tile dest, String destName) {
+		
 		  web = new Web(ctx, ctx.players.local().getLocation(), dest );
 			
 			if(web.getPath() != null && !wait.isRunning()) {
@@ -208,6 +210,7 @@ public class SMethod extends MethodProvider{
 				web.walk();
 				
 			}
+		return null;
 	}
 	public void interactO(final int i, final String string, final String o) {
 		for(GameObject y: ctx.objects.select().id(i).nearest().first()){
