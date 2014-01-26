@@ -9,9 +9,9 @@ import org.powerbot.script.wrappers.Tile;
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
 
-public class Banshee extends SlayerNode{
+public class Ghouls extends SlayerNode{
 
-	public Banshee(MethodContext ctx) {
+	public Ghouls(MethodContext ctx) {
 		super(ctx);
 	}
 
@@ -23,12 +23,10 @@ public class Banshee extends SlayerNode{
 	Area otherSide = new Area(new Tile[] { new Tile(3405, 3457, 0), new Tile(3407, 3531, 0), new Tile(3390, 3553, 0), 
 			new Tile(3402, 3576, 0), new Tile(3456, 3575, 0), new Tile(3512, 3450, 0) });
 	
-	Tile[] toBanshee = new Tile[] { new Tile(3430, 3484, 0), new Tile(3436, 3485, 0), new Tile(3442, 3486, 0), 
-			new Tile(3448, 3488, 0), new Tile(3449, 3494, 0), new Tile(3446, 3500, 0), 
-			new Tile(3441, 3504, 0), new Tile(3437, 3509, 0), new Tile(3432, 3513, 0), 
-			new Tile(3427, 3517, 0), new Tile(3424, 3523, 0), new Tile(3423, 3529, 0), 
-			new Tile(3421, 3535, 0), new Tile(3421, 3541, 0), new Tile(3427, 3543, 0), 
-			new Tile(3433, 3542, 0), new Tile(3439, 3543, 0), new Tile(3442, 3546, 0) };
+	Tile[] toGhoul = new Tile[] { new Tile(3432, 3485, 0), new Tile(3437, 3485, 0), new Tile(3442, 3485, 0), 
+			new Tile(3446, 3482, 0), new Tile(3449, 3478, 0), new Tile(3449, 3473, 0), 
+			new Tile(3446, 3469, 0), new Tile(3443, 3465, 0), new Tile(3439, 3462, 0), 
+			new Tile(3434, 3461, 0), new Tile(3429, 3461, 0), new Tile(3429, 3460, 0) };
 	
 	Tile[] toDungeon = new Tile[] { 
 			new Tile(3212, 3379, 0), new Tile(3211, 3385, 0), new Tile(3211, 3391, 0), 
@@ -48,24 +46,22 @@ public class Banshee extends SlayerNode{
 			new Tile(3391, 3485, 0), new Tile(3397, 3487, 0), new Tile(3403, 3488, 0) };
 	@Override
 	public boolean activate() {
-		return ((ctx.settings.get(2091)>>slayerbody.push&0x1F)==1||
-				(ctx.settings.get(2091)>>slayerbody.mask&slayerbody.mask)==1)&& ctx.settings.get(183)!=0;
+		return (ctx.settings.get(2091)>>slayerbody.push&slayerbody.mask)==31&& ctx.settings.get(183)!=0;
 	}
 
 	@Override
 	public void execute() {
-		System.out.println("Banshees");
 		Tile local = ctx.players.local().getLocation();
 		
-		if(new Tile(3443,3548,0).distanceTo(local)<20){
+		if( new Tile(3429, 3460, 0).distanceTo(local)<20&&otherSide.contains(local)){
 			teleported = false;
 			baseTile = null;
 			if(m.getInteractingNPC()!=null && ctx.players.local().isInCombat()){
-				m.fightNPC(1612,"Attack");//Banshee
-			}else m.npcInteract(1612, "Attack");//Banshee
+				m.fightNPC(1218,"Attack");//Banshee
+			}else m.npcInteract(1218, "Attack");//Banshee
 		}else
 			if(otherSide.contains(local)){//inside slayer tower(can reach?)
-				m.simpleWalk(toBanshee, "Walking to slayer tower");
+				m.simpleWalk(toGhoul, "Walking to slayer tower");
 				//m.walkTo(new Tile(3406,3545,0),"Slayer Tower");
 			}else
 			if(m.objIsNotNull(11147)){//Checks if inside a cave

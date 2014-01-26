@@ -12,6 +12,10 @@ public class Spiders extends SlayerNode{
 		super(ctx);
 	}
 
+	Tile[] pathToSpiders = new Tile[] { 
+			new Tile(3225, 3219, 0), new Tile(3231, 3220, 0), new Tile(3234, 3226, 0), 
+			new Tile(3240, 3226, 0), new Tile(3246, 3225, 0), new Tile(3251, 3229, 0), 
+			new Tile(3246, 3233, 0), new Tile(3244, 3235, 0) };
 	SMethod m = new SMethod(ctx);
 	private boolean teleported = false;
 	@Override
@@ -27,7 +31,8 @@ public class Spiders extends SlayerNode{
 			teleported = false;
 			m.fightNPC(12352, "Attack");//spiders 
 		}else if(teleported){
-			m.walkTo(new Tile(3248,3236,0),"lumbridge river");//river-side
+			m.simpleWalk(pathToSpiders, "Walking to spiders");
+			//m.walkTo(new Tile(3248,3236,0),"lumbridge river");//river-side
 		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local)<10){
 			teleported = true;
 		}else m.teleportTo(TeleportType.LUMBRIDGE.getTeleport(), "Lumbridge");

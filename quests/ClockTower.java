@@ -14,7 +14,7 @@ public class ClockTower extends Node{
 	}
 	
 	final Tile[] pathToClockTower = new Tile[] {
-			new Tile(2633, 3348, 0), new Tile(2634, 3343, 0), new Tile(2635, 3338, 0), 
+			 new Tile(2634, 3343, 0), new Tile(2635, 3338, 0), 
 			new Tile(2638, 3334, 0), new Tile(2642, 3331, 0), new Tile(2646, 3328, 0), 
 			new Tile(2647, 3323, 0), new Tile(2650, 3319, 0), new Tile(2653, 3315, 0), 
 			new Tile(2653, 3310, 0), new Tile(2650, 3306, 0), new Tile(2645, 3307, 0), 
@@ -147,6 +147,7 @@ public class ClockTower extends Node{
 					
 					
 				}else if(new Tile(2591,9661,0).distanceTo(local.getLocation())<4){
+					Method.state("Attemptin to pull lever");
 					Method.interactO(33, "Pull", "Lever");
 				}else Method.findPath(new Tile(2591,9661,0), "Walking to the lever");
 			}else if(!Method.teleporting && Method.inventoryContains(24)){
@@ -321,7 +322,7 @@ public class ClockTower extends Node{
 					}
 				}else if(new Tile(2567,3246,0).distanceTo(local.getLocation())<6){//Inside house
 						Method.interactO(1530, "Open", "Door");
-					}else Method.clickOnMap(new Tile(2567,3246,0));
+					}else Method.clickOnMap(new Tile(2569,3250,0));
 				
 			}else if(new Tile(2574,3250,0).distanceTo(local.getLocation())<6){//outside the house
 				Method.interactO(1530, "Open", "Door");

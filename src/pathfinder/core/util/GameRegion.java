@@ -74,6 +74,7 @@ public class GameRegion {
                     for (int tx = 0; tx < 64; tx++) {
                         for (int ty = 0; ty < 64; ty++) {
                             mapData[plane][tx][ty] = buffer.getInt();
+                            System.out.println(mapData[plane]);
                         }
                     }
                 }
@@ -152,6 +153,7 @@ public class GameRegion {
                     }
                 }
             }*/
+        	System.out.println("Saying loaded is true");
             loaded = true;
         }
         return true;

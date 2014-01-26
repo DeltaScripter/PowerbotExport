@@ -12,6 +12,10 @@ public class Trolls extends SlayerNode{
 		super(ctx);
 	}
 
+	Tile[] trolls = new Tile[] { 
+			new Tile(2898, 3542, 0), new Tile(2893, 3546, 0), new Tile(2887, 3547, 0), 
+			new Tile(2882, 3551, 0), new Tile(2877, 3555, 0), new Tile(2875, 3561, 0), 
+			new Tile(2875, 3567, 0), new Tile(2876, 3572, 0) };
 	SMethod m = new SMethod(ctx);
 	private boolean teleported = false;
 	@Override
@@ -32,7 +36,8 @@ public class Trolls extends SlayerNode{
 		}else if(new Tile(2879,3573,0).distanceTo(local)<7){//outside cave area
 			m.interactO(66877, "Enter", "Cave");
 		}else if(teleported){
-			m.walkTo(new Tile(2879,3573,0),"cave entrance");//cave entrance
+			m.simpleWalk(trolls, "Walking to troll cave");
+			//m.walkTo(new Tile(2879,3573,0),"cave entrance");//cave entrance
 		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local)<10){
 			teleported = true;
 		}else m.teleportTo(TeleportType.BURTHHORPE.getTeleport(), "Burthorpe");

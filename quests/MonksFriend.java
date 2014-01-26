@@ -30,7 +30,7 @@ public class MonksFriend extends Node{
 			new Tile(2607, 3221, 0), new Tile(2605, 3216, 0), new Tile(2605, 3215, 0) };
 
 	final Tile[] pathToStoneCircle = new Tile[] {
-			new Tile(2605, 3210, 0), new Tile(2605, 3215, 0), new Tile(2606, 3220, 0), 
+			new Tile(2605, 3215, 0), new Tile(2606, 3220, 0), 
 			new Tile(2601, 3222, 0), new Tile(2596, 3222, 0), new Tile(2591, 3222, 0), 
 			new Tile(2586, 3221, 0), new Tile(2581, 3221, 0), new Tile(2576, 3219, 0), 
 			new Tile(2571, 3219, 0), new Tile(2566, 3221, 0), new Tile(2561, 3219, 0), 

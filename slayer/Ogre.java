@@ -8,28 +8,30 @@ import org.powerbot.script.wrappers.Tile;
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
 
-public class Birds extends SlayerNode{
+public class Ogre extends SlayerNode{
 
-	public Birds(MethodContext ctx) {
+	public Ogre(MethodContext ctx) {
 		super(ctx);
 	}
 
+	Tile[] toOgre = new Tile[] { new Tile(2525, 3095, 0), new Tile(2519, 3098, 0), new Tile(2513, 3100, 0), 
+			new Tile(2507, 3101, 0), new Tile(2501, 3096, 0) };
+	
 	SMethod m = new SMethod(ctx);
 	private boolean teleported = false;
-	Tile[] myTiles = new Tile[] { new Tile(3013, 3215, 0), new Tile(3019, 3218, 0), new Tile(3025, 3218, 0), 
-			new Tile(3027, 3224, 0), new Tile(3027, 3230, 0), new Tile(3028, 3235, 0) };
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==18 && ctx.settings.get(183)!=0;
+		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==28 && ctx.settings.get(183)!=0;
 	}
 
 	@Override
 	public void execute() {
-	Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().getLocation();
 		
-		if(new Tile(3029,3236,0).distanceTo(local)<18){//bird loc
+		if(new Tile(2498,3096,0).distanceTo(local)<20){
 			teleported = false;
-			for(Npc gob: ctx.npcs.select().id(6115,6116).nearest().first()){
+			for(Npc gob: ctx.npcs.select().id(3451,3419,115,8658).nearest().first()){
+				if(gob.getLocation().getMatrix(ctx).isReachable())
 				if(!ctx.players.local().isInMotion()&& m.getInteractingNPC()==null){
 					if(gob.getLocation().distanceTo(local)<7){
 						if(!gob.interact("Attack")){
@@ -39,11 +41,11 @@ public class Birds extends SlayerNode{
 				}else m.fightNPC(gob.getId(), "Attack");
 			}
 		}else if(teleported){
-			m.simpleWalk(myTiles, "Walking to the birds");
-			//m.walkTo(new Tile(3029,3236,0),"bird area");//port sarim docks
-		}else if(TeleportLode.PORTSARIM.getTile().distanceTo(local)<10){
+			m.simpleWalk(toOgre, "Walking to ogres");
+			//m.walkTo(new Tile(3248,3236,0),"lumbridge river");//river-side
+		}else if(TeleportLode.YANILLE.getTile().distanceTo(local)<10){
 			teleported = true;
-		}else m.teleportTo(TeleportType.PORTSARIM.getTeleport(), "Port Sarim");
+		}else m.teleportTo(TeleportType.YANILLE.getTeleport(), "Yanille");
 		
 	}
 

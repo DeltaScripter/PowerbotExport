@@ -40,23 +40,37 @@ public class Pathfinder {
         }
         final HashMap<Integer, PathNode> nodeMap = new HashMap<Integer,PathNode>();
         final PriorityQueue<PathNode> openList = new PriorityQueue<PathNode>();
-        openList.add(get(tileA, tileB, nodeMap));
         final long startTime = System.currentTimeMillis();
         final long endTime = (startTime + maxTime);
         PathNode current;
         PathNode best = null;
+        
+        nodeMap.put(1, new PathNode(3117,3220));
+        nodeMap.put(2, new PathNode(3124,3218));
+        
+        
         while (endTime > System.currentTimeMillis()) {
+            if(openList.add(get(tileA, tileB, nodeMap))){
+            	//System.out.println("succeded in adding: " + openList.size() + " " + openList.isEmpty());
+            }else System.out.println("It's null for some reason");
+            
             if (openList.isEmpty()) {
+            	System.out.println("Breaking while loop because openList is empty: " + openList.size());
                 break;
             }
             current = openList.poll();
+            System.out.println("Current openList poll is: "+openList.poll());
             if (current.isExpanded()) {
+            	System.out.println("is expanded");
                 continue;
             }
+            System.out.println("Here");
             if (endCondition.acceptCurrent(tileB, current)) {
-                Logger.getGlobal().config("[Pathfinder] Found Path > Took: " + (System.currentTimeMillis() - startTime) + "ms > Expanded Vertex's: " + nodeMap.size());
+            	System.out.println("Here2e");
+                System.out.println("[Pathfinder] Found Path > Took: " + (System.currentTimeMillis() - startTime) + "ms > Expanded Vertex's: " + nodeMap.size());
                 return resolvePath(tileA, tileB, (int) (System.currentTimeMillis() - startTime), current);
             } else {
+            	System.out.println("In else");
                 if (returnNextBest && (best == null || current.getHeuristicCost() < best.getHeuristicCost())) {
                     best = current;
                 }
@@ -68,12 +82,11 @@ public class Pathfinder {
                 }
             }
         }
+        System.out.println("Now out here");
         if (returnNextBest && best != null) {
-            Logger.getGlobal().config("[Pathfinder] Sub-Optimal Path found > Took: " + (System.currentTimeMillis() - startTime) + "ms > Expanded Vertex's: " + nodeMap.size());
+            System.out.println("[Pathfinder] Sub-Optimal Path found > Took: " + (System.currentTimeMillis() - startTime) + "ms > Expanded Vertex's: " + nodeMap.size());
             return resolvePath(tileA, tileB, (int) (System.currentTimeMillis() - startTime), best);
-        }
-        Logger.getGlobal().config(
-                "[Pathfinder] Failed To Find A Path > Took: " + (System.currentTimeMillis() - startTime) + "ms > Expanded Vertex's: " + nodeMap.size());
+        }else System.out.println("[Pathfinder] Failed To Find A Path > Took: " + (System.currentTimeMillis() - startTime) + "ms > Expanded Vertex's: " + nodeMap.size());
         return null;
     }
 
@@ -109,6 +122,7 @@ public class Pathfinder {
     protected PathNode get(final int tile, final int target, final HashMap<Integer, PathNode> map) {
         PathNode node = map.get(tile);
         if (node == null) {
+        	System.out.println("Putting tileA in map that returns");
             map.put(tile, node = new PathNode(tile, heuristic.getCost(tile, target)));
         }
         return node;
@@ -118,8 +132,10 @@ public class Pathfinder {
         final TilePath path = new TilePath(target, timeTook);
         path.add(current);
         while ((current = current.getParent()) != null) {
+        	System.out.println("Adding " + current + " to path");
             path.addFirst(current);
             if (current.getHash() == start) {
+            	System.out.println("current is == to start");
                 break;
             }
         }

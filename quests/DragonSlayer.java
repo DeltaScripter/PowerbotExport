@@ -184,8 +184,10 @@ public class DragonSlayer extends Node{
 	
 	public final int bankItems[] = {1542};//just the maze key for melzar palace
 	public final int bankItemAmount1[] = {1};
+	
 	public final int bankItems2[] = {1907,1791,13431,950};//the stuff for the oracle/door
 	public final int bankItemAmount2[] = {1,1,1,1};
+	
 	public final int bankItems3[] = {960,1539,1540,1535,1536,1537};//planks & nails, shield, map pieces
 	public final int bankItemAmount3[] = {3,90,1,1,1,1};
 	

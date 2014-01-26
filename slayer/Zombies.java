@@ -16,6 +16,9 @@ public class Zombies extends SlayerNode{
 
 	SMethod m = new SMethod(ctx);
 	private boolean teleported = false;
+	Tile[] myTiles = new Tile[] { new Tile(3098, 3295, 0), new Tile(3092, 3291, 0), new Tile(3086, 3289, 0), 
+			new Tile(3080, 3287, 0), new Tile(3075, 3283, 0), new Tile(3075, 3277, 0), 
+			new Tile(3079, 3272, 0), new Tile(3084, 3270, 0) };
 	@Override
 	public boolean activate() {
 		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==12&&ctx.settings.get(183)!=0;
@@ -44,7 +47,8 @@ public class Zombies extends SlayerNode{
 			m.interactO(6434, "Open", "Cave");
 			m.interactO(6435, "Climb-down", "Cave");
 		}else if(teleported){
-			m.walkTo(new Tile(3085,3272,0),"cave entrance");//cave entrance
+			m.simpleWalk(myTiles, "Walking to dungeon");
+			//m.walkTo(new Tile(3085,3272,0),"cave entrance");//cave entrance
 		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local)<10){
 			teleported = true;
 		}else m.teleportTo(TeleportType.DRAYNOR.getTeleport(), "Draynor");

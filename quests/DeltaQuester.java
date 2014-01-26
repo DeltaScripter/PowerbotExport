@@ -548,6 +548,13 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					rewardExpModel.addElement("Defence XP: 18,650");
 					rewardItemModel.addElement("Ability to wear a rune platebody");
 					index++;
+				}else if(quest == "Gertrude's Cat"){
+					rewardExpModel.addElement("Cooking XP: 1,525");
+					rewardItemModel.addElement("Ability to raise cats");
+					rewardItemModel.addElement("A kitten!");
+					rewardItemModel.addElement("Chocolate cake x 1");
+					rewardItemModel.addElement("Bowl of stew x 1");
+					index++;
 				}else index++;
 			}
 			rewardItemList.setModel(rewardItemModel);
@@ -625,6 +632,12 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 					index++;
 				}else if(quest == "Dragon Slayer"){
 					requirementsList.setText(requirementsList.getText() + quest + ":\nAbility to defeat a high level dragon\nVarrock lodestone activated\nDraynor lodestone activated\nPort Sarim lodestone activated\nFalador lodestone activated\nAnti-dragon shield x 1\nBowl (unfired) x 1\nWizard's mind bomb x 1\nCrayfish cage x 1\nSilk x 1\nPlank x 3\nSteel nails x 90\n\n");
+					index++;
+				}else if(quest == "Gertrude's Cat"){
+					requirementsList.setText(requirementsList.getText() + quest + ":\nVarrock lodestone activated\nRaw sardine x 1\nBucket of milk x 1\nDoogle leaves x 1\n100 coins\n\n");
+					index++;
+				}else if(quest == "Tower of Life"){
+					requirementsList.setText(requirementsList.getText() + quest + ":\nLevel 10 Crafting\nBeer x 3\nPlenty of inventory space\n\n");
 					index++;
 				}else index++;
 			}
@@ -1320,6 +1333,14 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 	            		}
 		            	}else if(name.equals("Dragon Slayer")){
 		            		if((ctx.settings.get(2268)&0x1F) == 10){
+		            			incompleteQuests.put( value, "complete" );  
+	            			if(index == i)
+	            				 if( incompleteQuests.containsKey( value ) )  {
+				            		 {setForeground( Color.green );} 
+				            		 }else setForeground( Color.red ); 
+	            		}
+		            	}else if(name.equals("Gertrude's Cat")){
+		            		if((ctx.settings.get(2175) & 0x7) ==6){
 		            			incompleteQuests.put( value, "complete" );  
 	            			if(index == i)
 	            				 if( incompleteQuests.containsKey( value ) )  {

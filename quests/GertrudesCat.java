@@ -66,7 +66,7 @@ public class GertrudesCat extends Node{
 		// * ctx.settings used:
 		// * 2175-main steps
 		// * /*
-		
+	
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 			DeltaQuester.numSteps = 7;
 			if(DeltaQuester.checkedBank)
@@ -80,7 +80,8 @@ public class GertrudesCat extends Node{
 			}else
 			if(!DeltaQuester.checkedBank){//should be if false
 				Method.checkBank();
-			}else
+		    }
+			else
 		    if(Vars.useBank){
 				Method.useBank(bankItems, bankItemAmount);
 			}else
@@ -130,29 +131,32 @@ public class GertrudesCat extends Node{
 			} else if(!Method.isChatting("Self")) {
 
 				if (new Tile(3301, 3505, 0).getMatrix(ctx).isReachable()) {//fence area
-					for (int num = 0; num < 7;) {
-						if(ctx.hud.isVisible(Window.WORN_EQUIPMENT))
-							break;
+					for (int num = 0; num < 6;) {
+						local = ctx.players.local().getLocation();
+						
+						//if(ctx.hud.isVisible(Window.WORN_EQUIPMENT))
+						//	break;
+						
 						Method.state("Gathering kittens: " + num);
 						if (ctx.widgets.get(1186,0).isVisible()) {
-							if (ctx.widgets.get(1186,0).isVisible()) {
 								Method.pressContinue();
-								num = 7;
-							} else num++;
+								break;
 						} else {
-					if (crateLoc[num].distanceTo(local)<3){
-						Method.npcInteract(7740, "Search");
-						ctx.game.sleep(2300,2500);
-						if(Method.playerText("You find nothing"))
-							num++;
 							
-					}else ctx.movement.findPath(crateLoc[num]).traverse();
-					}
+							if (crateLoc[num].distanceTo(local)<3){
+								if(Method.npcInteract(7740, "Search")){
+									ctx.game.sleep(2300,2500);
+									if(Method.playerText("You find nothing"))
+										num++;
+								}
+								}else Method.clickOnMap(crateLoc[num].getLocation());
+					
+							}
 				}
 				
 			}else if(ctx.game.getPlane()==1){
 				Method.interactO(24355, "Climb-down", "Ladder");
-			}else cs1();
+			}else cs2();
 				  
 			}
 		}
@@ -166,17 +170,21 @@ public class GertrudesCat extends Node{
 		if(requiredItems[0]==1){//Do we have a doogle leaf?
 			if(requiredItems[1]==1){//Do we have the ....sandwich?
 		if(new Tile(3310,3508,1).getMatrix(ctx).isReachable() && ctx.game.getPlane()==1){//tree house I assume
-			while(ctx.widgets.get(1186,0).isVisible()){
+			
+			while(ctx.widgets.get(1184,0).isVisible()){//for pressing space when talking to the cat, 
+				Method.state("Pressing continue with this special dialogue");
 				Method.pressContinue();
 			}
-			if((ctx.settings.get(2175) & 0x7)==3){//If we need to feed the cat.
+			
+			if(!Method.isChatting("Self"))
+			if((ctx.settings.get(2175) & 0x7)==3){//If we need to feed the cat a sandwich.
 				if(!wait.isRunning()){
-				Method.useItemOnNpc(1552,759, "");//on the cat, sandwhich
-				wait = new Timer(2300);
+				Method.useItemOnNpc(1552,759, "");//on the cat, sandwich
+				wait = new Timer(3300);
 				}
 			}else if(!wait.isRunning()){
 				Method.useItemOnNpc(1927,759, "");//on the cat, milk
-				wait = new Timer(2300);
+				wait = new Timer(3300);
 			}
 		} else if (new Tile(3298,3501, 0).getMatrix(ctx).isReachable()) {// inside pen area?
 		if (new Tile(3310, 3507, 0).distanceTo(local) < 4) {// below  tree house, possibly
@@ -218,7 +226,7 @@ public class GertrudesCat extends Node{
 			else Method.teleportTo(TeleportType.VARROCK.getTeleport(),"Varrock");//Teleport To Varrock.
 	}
 
-	private void cs1() {
+	private void cs1() {//Speak to the kids
 		 Tile local = ctx.players.local().getLocation();
 		 String opt[] = {"What will make","Okay then,"};
 		

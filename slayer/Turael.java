@@ -12,9 +12,14 @@ public class Turael extends SlayerNode{
 		super(ctx);
 	}
 
+	Tile[] pathToTurael = new Tile[] {
+			new Tile(2876, 3443, 0), new Tile(2881, 3439, 0), new Tile(2882, 3433, 0), 
+			new Tile(2881, 3427, 0), new Tile(2882, 3421, 0), new Tile(2887, 3417, 0), 
+			new Tile(2893, 3414, 0), new Tile(2899, 3415, 0), new Tile(2905, 3415, 0), 
+			new Tile(2909, 3420, 0), new Tile(2910, 3423, 0) };
 	@Override
 	public boolean activate() {
-		return ctx.settings.get(183)==0;
+		return ctx.settings.get(183)==0 && slayerbody.master=="Turael";
 	}
 
 	SMethod m = new SMethod(ctx);
@@ -25,7 +30,7 @@ public class Turael extends SlayerNode{
 		final String opt[] = {"No thanks","No, that's okay"};
 		Tile local = ctx.players.local().getLocation();
 		
-		if(m.getInteractingNPC()!=null&&new Tile(2909,3419,0).distanceTo(local)>30){
+		if(m.getInteractingNPC()!=null&&ctx.players.local().isInCombat()&&new Tile(2909,3419,0).distanceTo(local)>30){
 			System.out.println("Player is still being attacked, boolean now true");
 			emergency = true;
 		}
@@ -43,7 +48,8 @@ public class Turael extends SlayerNode{
 					m.npcInteract(8480, "Get-task");
 				}
 		}else if(teleported){
-			m.walkTo(new Tile(2909,3419,0), "Turael");
+			m.simpleWalk(pathToTurael, "Walking to Turael");
+			//m.walkTo(new Tile(2909,3419,0), "Turael");
 		}else if(TeleportLode.TAVERLY.getTile().distanceTo(local)<10){
 			teleported = true;
 		}else m.teleportTo(TeleportType.TAVERLY.getTeleport(), "Taverly");

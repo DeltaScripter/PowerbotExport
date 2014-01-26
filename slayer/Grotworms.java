@@ -15,9 +15,13 @@ public class Grotworms extends SlayerNode{
 	SMethod m = new SMethod(ctx);
 	private boolean teleported = false;
 	private Tile baseTile = null;
+	
+	Tile[] myTiles = new Tile[] { new Tile(3011, 3215, 0), new Tile(3005, 3217, 0), new Tile(3001, 3223, 0), 
+			new Tile(2996, 3228, 0), new Tile(2991, 3232, 0), new Tile(2989, 3237, 0) };
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==24 && ctx.settings.get(183)!=0;
+		return ((ctx.settings.get(2091)>>slayerbody.push&0x1F)==24||
+				(ctx.settings.get(2091)>>slayerbody.push&slayerbody.mask)==35) && ctx.settings.get(183)!=0;
 	}
 
 	@Override
@@ -40,7 +44,8 @@ public class Grotworms extends SlayerNode{
 			baseTile = null;
 			m.interactO(70792, "Enter", "Cave");
 		}else if(teleported){
-			m.walkTo(new Tile(2990,3237,0),"grotworm cave");//outside cave entrance
+			m.simpleWalk(myTiles, "Walking to grotworms");
+			//m.walkTo(new Tile(2990,3237,0),"grotworm cave");//outside cave entrance
 		}else if(TeleportLode.PORTSARIM.getTile().distanceTo(local)<10){
 			teleported = true;
 		}else m.teleportTo(TeleportType.PORTSARIM.getTeleport(), "Port Sarim");

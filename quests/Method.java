@@ -295,7 +295,7 @@ public class Method extends MethodProvider{
 		 if(!timer.isRunning()){
 		for(Item t : ctx.backpack.select().name(name).first()){
 			//System.out.println(ctx.widgets.get(1477,122).getChild(0).getBoundingRect().getCenterY());
-			if(ctx.hud.view(Window.BACKPACK) && closeInterfaces() && ctx.widgets.get(1473,7).contains(
+			if(ctx.hud.view(Window.BACKPACK) && ctx.widgets.get(1473,7).contains(
 				t.getComponent().getCenterPoint())){
 				System.out.println("Hovering");
 				t.hover();
@@ -308,7 +308,6 @@ public class Method extends MethodProvider{
 				}
 				for(String text: actions){
 					if(text.contains(string)){
-						if(closeInterfaces())
 						if(t.interact(string)){
 						System.out.println("Using " + string + " with item: " + o);
 						ctx.game.sleep(2000);
@@ -337,7 +336,7 @@ public class Method extends MethodProvider{
 		 if(!timer.isRunning()){
 		for(Item t : ctx.backpack.select().id(i).first()){
 			//System.out.println(ctx.widgets.get(1477,122).getChild(0).getBoundingRect().getCenterY());
-			if(ctx.hud.view(Window.BACKPACK) && closeInterfaces() && ctx.widgets.get(1473,7).contains(
+			if(ctx.hud.view(Window.BACKPACK) && ctx.widgets.get(1473,7).contains(
 				t.getComponent().getCenterPoint())){
 				System.out.println("Hovering");
 				t.hover();
@@ -350,7 +349,6 @@ public class Method extends MethodProvider{
 				}
 				for(String text: actions){
 					if(text.contains(string)){
-						if(closeInterfaces())
 						if(t.interact(string)){
 						System.out.println("Using " + string + " with item: " + o);
 						ctx.game.sleep(2000);
@@ -456,7 +454,7 @@ public class Method extends MethodProvider{
 				if(index==1186){
 					pressContinue();
 				}else{
-					state("Clicking on map to close dialogue");
+					state("Clicking on map to close dialogue - automatic");
 				clickOnMap(ctx.players.local().getLocation());
 				return false;
 				}
@@ -468,7 +466,7 @@ public class Method extends MethodProvider{
 		ArrayList<String> actions = new ArrayList<String>();
 		if(!SpeakTotimer.isRunning()){
 		for(Npc n : ctx.npcs.select().name(name).nearest().first()){
-				if (closeInterfaces() && n.isOnScreen()) {
+				if (n.isOnScreen()) {
 					n.hover();
 					String menuItems[] = ctx.menu.getItems();
 					for(String opt: menuItems){
@@ -490,11 +488,11 @@ public class Method extends MethodProvider{
 			}
 		}
 	}
-	public void npcInteract(int i, String string) {
+	public boolean npcInteract(int i, String string) {
 		ArrayList<String> actions = new ArrayList<String>();
 		if(!SpeakTotimer.isRunning()){
 		for(Npc n : ctx.npcs.select().id(i).nearest().first()){
-				if (closeInterfaces() && n.isOnScreen()) {
+				if (n.isOnScreen()) {
 					n.hover();
 					String menuItems[] = ctx.menu.getItems();
 					for(String opt: menuItems){
@@ -506,15 +504,18 @@ public class Method extends MethodProvider{
 							state("Interacting with " + n.getName() + " and using " + string);
 							 SpeakTotimer = new Timer(2400);
 							 System.out.println("interacting");
-							  n.interact(string);
+							  if(n.interact(string)){
 							   sleep(2000);
-							   break;
+							   System.out.println("Returning true for clicking on npc");
+							   return true;
+							  }
 							
 						}
 					}
 				} else ctx.camera.turnTo(n);
 			}
 		}
+		return false;
 	}
 
 
@@ -609,7 +610,7 @@ public class Method extends MethodProvider{
 			
 		for(int i: widgetsInterference){
 			if(ctx.widgets.get(i,0).isVisible()){
-				state("Clicking on map to close dialogue");
+				state("Clicking on map to close dialogue for teleporting");
 				clickOnMap(ctx.players.local().getLocation());
 			}
 		}
@@ -681,7 +682,6 @@ public class Method extends MethodProvider{
 	}
 	public void useItemOnNpc(int item, int npc, String string) {
 		state("Using item on npc");
-		if(closeInterfaces())
 		if(ctx.backpack.isItemSelected()){
 			npcInteract(npc,"Use");
 		}else if(inventoryContains(item))

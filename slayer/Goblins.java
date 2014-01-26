@@ -14,6 +14,10 @@ public class Goblins extends SlayerNode{
 		super(ctx);
 	}
 
+	Tile[] pathToGoblins = new Tile[] { 
+			new Tile(3225, 3219, 0), new Tile(3231, 3220, 0), new Tile(3234, 3226, 0), 
+			new Tile(3240, 3226, 0), new Tile(3246, 3225, 0), new Tile(3251, 3229, 0), 
+			new Tile(3246, 3233, 0), new Tile(3244, 3235, 0) };
 	@Override
 	public boolean activate() {
 		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==5 && ctx.settings.get(183)!=0;
@@ -37,7 +41,8 @@ public class Goblins extends SlayerNode{
 				}else m.fightNPC(gob.getId(), "Attack");
 			}
 		}else if(teleported){
-			m.walkTo(new Tile(3248,3236,0),"lumbridge river");//river-side
+			m.simpleWalk(pathToGoblins, "Walking to goblins");
+			//m.walkTo(new Tile(3248,3236,0),"lumbridge river");//river-side
 		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local)<10){
 			teleported = true;
 		}else m.teleportTo(TeleportType.LUMBRIDGE.getTeleport(), "Lumbridge");
