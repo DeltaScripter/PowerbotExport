@@ -200,7 +200,7 @@ Timer waitInv = new Timer(0);
 			}else
 			if(new Tile(2606,3214,0).distanceTo(local)<10){//inside monastry
 				teleported = true;
-			}else Method.useEquipmentItem(items.ARDOUGNECAPE1.getID(), "Kandarin Monastery");
+			}else Method.useEquipmentItem(DeltaUniBody.capeID, "Kandarin Monastery");
 			
 		}else if(teleported){
 			if(!walk.isRunning()){

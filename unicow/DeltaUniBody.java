@@ -23,7 +23,7 @@ import unicow.UniData.items;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Unicows", 
 description = "Kills Unicows; gathers unicorn horns for 400k-1M profit/hr depending on combat level", 
-website = "", version = 1,hidden  =false)
+website = "http://www.powerbot.org/community/topic/1146188-delta-unicow-kills-unicows-takes-unicorn-horns/", version = 1,hidden  =false, topic =1146188)
 public class DeltaUniBody extends PollingScript implements PaintListener{
 	
 	public DeltaUniBody(){
@@ -53,6 +53,7 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 	static boolean foodAtBank = false;
 	static int foodID = 0;
 	static int hornCount = 0;
+	static int capeID = 0;
 	
 	//profit an hour
 	int tempNum = 0;
@@ -83,6 +84,15 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 				if(Method.equipItemIsNotNull(items.ARDOUGNECAPE1.getID())){
 					System.out.println("Found Ardougne cloak");
 					UniMain.ardougneCloak = true;
+					capeID = 15345;
+				}else if(Method.equipItemIsNotNull(15347)){
+					System.out.println("Found Ardougne cloak");
+					UniMain.ardougneCloak = true;
+					capeID = 15347;
+				}else  if(Method.equipItemIsNotNull(15349)){
+					System.out.println("Found Ardougne cloak");
+					UniMain.ardougneCloak = true;
+					capeID = 15349;
 				}
 				init = true;
 			}
