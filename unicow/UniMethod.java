@@ -62,11 +62,6 @@ public class UniMethod extends MethodProvider{
         return null;
     }
  
-
- 
-
- 
-
         public boolean isInCombat()
     {
         return getInteractingNPC() == null&&ctx.players.local().getInteracting() == null;
@@ -83,13 +78,14 @@ public class UniMethod extends MethodProvider{
 				for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
 					if(enemy.getLocation().distanceTo(ctx.players.local().getLocation())<7){
 						DeltaUniBody.state = "Attacking npc";
+						ctx.game.sleep(2000);
 						npcInteract(enemy.getId(),"Attack");
 					}else ctx.movement.stepTowards(enemy.getLocation());
 				}
 			}else
 		for(int i = 0; i<9;){
 			DeltaUniBody.state = "Fighting NPC";
-			if(ctx.players.local().getHealthPercent()<50){
+			if(ctx.players.local().getHealthPercent()<40){
 				System.out.println("Breaking; too low health");
 				break;
 			}
@@ -116,6 +112,7 @@ public class UniMethod extends MethodProvider{
 							if (ctx.combatBar.getActionAt(i).select(true)) {
 								i++;
 								waitClick = new Timer(Random.nextInt(750, 1500));
+								ctx.game.sleep(Random.nextInt(400, 200));
 							} else {
 								ctx.combatBar.getActionAt(i).getComponent().click();
 								i++;

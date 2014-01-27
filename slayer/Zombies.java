@@ -21,7 +21,7 @@ public class Zombies extends SlayerNode{
 			new Tile(3079, 3272, 0), new Tile(3084, 3270, 0) };
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==12&&ctx.settings.get(183)!=0;
+		return (slayerbody.currentTask=="zombies" &&ctx.settings.get(183)!=0);
 	}
 
 	@Override

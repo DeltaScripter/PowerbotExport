@@ -6,10 +6,12 @@ import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.methods.Menu;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.Npcs;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.GroundItem;
+import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Tile;
 
 import unicow.UniData.TeleportLode;
@@ -23,11 +25,21 @@ public class UniMain extends UniNode{
 	public UniMain(MethodContext ctx) {
 		super(ctx);
 	}
-	final Tile[] pathToTower = {
-			new Tile(2638,3335,0), new Tile(2649,3319),
-			new Tile(2665,3302,0),new Tile(2644,3290,0),
-			new Tile(2641,3268,0), new Tile(2630,3250),
-			new Tile(2640,3231,0), new Tile(2648,3226,0)};
+	final Tile[] pathToTower = { new Tile(2637, 3339, 0), 
+			new Tile(2640, 3334, 0), new Tile(2643, 3330, 0), new Tile(2645, 3325, 0), 
+			new Tile(2648, 3321, 0), new Tile(2649, 3316, 0), new Tile(2652, 3312, 0), 
+			new Tile(2651, 3307, 0), new Tile(2646, 3306, 0), new Tile(2641, 3306, 0), 
+			new Tile(2636, 3304, 0), new Tile(2633, 3300, 0), new Tile(2628, 3298, 0), 
+			new Tile(2623, 3297, 0), new Tile(2618, 3297, 0), new Tile(2613, 3297, 0), 
+			new Tile(2608, 3296, 0), new Tile(2605, 3292, 0), new Tile(2609, 3289, 0), 
+			new Tile(2611, 3284, 0), new Tile(2606, 3283, 0), new Tile(2601, 3285, 0), 
+			new Tile(2597, 3282, 0), new Tile(2596, 3277, 0), new Tile(2598, 3272, 0), 
+			new Tile(2598, 3267, 0), new Tile(2598, 3262, 0), new Tile(2597, 3257, 0), 
+			new Tile(2594, 3253, 0), new Tile(2594, 3248, 0), new Tile(2597, 3244, 0), 
+			new Tile(2602, 3242, 0), new Tile(2607, 3242, 0), new Tile(2612, 3242, 0), 
+			new Tile(2617, 3241, 0), new Tile(2622, 3241, 0), new Tile(2626, 3239, 0), 
+			new Tile(2631, 3238, 0), new Tile(2635, 3235, 0), new Tile(2640, 3233, 0), 
+			new Tile(2644, 3230, 0), new Tile(2647, 3226, 0), new Tile(2648, 3224, 0) };
 	
 	final Tile[] pathToTowerFromMonastry = {
 			new Tile(2614,3222,0), new Tile(2627,3222,0),
@@ -52,7 +64,7 @@ public class UniMain extends UniNode{
 	@Override
 	public void execute() {
 		if(decide == 0 && !ctx.widgets.get(1184,0).isVisible()){
-			decide = Random.nextInt(0, 2);
+			decide = Random.nextInt(1, 3);
 		}
 		//if(Method.getInteractingNPC()!=null){
 		//	System.out.println("Yes");
@@ -75,7 +87,9 @@ public class UniMain extends UniNode{
 			
 			if(Method.gItemIsNotNull(237)||Method.gItemIsNotNull(238)){//horn + noted horn
 				if(Method.backPackIsFull()){
+					if(Method.inventoryGetCount(DeltaUniBody.foodID)>1){
 					Method.interactInventory(foodID, "Eat", "");
+					}else Method.interactInventory(1739, "Drop", "Cowhide");
 				}else 
 				for(GroundItem horn: ctx.groundItems.select().id(237,238).nearest()){
 					if(!take.isRunning()){
@@ -135,9 +149,12 @@ Timer waitInv = new Timer(0);
 		}
 		if(!waitInv.isRunning())
 		if(Method.inventoryGetCount(items.COWHIDE.getID())==0||
-				Method.inventoryGetCount(foodID)==0||
-				(Method.inventoryGetCount(items.HORN.getID())==0&&!Method.gItemIsNotNull(items.HORN.getID()))){
+		ctx.players.local().getHealthPercent()<=40||
+				DeltaUniBody.foodSupport&&Method.inventoryGetCount(foodID)==0||
+				(!Method.npcIsNotNull(npcs.UNICOW.getID())&&
+						Method.inventoryGetCount(items.HORN.getID())==0&&!Method.gItemIsNotNull(items.HORN.getID()))){
 			System.out.println("Setting to bank");
+			Method.state("Need to bank");
 			DeltaUniBody.bank  =true;
 			return true;
 		}
@@ -202,8 +219,20 @@ Timer waitInv = new Timer(0);
 	private void fightUnicow() {
 		Tile local = ctx.players.local().getLocation();
 		if(altarLoc.distanceTo(local)<14){
-		   if(Method.npcIsNotNull(npcs.UNICOW.getID())){
-			   
+			BasicNamedQuery<Npc> cow =ctx.npcs.select().select(new Filter<Npc>() {
+				public boolean accept(Npc g) {
+					return g.getInteracting()!=null&&g.getInteracting().equals(ctx.players.local())||
+							g.getInteracting()==null;
+				}
+		         });
+			
+		   if(!cow.select().nearest().id(npcs.UNICOW.getID()).isEmpty()){
+			   if(Method.getInteractingNPC()==null || !ctx.players.local().isInCombat()){
+				  for(Npc c: cow){
+					  Method.state("Attacking unicow");
+					  c.interact("Attack");
+				  }
+			   }else
 			   Method.fightNPC(npcs.UNICOW.getID());
 			   
 		   }else if(altarLoc.distanceTo(local)<7){
@@ -217,7 +246,7 @@ Timer waitInv = new Timer(0);
 				onMap = new Timer(Random.nextInt(1300, 1700));
 			}
 		}else if(!onMap.isRunning()){
-			Method.clickOnMap(altarLoc.randomize(2, 3));
+			Method.clickOnMap(altarLoc.randomize(2, 4));
 			onMap = new Timer(Random.nextInt(1300, 1700));
 		}
 		

@@ -34,12 +34,18 @@ public class UniBank extends UniNode{
 				Method.interactInventory(10859, "Drop", "tea");
 			}
 			if(new Tile(3448,3719,0).distanceTo(ctx.players.local().getLocation())<7){//bank tile
+				
+				
 				if(ctx.bank.open()){
+					
+					if(ctx.bank.isOpen()){
+						DeltaUniBody.hornCount = DeltaUniBody.hornCount+Method.inventoryGetCount(items.HORN.getID());
+					}
 					
 					if(!Method.bankContains(items.COWHIDE.getID())||
 							(!Method.bankContains(items.HORN.getID())&&
 									Method.inventoryGetCount(items.HORN.getID())<1)||
-							!Method.bankContains(373)){//lobster
+							DeltaUniBody.foodSupport&&!Method.bankContains(DeltaUniBody.foodID)){//lobster
 						System.out.println("Out of some item, shuttong down");
 						DeltaUniBody.e  =true;
 					}
@@ -49,16 +55,23 @@ public class UniBank extends UniNode{
 					}
 					
 					if(Method.inventoryGetCount(items.HORN.getID())==1){
-						if(Method.inventoryGetCount(items.COWHIDE.getID())==15){
-							if(Method.inventoryGetCount(373)>=10){
+						if(Method.inventoryGetCount(items.COWHIDE.getID())==15&&DeltaUniBody.foodSupport||
+								Method.inventoryGetCount(items.COWHIDE.getID())==27&&!DeltaUniBody.foodSupport){
+							
+							if(Method.inventoryGetCount(DeltaUniBody.foodID)>=10 || !DeltaUniBody.foodSupport){
 								ctx.bank.close();
 								DeltaUniBody.bank = false;
-							}else ctx.bank.withdraw(373, 10);
+							}else ctx.bank.withdraw(DeltaUniBody.foodID, 10);
 							
-						}else if(Method.inventoryGetCount(items.COWHIDE.getID())>15){
-							ctx.bank.deposit(items.COWHIDE.getID(), 28);
-						}else ctx.bank.withdraw(items.COWHIDE.getID(), 15-Method.inventoryGetCount(items.COWHIDE.getID()));
-							
+						}else{
+						if(DeltaUniBody.foodSupport){
+							   if(Method.inventoryGetCount(items.COWHIDE.getID())>15){
+								   ctx.bank.deposit(items.COWHIDE.getID(), 27);
+								}else ctx.bank.withdraw(items.COWHIDE.getID(), 15-Method.inventoryGetCount(items.COWHIDE.getID()));
+							}else if(Method.inventoryGetCount(items.COWHIDE.getID())>27){
+								   ctx.bank.deposit(items.COWHIDE.getID(), 28);
+								}else ctx.bank.withdraw(items.COWHIDE.getID(), 27-Method.inventoryGetCount(items.COWHIDE.getID()));
+						}
 					}else
 					if(Method.inventoryGetCount(items.HORN.getID())>1){
 						int num = Method.inventoryGetCount(items.HORN.getID());

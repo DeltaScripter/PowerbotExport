@@ -65,6 +65,7 @@ public class slayerbody extends PollingScript implements PaintListener{
 					addNode(new Pyrefiend(ctx));
 					addNode(new EarthWarriors(ctx));
 					addNode(new Ghouls(ctx));
+					addNode(new Harpieswarm(ctx));
 				}
 				
 			});
@@ -77,8 +78,8 @@ public class slayerbody extends PollingScript implements PaintListener{
 	private Timer timeTask = new Timer(0);
 	
 	private String taskState = "Unknown";
-	public static String currentTask = "Unknown";
-	public static int push = 21;
+	public static String currentTask = "Finished task, getting new one";
+	public static int push = 16;//was 21
 	//26 push for Vannaka tasks
 	//21 push for Turael
 	public static int mask = 0x3F;//was 1F
@@ -117,6 +118,7 @@ public class slayerbody extends PollingScript implements PaintListener{
 	        }
 	    }
 	SMethod m = new SMethod(ctx);
+	String ts="";
 	
 	@Override
 	public int poll() {
@@ -181,8 +183,139 @@ public class slayerbody extends PollingScript implements PaintListener{
 		@Override
 		public void execute() {
 		  
+			if(ctx.settings.get(183)==0){
+				currentTask = "Finished task, getting new one";
+				ts = "";
+				Harpieswarm.hasLantern = false;
+			}else if(currentTask == "Finished task, getting new one"){
+				if(m.playerText("Your current assignment")){
+					ts = ctx.widgets.get(137,89).getChild(0).getText();
+				}else m.interactInventory(4155, "Kills-left", "Enchanted gem");
+			}
+			
+			if(ts.contains("harpie bug swarms")){//Banshees, need ear mufflers/some helmet?
+				   currentTask = "harpie bug swarms";
+		    }/*
+			else if((ctx.settings.get(2091)>>push&mask)==2){//Crawling hands
+				currentTask = "Crawling hands";
+			}else if((ctx.settings.get(2091)>>push&mask)==3){//Skeletons
+				currentTask = "Skeletons";
+			}else if((ctx.settings.get(2091)>>push&mask)==4||
+					(ctx.settings.get(2091)>>push&mask)==25){//Pyrefiends
+				currentTask = "Pyrefiends";
+			}else if((ctx.settings.get(2091)>>push&mask)==5){//Goblins
+				currentTask = "Goblins";
+		    }else if((ctx.settings.get(2091)>>push&mask)==6){//Dogs
+		    	if(master=="Vannaka")
+		    		currentTask = "Crocodiles";
+		    	else
+				currentTask = "Ghosts";
+				currentTask = "Dogs";
+		    }else if((ctx.settings.get(2091)>>push&mask)==7){//Ice fiends
+		    	if(master=="Vannaka")
+		    		currentTask = "Ogres";
+		    	else
+				currentTask = "Ghosts";
+				currentTask = "Ice fiends";
+		    }else if((ctx.settings.get(2091)>>push&mask)==8){//Minotaurs
+				currentTask = "Minotaurs";
+		    }else if((ctx.settings.get(2091)>>push&mask)==9){//Ghosts/moss giants
+		    	if(master=="Vannaka")
+		    		currentTask = "Moss giants";
+		    	else
+				currentTask = "Ghosts";
+			}else if((ctx.settings.get(2091)>>push&mask)==10){//Bears
+				currentTask = "Bears";
+			}else if((ctx.settings.get(2091)>>push&mask)==11){//Bats
+				currentTask = "Bats";
+			}else*/
+			 if(ts.contains("zombies")){//Zombies
+				currentTask = "zombies";
+		    }/*
+		    else if((ctx.settings.get(2091)>>push&mask)==13){//Scorpians
+				currentTask = "Scorpians";
+		    }else if((ctx.settings.get(2091)>>push&mask)==14){//Cave bugs
+				currentTask = "Cave bugs";
+		    }else if((ctx.settings.get(2091)>>push&mask)==15){//desert lizards - needs 'Ice cooler' + maybe waterskins
+		    	if(master=="Vannaka")
+		    		currentTask = "Ankous";
+		    	else
+				currentTask = "Ghosts";
+		    	currentTask = "Desert lizards";
+		    }else if((ctx.settings.get(2091)>>push&mask)==16){//Dwarves
+		    	if(master=="Vannaka")
+		    		currentTask = "Ice giants";
+		    	else
+				currentTask = "Dwarves";
+		    }else if((ctx.settings.get(2091)>>push&mask)==17){//Spiders
+		    	if(master=="Vannaka")
+		    		currentTask = "Green dragons";
+		    	else
+				currentTask = "Spiders";
+		    }else if((ctx.settings.get(2091)>>push&mask)==18){//Birds
+				currentTask = "Birds";
+		    }else if((ctx.settings.get(2091)>>push&mask)==19){
+				currentTask = "Unknown: 19";
+				System.out.println("Unknown found: 19");
+				getController().stop();
+		    }else if((ctx.settings.get(2091)>>push&mask)==20){//Monkeys
+				currentTask = "Monkeys";
+			}else if((ctx.settings.get(2091)>>push&mask)==21){//Cave slime, needs a torch, and antipoison
+				currentTask = "Cave slime";
+		    }else if((ctx.settings.get(2091)>>push&mask)==22){
+				currentTask = "Unknown: 22";
+				System.out.println("Unknown found: 22");
+				getController().stop();
+		    }else if((ctx.settings.get(2091)>>push&mask)==23){//Trolls
+				currentTask = "Trolls";
+		    }else */
+		    if(ts.contains("grotworms")){//Grotworms
+				currentTask = "grotworms";
+			}/*
+			else if((ctx.settings.get(2091)>>push&mask)==25){
+				if(master=="Vannaka")
+		    		currentTask = "Pyrefiends";
+		    	else{
+				currentTask = "Ghosts";
+				currentTask = "Unknown: 25";
+				System.out.println("Unknown found: 25");
+				getController().stop();
+		    	}
+		    }else if((ctx.settings.get(2091)>>push&mask)==26){
+				currentTask = "Unknown: 26";
+				System.out.println("Unknown found: 26");
+				getController().stop();
+		    }else if((ctx.settings.get(2091)>>push&mask)==27){//Earth warriors
+				currentTask = "Earth warriors";
+		    }else if((ctx.settings.get(2091)>>push&mask)==28){//Ogres
+				currentTask = "Ogres";
+			}else if((ctx.settings.get(2091)>>push&mask)==29){
+				currentTask = "Unknown: 29";
+				System.out.println("Unknown found: 29");
+				getController().stop();
+		    }else if((ctx.settings.get(2091)>>push&mask)==30){//Ice warriors
+		    	if(master=="Vannaka")
+		    		currentTask = "Ice warriors";
+		    	else
+				currentTask = "Ice warriors";
+		    }else if((ctx.settings.get(2091)>>push&mask)==31){
+		    	if(master=="Vannaka")
+		    		currentTask = "Ghouls";
+		    	else{
+				currentTask = "Ghosts";
+				currentTask = "Unknown: 31";
+				System.out.println("Unknown found: 31");
+				getController().stop();
+		    	}
+		    }else if((ctx.settings.get(2091)>>push&mask)==32){///Harpie swarms
+				currentTask = "Harpy bug swarms";
+		    }else currentTask = "Missing a setting: " + (ctx.settings.get(2091)>>push&mask);
+			
+			/*
 			if((ctx.settings.get(2091)>>push&mask)==1){//Banshees, need ear mufflers/some helmet?
-				
+				if(master=="Vannaka")
+		    		currentTask = "Harpie bug swarms";
+		    	else
 				currentTask = "Banshees";
 		    }else if((ctx.settings.get(2091)>>push&mask)==2){//Crawling hands
 				currentTask = "Crawling hands";
@@ -292,10 +425,10 @@ public class slayerbody extends PollingScript implements PaintListener{
 				System.out.println("Unknown found: 31");
 				getController().stop();
 		    	}
-		    }else if((ctx.settings.get(2091)>>push&mask)==32){
+		    }else if((ctx.settings.get(2091)>>push&mask)==32){///Harpie swarms
 				currentTask = "Harpy bug swarms";
 		    }else currentTask = "Missing a setting: " + (ctx.settings.get(2091)>>push&mask);
-			
+			*/
 		}
 		
 	}

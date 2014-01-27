@@ -20,8 +20,7 @@ public class Grotworms extends SlayerNode{
 			new Tile(2996, 3228, 0), new Tile(2991, 3232, 0), new Tile(2989, 3237, 0) };
 	@Override
 	public boolean activate() {
-		return ((ctx.settings.get(2091)>>slayerbody.push&0x1F)==24||
-				(ctx.settings.get(2091)>>slayerbody.push&slayerbody.mask)==35) && ctx.settings.get(183)!=0;
+		return (slayerbody.currentTask=="grotworms"&& ctx.settings.get(183)!=0);
 	}
 
 	@Override

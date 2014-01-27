@@ -28,7 +28,7 @@ public class SMethod extends MethodProvider{
 		BURTHORPE(new Tile(2899,3543, 0)),CATHERBY(new Tile(2831,3451,0)),PORTSARIM(new Tile(3011,3217,0)),
 		DRAYNOR(new Tile(3107,3298,0)),ARDOUGNE(new Tile(2634,3348,0)), YANILLE(new Tile(2530,3095,0)),
 		SEERS( new Tile(2689,3482,0)),TAVERLY(new Tile(2877,3441,0)),EDGEVILLE(new Tile(3068,3505,0)),
-		FPROVINCE( new Tile(2710,3679,0));
+		FPROVINCE( new Tile(2710,3679,0)),KARAMJA( new Tile(2761,3147,0));
 		Tile tile;
 		TeleportLode(Tile tile){
 			this.tile = tile;
@@ -37,11 +37,22 @@ public class SMethod extends MethodProvider{
 			return tile;
 		}
 	}
+	public boolean playerText(String string) {
+		if (ctx.widgets.get(137,89).isValid()) {
+			//state("Checking: " + string);
+			if (ctx.widgets.get(137,89).getChild(0).getText()
+					.contains(string)) {
+				System.out.println("returning true for player text");
+				return true;
+			}
+		}
+		return false;
+	}
 	public enum TeleportType{
 		ARDOUGNE(41,"Ardougne"),BURTHHORPE(42,"Burthorpe"),CATHERBY(43,"Catherby"),DRAYNOR(44,"Draynor"),
 		EDGEVILLE(45,"Edgeville"),FALADOR(46,"Falador"),LUMBRIDGE(47,"Lumbridge"),PORTSARIM(48,"Port Sarim"),
 		SEERS(49,"Seers"),TAVERLY(50,"Taverly"),VARROCK(51,"Varrock"),YANILLE(52,"Yanille"),
-		FREMNICKPRIVINCE(55,"Fremnik Province");
+		FREMNICKPRIVINCE(55,"Fremnik Province"),KARAMJA(56,"Karamja");
 		int type;
 		String name;
 		int numMatch[] = {40,41,42,43,44,45,46,47,48,49,50,51,52,53};
@@ -66,13 +77,26 @@ public class SMethod extends MethodProvider{
 		}
 		return inventory.size()>=28;
 	}
+	
+	public boolean EquipmentContains(int i) {
+		
+		if(!ctx.hud.isVisible(Window.WORN_EQUIPMENT)){
+			state("Opening equipment view");
+			ctx.hud.view(Window.WORN_EQUIPMENT);
+			sleep(2000);
+		}
+		if(!ctx.equipment.select().id(i).first().isEmpty()){
+			return true;
+		}
+		return false;
+	}
 	private boolean teleBank = false;
 	private boolean once = false;
 	public void bankItems(int[] bankItems, int[] amountOfItem) {
 
 		Tile[] pathToBank = new Tile[] { new Tile(2965, 3398, 0), new Tile(2964, 3392, 0), new Tile(2964, 3386, 0), 
 				new Tile(2960, 3381, 0), new Tile(2954, 3380, 0), new Tile(2948, 3377, 0), 
-				new Tile(2944, 3372, 0), new Tile(2947, 3366, 0) };
+				new Tile(2944, 3372, 0), new Tile(2947, 3370, 0) };
 		
 		ArrayList<Integer> itemsInBank= new ArrayList<Integer>();
 		
@@ -470,6 +494,7 @@ public class SMethod extends MethodProvider{
 					if(enemy.getLocation().distanceTo(ctx.players.local().getLocation())<7){
 						if(!waitClick.isRunning())
 						npcInteract(enemy.getId(),action);
+						else System.out.println("Want to attack, but timer running: "+ waitClick.getRemaining());
 					}else {
 						System.out.println("Stepping towards npc");
 						ctx.movement.stepTowards(enemy.getLocation());

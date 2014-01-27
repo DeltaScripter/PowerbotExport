@@ -48,7 +48,7 @@ public class Banshee extends SlayerNode{
 			new Tile(3391, 3485, 0), new Tile(3397, 3487, 0), new Tile(3403, 3488, 0) };
 	@Override
 	public boolean activate() {
-		return ((ctx.settings.get(2091)>>slayerbody.push&0x1F)==1||
+		return (slayerbody.master=="Turael"&&
 				(ctx.settings.get(2091)>>slayerbody.mask&slayerbody.mask)==1)&& ctx.settings.get(183)!=0;
 	}
 
