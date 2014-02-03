@@ -38,9 +38,9 @@ public class SMethod extends MethodProvider{
 		}
 	}
 	public boolean playerText(String string) {
-		if (ctx.widgets.get(137,89).isValid()) {
+		if (ctx.widgets.get(137,90).isValid()) {
 			//state("Checking: " + string);
-			if (ctx.widgets.get(137,89).getChild(0).getText()
+			if (ctx.widgets.get(137,90).getChild(0).getText()
 					.contains(string)) {
 				System.out.println("returning true for player text");
 				return true;
@@ -630,7 +630,7 @@ public class SMethod extends MethodProvider{
 	}
 	public void interactInventory(final int i, final String string, final String o) {
 		ArrayList<String> actions = new ArrayList<String>();
-		System.out.println("Inside interacting inventory");
+	//	System.out.println("Inside interacting inventory");
 		 if(!timer.isRunning()){
 		for(Item t : ctx.backpack.select().id(i).first()){
 			//System.out.println(ctx.widgets.get(1477,122).getChild(0).getBoundingRect().getCenterY());

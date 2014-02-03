@@ -87,7 +87,7 @@ public class slayerbody extends PollingScript implements PaintListener{
 	public static double health;
 	public static int kills;//counts the amount of kills
 	public static boolean onceDepositInventory = false;
-	public static String master = "Vannaka";//"Turael""Vannaka"
+	public static String master = "Turael";//"Turael""Vannaka"
 	boolean doneFight = false;//for use in detection of kills
 	private final List<SlayerNode> nodeList = Collections.synchronizedList(new ArrayList<SlayerNode>());
 	
@@ -188,13 +188,17 @@ public class slayerbody extends PollingScript implements PaintListener{
 				ts = "";
 				Harpieswarm.hasLantern = false;
 			}else if(currentTask == "Finished task, getting new one"){
-				if(m.playerText("Your current assignment")){
-					ts = ctx.widgets.get(137,89).getChild(0).getText();
+				if(m.playerText("Your current")){
+					ts = ctx.widgets.get(137,90).getChild(0).getText();
+					System.out.println("ts:" + ts);
 				}else m.interactInventory(4155, "Kills-left", "Enchanted gem");
 			}
-			
 			if(ts.contains("harpie bug swarms")){//Banshees, need ear mufflers/some helmet?
 				   currentTask = "harpie bug swarms";
+		    }else if(ts.contains("zombies")){//Zombies
+				currentTask = "zombies";
+		    }else if(ts.contains("spider")){//Spiders
+				currentTask = "spider";
 		    }/*
 			else if((ctx.settings.get(2091)>>push&mask)==2){//Crawling hands
 				currentTask = "Crawling hands";
@@ -229,9 +233,7 @@ public class slayerbody extends PollingScript implements PaintListener{
 			}else if((ctx.settings.get(2091)>>push&mask)==11){//Bats
 				currentTask = "Bats";
 			}else*/
-			 if(ts.contains("zombies")){//Zombies
-				currentTask = "zombies";
-		    }/*
+			/*
 		    else if((ctx.settings.get(2091)>>push&mask)==13){//Scorpians
 				currentTask = "Scorpians";
 		    }else if((ctx.settings.get(2091)>>push&mask)==14){//Cave bugs
@@ -271,7 +273,9 @@ public class slayerbody extends PollingScript implements PaintListener{
 		    }else */
 		    if(ts.contains("grotworms")){//Grotworms
 				currentTask = "grotworms";
-			}/*
+			}else if((ts.contains("birds"))){//Birds
+				currentTask = "birds";
+		    }/*
 			else if((ctx.settings.get(2091)>>push&mask)==25){
 				if(master=="Vannaka")
 		    		currentTask = "Pyrefiends";
@@ -371,9 +375,9 @@ public class slayerbody extends PollingScript implements PaintListener{
 		    		currentTask = "Green dragons";
 		    	else
 				currentTask = "Spiders";
-		    }else if((ctx.settings.get(2091)>>push&mask)==18){//Birds
-				currentTask = "Birds";
-		    }else if((ctx.settings.get(2091)>>push&mask)==19){
+		    }else */
+		    /*
+		    else if((ctx.settings.get(2091)>>push&mask)==19){
 				currentTask = "Unknown: 19";
 				System.out.println("Unknown found: 19");
 				getController().stop();

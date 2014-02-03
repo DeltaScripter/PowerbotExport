@@ -20,7 +20,7 @@ public class Birds extends SlayerNode{
 			new Tile(3027, 3224, 0), new Tile(3027, 3230, 0), new Tile(3028, 3235, 0) };
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==18 && ctx.settings.get(183)!=0;
+		return (slayerbody.currentTask=="birds" && ctx.settings.get(183)!=0);
 	}
 
 	@Override

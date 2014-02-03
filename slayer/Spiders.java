@@ -20,7 +20,7 @@ public class Spiders extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==17 && ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="spider" && ctx.settings.get(183)!=0;
 	}
 
 	@Override

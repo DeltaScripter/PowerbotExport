@@ -262,6 +262,9 @@ public class WolfWhistle extends Node{
 		
 		if (new Tile(2932,3446,0).distanceTo(ctx.players.local().getLocation())<6) {
 				Method.state("Seraching for item in inventory");
+				if(ctx.widgets.get(1184,0).isVisible()){
+					Method.clickOnMap(ctx.players.local().getLocation());
+				}
 				if(Method.inventoryContains(RAREITEMS_ID)){
 					if(ctx.backpack.isItemSelected()){
 						Method.interactO(OBELISK_ID, "Use","Obelisk");

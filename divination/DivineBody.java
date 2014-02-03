@@ -391,7 +391,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 								}
 							}
 							if(!itemList.contains("Convert memories")){//if we mis-cliked and got the wrong menu to pop up..
-								System.out.println("can't find menu option");
+								//System.out.println("can't find menu option");
 								ctx.mouse.click(Method.getObject("Energy Rift").getCenterPoint(),false);
 							ctx.game.sleep(Random.nextInt(1800, 2600));
 							}

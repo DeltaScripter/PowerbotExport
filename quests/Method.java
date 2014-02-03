@@ -770,7 +770,8 @@ public class Method extends MethodProvider{
 			 ctx.environment.sleep(1200);
 		 }
 		for(int both : widgetID){
-		    if(ctx.widgets.get(both,14).isVisible()){
+		    if(ctx.widgets.get(both,14).isValid()&&
+		    		ctx.widgets.get(both,14).isVisible()){
 		    	ctx.widgets.get(both, 14).click();
 		    	ctx.environment.sleep(500);
 		    }
@@ -828,7 +829,7 @@ public class Method extends MethodProvider{
 		}//else System.out.println("ranOnce: " + Vars.ranOnce);
 	}
 	public void useBank(int[] items, int[] amount) {
-		final int destroyableItems[] = {27156,26480,25131};
+		final int destroyableItems[] = {19775,27156,26480,25131};
 		boolean donesearch = false;
 		
 		if(!ctx.hud.isVisible(Window.BACKPACK))
@@ -843,6 +844,11 @@ public class Method extends MethodProvider{
 			//Destroy unbankable items!
 			for(int destroyItemID: destroyableItems){
 				while(inventoryContains(destroyItemID)){
+					
+					if(ctx.widgets.get(1189,0).isValid()&&
+							ctx.widgets.get(1189,0).isVisible()){
+						pressContinue();
+					}
 					if(ctx.bank.isOpen())//close bank if open
 						ctx.bank.close();
 					if(ctx.widgets.get(1183,16).isVisible()){//if the destroy screen is open

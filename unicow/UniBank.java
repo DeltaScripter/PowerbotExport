@@ -22,6 +22,7 @@ public class UniBank extends UniNode{
 		return DeltaUniBody.bank;
 	}
 
+	boolean once = false;
 	@Override
 	public void execute() {
 		if(dungeoneeringRing)
@@ -38,17 +39,26 @@ public class UniBank extends UniNode{
 				
 				if(ctx.bank.open()){
 					
+					//Count horns
 					if(ctx.bank.isOpen()){
 						DeltaUniBody.hornCount = DeltaUniBody.hornCount+Method.inventoryGetCount(items.HORN.getID());
 					}
 					
+					while(!once){
+						DeltaUniBody.state = "Depositing inventory";
+						ctx.bank.depositInventory();
+						ctx.game.sleep(1400);
+						ctx.bank.depositInventory();
+						once = true;
+					}
 					if(!Method.bankContains(items.COWHIDE.getID())||
 							(!Method.bankContains(items.HORN.getID())&&
 									Method.inventoryGetCount(items.HORN.getID())<1)||
-							DeltaUniBody.foodSupport&&!Method.bankContains(DeltaUniBody.foodID)){//lobster
+							DeltaUniBody.foodSupport&&!Method.bankContains(DeltaUniBody.foodID)){
 						System.out.println("Out of some item, shuttong down");
 						DeltaUniBody.e  =true;
 					}
+					
 					while(Method.inventoryGetCount(238)>=1){
 						DeltaUniBody.state = "Depositing noted horns";
 						ctx.bank.deposit(238, 28);//noted horns
@@ -60,6 +70,7 @@ public class UniBank extends UniNode{
 							
 							if(Method.inventoryGetCount(DeltaUniBody.foodID)>=10 || !DeltaUniBody.foodSupport){
 								ctx.bank.close();
+								once = false;
 								DeltaUniBody.bank = false;
 							}else ctx.bank.withdraw(DeltaUniBody.foodID, 10);
 							

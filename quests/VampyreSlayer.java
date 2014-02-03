@@ -162,7 +162,7 @@ public class VampyreSlayer extends Node{
 						if(Method.npcIsNotNull(9357)&&Method.getNPC(9357).getLocation().distanceTo(local.getLocation())<5||
 								 Method.npcIsNotNull(9356)&& Method.getNPC(9356).getLocation().distanceTo(local.getLocation())<5){
 							if(!Method.isChatting("Self"))
-							if(Method.getInteractingNPC()!=null){
+							if(Method.getInteractingNPC()!=null && ctx.players.local().isInCombat()){
 								Method.fightNPC(9357);
 								Method.fightNPC(9356);
 							}else {
