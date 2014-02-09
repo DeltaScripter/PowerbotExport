@@ -3,29 +3,16 @@ package kebbithunter;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.Skills;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Tile;
-import org.powerbot.script.util.GeItem;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 
@@ -33,8 +20,8 @@ import org.powerbot.script.util.Timer;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Kebbit Hunter", 
-description = "Hunts polar kebbits for fur, banks them, repeat. 200K GP/hr"
-, version = 1, website = ""
+description = "Hunts polar kebbits for fur, banks them, repeat. 200K GP/hr",topic=1134247, version = 1,
+website = "https://www.powerbot.org/community/topic/1134247-delta-kebbit-hunter-200khr-f2p-p2p-huntsbanks-furs/?hl=%2Bkebbit+%2Bhunter#entry13941698"
 )
 public class KebBody extends PollingScript implements PaintListener{
 

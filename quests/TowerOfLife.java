@@ -411,7 +411,7 @@ public class TowerOfLife extends Node{
 		Component largestPipe = ctx.widgets.get(511,4);
 		
 		if((ctx.settings.get(2190)>>7&0x1)==1){//after putting parts in machine
-			
+			Method.state("Solving Puzzle");
 			if(ctx.widgets.get(511,0).isVisible()){//puzzle interface
 				System.out.println("Y position: " + (base.getBoundingRect().y - smallBentPipe.getBoundingRect().y));
 				System.out.println("X position: " + (base.getBoundingRect().x - smallBentPipe.getBoundingRect().x));
@@ -498,6 +498,7 @@ public class TowerOfLife extends Node{
 		Component oneHoleOnSidePipe = ctx.widgets.get(511,6);
 		Component largestPipe = ctx.widgets.get(511,4);
 		
+		if(leftButton.isValid()&&upButton.isValid()&&rightButton.isValid()&&downButton.isValid())
 		if(yDist<i+8&& yDist>i-8){
 			if(xDist==x){
 				return true;
