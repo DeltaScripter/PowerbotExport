@@ -53,7 +53,7 @@ public class UniBank extends UniNode{
 					}
 					if(!Method.bankContains(items.COWHIDE.getID())||
 							(!Method.bankContains(items.HORN.getID())&&
-									Method.inventoryGetCount(items.HORN.getID())<1)||
+									Method.inventoryGetCount(items.HORN.getID())<2)||
 							DeltaUniBody.foodSupport&&!Method.bankContains(DeltaUniBody.foodID)){
 						System.out.println("Out of some item, shuttong down");
 						DeltaUniBody.e  =true;
@@ -87,7 +87,7 @@ public class UniBank extends UniNode{
 					if(Method.inventoryGetCount(items.HORN.getID())>1){
 						int num = Method.inventoryGetCount(items.HORN.getID());
 						ctx.bank.deposit(items.HORN.getID(), num-1);
-					}else ctx.bank.withdraw(items.HORN.getID(), 1);
+					}else ctx.bank.withdraw(items.HORN.getID(), 2);
 						
 					
 				}
