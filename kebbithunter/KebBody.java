@@ -56,7 +56,7 @@ public class KebBody extends PollingScript implements PaintListener{
 	public Tile pathToBank[] = {
 			new Tile (2886,3480,0), new Tile(2892,3487,0),
 			new Tile(2892,3502,0), new Tile(2898,3516,0),
-			new Tile(2892,3530,0)
+			new Tile(2892,3530,0), new Tile(2888,3536,0)
 	};
 	private final List<KebNode> nodeList = Collections.synchronizedList(new ArrayList<KebNode>());
 	public static String state;
@@ -124,7 +124,7 @@ public class KebBody extends PollingScript implements PaintListener{
 		public boolean activate() {
 			return !hunt;
 		}
-		public Tile bankTile = new Tile(2892,3529,0);
+		public Tile bankTile = new Tile(2888,3536,0);
 		@Override
 		public void execute() {
 			Tile local = ctx.players.local().getLocation();
@@ -134,7 +134,7 @@ public class KebBody extends PollingScript implements PaintListener{
 			if(bankTile.distanceTo(local)<7){
 				if(ctx.bank.isOpen()){
 					ctx.bank.depositInventory();
-				}else ctx.bank.open();
+				}else Method.interactO(25688, "Bank", "Bank");
 			}else if(!wait.isRunning()){
 				state = "Walking to bank";
 				if(!ctx.movement.findPath(bankTile.randomize(1, 2)).traverse()){
