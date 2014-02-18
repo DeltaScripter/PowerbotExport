@@ -24,9 +24,9 @@ public class Vars {
 		}
 	}
 	public enum TeleportType{
-		ARDOUGNE(41,"Ardougne"),BURTHHORPE(42,"Burthorpe"),CATHERBY(43,"Catherby"),DRAYNOR(44,"Draynor"),
-		FALADOR(46,"Falador"),LUMBRIDGE(47,"Lumbridge"),PORTSARIM(48,"Port Sarim"),
-		SEERS(49,"Seers"),TAVERLY(50,"Taverly"),VARROCK(51,"Varrock"),YANILLE(52,"Yanille");
+		ARDOUGNE(22,"Ardougne"),BURTHHORPE(23,"Burthorpe"),CATHERBY(24,"Catherby"),DRAYNOR(25,"Draynor"),
+		FALADOR(27,"Falador"),LUMBRIDGE(28,"Lumbridge"),PORTSARIM(29,"Port Sarim"),
+		SEERS(30,"Seers"),TAVERLY(31,"Taverly"),VARROCK(32,"Varrock"),YANILLE(33,"Yanille");
 		int type;
 		String name;
 		int numMatch[] = {40,41,42,43,44,45,46,47,48,49,50,51,52,53};

@@ -194,7 +194,7 @@ public class ShearBody extends PollingScript implements PaintListener{
 					teleported = true;
 				}else {
 					state = "Teleporting to Lummbridge";
-					m.teleportTo(47, "");//tele to lummbridge
+					m.teleportTo(28, "");//tele to lummbridge
 				}
 			}
 
@@ -270,7 +270,7 @@ public class ShearBody extends PollingScript implements PaintListener{
 				teleported = true;
 			}else {
 				state  ="Teleporting to Lummbridge";
-				m.teleportTo(47, "");//tele to lummbridge
+				m.teleportTo(28, "");//tele to lummbridge
 			}
 			
 		}

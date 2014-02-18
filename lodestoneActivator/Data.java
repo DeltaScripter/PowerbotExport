@@ -22,10 +22,12 @@ public class Data {
 		}
 	}
 	public enum TeleportType{
-		ARDOUGNE(41),BURTHHORPE(42),CATHERBY(43),DRAYNOR(44),FALADOR(46),LUMBRIDGE(47),PORTSARIM(48),
-		SEERS(49),TAVERLY(50),VARROCK(51),YANILLE(52);
+		ARDOUGNE(22,"Ardougne"),BURTHHORPE(23,"Burthorpe"),CATHERBY(24,"Catherby"),DRAYNOR(25,"Draynor"),
+		FALADOR(27,"Falador"),LUMBRIDGE(28,"Lumbridge"),PORTSARIM(29,"Port Sarim"),
+		SEERS(30,"Seers"),TAVERLY(31,"Taverly"),VARROCK(32,"Varrock"),YANILLE(33,"Yanille");
 		int type;
-		TeleportType(int type){
+		String name;
+		TeleportType(int type, String name){
 			this.type = type;
 		}
 		 public int getTeleport(){
