@@ -3,6 +3,7 @@ package kebbithunter;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,8 +36,7 @@ public class KebBody extends PollingScript implements PaintListener{
 		getExecQueue(State.START).add(new Runnable() {
 			@Override
 			public void run() {
-				//initiateGUI();
-				//initialExp = ctx.skills.getExperience(25);
+				
 				runtime = new Timer(0);
 				secondsA = new Timer(0);
 				minutesA = new Timer(0);
@@ -44,15 +44,21 @@ public class KebBody extends PollingScript implements PaintListener{
 				addNode(new bank(ctx));
 				addNode(new KebAntipattern(ctx));
 				
+				kebbitInvMonitor = Method.inventoryGetCount(10117);//for counting jnumber of kebbit furs
+				
 			}
 			
 		});
 	}
 	public Tile pathToKebbit[] = {
-			new Tile (2899,3517,0), new Tile(2893,3504,0),
-			new Tile(2894,3489,0), new Tile(2884,3481,0),
-			new Tile(2871,3481,0)
-	};
+			new Tile(2873, 3481, 0), new Tile(2878, 3480, 0), new Tile(2883, 3479, 0), 
+			new Tile(2888, 3480, 0), new Tile(2891, 3484, 0), new Tile(2891, 3489, 0), 
+			new Tile(2891, 3494, 0), new Tile(2891, 3499, 0), new Tile(2892, 3504, 0), 
+			new Tile(2895, 3508, 0), new Tile(2897, 3513, 0), new Tile(2898, 3518, 0), 
+			new Tile(2898, 3523, 0), new Tile(2899, 3528, 0), new Tile(2898, 3533, 0), 
+			new Tile(2895, 3537, 0), new Tile(2890, 3539, 0), new Tile(2885, 3541, 0), 
+			new Tile(2883, 3539, 0) };
+	
 	public Tile pathToBank[] = {
 			new Tile (2886,3480,0), new Tile(2892,3487,0),
 			new Tile(2892,3502,0), new Tile(2898,3516,0),
@@ -75,12 +81,16 @@ public class KebBody extends PollingScript implements PaintListener{
 	public int set = 0;
 	public boolean hunt = true;
 	
-	
+	public int kebbitInvMonitor = 0;
+	public int kebbitCount = 0;
 	@Override
 	public int poll() {
 		
-		//System.out.println("Harvest: " +harvest);
-		
+		//System.out.println("Harvest: " +harvest);10117
+		if(Method.inventoryGetCount(10117)!=kebbitInvMonitor){
+			kebbitCount++;
+			kebbitInvMonitor = Method.inventoryGetCount(10117);
+		}
 		while(ctx.widgets.get(1477,54).isVisible()){
 			state = "Closing interface";
 			ctx.widgets.get(1477,54).getChild(2).click();
@@ -158,14 +168,16 @@ public class KebBody extends PollingScript implements PaintListener{
 		}
 		@Override
 		public void execute() {
-			int dropItemIDs[] = {9986,526};
+			int dropItemIDs[] = {9986};
 			
 			calcAntiPattern();
+			
 			while(Method.inventoryContains(9986)||
 					Method.inventoryContains(526)){
-				state  ="Dropping items";
+				state  ="Dealing with items";
 				for(int dropItems: dropItemIDs)
 				Method.interactInventory(dropItems, "Drop", "Item");
+				Method.interactInventory(526, "Bury", "Bones");
 			}
 			
 			if(ctx.camera.getPitch()>60){
@@ -175,7 +187,7 @@ public class KebBody extends PollingScript implements PaintListener{
 			
 			int backPackItems;
 			backPackItems = Method.inventoryGetCount(10117);
-			if(backPackItems >= Random.nextInt(22, 23)){
+			if(backPackItems >= Random.nextInt(23, 24)){
 				hunt = false;
 			}
 			
@@ -414,6 +426,24 @@ private void setMouse(Graphics g) {
 		//if(Method.inventoryContains(10117))
 		//g.drawString("Money made: "+Method.inventoryGetCount(10117)*1900 + "GP", 20, 170);
 		g.drawString("Current pattern: " +set, 20, 170);
+		g.drawString("Gathered kebbit fur: " +kebbitCount, 20, 190);
+		String moneyNum = ""+(kebbitCount * 2872);
+		String moneyO = null;
+		if(moneyNum.length()==4){
+			DecimalFormat formatter = new DecimalFormat("#,###");
+			moneyO = formatter.format((kebbitCount * 2872));
+		}else if(moneyNum.length()==5){
+			DecimalFormat formatter = new DecimalFormat("##,###");
+			moneyO = formatter.format((kebbitCount * 2872));
+		}else if(moneyNum.length()==6){
+			DecimalFormat formatter = new DecimalFormat("###,###");
+			moneyO = formatter.format((kebbitCount * 2872));
+		}else if(moneyNum.length()==7){
+			DecimalFormat formatter = new DecimalFormat("#,###,###");
+			moneyO = formatter.format((kebbitCount * 2872));
+		}
+		
+		g.drawString("Money gained: " +moneyO + " GP", 20, 210);
 		
 		
 	}
