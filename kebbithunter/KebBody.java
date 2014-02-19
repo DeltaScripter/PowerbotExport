@@ -51,19 +51,23 @@ public class KebBody extends PollingScript implements PaintListener{
 		});
 	}
 	public Tile pathToKebbit[] = {
+			 new Tile(2880, 3543, 0), new Tile(2884, 3540, 0), new Tile(2888, 3537, 0), 
+				new Tile(2891, 3533, 0), new Tile(2893, 3528, 0), new Tile(2896, 3524, 0), 
+				new Tile(2898, 3519, 0), new Tile(2898, 3514, 0), new Tile(2897, 3509, 0), 
+				new Tile(2895, 3504, 0), new Tile(2892, 3500, 0), new Tile(2891, 3495, 0), 
+				new Tile(2891, 3490, 0), new Tile(2893, 3485, 0), new Tile(2892, 3480, 0), 
+				new Tile(2887, 3479, 0), new Tile(2882, 3480, 0), new Tile(2877, 3479, 0), 
+				new Tile(2872, 3480, 0), new Tile(2871, 3484, 0) };
+	
+	public Tile pathToBank[] = {
 			new Tile(2873, 3481, 0), new Tile(2878, 3480, 0), new Tile(2883, 3479, 0), 
 			new Tile(2888, 3480, 0), new Tile(2891, 3484, 0), new Tile(2891, 3489, 0), 
 			new Tile(2891, 3494, 0), new Tile(2891, 3499, 0), new Tile(2892, 3504, 0), 
 			new Tile(2895, 3508, 0), new Tile(2897, 3513, 0), new Tile(2898, 3518, 0), 
 			new Tile(2898, 3523, 0), new Tile(2899, 3528, 0), new Tile(2898, 3533, 0), 
 			new Tile(2895, 3537, 0), new Tile(2890, 3539, 0), new Tile(2885, 3541, 0), 
-			new Tile(2883, 3539, 0) };
+			new Tile(2883, 3539, 0)};
 	
-	public Tile pathToBank[] = {
-			new Tile (2886,3480,0), new Tile(2892,3487,0),
-			new Tile(2892,3502,0), new Tile(2898,3516,0),
-			new Tile(2892,3530,0), new Tile(2888,3536,0)
-	};
 	private final List<KebNode> nodeList = Collections.synchronizedList(new ArrayList<KebNode>());
 	public static String state;
 	private boolean harvest = false;
