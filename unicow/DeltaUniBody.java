@@ -22,7 +22,7 @@ import unicow.UniData.items;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Unicows", 
-description = "Kills Unicows; gathers unicorn horns for 400k-1M profit/hr depending on combat level", 
+description = "Kills Unicows; gathers unicorn horns for 1M+ profit/hr!", 
 website = "http://www.powerbot.org/community/topic/1146188-delta-unicow-kills-unicows-takes-unicorn-horns/", version = 1,hidden  =false, topic =1146188)
 public class DeltaUniBody extends PollingScript implements PaintListener{
 	
@@ -42,7 +42,7 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 	
 	private final List<UniNode> nodeList = Collections.synchronizedList(new ArrayList<UniNode>());
 	static String state;
-    public static boolean bank = false;
+    public static boolean bank = true;
     public boolean init = false;
 	public Timer wait = new Timer(0);
 	UniMethod Method = new UniMethod(ctx);
@@ -54,6 +54,10 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 	static int foodID = 0;
 	static int hornCount = 0;
 	static int capeID = 0;
+	
+	//summoning
+	public static int pouchID;
+	public static boolean Bob = false;//beast of burden
 	
 	//profit an hour
 	int tempNum = 0;
@@ -134,32 +138,48 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 					foodSupport = true;
 				}
 				String foodType = foodTypeCombo.getSelectedItem().toString();
+			
 				if(foodType.contains("Swordfish")){
 					foodID = 373;
 				}
 				if(foodType.contains("Lobster")){
 					foodID = 379;
 				}
+				String pouchType = beastCombo.getSelectedItem().toString();
+				if(BobBox2.isSelected()){
+					Bob = true;
+				}
+				if(pouchType.contains("Thorny snail")){
+					pouchID = 12019;
+				}
+				if(pouchType.contains("Spirit kalphite")){
+					pouchID = 12063;
+				}
+				if(pouchType.contains("Bull ant")){
+					pouchID = 12087;
+				}
+				if(pouchType.contains("Spirit terrorbird")){
+					pouchID = 12007;
+				}
+				if(pouchType.contains("War tortoise")){
+					pouchID = 12031;
+				}
+				if(pouchType.contains("Pack yak")){
+					pouchID = 12810;
+				}
 				start = true;
 				this.dispose();
 			}
 
-			private void eatFoodBoxActionPerformed(ActionEvent e) {
-				//if(eatFoodBox.isSelected()){
-					//foodTypeCombo.setEnabled(true);
-				//}else foodTypeCombo.setEnabled(false);
-			}
-
 			private void initComponents() {
-				// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-				// Generated using JFormDesigner Evaluation license - Bob Bob
 				label1 = new JLabel();
 				strtBtn = new JButton();
 				eatFoodBox = new JCheckBox();
 				foodTypeCombo = new JComboBox<String>();
+				beastCombo = new JComboBox<String>();
+				BobBox2 = new JCheckBox();
 
 				//======== this ========
-				setTitle("Delta Unicow");
 				Container contentPane = getContentPane();
 
 				//---- label1 ----
@@ -176,13 +196,7 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 				});
 
 				//---- eatFoodBox ----
-				eatFoodBox.setText("Eat food while fighting?");
-				eatFoodBox.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						eatFoodBoxActionPerformed(e);
-					}
-				});
+				eatFoodBox.setText("Eat food?");
 
 				//---- foodTypeCombo ----
 				foodTypeCombo.setModel(new DefaultComboBoxModel<String>(new String[] {
@@ -190,25 +204,44 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 					"Swordfish"
 				}));
 
+				//---- beastCombo ----
+				beastCombo.setModel(new DefaultComboBoxModel<String>(new String[] {
+					"Thorny snail",
+					"Spirit kalphite",
+					"Bull ant",
+					"Spirit terrorbird",
+					"War tortoise",
+					"Pack yak"
+				}));
+
+				//---- BobBox2 ----
+				BobBox2.setText("Beast of Burden?");
+
 				GroupLayout contentPaneLayout = new GroupLayout(contentPane);
 				contentPane.setLayout(contentPaneLayout);
 				contentPaneLayout.setHorizontalGroup(
 					contentPaneLayout.createParallelGroup()
-						.addGroup(contentPaneLayout.createSequentialGroup()
-							.addGap(20, 20, 20)
-							.addComponent(eatFoodBox)
-							.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(foodTypeCombo, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
-							.addGap(24, 24, 24))
 						.addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-							.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addGroup(contentPaneLayout.createParallelGroup()
-								.addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-									.addComponent(label1)
-									.addGap(99, 99, 99))
-								.addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-									.addComponent(strtBtn)
-									.addContainerGap())))
+							.addContainerGap(103, Short.MAX_VALUE)
+							.addComponent(label1)
+							.addGap(99, 99, 99))
+						.addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+							.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+								.addGroup(contentPaneLayout.createSequentialGroup()
+									.addContainerGap(232, Short.MAX_VALUE)
+									.addComponent(strtBtn))
+								.addGroup(GroupLayout.Alignment.LEADING, contentPaneLayout.createSequentialGroup()
+									.addGap(20, 20, 20)
+									.addGroup(contentPaneLayout.createParallelGroup()
+										.addGroup(contentPaneLayout.createSequentialGroup()
+											.addComponent(BobBox2)
+											.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+											.addComponent(beastCombo, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))
+										.addGroup(contentPaneLayout.createSequentialGroup()
+											.addComponent(eatFoodBox)
+											.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+											.addComponent(foodTypeCombo, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)))))
+							.addGap(24, 24, 24))
 				);
 				contentPaneLayout.setVerticalGroup(
 					contentPaneLayout.createParallelGroup()
@@ -219,9 +252,13 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 							.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 								.addComponent(eatFoodBox)
 								.addComponent(foodTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+							.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+							.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+								.addComponent(beastCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(BobBox2))
+							.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 							.addComponent(strtBtn)
-							.addContainerGap(4, Short.MAX_VALUE))
+							.addContainerGap())
 				);
 				pack();
 				setLocationRelativeTo(getOwner());
@@ -229,13 +266,16 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 			}
 
 			// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-			// Generated using JFormDesigner Evaluation license - Bob Bob
+			// Generated using JFormDesigner Evaluation license - Christ Day
 			private JLabel label1;
 			private JButton strtBtn;
 			private JCheckBox eatFoodBox;
 			private JComboBox<String> foodTypeCombo;
+			private JComboBox<String> beastCombo;
+			private JCheckBox BobBox2;
 			// JFormDesigner - End of variables declaration  //GEN-END:variables
 		}
+
 
 		public void initiateGui() {
 			SwingUtilities.invokeLater(new Runnable() {
@@ -272,24 +312,25 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 	    	if(!hornCounter.isRunning()){
 	    		    time = ((hornCounter.getElapsed())/1000);
 	    		    time = 3600/time;
-	    		    profit = time*(hornCount*2720);
+	    		    profit = time*(hornCount*4200);
 	    		    System.out.println("Profit per hour: "+ profit);
 	    		    hornCounter = new Timer(0);
 	    		    once = true;
 	    }
 	 
 	    }
-		
+		// (a > b) ? a : b;
 		g.setFont(myFont);
 		g.setColor(Color.GREEN);
 		g.drawString("State: "+state, 20, 130);
-		g.drawString("Health%: "+ctx.players.local().getHealthPercent(), 20, 150);
+		g.drawString((ctx.summoning.isFamiliarSummoned() ? "Familiar time left: "+
+		(int)(ctx.summoning.getTimeLeft()/60) +" minutes": "No familiar summoned"), 20, 150);
 		if(profit>0)
 		g.drawString("Money per hour: "+(int)profit + "GP", 20, 170);
 		else g.drawString("Money per hour: Waiting..", 20, 170);
 		g.setColor(Color.CYAN);
 		g.drawString("Runtime: " +hours+":"+minHold +":" + secHold, 20, 110);
 		g.drawString("Food support for fighting? "+foodSupport, 20, 190);
-		g.drawString("Money made(updates at bank): "+hornCount*2729, 20, 210);
+		g.drawString("Money made(updates at bank): "+hornCount*4102, 20, 210);
 	}
 }

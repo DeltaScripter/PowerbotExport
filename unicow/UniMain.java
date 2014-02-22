@@ -6,7 +6,6 @@ import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.methods.Menu;
 import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.Npcs;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.GameObject;
@@ -50,12 +49,15 @@ public class UniMain extends UniNode{
 	Timer walk = new Timer(0);//walking
 	Timer take = new Timer(0);//taking horn
 	UniMethod Method = new UniMethod(ctx);
+	Bob summon = new Bob(ctx);
 	final Tile altarLoc = new Tile(3019,4408,0);//5603 - unicow
 	int foodID = 373;
 	public int r1 = 0;//for random nums when click
 	public int r0 = 0;
 	public int decide = 0;
 	public Tile garbageLoc;
+	
+	
 	@Override
 	public boolean activate() {
 		return !DeltaUniBody.bank;
@@ -66,12 +68,6 @@ public class UniMain extends UniNode{
 		if(decide == 0 && !ctx.widgets.get(1184,0).isVisible()){
 			decide = Random.nextInt(1, 3);
 		}
-		//if(Method.getInteractingNPC()!=null){
-		//	System.out.println("Yes");
-		//}else System.out.println("No");
-		
-		//for a combat test
-		//Method.fightNPC(npcs.GUARD.getID());
 		
 		while(ctx.players.local().getHealthPercent()<50){
 			//eat food
@@ -87,18 +83,37 @@ public class UniMain extends UniNode{
 			
 			if(Method.gItemIsNotNull(237)||Method.gItemIsNotNull(238)){//horn + noted horn
 				if(Method.backPackIsFull()){
+				//System.out.println("Space: "+ctx.summoning.getFamiliar().getBoBSpace() + " : ");
+							//Method.inventoryGetCount(237);
+					if(DeltaUniBody.Bob&&ctx.summoning.isFamiliarSummoned() && 
+							Method.inventoryGetCount(items.HORN.getID())>ctx.summoning.getFamiliar().getBoBSpace()&&
+							Bob.familiarItem==-1){
+						Method.state("Giving familiar unicorn horns");
+						summon.give(237, ctx.summoning.getNpc().getId());
+					}else if(summon.SUMMONING_CLOSEBUTTON.isVisible()){
+						Method.state("Closing interface");
+						summon.SUMMONING_CLOSEBUTTON.click();
+					}else
 					if(Method.inventoryGetCount(DeltaUniBody.foodID)>1){
 					Method.interactInventory(foodID, "Eat", "");
 					}else Method.interactInventory(1739, "Drop", "Cowhide");
 				}else 
 				for(GroundItem horn: ctx.groundItems.select().id(237,238).nearest()){
+					if(summon.SUMMONING_CLOSEBUTTON.isVisible()){
+						Method.state("Closing interface");
+						summon.SUMMONING_CLOSEBUTTON.click();
+					}else
 					if(!take.isRunning()){
 					if(Method.gItemIsNotNull(10859)&&(Method.getGroundItem(10859).getLocation().distanceTo(horn.getLocation())>1)||//tea
 							Method.gItemIsNotNull(10878)&&(Method.getGroundItem(10878).getLocation().distanceTo(horn.getLocation())>1)){//bag
 						System.out.println("Taking horn via mass-clicking 1");
+						if(!horn.isOnScreen())
+							ctx.camera.turnTo(horn);
 						horn.interact("Take");
 					}else if(!Method.gItemIsNotNull(10859)&&!Method.gItemIsNotNull(10878)){
 						System.out.println("Taking horn via mass-clicking 2");
+						if(!horn.isOnScreen())
+							ctx.camera.turnTo(horn);
 						horn.interact("Take");
 					}else if(ctx.menu.isOpen()){
 							String[] menuItems = ctx.menu.getItems();
@@ -113,7 +128,11 @@ public class UniMain extends UniNode{
 								
 							}
 							
-						}else horn.click(false);
+						}else {
+							if(!horn.isOnScreen())
+								ctx.camera.turnTo(horn);
+							horn.click(false);
+						}
 					
 					}
 				}
@@ -125,23 +144,27 @@ public class UniMain extends UniNode{
 private void clickOffMenu(GroundItem horn) {
 /*r1 & r0 are the random nums for the x, and y*/
 	
-	
-	r1 =  Random.nextInt(40,70);
-	r0 =  Random.nextInt(30,60);
+	System.out.println("Clicking off menu");
+	r1 =  Random.nextInt(70,120);
+	r0 =  Random.nextInt(90,90);
+	if(Method.gItemIsNotNull(horn.getId()))
 	ctx.mouse.move(horn.getCenterPoint().x+r0, horn.getCenterPoint().y+r1);
 		
 	}
 Timer waitInv = new Timer(0);
 	private boolean bankClauses() {
-		
 		while(ctx.widgets.get(1184,0).isVisible()){
 			Method.state("Closing dialogue");
 			if(decide==2){
-			System.out.println("Deciding to close via clicking continue");
+			//System.out.println("Deciding to close via clicking continue");
 			ctx.widgets.get(1184,11).click();
 			decide = 0;
 			}else{
-				System.out.println("Deciding to close via clicking altar again");
+				//System.out.println("Deciding to close via clicking altar again");
+				if(summon.SUMMONING_CLOSEBUTTON.isVisible()){
+					Method.state("Closing interface");
+					summon.SUMMONING_CLOSEBUTTON.click();
+				}else
 				Method.interactO(21893, "Activate", "Altar");
 				decide = 0;
 			}
@@ -151,10 +174,10 @@ Timer waitInv = new Timer(0);
 		if(Method.inventoryGetCount(items.COWHIDE.getID())==0||
 		ctx.players.local().getHealthPercent()<=40||
 				DeltaUniBody.foodSupport&&Method.inventoryGetCount(foodID)==0||
-				(!Method.npcIsNotNull(npcs.UNICOW.getID())&&
+				(ctx.summoning.isFamiliarSummoned()&&ctx.summoning.getTimeLeft()<120)||
+				(!Method.npcIsNotNull(npcs.UNICOW.getID())&&!ctx.widgets.get(1189,0).isVisible()&&
 						Method.inventoryGetCount(items.HORN.getID())==0&&!Method.gItemIsNotNull(items.HORN.getID()))){
-			System.out.println("Setting to bank");
-			Method.state("Need to bank");
+			
 			DeltaUniBody.bank  =true;
 			return true;
 		}
@@ -218,11 +241,13 @@ Timer waitInv = new Timer(0);
 
 	private void fightUnicow() {
 		Tile local = ctx.players.local().getLocation();
+		
 		if(altarLoc.distanceTo(local)<14){
-			BasicNamedQuery<Npc> cow =ctx.npcs.select().select(new Filter<Npc>() {
+			BasicNamedQuery<Npc> cow =ctx.npcs.select(new Filter<Npc>() {
 				public boolean accept(Npc g) {
-					return g.getInteracting()!=null&&g.getInteracting().equals(ctx.players.local())||
-							g.getInteracting()==null;
+					return g.getId()==npcs.UNICOW.getID()&&
+							(g.getInteracting()!=null&&g.getInteracting().equals(ctx.players.local())||
+							g.getInteracting()==null);
 				}
 		         });
 			
@@ -230,17 +255,25 @@ Timer waitInv = new Timer(0);
 			   if(Method.getInteractingNPC()==null || !ctx.players.local().isInCombat()){
 				  for(Npc c: cow){
 					  Method.state("Attacking unicow");
-					  c.interact("Attack");
+					 
+					  if(c.getId()==npcs.UNICOW.getID()){
+						  System.out.println("Attempting to use 'attack' on unicow:  "+ c.getId());
+						  c.interact("Attack");
+					  }
 				  }
-			   }else
-			   Method.fightNPC(npcs.UNICOW.getID());
+			   }else Method.fightNPC(npcs.UNICOW.getID());
 			   
-		   }else if(altarLoc.distanceTo(local)<7){
+		   }else if(summon.SUMMONING_CLOSEBUTTON.isVisible()){
+				Method.state("Closing interface");
+				summon.SUMMONING_CLOSEBUTTON.click();
+			}else if(altarLoc.distanceTo(local)<7){
 			   Method.state("Clicking altar");
 			  Method.interactO(21893, "Activate", "Altar");
+			  waitInv = new Timer(3000);
 		   }else if(altarLoc.getMatrix(ctx).isOnScreen()){
 			   Method.state("Clicking altar");
 			   Method.interactO(21893, "Activate", "Altar");
+			   waitInv = new Timer(3000);
 		   }else if(!onMap.isRunning()){
 				Method.clickOnMap(altarLoc.randomize(1, 2));
 				onMap = new Timer(Random.nextInt(1300, 1700));

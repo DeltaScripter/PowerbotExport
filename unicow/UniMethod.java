@@ -14,12 +14,20 @@ import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.wrappers.TilePath;
 
 public class UniMethod extends MethodProvider{
 
 	public UniMethod(MethodContext arg0) {
 		super(arg0);
 	}
+	public boolean walk(final Tile[] PATH, String dest) {
+		DeltaUniBody.state = dest;
+	     TilePath path = ctx.movement.newTilePath(PATH);
+	     
+	     return path.randomize(2, 3).traverse();
+	}
+
 
 	public void clickOnMap(Tile loc){
 		ctx.movement.stepTowards(loc);
@@ -260,7 +268,7 @@ public class UniMethod extends MethodProvider{
 		}
 	}
 
-	public void walk(Tile[] path, String dest) {
+	public void wahlk(Tile[] path, String dest) {
 		DeltaUniBody.state = dest;
 		ctx.movement.newTilePath(path).randomize(1, 2).traverse();
 		
