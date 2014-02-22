@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 
-import org.powerbot.client.ItemSlot;
 import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.methods.Backpack;
