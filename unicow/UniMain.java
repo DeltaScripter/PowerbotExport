@@ -88,8 +88,10 @@ public class UniMain extends UniNode{
 					if(DeltaUniBody.Bob&&ctx.summoning.isFamiliarSummoned() && 
 							Method.inventoryGetCount(items.HORN.getID())>ctx.summoning.getFamiliar().getBoBSpace()&&
 							Bob.familiarItem==-1){
-						Method.state("Giving familiar unicorn horns");
-						summon.give(237, ctx.summoning.getNpc().getId());
+					
+						while(!summon.give(237, ctx.summoning.getNpc().getId())){
+							Method.state("Giving familiar unicorn horns");
+						}
 					}else if(summon.SUMMONING_CLOSEBUTTON.isVisible()){
 						Method.state("Closing interface");
 						summon.SUMMONING_CLOSEBUTTON.click();
@@ -102,7 +104,7 @@ public class UniMain extends UniNode{
 					if(summon.SUMMONING_CLOSEBUTTON.isVisible()){
 						Method.state("Closing interface");
 						summon.SUMMONING_CLOSEBUTTON.click();
-					}else
+					}else if(!buryBones())
 					if(!take.isRunning()){
 					if(Method.gItemIsNotNull(10859)&&(Method.getGroundItem(10859).getLocation().distanceTo(horn.getLocation())>1)||//tea
 							Method.gItemIsNotNull(10878)&&(Method.getGroundItem(10878).getLocation().distanceTo(horn.getLocation())>1)){//bag
@@ -141,6 +143,13 @@ public class UniMain extends UniNode{
 		
 		
 	}
+private boolean buryBones() {
+		if(Method.inventoryGetCount(526)>=1){
+			Method.interactInventory(526, "Bury", "Bones");
+		}
+		return false;
+	}
+
 private void clickOffMenu(GroundItem horn) {
 /*r1 & r0 are the random nums for the x, and y*/
 	
@@ -194,7 +203,7 @@ Timer waitInv = new Timer(0);
 			if(new Tile(2648,3213,0).distanceTo(local)<7){//by trapdoor
 				teleported = false;
 				Method.interactO(21944, "Climb-down", "Trap-door");
-				ctx.game.sleep(3000);
+				ctx.game.sleep(1000);
 				}else if(!onMap.isRunning()){
 					Method.clickOnMap(new Tile(2648,3213,0).randomize(2, 3));
 					onMap = new Timer(Random.nextInt(1300, 1700));
@@ -238,7 +247,7 @@ Timer waitInv = new Timer(0);
 		}
 		
 	}
-
+  Timer waitFight = new Timer(0);
 	private void fightUnicow() {
 		Tile local = ctx.players.local().getLocation();
 		
@@ -251,19 +260,29 @@ Timer waitInv = new Timer(0);
 				}
 		         });
 			
-		   if(!cow.select().nearest().id(npcs.UNICOW.getID()).isEmpty()){
+		   if(!cow.select().nearest().id(npcs.UNICOW.getID()).isEmpty() && unicowIsOurs(cow)){
 			   if(Method.getInteractingNPC()==null || !ctx.players.local().isInCombat()){
 				  for(Npc c: cow){
 					  Method.state("Attacking unicow");
 					 
 					  if(c.getId()==npcs.UNICOW.getID()){
-						  System.out.println("Attempting to use 'attack' on unicow:  "+ c.getId());
-						  c.interact("Attack");
+						  ctx.game.sleep(Random.nextInt(2000, 2500));
+						  if(c.getInteracting()==null){
+							  System.out.println("Attacking unicow that is not interacting with any player");
+							  c.interact("Attack");
+						  }else if(c.getInteracting().equals(ctx.players.local())){
+							  System.out.println("Attacking unicow that is interacting with our player");
+							  c.interact("Attack");
+						  }
 					  }
 				  }
-			   }else Method.fightNPC(npcs.UNICOW.getID());
+			   }else {
+				   waitFight = new Timer(Random.nextInt(2300, 2700));
+				   Method.fightNPC(npcs.UNICOW.getID());
+			   }
 			   
-		   }else if(summon.SUMMONING_CLOSEBUTTON.isVisible()){
+		   }else if(!waitFight.isRunning())
+			   if(summon.SUMMONING_CLOSEBUTTON.isVisible()){
 				Method.state("Closing interface");
 				summon.SUMMONING_CLOSEBUTTON.click();
 			}else if(altarLoc.distanceTo(local)<7){
@@ -283,6 +302,20 @@ Timer waitInv = new Timer(0);
 			onMap = new Timer(Random.nextInt(1300, 1700));
 		}
 		
+	}
+
+	private boolean unicowIsOurs(BasicNamedQuery<Npc> cow) {
+		 for(Npc c: cow){
+			  if(c.getId()==npcs.UNICOW.getID()){
+				  if(c.getInteracting()==null){
+					  return true;
+				  }else if(c.getInteracting().equals(ctx.players.local())){
+					 return true;
+				  }
+				  
+			  }
+		  }
+		return false;
 	}
 
 }

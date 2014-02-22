@@ -22,7 +22,7 @@ import unicow.UniData.items;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Unicows", 
-description = "Kills Unicows; gathers unicorn horns for 1M+ profit/hr!", 
+description = "Kills Unicows; gathers unicorn horns for 1-2M+ GP/hr!", 
 website = "http://www.powerbot.org/community/topic/1146188-delta-unicow-kills-unicows-takes-unicorn-horns/", version = 1,hidden  =false, topic =1146188)
 public class DeltaUniBody extends PollingScript implements PaintListener{
 	

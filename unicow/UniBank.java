@@ -103,8 +103,9 @@ public class UniBank extends UniNode{
 					if(!Method.bankContains(items.COWHIDE.getID())||
 							(!Method.bankContains(items.HORN.getID())&&
 									Method.inventoryGetCount(items.HORN.getID())<1)||
+									(DeltaUniBody.Bob&&!Method.bankContains(DeltaUniBody.pouchID))||
 							DeltaUniBody.foodSupport&&!Method.bankContains(DeltaUniBody.foodID)){
-						System.out.println("Out of some item, shuttong down");
+						System.out.println("Out of some item, shuttong down, :" );
 						DeltaUniBody.e  =true;
 					}
 					
@@ -115,7 +116,7 @@ public class UniBank extends UniNode{
 					
 					if(Method.inventoryGetCount(items.HORN.getID())==1){
 						if(Method.inventoryGetCount(items.COWHIDE.getID())==15&&DeltaUniBody.foodSupport||
-								Method.inventoryGetCount(items.COWHIDE.getID())==27&&!DeltaUniBody.foodSupport){
+								Method.inventoryGetCount(items.COWHIDE.getID())==15&&!DeltaUniBody.foodSupport){
 							
 							if(Method.inventoryGetCount(DeltaUniBody.foodID)>=10 || !DeltaUniBody.foodSupport){
 								ctx.bank.close();
@@ -129,9 +130,9 @@ public class UniBank extends UniNode{
 							   if(Method.inventoryGetCount(items.COWHIDE.getID())>15){
 								   ctx.bank.deposit(items.COWHIDE.getID(), 27);
 								}else ctx.bank.withdraw(items.COWHIDE.getID(), 15-Method.inventoryGetCount(items.COWHIDE.getID()));
-							}else if(Method.inventoryGetCount(items.COWHIDE.getID())>27){
+							}else if(Method.inventoryGetCount(items.COWHIDE.getID())>15){
 								   ctx.bank.deposit(items.COWHIDE.getID(), 28);
-								}else ctx.bank.withdraw(items.COWHIDE.getID(), 27-Method.inventoryGetCount(items.COWHIDE.getID()));
+								}else ctx.bank.withdraw(items.COWHIDE.getID(), 15-Method.inventoryGetCount(items.COWHIDE.getID()));
 						}
 					}else
 					if(Method.inventoryGetCount(items.HORN.getID())>1){
@@ -145,8 +146,10 @@ public class UniBank extends UniNode{
 				Method.clickOnMap(new Tile(3448,3719,0).randomize(2, 3));
 				map = new Timer(Random.nextInt(1200, 1600));
 			}
-		}else if(ctx.players.local().getAnimation()!=anim.DUNGEONEERINGTELEPORT.getID())
+		}else if(ctx.players.local().getAnimation()!=anim.DUNGEONEERINGTELEPORT.getID()){
 			Method.useEquipmentItem(items.RINGOFDUNGEONEERING.getID(), "Teleport to Daemonheim");
+			ctx.game.sleep(2000);
+		}
 	}
 	private boolean invenContains(int[] summoningPotion) {
 		for(int i: summoningPotion){
