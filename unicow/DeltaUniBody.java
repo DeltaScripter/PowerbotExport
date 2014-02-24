@@ -356,7 +356,7 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 private Font myFont = new Font("Consolas",Font.BOLD,14);
 	@Override
 	public void repaint(Graphics g) {
-		
+		if(start){
 		int seconds = (int)(runtime.getElapsed()/1000);
 		int minutes = (int)(seconds/60);
 		int hours = (int)(minutes/60);
@@ -385,8 +385,9 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 	    }
 		// (a > b) ? a : b;
 		g.setFont(myFont);
-		g.setColor(Color.GREEN);
+		g.setColor(Color.red);
 		g.drawString("State: "+state, 20, 130);
+		g.setColor(Color.GREEN);
 		g.drawString((ctx.summoning.isFamiliarSummoned() ? "Familiar time left: "+
 		(int)(ctx.summoning.getTimeLeft()/60) +" minutes": "No familiar summoned"), 20, 150);
 		//if(profit>0)
@@ -398,6 +399,8 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 		g.drawString("Amount of unicorn horns in bank: "+hornCount, 20, 210);
 		g.drawString("Porter activated? "+usePorter, 20, 230);
 		g.drawString("Bank location: "+bankLocation, 20, 250);
+		g.drawString("Inventory deposited?: "+UniBank.once, 20, 270);
 		
+	}
 	}
 }

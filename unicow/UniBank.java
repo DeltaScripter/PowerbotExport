@@ -27,7 +27,7 @@ public class UniBank extends UniNode{
 		return DeltaUniBody.bank;
 	}
 
-	boolean once = false;
+	static boolean once = false;
 	@Override
 	public void execute() {
 		//if(dungeoneeringRing)
@@ -143,7 +143,9 @@ public class UniBank extends UniNode{
 							}
 								
 						}else {
+							Method.state("Out of dueling rings! stopping script");
 							System.out.println("Out of duelling rings");
+							ctx.game.sleep(6000);
 							DeltaUniBody.e = true;
 							break;
 						}
@@ -169,7 +171,9 @@ public class UniBank extends UniNode{
 									Method.inventoryGetCount(items.HORN.getID())<1)||
 									(DeltaUniBody.Bob&&!Method.bankContains(DeltaUniBody.pouchID))||
 							DeltaUniBody.foodSupport&&!Method.bankContains(DeltaUniBody.foodID)){
-						System.out.println("Out of some item, shuttong down, :" );
+						Method.state("Ran out of some item! shutting down");
+						ctx.game.sleep(6000);
+						System.out.println("Out of some item, shuttong down" );
 						DeltaUniBody.e  =true;
 					}
 					
@@ -178,11 +182,14 @@ public class UniBank extends UniNode{
 						ctx.bank.deposit(238, 28);//noted horns
 					}
 					while(DeltaUniBody.usePorter&&Method.inventoryGetCount(items.PORTER.getID())<2){
+						Method.state("Withdrawing some porters");
 						System.out.println("No porters, withdrawing");
 						if(Method.bankContains(items.PORTER.getID())){
 						ctx.bank.withdraw(items.PORTER.getID(), 2);
 						}else {
+							Method.state("Out of porters! stopping script");
 							System.out.println("Out of porters");
+							ctx.game.sleep(6000);
 							DeltaUniBody.e = true;
 							break;
 						}
@@ -190,31 +197,45 @@ public class UniBank extends UniNode{
 					
 					if(Method.inventoryGetCount(items.HORN.getID())==1){
 						if(Method.inventoryGetCount(items.COWHIDE.getID())==15&&DeltaUniBody.foodSupport||
-								Method.inventoryGetCount(items.COWHIDE.getID())==24&&!DeltaUniBody.foodSupport){
+								Method.inventoryGetCount(items.COWHIDE.getID())>=23&&!DeltaUniBody.foodSupport){
 							
 							if(Method.inventoryGetCount(DeltaUniBody.foodID)>=8 || !DeltaUniBody.foodSupport){
-								ctx.bank.close();
+								Method.state("Finished banking");
+								if(ctx.bank.close()){
 								System.out.println("Done");
 								once = false;
 								checkPorter = false;
 								hasDuellingRing = false;
 								DeltaUniBody.bank = false;
+								}
 							}else ctx.bank.withdraw(DeltaUniBody.foodID, 10);
 							
 						}else{
 						if(DeltaUniBody.foodSupport){
 							   if(Method.inventoryGetCount(items.COWHIDE.getID())>15){
+								   Method.state("Food support active, too many cowhides taken out - depositing");
 								   ctx.bank.deposit(items.COWHIDE.getID(), 27);
-								}else ctx.bank.withdraw(items.COWHIDE.getID(), 15-Method.inventoryGetCount(items.COWHIDE.getID()));
+								}else {
+									Method.state("Withdrawing cowhides for food support");
+									ctx.bank.withdraw(items.COWHIDE.getID(), 15-Method.inventoryGetCount(items.COWHIDE.getID()));
+								}
 							}else if(Method.inventoryGetCount(items.COWHIDE.getID())>24){
+								Method.state("Too many cowhides taken out, depositing them back in");
 								   ctx.bank.deposit(items.COWHIDE.getID(), 28);
-								}else ctx.bank.withdraw(items.COWHIDE.getID(), 24-Method.inventoryGetCount(items.COWHIDE.getID()));
+								}else {
+									Method.state("Withdrawing cowhides");
+									ctx.bank.withdraw(items.COWHIDE.getID(), 24-Method.inventoryGetCount(items.COWHIDE.getID()));
+								}
 						}
 					}else
 					if(Method.inventoryGetCount(items.HORN.getID())>1){
 						int num = Method.inventoryGetCount(items.HORN.getID());
+						Method.state("Depositing unicorn horns");
 						ctx.bank.deposit(items.HORN.getID(), num-1);
-					}else ctx.bank.withdraw(items.HORN.getID(), 1);
+					}else {
+						Method.state("Withdrawing unicorn horns");
+						ctx.bank.withdraw(items.HORN.getID(), 1);
+					}
 						
 					
 				}

@@ -206,16 +206,17 @@ Timer waitInv = new Timer(0);
 		}
 		if(!waitInv.isRunning())
 		if(Method.inventoryGetCount(items.COWHIDE.getID())==0||
-		ctx.players.local().getHealthPercent()<=40||
 				DeltaUniBody.foodSupport&&Method.inventoryGetCount(foodID)==0||
-				(ctx.summoning.isFamiliarSummoned()&&ctx.summoning.getTimeLeft()<120)||
+				DeltaUniBody.Bob&&(ctx.summoning.isFamiliarSummoned()&&ctx.summoning.getTimeLeft()<120)||
 				(!Method.npcIsNotNull(npcs.UNICOW.getID())&&!ctx.widgets.get(1189,0).isVisible()&&
 						Method.inventoryGetCount(items.HORN.getID())==0&&!Method.gItemIsNotNull(items.HORN.getID()))){
+			Method.state("Setting to bank again");
 			wearingPorter = false;
 			DeltaUniBody.bank  =true;
 			return true;
 		}
 		if(Method.getInteractingNPC()==null && !ctx.players.local().isIdle()){
+			Method.state("Boosting timer");
 			System.out.println("Boosting the timer for waiting combat");
 			waitInv = new Timer(Random.nextInt(3300, 3600));
 			return false;
