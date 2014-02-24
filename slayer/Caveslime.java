@@ -16,7 +16,7 @@ public class Caveslime extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==21&&ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="cave slime" && ctx.settings.get(183)!=0;
 	}
 
 	Tile[] myTiles = new Tile[] { new Tile(3228, 3220, 0), new Tile(3233, 3216, 0), new Tile(3234, 3210, 0), 
@@ -32,7 +32,7 @@ public class Caveslime extends SlayerNode{
 	@Override
 	public void execute() {
 		Tile local = ctx.players.local().getLocation();
-		
+		System.out.println("HEE");
 		if(slayerbody.goBank){
 			m.bankItems(bankItems, amountOfItem);
 		}else if(m.inventoryContains(596)){//unlit torch

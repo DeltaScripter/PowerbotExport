@@ -19,7 +19,7 @@ public class UniData {
 	}
 	public enum anim{
 		
-		DUNGEONEERINGTELEPORT(13652);
+		DUNGEONEERINGTELEPORT(13652), CASTLEWARS(9603);
 		
 		int id;
 		anim(int id){
@@ -33,7 +33,7 @@ public class UniData {
 	public enum items{
 		
 		RINGOFDUNGEONEERING(15707),ARDOUGNECAPE1(15345),COWHIDE(1739),
-		HORN(237);
+		HORN(237),PORTER(29275);
 		
 		int id;
 		items(int id){

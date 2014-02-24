@@ -182,7 +182,6 @@ public class slayerbody extends PollingScript implements PaintListener{
 		
 		@Override
 		public void execute() {
-		  
 			if(ctx.settings.get(183)==0){
 				currentTask = "Finished task, getting new one";
 				ts = "";
@@ -193,12 +192,36 @@ public class slayerbody extends PollingScript implements PaintListener{
 					System.out.println("ts:" + ts);
 				}else m.interactInventory(4155, "Kills-left", "Enchanted gem");
 			}
-			if(ts.contains("harpie bug swarms")){//Banshees, need ear mufflers/some helmet?
+			if(ts.contains("harpie bug swarms")){//harpie bug swarms - unknown requirement
 				   currentTask = "harpie bug swarms";
-		    }else if(ts.contains("zombies")){//Zombies
+		    }else if(ts.contains("zombies")){//Zombies - no requirements
 				currentTask = "zombies";
-		    }else if(ts.contains("spider")){//Spiders
+		    }else if(ts.contains("spider")){//Spiders - no requirements
 				currentTask = "spider";
+		    }else if(ts.contains("bats")){//Bats - no requirements
+				currentTask = "bats";
+		    }else if(ts.contains("dwarves")){//Dwarves - no requirements
+				currentTask = "dwarves";
+		    }else if(ts.contains("trolls")){//Trolls - no requirements
+				currentTask = "trolls";
+		    }else if(ts.contains("dogs")){//Trolls - no requirements
+				currentTask = "dogs";
+		    }else if(ts.contains("desert lizards")){//Desert lizards - waterskins(optional), 'ice coolers' for killing them
+				currentTask = "desert lizards";
+		    }else if(ts.contains("banshee")){////Banshees - need ear mufflers
+				currentTask = "banshee";
+		    }else if(ts.contains("bears")){////Bears - no requirements
+				currentTask = "bears";
+		    }if(ts.contains("grotworms")){//Grotworms - no requirements
+				currentTask = "grotworms";
+			}else if((ts.contains("birds"))){//Birds - no requirements
+				currentTask = "birds";
+		    }else if((ts.contains("cavebugs"))){//Cave bugs - lit torch
+				currentTask = "cavebugs";
+		    }else if((ts.contains("cave slime"))){//Cave slime - lit torch
+				currentTask = "cave slime";
+		    }else if((ts.contains("goblins"))){//Goblins - no requirements
+				currentTask = "goblins";
 		    }/*
 			else if((ctx.settings.get(2091)>>push&mask)==2){//Crawling hands
 				currentTask = "Crawling hands";
@@ -271,11 +294,7 @@ public class slayerbody extends PollingScript implements PaintListener{
 		    }else if((ctx.settings.get(2091)>>push&mask)==23){//Trolls
 				currentTask = "Trolls";
 		    }else */
-		    if(ts.contains("grotworms")){//Grotworms
-				currentTask = "grotworms";
-			}else if((ts.contains("birds"))){//Birds
-				currentTask = "birds";
-		    }/*
+		    /*
 			else if((ctx.settings.get(2091)>>push&mask)==25){
 				if(master=="Vannaka")
 		    		currentTask = "Pyrefiends";

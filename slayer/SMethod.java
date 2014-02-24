@@ -16,6 +16,8 @@ import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.TilePath;
 
+import unicow.DeltaUniBody;
+
 
 public class SMethod extends MethodProvider{
 
@@ -113,6 +115,7 @@ public class SMethod extends MethodProvider{
 					break;
 				}
 				if(ctx.bank.depositInventory()){
+					System.out.println("Deposited inventory");
 					state("Depositing");
 					slayerbody.onceDepositInventory = true;
 				}
@@ -126,8 +129,10 @@ public class SMethod extends MethodProvider{
 			//Grabs the items we need from the bank
 			for(int i = 0; i<bankItems.length;){
 				
-				if(!ctx.bank.isOpen())
+				if(!ctx.bank.isOpen()){
+					System.out.println("Bank is not open, breaking for loop");
 					break;
+				}
 				
 				if(!itemsInBank.contains(bankItems[i])){
 					System.out.println("Cannot find item with ID: " + bankItems[i]);
@@ -146,7 +151,8 @@ public class SMethod extends MethodProvider{
 					ctx.game.sleep(2000);
 				}
 			}
-			while(inventoryGetCount(slayerbody.FOODID)<(25 - (bankItems.length+10))){
+			while(inventoryGetCount(slayerbody.FOODID)<(10)){
+				System.out.println("Withdrawing food");
 				state("Attempting to withdraw food");
 				if(!ctx.bank.isOpen()){
 					System.out.println("Bank is closed, breaking");
@@ -156,8 +162,17 @@ public class SMethod extends MethodProvider{
 					System.out.println("Out of food!, breaking out of loop");
 					break;
 				}
-				System.out.println("Taking out "+(25 - (bankItems.length+10) -inventoryGetCount(slayerbody.FOODID))+ " of food");
-				ctx.bank.withdraw(slayerbody.FOODID, ((25 - (bankItems.length+10)) -inventoryGetCount(slayerbody.FOODID)));
+				//System.out.println("Taking out "+(25 - (bankItems.length+10) -inventoryGetCount(slayerbody.FOODID))+ " of food");
+				ctx.bank.withdraw(slayerbody.FOODID, (10));
+			}
+			while(inventoryGetCount(slayerbody.FOODID)>(10)){
+				System.out.println("Depositing food; too much in inventory - need 10");
+				if(!ctx.bank.isOpen()){
+					System.out.println("Bank is closed, breaking");
+					break;
+				}
+				//System.out.println("Taking out "+(25 - (bankItems.length+10) -inventoryGetCount(slayerbody.FOODID))+ " of food");
+				ctx.bank.deposit(slayerbody.FOODID, (inventoryGetCount(slayerbody.FOODID)-10));
 			}
 			once = false;
 			slayerbody.goBank = false;
@@ -482,13 +497,70 @@ public class SMethod extends MethodProvider{
 			}
 		
 	}
-
 	Timer waitClick = new Timer(0);
+	public void fightNPC(int id, String action) {
+		
+		if(ctx.combatBar.isExpanded()){
+			
+			if(getInteractingNPC()==null && !waitClick.isRunning()){//if not in combat
+				for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
+					if(enemy.getLocation().distanceTo(ctx.players.local().getLocation())<7){
+						//DeltaUniBody.state = "Attacking npc";
+						ctx.game.sleep(2000);
+						npcInteract(enemy.getId(),"Attack");
+					}else ctx.movement.stepTowards(enemy.getLocation());
+				}
+			}else
+		for(int i = 0; i<9;i++){
+			System.out.println("Inside for loop for fighting");
+			//DeltaUniBody.state = "Fighting NPC";
+			if(ctx.players.local().getHealthPercent()<40){
+				System.out.println("Breaking; too low health");
+				break;
+			}
+			
+			if(getInteractingNPC()==null){
+				System.out.println("Breaking for loop, not in combat");
+				waitClick = new Timer(2000);
+				break;
+			}
+			
+			if(!ctx.players.local().isInCombat()){//in case we can't reach the cow + its attacking us
+				for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
+					if(enemy.getLocation().distanceTo(ctx.players.local().getLocation())<7&& !waitClick.isRunning()){
+						//DeltaUniBody.state = "Attacking npc";
+						npcInteract(enemy.getId(),"Attack");
+					}else ctx.movement.stepTowards(enemy.getLocation());
+				}
+			}else
+			if(ctx.combatBar.getActionAt(i).isReady()){
+				if(!waitClick.isRunning()){
+				
+							if (ctx.combatBar.getActionAt(i).select(true)) {
+								i++;
+								waitClick = new Timer(Random.nextInt(750, 1500));
+								ctx.game.sleep(Random.nextInt(400, 200));
+							} else {
+								ctx.combatBar.getActionAt(i).getComponent().click();
+								i++;
+								waitClick = new Timer(Random.nextInt(750, 1500));
+							}
+						}
+			}else i++;
+			
+			
+		}	
+			
+			
+		}else System.out.println("Please open the actionbar");
+		
+	}
+	/*
 	public void fightNPC(int id, String action) {
 		System.out.println("Inside fight npc with normal fight");
 		if(ctx.combatBar.isExpanded()){
 			//System.out.println("ID: "+getInteractingNPCID());
-			if(!ctx.players.local().isInCombat()){//if not in combat
+			if(!ctx.players.local().isInCombat() || getInteractingNPC()==null){//if not in combat
 				System.out.println("Player not in combat, attempting to fight");
 				for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
 					if(enemy.getLocation().distanceTo(ctx.players.local().getLocation())<7){
@@ -529,7 +601,10 @@ public class SMethod extends MethodProvider{
 		}else state("Please open the action bar to continue");
 		
 	}
-	boolean doneFight = false;
+	*/
+	
+	
+	/*boolean doneFight = false;
 	Timer killTimer = new Timer(0);
 	public void fightNPC(int id, String action, boolean specialFinish) {
 		System.out.println("Inside fightNPC - with special finish");
@@ -575,6 +650,10 @@ public class SMethod extends MethodProvider{
 		}else state("Please open the action bar to continue");
 		
 	}
+	
+	*/
+	
+	
 	private boolean hasFood = true;
 	Timer combatTimer = new Timer(0);
 	public void foodSupport() {

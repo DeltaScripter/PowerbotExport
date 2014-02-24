@@ -14,7 +14,9 @@ import java.util.List;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.methods.Hud.Window;
+import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
+import org.powerbot.script.wrappers.Item;
 
 import unicow.UniData.items;
 
@@ -59,6 +61,9 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 	public static int pouchID;
 	public static boolean Bob = false;//beast of burden
 	
+	public static String bankLocation = "null";
+	public static boolean usePorter = false;
+	
 	//profit an hour
 	int tempNum = 0;
 	Timer hornCounter = new Timer(0);
@@ -68,8 +73,11 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 	private Timer minutesA;
 	@Override
 	public int poll() {
-		
-		
+		  countHornsInBank();
+		if(ctx.camera.getPitch()<60){
+			System.out.println("Setting camera");
+			ctx.camera.setPitch(Random.nextInt(65, 70));
+		}
 		if(start){
 		while(ctx.widgets.get(1477,54).isVisible()){
 			state = "Closing interface";
@@ -114,6 +122,14 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 		}
 		
 		return 400;
+	}
+	private void countHornsInBank() {
+		if(ctx.bank.isOpen()){
+			for(Item horn: ctx.bank.select().id(items.HORN.getID()).first()){
+				hornCount = horn.getStackSize();
+			}
+		}
+		
 	}
 	private void shutdown() {
 		System.out.println("Now shutting down");
@@ -167,17 +183,31 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 				if(pouchType.contains("Pack yak")){
 					pouchID = 12810;
 				}
+				if(PorterBox.isSelected()){
+					usePorter = true;
+				}
+				String bankChosen = comboBank.getSelectedItem().toString();
+				if(bankChosen.contains("Castle Wars")){
+					bankLocation = "Castle Wars";
+				}else if(bankChosen.contains("Dungeoneering")){
+					bankLocation = "Dungeoneering";
+				}
 				start = true;
 				this.dispose();
 			}
 
 			private void initComponents() {
+				// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+				// Generated using JFormDesigner Evaluation license - Christ Day
 				label1 = new JLabel();
 				strtBtn = new JButton();
 				eatFoodBox = new JCheckBox();
 				foodTypeCombo = new JComboBox<String>();
 				beastCombo = new JComboBox<String>();
 				BobBox2 = new JCheckBox();
+				PorterBox = new JCheckBox();
+				labelBank = new JLabel();
+				comboBank = new JComboBox<String>();
 
 				//======== this ========
 				Container contentPane = getContentPane();
@@ -206,16 +236,28 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 
 				//---- beastCombo ----
 				beastCombo.setModel(new DefaultComboBoxModel<String>(new String[] {
-					"Thorny snail",
-					"Spirit kalphite",
-					"Bull ant",
-					"Spirit terrorbird",
-					"War tortoise",
-					"Pack yak"
+						"Thorny snail",
+						"Spirit kalphite",
+						"Bull ant",
+						"Spirit terrorbird",
+						"War tortoise",
+						"Pack yak"
 				}));
 
 				//---- BobBox2 ----
 				BobBox2.setText("Beast of Burden?");
+
+				//---- PorterBox ----
+				PorterBox.setText("Porter support?");
+
+				//---- labelBank ----
+				labelBank.setText("Bank location");
+
+				//---- comboBank ----
+				comboBank.setModel(new DefaultComboBoxModel<String>(new String[] {
+					"Castle Wars",
+					"Dungeoneering"
+				}));
 
 				GroupLayout contentPaneLayout = new GroupLayout(contentPane);
 				contentPane.setLayout(contentPaneLayout);
@@ -225,23 +267,32 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 							.addContainerGap(103, Short.MAX_VALUE)
 							.addComponent(label1)
 							.addGap(99, 99, 99))
-						.addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-							.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+						.addGroup(contentPaneLayout.createSequentialGroup()
+							.addGap(20, 20, 20)
+							.addGroup(contentPaneLayout.createParallelGroup()
 								.addGroup(contentPaneLayout.createSequentialGroup()
-									.addContainerGap(232, Short.MAX_VALUE)
-									.addComponent(strtBtn))
-								.addGroup(GroupLayout.Alignment.LEADING, contentPaneLayout.createSequentialGroup()
-									.addGap(20, 20, 20)
-									.addGroup(contentPaneLayout.createParallelGroup()
-										.addGroup(contentPaneLayout.createSequentialGroup()
+									.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+										.addGroup(GroupLayout.Alignment.LEADING, contentPaneLayout.createSequentialGroup()
+											.addComponent(eatFoodBox)
+											.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+											.addComponent(foodTypeCombo, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))
+										.addGroup(GroupLayout.Alignment.LEADING, contentPaneLayout.createSequentialGroup()
 											.addComponent(BobBox2)
 											.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
 											.addComponent(beastCombo, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))
 										.addGroup(contentPaneLayout.createSequentialGroup()
-											.addComponent(eatFoodBox)
-											.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
-											.addComponent(foodTypeCombo, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)))))
-							.addGap(24, 24, 24))
+											.addGap(9, 9, 9)
+											.addComponent(labelBank, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+											.addGroup(contentPaneLayout.createParallelGroup()
+												.addGroup(contentPaneLayout.createSequentialGroup()
+													.addGap(0, 93, Short.MAX_VALUE)
+													.addComponent(strtBtn))
+												.addComponent(comboBank, GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))))
+									.addGap(24, 24, 24))
+								.addGroup(contentPaneLayout.createSequentialGroup()
+									.addComponent(PorterBox, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+									.addContainerGap(176, Short.MAX_VALUE))))
 				);
 				contentPaneLayout.setVerticalGroup(
 					contentPaneLayout.createParallelGroup()
@@ -250,14 +301,24 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 							.addComponent(label1)
 							.addGap(18, 18, 18)
 							.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(eatFoodBox)
-								.addComponent(foodTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-							.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+								.addComponent(foodTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(eatFoodBox))
+							.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+							.addGroup(contentPaneLayout.createParallelGroup()
 								.addComponent(beastCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(BobBox2))
-							.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-							.addComponent(strtBtn)
+							.addGroup(contentPaneLayout.createParallelGroup()
+								.addGroup(contentPaneLayout.createSequentialGroup()
+									.addGap(6, 6, 6)
+									.addComponent(PorterBox)
+									.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+									.addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+										.addComponent(labelBank)
+										.addComponent(comboBank, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+									.addGap(0, 41, Short.MAX_VALUE))
+								.addGroup(contentPaneLayout.createSequentialGroup()
+									.addGap(0, 0, Short.MAX_VALUE)
+									.addComponent(strtBtn)))
 							.addContainerGap())
 				);
 				pack();
@@ -273,10 +334,12 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 			private JComboBox<String> foodTypeCombo;
 			private JComboBox<String> beastCombo;
 			private JCheckBox BobBox2;
+			private JCheckBox PorterBox;
+			private JLabel labelBank;
+			private JComboBox<String> comboBank;
 			// JFormDesigner - End of variables declaration  //GEN-END:variables
 		}
-
-
+	  
 		public void initiateGui() {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
@@ -293,6 +356,7 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 private Font myFont = new Font("Consolas",Font.BOLD,14);
 	@Override
 	public void repaint(Graphics g) {
+		
 		int seconds = (int)(runtime.getElapsed()/1000);
 		int minutes = (int)(seconds/60);
 		int hours = (int)(minutes/60);
@@ -308,12 +372,12 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 	    if(!ctx.bank.isOpen())
 	    	once = false;
 	    if(ctx.bank.isOpen() && !once){
-	    	int hornCount = Method.inventoryGetCount(items.HORN.getID()) + Method.inventoryStackSize(items.HORN.getID()+1);
+	    	//int hornCount = Method.inventoryGetCount(items.HORN.getID()) + Method.inventoryStackSize(items.HORN.getID()+1);
 	    	if(!hornCounter.isRunning()){
 	    		    time = ((hornCounter.getElapsed())/1000);
 	    		    time = 3600/time;
-	    		    profit = time*(hornCount*4200);
-	    		    System.out.println("Profit per hour: "+ profit);
+	    		  //  profit = time*(hornCount*4200);
+	    		   // System.out.println("Profit per hour: "+ profit);
 	    		    hornCounter = new Timer(0);
 	    		    once = true;
 	    }
@@ -325,12 +389,15 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 		g.drawString("State: "+state, 20, 130);
 		g.drawString((ctx.summoning.isFamiliarSummoned() ? "Familiar time left: "+
 		(int)(ctx.summoning.getTimeLeft()/60) +" minutes": "No familiar summoned"), 20, 150);
-		if(profit>0)
-		g.drawString("Money per hour: "+(int)profit + "GP", 20, 170);
-		else g.drawString("Money per hour: Waiting..", 20, 170);
+		//if(profit>0)
+		//g.drawString("Money per hour: "+(int)profit + "GP", 20, 170);
+		//else g.drawString("Money per hour: Waiting..", 20, 170);
 		g.setColor(Color.CYAN);
 		g.drawString("Runtime: " +hours+":"+minHold +":" + secHold, 20, 110);
 		g.drawString("Food support for fighting? "+foodSupport, 20, 190);
-		g.drawString("Money made(updates at bank): "+hornCount*4102, 20, 210);
+		g.drawString("Amount of unicorn horns in bank: "+hornCount, 20, 210);
+		g.drawString("Porter activated? "+usePorter, 20, 230);
+		g.drawString("Bank location: "+bankLocation, 20, 250);
+		
 	}
 }

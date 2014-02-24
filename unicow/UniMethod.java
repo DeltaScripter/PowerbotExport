@@ -30,7 +30,11 @@ public class UniMethod extends MethodProvider{
 
 
 	public void clickOnMap(Tile loc){
-		ctx.movement.stepTowards(loc);
+		System.out.println("Trying/doing stepTowards");
+		if(!ctx.movement.stepTowards(loc)){
+			loc.randomize(2, 3).getMatrix(ctx).click();
+		}
+		
 		ctx.game.sleep(Random.nextInt(30, 60));
 	}
 	
@@ -92,6 +96,8 @@ public class UniMethod extends MethodProvider{
 				}
 			}else
 		for(int i = 0; i<9;){
+			  UniMain.waitFight = new Timer(Random.nextInt(2300, 2700));//sleeps a tiny bit after a fight
+			
 			DeltaUniBody.state = "Fighting NPC";
 			if(ctx.players.local().getHealthPercent()<40){
 				System.out.println("Breaking; too low health");
@@ -277,5 +283,35 @@ public class UniMethod extends MethodProvider{
 	public void state(String string) {
 		DeltaUniBody.state = string;
 		
+	}
+	public boolean equipmentContains(int id) {
+		if(ctx.hud.view(Window.WORN_EQUIPMENT)){
+			
+		for(Item g : ctx.equipment.select().id(id).first()){
+			if(g.getId()==id)
+				return true;
+		}
+		}
+		return false;
+	}
+	public int inventoryGetCount(int[] ringIDs) {
+		for(int i: ringIDs){
+			if(inventoryGetCount(i)>=1){
+				return inventoryGetCount(i);
+			}else if(i==ringIDs[ringIDs.length-1]){
+				return 0;
+			}
+		}
+		return 0;
+	}
+	public boolean bankContains(int[] ringIDs) {
+		for(int i: ringIDs){
+			if(bankContains(i)){
+				return true;
+			}else if(i==ringIDs[ringIDs.length-1]){
+				return false;
+			}
+		}
+		return false;
 	}
 }

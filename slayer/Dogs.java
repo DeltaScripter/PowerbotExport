@@ -16,7 +16,7 @@ public class Dogs extends SlayerNode{
 
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==6&&ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="dogs" && ctx.settings.get(183)!=0;
 	}
 
 	Tile[] myTiles = new Tile[] { new Tile(2633, 3349, 0), new Tile(2633, 3343, 0), new Tile(2635, 3337, 0), 

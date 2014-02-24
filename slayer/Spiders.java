@@ -29,7 +29,7 @@ public class Spiders extends SlayerNode{
 		
 		if(new Tile(3248,3236,0).distanceTo(local)<18){
 			teleported = false;
-			m.fightNPC(12352, "Attack");//spiders 
+			m.fightNPC(12352, "Attack" );//spiders 
 		}else if(teleported){
 			m.simpleWalk(pathToSpiders, "Walking to spiders");
 			//m.walkTo(new Tile(3248,3236,0),"lumbridge river");//river-side

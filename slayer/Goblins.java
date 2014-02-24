@@ -20,7 +20,7 @@ public class Goblins extends SlayerNode{
 			new Tile(3246, 3233, 0), new Tile(3244, 3235, 0) };
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==5 && ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="goblins" && ctx.settings.get(183)!=0;
 	}
 
 	SMethod m = new SMethod(ctx);
@@ -29,7 +29,7 @@ public class Goblins extends SlayerNode{
 	public void execute() {
    Tile local = ctx.players.local().getLocation();
 		
-		if(new Tile(3248,3236,0).distanceTo(local)<18){
+		if(new Tile(3248,3236,0).distanceTo(local)<20){
 			teleported = false;
 			for(Npc gob: ctx.npcs.select().id(11240,11253,12355,12356,12357).nearest().first()){
 				if(!ctx.players.local().isInMotion()&& m.getInteractingNPC()==null){

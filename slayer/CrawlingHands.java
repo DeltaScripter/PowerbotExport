@@ -20,7 +20,7 @@ public class CrawlingHands extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&slayerbody.mask)==2 && ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="crawlinghands" && ctx.settings.get(183)!=0;
 	}
 
 	Area otherSide = new Area(new Tile[] { new Tile(3405, 3457, 0), new Tile(3407, 3531, 0), new Tile(3390, 3553, 0), 

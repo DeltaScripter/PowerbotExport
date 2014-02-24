@@ -38,13 +38,15 @@ public class UniMain extends UniNode{
 			new Tile(2602, 3242, 0), new Tile(2607, 3242, 0), new Tile(2612, 3242, 0), 
 			new Tile(2617, 3241, 0), new Tile(2622, 3241, 0), new Tile(2626, 3239, 0), 
 			new Tile(2631, 3238, 0), new Tile(2635, 3235, 0), new Tile(2640, 3233, 0), 
-			new Tile(2644, 3230, 0), new Tile(2647, 3226, 0), new Tile(2648, 3224, 0) };
+			new Tile(2644, 3230, 0), new Tile(2647, 3226, 0), new Tile(2649, 3228, 0) };
 	
 	final Tile[] pathToTowerFromMonastry = {
 			new Tile(2614,3222,0), new Tile(2627,3222,0),
-			new Tile(2638,3224,0),new Tile(2648,3225,0)};
+			new Tile(2638,3224,0),new Tile(2649, 3228, 0)};
 
 	boolean teleported = false;
+	boolean wearingPorter = false;
+	
 	Timer onMap = new Timer(0);//for clicking on map
 	Timer walk = new Timer(0);//walking
 	Timer take = new Timer(0);//taking horn
@@ -65,8 +67,19 @@ public class UniMain extends UniNode{
 
 	@Override
 	public void execute() {
+		
 		if(decide == 0 && !ctx.widgets.get(1184,0).isVisible()){
 			decide = Random.nextInt(1, 3);
+		}
+		while(Method.inventoryGetCount(UniBank.ringIDs[1])>1||//not working
+				Method.inventoryGetCount(UniBank.ringIDs[2])>1||
+				Method.inventoryGetCount(UniBank.ringIDs[3])>1||
+				Method.inventoryGetCount(UniBank.ringIDs[4])>1||
+				Method.inventoryGetCount(UniBank.ringIDs[5])>1||
+				Method.inventoryGetCount(UniBank.ringIDs[6])>1){
+			Method.state("Wearing ring of duelling");
+			for(int id: UniBank.ringIDs)
+			Method.interactInventory(id,"Wear", "Ring");
 		}
 		
 		while(ctx.players.local().getHealthPercent()<50){
@@ -83,10 +96,9 @@ public class UniMain extends UniNode{
 			
 			if(Method.gItemIsNotNull(237)||Method.gItemIsNotNull(238)){//horn + noted horn
 				if(Method.backPackIsFull()){
-				//System.out.println("Space: "+ctx.summoning.getFamiliar().getBoBSpace() + " : ");
-							//Method.inventoryGetCount(237);
+					
 					if(DeltaUniBody.Bob&&ctx.summoning.isFamiliarSummoned() && 
-							Method.inventoryGetCount(items.HORN.getID())>ctx.summoning.getFamiliar().getBoBSpace()&&
+							Method.inventoryGetCount(items.HORN.getID())>3&&
 							Bob.familiarItem==-1){
 					
 						while(!summon.give(237, ctx.summoning.getNpc().getId())){
@@ -95,6 +107,9 @@ public class UniMain extends UniNode{
 					}else if(summon.SUMMONING_CLOSEBUTTON.isVisible()){
 						Method.state("Closing interface");
 						summon.SUMMONING_CLOSEBUTTON.click();
+					}else if(DeltaUniBody.usePorter&&Method.inventoryGetCount(items.PORTER.getID())>=1){
+						System.out.println("Attempting to wear porter");
+						Method.interactInventory(items.PORTER.getID(), "Wear", "Porter");
 					}else
 					if(Method.inventoryGetCount(DeltaUniBody.foodID)>1){
 					Method.interactInventory(foodID, "Eat", "");
@@ -119,12 +134,13 @@ public class UniMain extends UniNode{
 						horn.interact("Take");
 					}else if(ctx.menu.isOpen()){
 							String[] menuItems = ctx.menu.getItems();
-							ctx.game.sleep(400);
+							ctx.game.sleep(200);
 							for(String items: menuItems){
 								if(items.contains("Unicorn horn")){
 									ctx.menu.click(Menu.filter("Take","Unicorn horn"));
 									take = new Timer(Random.nextInt(800, 1600));
 								}else if(!take.isRunning()){
+									if(items == menuItems[menuItems.length-1])
 									clickOffMenu(horn);
 								}
 								
@@ -138,11 +154,19 @@ public class UniMain extends UniNode{
 					
 					}
 				}
-			}else fightUnicow();
+			}else if(droppedSatchels())
+				fightUnicow();
 		}else getToTower();
 		
 		
 	}
+private boolean droppedSatchels() {
+		if(Method.inventoryGetCount(10878)>=1){
+			Method.interactInventory(10878, "Drop", "Satchel");
+		}
+		return true;
+	}
+
 private boolean buryBones() {
 		if(Method.inventoryGetCount(526)>=1){
 			Method.interactInventory(526, "Bury", "Bones");
@@ -154,8 +178,8 @@ private void clickOffMenu(GroundItem horn) {
 /*r1 & r0 are the random nums for the x, and y*/
 	
 	System.out.println("Clicking off menu");
-	r1 =  Random.nextInt(70,120);
-	r0 =  Random.nextInt(90,90);
+	r1 =  Random.nextInt(390,20);
+	r0 =  Random.nextInt(90,400);
 	if(Method.gItemIsNotNull(horn.getId()))
 	ctx.mouse.move(horn.getCenterPoint().x+r0, horn.getCenterPoint().y+r1);
 		
@@ -170,6 +194,7 @@ Timer waitInv = new Timer(0);
 			decide = 0;
 			}else{
 				//System.out.println("Deciding to close via clicking altar again");
+				if(!waitFight.isRunning())
 				if(summon.SUMMONING_CLOSEBUTTON.isVisible()){
 					Method.state("Closing interface");
 					summon.SUMMONING_CLOSEBUTTON.click();
@@ -186,12 +211,13 @@ Timer waitInv = new Timer(0);
 				(ctx.summoning.isFamiliarSummoned()&&ctx.summoning.getTimeLeft()<120)||
 				(!Method.npcIsNotNull(npcs.UNICOW.getID())&&!ctx.widgets.get(1189,0).isVisible()&&
 						Method.inventoryGetCount(items.HORN.getID())==0&&!Method.gItemIsNotNull(items.HORN.getID()))){
-			
+			wearingPorter = false;
 			DeltaUniBody.bank  =true;
 			return true;
 		}
 		if(Method.getInteractingNPC()==null && !ctx.players.local().isIdle()){
-			waitInv = new Timer(Random.nextInt(2300, 2600));
+			System.out.println("Boosting the timer for waiting combat");
+			waitInv = new Timer(Random.nextInt(3300, 3600));
 			return false;
 		}
 		return false;
@@ -247,7 +273,7 @@ Timer waitInv = new Timer(0);
 		}
 		
 	}
-  Timer waitFight = new Timer(0);
+ static Timer waitFight = new Timer(0);
 	private void fightUnicow() {
 		Tile local = ctx.players.local().getLocation();
 		
@@ -276,20 +302,20 @@ Timer waitInv = new Timer(0);
 						  }
 					  }
 				  }
-			   }else {
-				   waitFight = new Timer(Random.nextInt(2300, 2700));
-				   Method.fightNPC(npcs.UNICOW.getID());
-			   }
+			   }else  Method.fightNPC(npcs.UNICOW.getID());
+			   
 			   
 		   }else if(!waitFight.isRunning())
 			   if(summon.SUMMONING_CLOSEBUTTON.isVisible()){
 				Method.state("Closing interface");
 				summon.SUMMONING_CLOSEBUTTON.click();
-			}else if(altarLoc.distanceTo(local)<7){
+			}else if(altarLoc.distanceTo(local)<6){
+				System.out.println("Clicking the altar");
 			   Method.state("Clicking altar");
 			  Method.interactO(21893, "Activate", "Altar");
 			  waitInv = new Timer(3000);
-		   }else if(altarLoc.getMatrix(ctx).isOnScreen()){
+		   }else if(altarLoc.getMatrix(ctx).isInViewport() && ctx.camera.setPitch(50)){
+			   System.out.println("Clicking the altar");
 			   Method.state("Clicking altar");
 			   Method.interactO(21893, "Activate", "Altar");
 			   waitInv = new Timer(3000);

@@ -30,6 +30,7 @@ public class getRequiredItems extends SlayerNode{
 			 m.interactInventory(8009,"Break", "Falador tablet");
 		}else
 		while(slayerbody.goBank){
+			System.out.println("Trying to bank - getrequired items");
 			if(ctx.hud.isVisible(Window.FRIENDS)){
 				System.out.println("Breaking friends");
 				break;

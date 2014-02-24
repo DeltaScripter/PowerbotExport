@@ -20,7 +20,7 @@ public class Trolls extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==23&&ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="trolls" && ctx.settings.get(183)!=0;
 	}
 
 	@Override

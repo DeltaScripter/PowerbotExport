@@ -38,7 +38,7 @@ public class DesertLizards extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==15 && ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="desert lizards" && ctx.settings.get(183)!=0;
 	}
 
 	private int[] bankItems = {1823,6696};//water skins & ice cooler
@@ -69,7 +69,7 @@ public class DesertLizards extends SlayerNode{
 				}else if(liz.getHealthPercent()<2){
 					m.state("Using Ice cooler on lizard");
 					m.useItemOnNpc(6696, liz.getId(), "Use");
-				}else m.fightNPC(liz.getId(), "Attack", true);
+				}else m.fightNPC(liz.getId(), "Attack");
 			}
 		}else if(teleported){
 			m.simpleWalk(pathToLizards,"Walking to lizard area");

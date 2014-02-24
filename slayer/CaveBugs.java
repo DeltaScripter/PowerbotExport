@@ -21,7 +21,7 @@ public class CaveBugs extends SlayerNode{
 	private int[] amountOfItem = {1};
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==14&&ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="cavebugs" && ctx.settings.get(183)!=0;
 	}
 
 	Tile[] myTiles = new Tile[] { new Tile(3228, 3220, 0), new Tile(3233, 3216, 0), new Tile(3234, 3210, 0), 
