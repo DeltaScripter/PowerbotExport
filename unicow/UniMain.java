@@ -227,7 +227,7 @@ Timer waitInv = new Timer(0);
 	private void getToTower() {
 		Tile local = ctx.players.local().getLocation();
 		if(new Tile(2649,3224,0).getMatrix(ctx).isReachable()){//inside tower
-			if(new Tile(2648,3213,0).distanceTo(local)<7){//by trapdoor
+			if(new Tile(2648,3213,0).distanceTo(local)<6){//by trapdoor
 				teleported = false;
 				Method.interactO(21944, "Climb-down", "Trap-door");
 				ctx.game.sleep(1000);
@@ -310,13 +310,13 @@ Timer waitInv = new Timer(0);
 			   if(summon.SUMMONING_CLOSEBUTTON.isVisible()){
 				Method.state("Closing interface");
 				summon.SUMMONING_CLOSEBUTTON.click();
-			}else if(altarLoc.distanceTo(local)<6){
-				System.out.println("Clicking the altar");
+			}else if(altarLoc.distanceTo(local)<5){
+				System.out.println("Clicking the altar from distance");
 			   Method.state("Clicking altar");
 			  Method.interactO(21893, "Activate", "Altar");
 			  waitInv = new Timer(3000);
-		   }else if(altarLoc.getMatrix(ctx).isInViewport() && ctx.camera.setPitch(50)){
-			   System.out.println("Clicking the altar");
+		   }else if(altarLoc.getMatrix(ctx).isInViewport()&&ctx.camera.setPitch(50)){
+			   System.out.println("Clicking the altar from viewport");
 			   Method.state("Clicking altar");
 			   Method.interactO(21893, "Activate", "Altar");
 			   waitInv = new Timer(3000);

@@ -84,7 +84,6 @@ public class UniMethod extends MethodProvider{
 	Timer waitClick = new Timer(0);
 	public void fightNPC(int id) {
 		
-		if(ctx.combatBar.isExpanded()){
 			
 			if(getInteractingNPC()==null && !waitClick.isRunning()){//if not in combat
 				for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
@@ -96,7 +95,7 @@ public class UniMethod extends MethodProvider{
 				}
 			}else
 		for(int i = 0; i<9;){
-			  UniMain.waitFight = new Timer(Random.nextInt(2300, 2700));//sleeps a tiny bit after a fight
+			  UniMain.waitFight = new Timer(Random.nextInt(3600, 4300));//sleeps a tiny bit after a fight
 			
 			DeltaUniBody.state = "Fighting NPC";
 			if(ctx.players.local().getHealthPercent()<40){
@@ -139,7 +138,6 @@ public class UniMethod extends MethodProvider{
 		}	
 			
 			
-		}else System.out.println("Please open the actionbar");
 		
 	}
 	public boolean equipItemIsNotNull(int id) {
@@ -235,7 +233,7 @@ public class UniMethod extends MethodProvider{
 		ArrayList<String> actions = new ArrayList<String>();
 		for(GameObject y: ctx.objects.select().id(id).nearest().first()){
 	
-					if (y.isOnScreen()) {
+					if (y.isInViewport()) {
 						if(!interactO.isRunning()){
 							if(y.interact(string)){
 								interactO = new Timer(Random.nextInt(1700, 2300));
