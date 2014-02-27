@@ -31,6 +31,7 @@ public class UniBank extends UniNode{
 	@Override
 	public void execute() {
 		//if(dungeoneeringRing)
+		DeltaUniBody.task = "Banking";
 		if(new Tile(3449,3719,0).getMatrix(ctx).isReachable()||//daemonheim
 				new Tile(2446,3085,0).getMatrix(ctx).isReachable()){//castle wars
 			
@@ -117,6 +118,7 @@ public class UniBank extends UniNode{
 							if (Method.equipmentContains(ring)) {
 								hasDuellingRing = true;
 								System.out.println("Found duelling ring");
+								break;
 							}
 						}
 					}
@@ -241,6 +243,7 @@ public class UniBank extends UniNode{
 				}
 			}else if(!map.isRunning()){
 				if(DeltaUniBody.bankLocation.contains("Castle Wars")){
+					System.out.println("Trying to get closer to bank");
 					Method.clickOnMap(new Tile(2446,3085,0).randomize(2, 3));
 				}else if(DeltaUniBody.bankLocation.contains("Dungeoneering")){
 					Method.clickOnMap(new Tile(3448,3719,0).randomize(2, 3));

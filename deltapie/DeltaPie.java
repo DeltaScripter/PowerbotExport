@@ -15,7 +15,7 @@ import org.powerbot.script.methods.MethodContext;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "DeltaPie", 
-description = "In development", 
+description = "In development", hidden = true,
 website = "", version = 1,topic =0)
 public class DeltaPie extends PollingScript implements PaintListener{
 

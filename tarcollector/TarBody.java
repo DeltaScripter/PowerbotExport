@@ -20,7 +20,7 @@ import tarcollector.TarData.gItems;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Tar Collector", 
-description = "Collects tar in the swamp of Lumbridge, for money"
+description = "Collects tar in the swamp of Lumbridge, for money",hidden = true
 , version = 1, website = ""
 )
 public class TarBody extends PollingScript implements PaintListener{

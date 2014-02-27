@@ -31,8 +31,9 @@ import deltaartisan.ArtisanData.objectNames;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Artisan", 
-description = "Gains smithing exp by making use of the Artisan workshop", 
-website = "http://www.powerbot.org/community/topic/1130769-delta-artisan-workshop/", version = 0.13, hidden = false)
+description = "Gains smithing exp by making use of the Artisan workshop",
+website = "http://www.powerbot.org/community/topic/1130769-delta-artisan-workshop/", version = 0.13,
+hidden = true)
 public class ArtisanBody extends PollingScript implements PaintListener{
 
 	public ArtisanBody(){

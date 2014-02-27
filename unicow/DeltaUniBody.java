@@ -44,6 +44,7 @@ public class DeltaUniBody extends PollingScript implements PaintListener{
 	
 	private final List<UniNode> nodeList = Collections.synchronizedList(new ArrayList<UniNode>());
 	static String state;
+	static String task = "";
     public static boolean bank = true;
     public boolean init = false;
 	public Timer wait = new Timer(0);
@@ -400,6 +401,7 @@ private Font myFont = new Font("Consolas",Font.BOLD,14);
 		g.drawString("Porter activated? "+usePorter, 20, 230);
 		g.drawString("Bank location: "+bankLocation, 20, 250);
 		g.drawString("Inventory deposited?: "+UniBank.once, 20, 270);
+		g.drawString("Current task: "+task, 20, 290);
 		
 	}
 	}

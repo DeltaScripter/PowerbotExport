@@ -32,7 +32,7 @@ public class Caveslime extends SlayerNode{
 	@Override
 	public void execute() {
 		Tile local = ctx.players.local().getLocation();
-		System.out.println("HEE");
+		
 		if(slayerbody.goBank){
 			m.bankItems(bankItems, amountOfItem);
 		}else if(m.inventoryContains(596)){//unlit torch

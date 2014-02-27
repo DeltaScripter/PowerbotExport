@@ -67,11 +67,11 @@ public class UniMain extends UniNode{
 
 	@Override
 	public void execute() {
-		
+		DeltaUniBody.task = "Gathering horns";
 		if(decide == 0 && !ctx.widgets.get(1184,0).isVisible()){
 			decide = Random.nextInt(1, 3);
 		}
-		while(Method.inventoryGetCount(UniBank.ringIDs[1])>1||//not working
+		while(Method.inventoryGetCount(UniBank.ringIDs[1])>1||
 				Method.inventoryGetCount(UniBank.ringIDs[2])>1||
 				Method.inventoryGetCount(UniBank.ringIDs[3])>1||
 				Method.inventoryGetCount(UniBank.ringIDs[4])>1||
@@ -186,7 +186,8 @@ private void clickOffMenu(GroundItem horn) {
 	}
 Timer waitInv = new Timer(0);
 	private boolean bankClauses() {
-		while(ctx.widgets.get(1184,0).isVisible()){
+		while(ctx.widgets.get(1184,0).isValid()&&
+				ctx.widgets.get(1184,0).isVisible()){
 			Method.state("Closing dialogue");
 			if(decide==2){
 			//System.out.println("Deciding to close via clicking continue");
@@ -198,8 +199,10 @@ Timer waitInv = new Timer(0);
 				if(summon.SUMMONING_CLOSEBUTTON.isVisible()){
 					Method.state("Closing interface");
 					summon.SUMMONING_CLOSEBUTTON.click();
-				}else
+				}else{
+				Method.state("Interface open, clicking altar again");
 				Method.interactO(21893, "Activate", "Altar");
+				}
 				decide = 0;
 			}
 			

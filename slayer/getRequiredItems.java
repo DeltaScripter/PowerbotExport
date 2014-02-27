@@ -27,6 +27,7 @@ public class getRequiredItems extends SlayerNode{
 			slayerbody.goBank = true;
 		}
 		if(m.getInteractingNPC()!=null){
+			System.out.println("Breaking tablet");
 			 m.interactInventory(8009,"Break", "Falador tablet");
 		}else
 		while(slayerbody.goBank){

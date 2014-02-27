@@ -174,6 +174,7 @@ public class SMethod extends MethodProvider{
 				//System.out.println("Taking out "+(25 - (bankItems.length+10) -inventoryGetCount(slayerbody.FOODID))+ " of food");
 				ctx.bank.deposit(slayerbody.FOODID, (inventoryGetCount(slayerbody.FOODID)-10));
 			}
+			System.out.println("Finished banking");
 			once = false;
 			slayerbody.goBank = false;
 			
@@ -668,9 +669,10 @@ public class SMethod extends MethodProvider{
 				combatTimer = new Timer(4000);
 		}
 		if(slayerbody.FOOD_FEATURE) {
-			if (slayerbody.health<55) {
+			if (ctx.players.local().getHealthPercent()<55) {
 				if(hasFood){
 				if(inventoryContains(slayerbody.FOODID)){
+					System.out.println("Attempting to eat food");
 					state("Food support initiated");
 					interactInventory(slayerbody.FOODID, "Eat","Food");
 					ctx.environment.sleep(1700, 2000);
@@ -712,6 +714,7 @@ public class SMethod extends MethodProvider{
 	//	System.out.println("Inside interacting inventory");
 		 if(!timer.isRunning()){
 		for(Item t : ctx.backpack.select().id(i).first()){
+			System.out.println("Inside interact inventory");
 			//System.out.println(ctx.widgets.get(1477,122).getChild(0).getBoundingRect().getCenterY());
 			if(ctx.hud.view(Window.BACKPACK) && closeInterfaces() && ctx.widgets.get(1473,7).contains(
 				t.getComponent().getCenterPoint())){
