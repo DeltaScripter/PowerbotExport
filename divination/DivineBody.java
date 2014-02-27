@@ -34,7 +34,7 @@ import divination.DivineData.wisps;
 
 
 
-@org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
+@org.powerbot.script.Manifest(name = "Delta Divinity", 
 description = "Collects all types of energy; harvest and uses energy to your choosing, earn 200-300k/hr!",
 topic = 1130348
 )
