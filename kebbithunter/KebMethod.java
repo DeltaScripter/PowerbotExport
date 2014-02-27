@@ -187,9 +187,9 @@ Timer timer = new Timer(0);
 				ArrayList<String> actions = new ArrayList<String>();
 				for(GameObject y: ctx.objects.select().id(id).nearest().first()){
 					KebBody.state = o;
-							if (y.isOnScreen()) {
+							if (y.isInViewport()) {
 								y.interact(string);
-							} else ctx.camera.turnTo(y);
+							} else ctx.camera.turnTo(y.getLocation().randomize(2, 3));
 						
 						}
 				
@@ -278,5 +278,13 @@ Timer timer = new Timer(0);
 		return g.count(true);
 		}
 		return 0;
+	}
+	public int backPackFreeSlots() {
+		int freeSlots = 0;
+		for(Item g : ctx.backpack.select()){
+			freeSlots+=1;
+		}
+		//System.out.println("Amount: " + freeSlots);
+		return freeSlots;
 	}
 }

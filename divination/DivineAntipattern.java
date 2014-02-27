@@ -2,7 +2,6 @@ package divination;
 
 import java.awt.Point;
 
-import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
@@ -27,7 +26,7 @@ public class DivineAntipattern extends DivineNode{
 		Point f = ctx.mouse.getLocation();
 	     Point skills = ctx.widgets.get(Window.SKILLS.getWidget(),0).getCenterPoint();
 		
-		int number = rand.nextInt(0, 45);
+		int number = Random.nextInt(0, 45);
 		Item i;
 		String st = "Performing antipattern technique";
 		switch(number){
@@ -59,7 +58,7 @@ public class DivineAntipattern extends DivineNode{
 				i.hover();
 				ctx.mouse.scroll(true);
 				ctx.game.sleep(200,2000);
-				ctx.mouse.move(f.x-rand.nextInt(0, 200),f.y+rand.nextInt(200, 250));
+				ctx.mouse.move(f.x-Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
 				ctx.game.sleep(1956,3200);
 				DivineBody.antiPattern = false;
 			
@@ -67,7 +66,7 @@ public class DivineAntipattern extends DivineNode{
 			
 		case 5:
 			DivineBody.state = st;
-			ctx.mouse.move(rand.nextInt(100, 300),rand.nextInt(100, 300));
+			ctx.mouse.move(Random.nextInt(100, 300),Random.nextInt(100, 300));
 			ctx.game.sleep(700,1000);
 			DivineBody.antiPattern = false;
 			break;
@@ -75,35 +74,35 @@ public class DivineAntipattern extends DivineNode{
 		case 6:
 			
 			DivineBody.state = st;
-			ctx.mouse.move(f.x+rand.nextInt(40, 70),f.y-rand.nextInt(20, 70));
+			ctx.mouse.move(f.x+Random.nextInt(40, 70),f.y-Random.nextInt(20, 70));
 			ctx.game.sleep(Random.nextInt(300, 1900));
 			DivineBody.antiPattern = false;
 			break;
 			
 		case 7:
 			DivineBody.state = st;
-			ctx.mouse.move(f.x-rand.nextInt(20, 100),f.y+rand.nextInt(40, 200));
+			ctx.mouse.move(f.x-Random.nextInt(20, 100),f.y+Random.nextInt(40, 200));
 			ctx.game.sleep(Random.nextInt(1300, 2900));
 			DivineBody.antiPattern = false;
 			break;
 			
 		case 8:
 			DivineBody.state = st;
-			ctx.mouse.move(f.x-rand.nextInt(20, 100),f.y+rand.nextInt(40, 200));
+			ctx.mouse.move(f.x-Random.nextInt(20, 100),f.y+Random.nextInt(40, 200));
 			ctx.game.sleep(Random.nextInt(100, 900));
 			DivineBody.antiPattern = false;
 			break;
 			
 		case 9:
 			DivineBody.state = st;
-			ctx.mouse.move(f.x+rand.nextInt(0, 200),f.y+rand.nextInt(100, 300));
+			ctx.mouse.move(f.x+Random.nextInt(0, 200),f.y+Random.nextInt(100, 300));
 			ctx.game.sleep(Random.nextInt(100, 900));
 			DivineBody.antiPattern = false;
 			break;
 			
 		case 10:
 			DivineBody.state = st;
-			ctx.mouse.move(f.x+rand.nextInt(0, 200),f.y+rand.nextInt(200, 250));
+			ctx.mouse.move(f.x+Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
 			ctx.mouse.scroll(true);
 			ctx.game.sleep(Random.nextInt(100, 900));
 			DivineBody.antiPattern = false;
@@ -115,7 +114,7 @@ public class DivineAntipattern extends DivineNode{
 				i.hover();
 				i.click(false);
 				ctx.game.sleep(200,2000);
-				ctx.mouse.move(f.x-rand.nextInt(0, 200),f.y+rand.nextInt(200, 250));
+				ctx.mouse.move(f.x-Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
 				ctx.game.sleep(1956,3200);
 				DivineBody.antiPattern = false;
 				break;
@@ -175,7 +174,7 @@ public class DivineAntipattern extends DivineNode{
 		case 17:
 			DivineBody.state = st;
 			for(GameObject g : ctx.objects.select().name("").first()){
-				if(g.isOnScreen()){
+				if(g.isInViewport()){
 					ctx.mouse.move(g);
 				}
 			}

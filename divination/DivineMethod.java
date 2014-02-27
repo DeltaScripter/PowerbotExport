@@ -96,7 +96,7 @@ Timer timer = new Timer(0);
 		public void npcInteract(String name, String string) {
 			ArrayList<String> actions = new ArrayList<String>();
 			for(Npc n : ctx.npcs.select().name(name).nearest().first()){
-					if (n.isOnScreen()) {
+					if (n.isInViewport()) {
 						n.hover();
 						String menuItems[] = ctx.menu.getItems();
 						for(String opt: menuItems){
@@ -119,7 +119,7 @@ Timer timer = new Timer(0);
 		public void npcInteract(int i, String string) {
 			ArrayList<String> actions = new ArrayList<String>();
 			for(Npc n : ctx.npcs.select().id(i).nearest().first()){
-					if (n.isOnScreen()) {
+					if (n.isInViewport()) {
 						n.hover();
 						String menuItems[] = ctx.menu.getItems();
 						for(String opt: menuItems){
@@ -179,7 +179,7 @@ Timer timer = new Timer(0);
 				ArrayList<String> actions = new ArrayList<String>();
 				for(GameObject y: ctx.objects.select().name(name).nearest().first()){
 					DivineBody.state = o;
-							if (y.isOnScreen()) {
+							if (y.isInViewport()) {
 								y.interact(string);
 							} else ctx.camera.turnTo(y);
 						

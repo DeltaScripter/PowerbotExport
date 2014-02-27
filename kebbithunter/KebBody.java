@@ -12,6 +12,7 @@ import org.powerbot.script.PollingScript;
 import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.util.Random;
@@ -21,8 +22,7 @@ import org.powerbot.script.util.Timer;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Kebbit Hunter", 
-description = "Hunts polar kebbits for fur, banks them, repeat. 200K GP/hr",topic=1134247, version = 1,
-website = "https://www.powerbot.org/community/topic/1134247-delta-kebbit-hunter-200khr-f2p-p2p-huntsbanks-furs/?hl=%2Bkebbit+%2Bhunter#entry13941698"
+description = "Hunts polar kebbits for fur, banks them, repeat. 200K GP/hr",topic=1134247, version = 1
 )
 public class KebBody extends PollingScript implements PaintListener{
 
@@ -37,6 +37,7 @@ public class KebBody extends PollingScript implements PaintListener{
 			@Override
 			public void run() {
 				
+				huntAmount = Random.nextInt(23,26);
 				runtime = new Timer(0);
 				secondsA = new Timer(0);
 				minutesA = new Timer(0);
@@ -57,7 +58,7 @@ public class KebBody extends PollingScript implements PaintListener{
 				new Tile(2895, 3504, 0), new Tile(2892, 3500, 0), new Tile(2891, 3495, 0), 
 				new Tile(2891, 3490, 0), new Tile(2893, 3485, 0), new Tile(2892, 3480, 0), 
 				new Tile(2887, 3479, 0), new Tile(2882, 3480, 0), new Tile(2877, 3479, 0), 
-				new Tile(2872, 3480, 0), new Tile(2871, 3484, 0) };
+				new Tile(3355, 3480, 0), new Tile(2871, 3484, 0) };
 	
 	public Tile pathToBank[] = {
 			new Tile(2873, 3481, 0), new Tile(2878, 3480, 0), new Tile(2883, 3479, 0), 
@@ -85,12 +86,15 @@ public class KebBody extends PollingScript implements PaintListener{
 	public int set = 0;
 	public boolean hunt = true;
 	
+	public int huntAmount = 0;//amount of fur to hunt before banking
+	public boolean allowDrop = false;//Determines when to drop items you don't need
+	
 	public int kebbitInvMonitor = 0;
 	public int kebbitCount = 0;
 	@Override
 	public int poll() {
 		
-		//System.out.println("Harvest: " +harvest);10117
+		//System.out.println("dropper: " +allowDrop);
 		if(Method.inventoryGetCount(10117)!=kebbitInvMonitor){
 			kebbitCount++;
 			kebbitInvMonitor = Method.inventoryGetCount(10117);
@@ -175,15 +179,21 @@ public class KebBody extends PollingScript implements PaintListener{
 			int dropItemIDs[] = {9986};
 			
 			calcAntiPattern();
-			
-			while(Method.inventoryContains(9986)||
-					Method.inventoryContains(526)){
+			calcDropTime();
+			while(((Method.inventoryContains(9986)||
+					Method.inventoryContains(526)) && allowDrop)||
+					(Method.backPackFreeSlots()>26)){
+				
+				if(ctx.hud.isVisible(Window.FRIENDS))
+					break;
+				
 				state  ="Dealing with items";
 				for(int dropItems: dropItemIDs)
 				Method.interactInventory(dropItems, "Drop", "Item");
 				Method.interactInventory(526, "Bury", "Bones");
+				
 			}
-			
+			allowDrop = false;
 			if(ctx.camera.getPitch()>60){
 				ctx.camera.setPitch(Random.nextInt(45, 50));
 			}else if(ctx.camera.getPitch()<30)
@@ -191,7 +201,7 @@ public class KebBody extends PollingScript implements PaintListener{
 			
 			int backPackItems;
 			backPackItems = Method.inventoryGetCount(10117);
-			if(backPackItems >= Random.nextInt(23, 24)){
+			if(backPackItems >= huntAmount){
 				hunt = false;
 			}
 			
@@ -207,7 +217,8 @@ public class KebBody extends PollingScript implements PaintListener{
 			if(ctx.settings.get(1218)==0){
 				state = "Initialize the hunt.";
 				set = 0;//reset the variable
-				catchKebbit(new Tile(2872,3488,0),66473,"Inspect");//initial hole
+				System.out.println("ontop");
+				catchKebbit(new Tile(2873,3488,0),66473,"Inspect");//initial hole
 			}
 			if((ctx.settings.get(1218)>>27&0x3) ==2){
 				catchKebbit(new Tile(2867,3483,0),66496, "Attack");//east snow pile
@@ -241,7 +252,7 @@ public class KebBody extends PollingScript implements PaintListener{
 				}else
 				if(((ctx.settings.get(1218)>>13&0x1) ==1)){
 					state = "Go to left-most rock by center";
-					checkRock(new Tile(2872,3479,0),66471);
+					checkRock(new Tile(3355,3479,0),66471);
 				}else
 				if(((ctx.settings.get(1218)>>10&0x1) ==1)){
 					state = "Go to largest rock near top";
@@ -251,7 +262,7 @@ public class KebBody extends PollingScript implements PaintListener{
 				//do set
 				if(((ctx.settings.get(1218)>>13&0x1) ==1)){
 					state = "Go to left-most rock by center";
-					checkRock(new Tile(2872,3479,0),66471);
+					checkRock(new Tile(3355,3479,0),66471);
 				}else
 				if(((ctx.settings.get(1218)>>16&0x1) ==1)){
 					state = "Go to largest rock to the left";
@@ -273,13 +284,13 @@ public class KebBody extends PollingScript implements PaintListener{
 				}else
 				if(((ctx.settings.get(1218)>>12&0x1) ==1)){
 					state = "Go to left-most rock by center";
-					checkRock(new Tile(2872,3479,0),66471);
+					checkRock(new Tile(3355,3479,0),66471);
 				}
 		    	}else if(set==6){
 				//do set
 				if(((ctx.settings.get(1218)>>13&0x1) ==1)){
 					state = "Go to left-most rock by center";
-					checkRock(new Tile(2872,3479,0),66471);
+					checkRock(new Tile(3355,3479,0),66471);
 				}else
 				if(((ctx.settings.get(1218)>>9&0x1) ==1)){
 					state = "Go to largest rock near top";
@@ -311,9 +322,20 @@ public class KebBody extends PollingScript implements PaintListener{
 
 	
 		
+		private void calcDropTime() {
+		  int randomNum  =0;
+		  randomNum = Random.nextInt(0, 24);
+		  
+		  if(randomNum==3){
+			  System.out.println("Allowing drop");
+			  allowDrop = true;
+		  }
+			
+		}
+
 		private void catchKebbit(final Tile snowTile, final int id, String action) {
 			Tile local =ctx.players.local().getLocation();
-			
+			System.out.println("Here6");
 			BasicNamedQuery<GameObject> findPile =ctx.objects.select().select(new Filter<GameObject>() {
 				public boolean accept(GameObject g) {
 					return g.getLocation().distanceTo(snowTile)<2&& g.getId()==id;
@@ -323,12 +345,17 @@ public class KebBody extends PollingScript implements PaintListener{
 				state = "Inspecting snow pile";
 				wait = new Timer(500);
 			}
+			System.out.println("Here4");
 			if(!wait.isRunning())
 				for(GameObject pile: findPile){
+					System.out.println("Here?");
 					if(pile.getLocation().distanceTo(local)<9){
-						if(pile.isOnScreen()){
-						if(pile.isValid() && pile.interact(action)){
-						wait = new Timer(Random.nextInt(1600, 1800));
+						System.out.println("Here3");
+						if(pile.isValid()&&pile.isInViewport()){
+							System.out.println("Here");
+						if(pile.interact(action)){
+							System.out.println("Here2");
+						wait = new Timer(Random.nextInt(2600, 2800));
 						}else {
 							ctx.camera.turnTo(pile.getLocation().randomize(2, 3));
 						}
@@ -356,15 +383,15 @@ public class KebBody extends PollingScript implements PaintListener{
 			if(!wait.isRunning())
 			for(GameObject rock: findRock){
 				if(rock.getLocation().distanceTo(local)<15){
-					if(rock.isOnScreen()){
-					if(rock.isValid() && rock.interact("Inspect")){
-					wait = new Timer(Random.nextInt(1700, 2500));
+					if(rock.isValid()&&rock.isInViewport()){
+					if(rock.interact("Inspect")){
+					wait = new Timer(Random.nextInt(2700, 3200));
 					}else {
-						ctx.camera.turnTo(rock.getLocation().randomize(2, 3));
+						ctx.camera.turnTo(rock.getLocation().randomize(1, 4));
 					}
-					}else ctx.camera.turnTo(rock);
+					}else ctx.camera.turnTo(rock.getLocation());
 				}else if(!waitClickMap.isRunning()){
-					ctx.movement.stepTowards(rock.getLocation().randomize(2,3));
+					ctx.movement.stepTowards(rock.getLocation().randomize(1,4));
 					waitClickMap = new Timer(Random.nextInt(1800, 2800));
 				}
 			}
@@ -431,23 +458,25 @@ private void setMouse(Graphics g) {
 		//g.drawString("Money made: "+Method.inventoryGetCount(10117)*1900 + "GP", 20, 170);
 		g.drawString("Current pattern: " +set, 20, 170);
 		g.drawString("Gathered kebbit fur: " +kebbitCount, 20, 190);
-		String moneyNum = ""+(kebbitCount * 2872);
+		String moneyNum = ""+(kebbitCount * 3355);
 		String moneyO = null;
 		if(moneyNum.length()==4){
 			DecimalFormat formatter = new DecimalFormat("#,###");
-			moneyO = formatter.format((kebbitCount * 2872));
+			moneyO = formatter.format((kebbitCount * 3355));
 		}else if(moneyNum.length()==5){
 			DecimalFormat formatter = new DecimalFormat("##,###");
-			moneyO = formatter.format((kebbitCount * 2872));
+			moneyO = formatter.format((kebbitCount * 3355));
 		}else if(moneyNum.length()==6){
 			DecimalFormat formatter = new DecimalFormat("###,###");
-			moneyO = formatter.format((kebbitCount * 2872));
+			moneyO = formatter.format((kebbitCount * 3355));
 		}else if(moneyNum.length()==7){
 			DecimalFormat formatter = new DecimalFormat("#,###,###");
-			moneyO = formatter.format((kebbitCount * 2872));
+			moneyO = formatter.format((kebbitCount * 3355));
 		}
 		
 		g.drawString("Money gained: " +moneyO + " GP", 20, 210);
+		//g.drawString("Amount of fur per trip: " +huntAmount + " kebbit furs", 20, 230);
+		//g.drawString("Free slots: " +Method.backPackFreeSlots(), 20, 250);
 		
 		
 	}

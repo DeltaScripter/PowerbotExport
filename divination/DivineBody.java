@@ -36,7 +36,7 @@ import divination.DivineData.wisps;
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Divinity", 
 description = "Collects all types of energy; harvest and uses energy to your choosing, earn 200-300k/hr!",
-topic = 1130348, version = 1.14
+topic = 1130348
 )
 public class DivineBody extends PollingScript implements PaintListener{
 
@@ -322,7 +322,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 						waiting = new Timer(Random.nextInt(2200, 2800));
 						}
 					}//in case menu wasn't open
-						if (y.isOnScreen()) {
+						if (y.isInViewport()) {
 							ctx.mouse.move(y.getLocation().getMatrix(ctx).getPoint(Random.nextDouble() * 0.2D - 0.1D,+0.10D,+100));
 							ctx.mouse.click(true);
 							waiting = new Timer(Random.nextInt(700, 1200));
@@ -374,7 +374,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 					int backPackItems;
 					backPackItems = Method.inventoryGetCount(memoryType);
 					if(backPackItems>=Random.nextInt(17, 20) && 
-							Method.objIsNotNull("Energy Rift") &&Method.getObject("Energy Rift").isOnScreen()){
+							Method.objIsNotNull("Energy Rift") &&Method.getObject("Energy Rift").isInViewport()){
 						state = "Right-clicking rift";
 						if(!ctx.menu.isOpen()){
 							System.out.println("menu isn't open: " + backPackItems);
@@ -410,17 +410,17 @@ public class DivineBody extends PollingScript implements PaintListener{
 									}
 								}
 								if(!itemList.contains("Harvest"))//if we mis-cliked and got the wrong menu to pop up..
-									if(Method.getNPC(wispKind).isOnScreen()){
+									if(Method.getNPC(wispKind).isInViewport()){
 										   ctx.mouse.click(Method.getNPC(wispKind).getCenterPoint(),false);//try click another wisp
 										   //System.out.println("Not the correct menu, clicked again");
 										}
-								}else if(Method.npcIsNotNull(wispSpring) && Method.getNPC(wispSpring).isOnScreen()&&
+								}else if(Method.npcIsNotNull(wispSpring) && Method.getNPC(wispSpring).isInViewport()&&
 										Method.getNPC(wispSpring).getLocation().distanceTo(ctx.players.local().getLocation())>1){
 									ctx.game.sleep(Random.nextInt(1350, 2000));
 									state = "Right-clicking spring";
 									if(Method.npcIsNotNull(wispSpring))
 									ctx.mouse.click(Method.getNPC(wispSpring).getCenterPoint(),false);
-								}else if(Method.getNPC(wispKind).isOnScreen()){
+								}else if(Method.getNPC(wispKind).isInViewport()){
 									ctx.game.sleep(Random.nextInt(1350, 2000));
 									state = "Right-clicking wisp";
 									if(Method.npcIsNotNull(wispKind))
@@ -554,7 +554,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 					state = string;
 					
 					if(Method.npcIsNotNull(name))
-					if(Method.getNPC(name).isOnScreen()){
+					if(Method.getNPC(name).isInViewport()){
 						Method.getNPC(name).click();
 					}else if(Method.npcIsNotNull(name)&&!ctx.movement.findPath(Method.getNPC(name).getLocation()).traverse()){
 					Method.clickOnMap(Method.getNPC(name).getLocation().randomize(4, 7));
