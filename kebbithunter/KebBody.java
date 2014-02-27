@@ -58,7 +58,7 @@ public class KebBody extends PollingScript implements PaintListener{
 				new Tile(2895, 3504, 0), new Tile(2892, 3500, 0), new Tile(2891, 3495, 0), 
 				new Tile(2891, 3490, 0), new Tile(2893, 3485, 0), new Tile(2892, 3480, 0), 
 				new Tile(2887, 3479, 0), new Tile(2882, 3480, 0), new Tile(2877, 3479, 0), 
-				new Tile(3355, 3480, 0), new Tile(2871, 3484, 0) };
+				new Tile(2872, 3480, 0), new Tile(2871, 3484, 0) };
 	
 	public Tile pathToBank[] = {
 			new Tile(2873, 3481, 0), new Tile(2878, 3480, 0), new Tile(2883, 3479, 0), 
@@ -252,7 +252,7 @@ public class KebBody extends PollingScript implements PaintListener{
 				}else
 				if(((ctx.settings.get(1218)>>13&0x1) ==1)){
 					state = "Go to left-most rock by center";
-					checkRock(new Tile(3355,3479,0),66471);
+					checkRock(new Tile(2872,3479,0),66471);
 				}else
 				if(((ctx.settings.get(1218)>>10&0x1) ==1)){
 					state = "Go to largest rock near top";
@@ -262,7 +262,7 @@ public class KebBody extends PollingScript implements PaintListener{
 				//do set
 				if(((ctx.settings.get(1218)>>13&0x1) ==1)){
 					state = "Go to left-most rock by center";
-					checkRock(new Tile(3355,3479,0),66471);
+					checkRock(new Tile(2872,3479,0),66471);
 				}else
 				if(((ctx.settings.get(1218)>>16&0x1) ==1)){
 					state = "Go to largest rock to the left";
@@ -284,13 +284,13 @@ public class KebBody extends PollingScript implements PaintListener{
 				}else
 				if(((ctx.settings.get(1218)>>12&0x1) ==1)){
 					state = "Go to left-most rock by center";
-					checkRock(new Tile(3355,3479,0),66471);
+					checkRock(new Tile(2872,3479,0),66471);
 				}
 		    	}else if(set==6){
 				//do set
 				if(((ctx.settings.get(1218)>>13&0x1) ==1)){
 					state = "Go to left-most rock by center";
-					checkRock(new Tile(3355,3479,0),66471);
+					checkRock(new Tile(2872,3479,0),66471);
 				}else
 				if(((ctx.settings.get(1218)>>9&0x1) ==1)){
 					state = "Go to largest rock near top";
