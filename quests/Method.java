@@ -278,7 +278,7 @@ public class Method extends MethodProvider{
 		 if(getInteractingNPC()!=null){//if fighting
 				combatTimer = new Timer(4000);
 		}
-		if(DeltaQuester.FOOD_FEATURE && DeltaQuester.health<55){
+		if(DeltaQuester.FOOD_FEATURE && ctx.players.local().getHealthPercent()<50){
 			if(hasFood){
 			if(inventoryContains(DeltaQuester.FOOD_ID)){
 				state("Food support initiated");
