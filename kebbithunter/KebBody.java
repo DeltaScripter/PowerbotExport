@@ -335,7 +335,6 @@ public class KebBody extends PollingScript implements PaintListener{
 
 		private void catchKebbit(final Tile snowTile, final int id, String action) {
 			Tile local =ctx.players.local().getLocation();
-			System.out.println("Here6");
 			BasicNamedQuery<GameObject> findPile =ctx.objects.select().select(new Filter<GameObject>() {
 				public boolean accept(GameObject g) {
 					return g.getLocation().distanceTo(snowTile)<2&& g.getId()==id;
@@ -345,16 +344,11 @@ public class KebBody extends PollingScript implements PaintListener{
 				state = "Inspecting snow pile";
 				wait = new Timer(500);
 			}
-			System.out.println("Here4");
 			if(!wait.isRunning())
 				for(GameObject pile: findPile){
-					System.out.println("Here?");
 					if(pile.getLocation().distanceTo(local)<9){
-						System.out.println("Here3");
 						if(pile.isValid()&&pile.isInViewport()){
-							System.out.println("Here");
 						if(pile.interact(action)){
-							System.out.println("Here2");
 						wait = new Timer(Random.nextInt(2600, 2800));
 						}else {
 							ctx.camera.turnTo(pile.getLocation().randomize(2, 3));

@@ -27,8 +27,8 @@ import org.powerbot.script.util.Timer;
 
 
 @org.powerbot.script.Manifest(name = "Delta Quester", 
-description = "Completes quests! See thread for supported quests", hidden = false,
-topic =816007)
+description = "Completes quests! See thread for supported quests",
+topic =777386)
 public class DeltaQuester extends PollingScript implements PaintListener{
 
 
@@ -37,12 +37,12 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 	public static boolean GEFeature = false;
 	public boolean useBank;
 	public static boolean ranOnce = false;
-	public static boolean checkedBank = false;//if cache bank initially
+	public static boolean checkedBank = false;
 	public boolean GEWO = false;
 	public static boolean FOOD_FEATURE = false;
 	public static int number;
 	public static boolean bankFound = false;
-	public static boolean e = false;//The intermediate between quests, resets variables
+	public static boolean e = false;
 	
 	//for paint
 	public static int progress = 0;
