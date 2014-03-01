@@ -15,6 +15,7 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.util.GeItem;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 
@@ -22,7 +23,7 @@ import org.powerbot.script.util.Timer;
 
 
 @org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Kebbit Hunter", 
-description = "Hunts polar kebbits for fur, banks them, repeat. 200K GP/hr",topic=1134247, version = 1
+description = "Hunts polar kebbits for fur, banks them, repeat. 300K GP/hr",topic=1134247, version = 1
 )
 public class KebBody extends PollingScript implements PaintListener{
 
@@ -36,6 +37,8 @@ public class KebBody extends PollingScript implements PaintListener{
 		getExecQueue(State.START).add(new Runnable() {
 			@Override
 			public void run() {
+				
+			    gePrice = GeItem.getPrice(10117);//kebbit fur
 				
 				huntAmount = Random.nextInt(23,26);
 				runtime = new Timer(0);
@@ -70,7 +73,10 @@ public class KebBody extends PollingScript implements PaintListener{
 			new Tile(2883, 3539, 0)};
 	
 	private final List<KebNode> nodeList = Collections.synchronizedList(new ArrayList<KebNode>());
+	
+	
 	public static String state;
+	public int gePrice;
 	private boolean harvest = false;
 	public static boolean antiPattern;
 	private Random rand = new Random();
@@ -217,7 +223,6 @@ public class KebBody extends PollingScript implements PaintListener{
 			if(ctx.settings.get(1218)==0){
 				state = "Initialize the hunt.";
 				set = 0;//reset the variable
-				System.out.println("ontop");
 				catchKebbit(new Tile(2873,3488,0),66473,"Inspect");//initial hole
 			}
 			if((ctx.settings.get(1218)>>27&0x3) ==2){
@@ -327,7 +332,6 @@ public class KebBody extends PollingScript implements PaintListener{
 		  randomNum = Random.nextInt(0, 24);
 		  
 		  if(randomNum==3){
-			  System.out.println("Allowing drop");
 			  allowDrop = true;
 		  }
 			
@@ -452,23 +456,24 @@ private void setMouse(Graphics g) {
 		//g.drawString("Money made: "+Method.inventoryGetCount(10117)*1900 + "GP", 20, 170);
 		g.drawString("Current pattern: " +set, 20, 170);
 		g.drawString("Gathered kebbit fur: " +kebbitCount, 20, 190);
-		String moneyNum = ""+(kebbitCount * 3355);
+		String moneyNum = ""+(kebbitCount * gePrice);
 		String moneyO = null;
 		if(moneyNum.length()==4){
 			DecimalFormat formatter = new DecimalFormat("#,###");
-			moneyO = formatter.format((kebbitCount * 3355));
+			moneyO = formatter.format((kebbitCount * gePrice));
 		}else if(moneyNum.length()==5){
 			DecimalFormat formatter = new DecimalFormat("##,###");
-			moneyO = formatter.format((kebbitCount * 3355));
+			moneyO = formatter.format((kebbitCount * gePrice));
 		}else if(moneyNum.length()==6){
 			DecimalFormat formatter = new DecimalFormat("###,###");
-			moneyO = formatter.format((kebbitCount * 3355));
+			moneyO = formatter.format((kebbitCount * gePrice));
 		}else if(moneyNum.length()==7){
 			DecimalFormat formatter = new DecimalFormat("#,###,###");
-			moneyO = formatter.format((kebbitCount * 3355));
+			moneyO = formatter.format((kebbitCount * gePrice));
 		}
 		
 		g.drawString("Money gained: " +moneyO + " GP", 20, 210);
+		g.drawString("Current price: " +gePrice + " GP", 20, 230);
 		//g.drawString("Amount of fur per trip: " +huntAmount + " kebbit furs", 20, 230);
 		//g.drawString("Free slots: " +Method.backPackFreeSlots(), 20, 250);
 		
