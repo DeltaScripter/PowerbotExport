@@ -188,7 +188,7 @@ public class KebBody extends PollingScript implements PaintListener{
 			calcDropTime();
 			while(((Method.inventoryContains(9986)||
 					Method.inventoryContains(526)) && allowDrop)||
-					(Method.backPackFreeSlots()>26)){
+					(Method.backPackFreeSlots()>24)){
 				
 				if(ctx.hud.isVisible(Window.FRIENDS))
 					break;
