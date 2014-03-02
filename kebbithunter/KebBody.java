@@ -76,6 +76,7 @@ public class KebBody extends PollingScript implements PaintListener{
 	
 	
 	public static String state;
+	public double version = 0.1;
 	public int gePrice;
 	private boolean harvest = false;
 	public static boolean antiPattern;
@@ -454,6 +455,8 @@ private void setMouse(Graphics g) {
 		
 		
 		g.setFont(myStateFont);
+		g.setColor(Color.magenta);
+		g.drawString("Current Version: " +version, 8,18);
 		g.setColor(Color.green);
 		g.drawString("State: "+state, 20, 130);
 		g.setFont(myFont);
