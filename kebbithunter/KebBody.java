@@ -186,9 +186,8 @@ public class KebBody extends PollingScript implements PaintListener{
 			
 			calcAntiPattern();
 			calcDropTime();
-			while(((Method.inventoryContains(9986)||
-					Method.inventoryContains(526)) && allowDrop)||
-					(Method.backPackFreeSlots()>24)){
+			while((hasJunkItems() && allowDrop)||
+					(hasJunkItems()&&Method.backPackFreeSlots()>24)){
 				
 				if(ctx.hud.isVisible(Window.FRIENDS))
 					break;
@@ -327,6 +326,14 @@ public class KebBody extends PollingScript implements PaintListener{
 
 	
 		
+		private boolean hasJunkItems() {
+			if((Method.inventoryContains(9986)||//meat
+					Method.inventoryContains(526))){//bones
+				return true;
+			}
+			return false;
+		}
+
 		private void calcDropTime() {
 		  int randomNum  =0;
 		  randomNum = Random.nextInt(0, 24);
