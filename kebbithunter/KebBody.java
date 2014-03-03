@@ -159,7 +159,10 @@ public class KebBody extends PollingScript implements PaintListener{
 			if(bankTile.distanceTo(local)<7){
 				if(ctx.bank.isOpen()){
 					ctx.bank.depositInventory();
-				}else Method.interactO(25688, "Bank", "Bank");
+				}else if(!wait.isRunning()){
+					Method.interactO(25688, "Bank", "Bank");
+					wait = new Timer(Random.nextInt(100, 2000));
+				}
 			}else if(!wait.isRunning()){
 				state = "Walking to bank";
 				if(!ctx.movement.findPath(bankTile.randomize(1, 2)).traverse()){
@@ -201,9 +204,9 @@ public class KebBody extends PollingScript implements PaintListener{
 			}
 			allowDrop = false;
 			if(ctx.camera.getPitch()>60){
-				ctx.camera.setPitch(Random.nextInt(45, 50));
+				ctx.camera.setPitch(Random.nextInt(40, 55));
 			}else if(ctx.camera.getPitch()<30)
-				ctx.camera.setPitch(50);
+				ctx.camera.setPitch(Random.nextInt(43, 58));
 			
 			int backPackItems;
 			backPackItems = Method.inventoryGetCount(10117);
@@ -360,8 +363,8 @@ public class KebBody extends PollingScript implements PaintListener{
 				for(GameObject pile: findPile){
 					if(pile.getLocation().distanceTo(local)<9){
 						if(pile.isValid()&&pile.isInViewport()){
-						if(pile.interact(action)){
-						wait = new Timer(Random.nextInt(2600, 2800));
+						if(!ctx.players.local().isInMotion()&&pile.interact(action)){
+						wait = new Timer(Random.nextInt(1600, 3800));
 						}else {
 							ctx.camera.turnTo(pile.getLocation().randomize(2, 3));
 						}
@@ -390,8 +393,8 @@ public class KebBody extends PollingScript implements PaintListener{
 			for(GameObject rock: findRock){
 				if(rock.getLocation().distanceTo(local)<15){
 					if(rock.isValid()&&rock.isInViewport()){
-					if(rock.interact("Inspect")){
-					wait = new Timer(Random.nextInt(2700, 3200));
+					if(!ctx.players.local().isInMotion()&&rock.interact("Inspect")){
+					wait = new Timer(Random.nextInt(1700, 3200));
 					}else {
 						ctx.camera.turnTo(rock.getLocation().randomize(1, 4));
 					}

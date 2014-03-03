@@ -184,12 +184,11 @@ Timer timer = new Timer(0);
 				return g.count(false);
 			}
 			public void interactO(final int id, final String string, final String o) {
-				ArrayList<String> actions = new ArrayList<String>();
 				for(GameObject y: ctx.objects.select().id(id).nearest().first()){
 					KebBody.state = o;
 							if (y.isInViewport()) {
 								y.interact(string);
-							} else ctx.camera.turnTo(y.getLocation().randomize(2, 3));
+							} else ctx.camera.turnTo(y.getLocation().randomize(3, 5));
 						
 						}
 				
@@ -217,13 +216,12 @@ Timer timer = new Timer(0);
 				return false;
 			}
 	public void interactInventory(final int id, final String string, final String o) {
-		ArrayList<String> actions = new ArrayList<String>();
 		for(Item t : ctx.backpack.select().id(id).first()){
 			if(ctx.hud.view(Window.BACKPACK) && ctx.widgets.get(1473,7).contains(
 				t.getComponent().getCenterPoint())){
 				t.hover();
 				t.interact(string);
-				ctx.game.sleep(300,600);
+				ctx.game.sleep(150,500);
 				 
 			}else
 			if(ctx.widgets.get(1473,7).getBoundingRect().getCenterY()>

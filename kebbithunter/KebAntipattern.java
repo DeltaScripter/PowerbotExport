@@ -7,6 +7,7 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Item;
+import org.powerbot.script.wrappers.Player;
 
 public class KebAntipattern extends KebNode{
 
@@ -26,7 +27,7 @@ public class KebAntipattern extends KebNode{
 		Point f = ctx.mouse.getLocation();
 	     Point skills = ctx.widgets.get(Window.SKILLS.getWidget(),0).getCenterPoint();
 		
-		int number = rand.nextInt(0, 45);
+		int number = rand.nextInt(0, 55);
 		Item i;
 		String st = "Performing antipattern technique";
 		switch(number){
@@ -121,7 +122,10 @@ public class KebAntipattern extends KebNode{
 				
 		case 12:
 			KebBody.state = st;
-			
+			  if(m.objIsNotNull(66946)&&m.getObject(66946).isInViewport()){
+				  m.interactO(66946, "Attack", "Attack snow");
+				  ctx.game.sleep(Random.nextInt(2300, 4000));
+			  }
 				KebBody.antiPattern = false;
 				break;
 				
@@ -157,12 +161,30 @@ public class KebAntipattern extends KebNode{
 			
 		case 17:
 			KebBody.state = st;
-			for(GameObject g : ctx.objects.select().name("").first()){
-				if(g.isOnScreen()){
+			for(GameObject g : ctx.objects.select().first()){
+				if(g.isInViewport()){
 					ctx.mouse.move(g);
 				}
 			}
 			KebBody.antiPattern = false;
+			break;
+		case 18:
+			KebBody.state = st;
+			for(Player g : ctx.players.select().first()){
+				if(g.isInViewport()){
+					ctx.mouse.move(g);
+					if(!ctx.menu.isOpen())
+					ctx.mouse.click(false);
+					ctx.game.sleep(Random.nextInt(1200, 1600));
+					ctx.mouse.move(f.x-Random.nextInt(300, 10),f.y+Random.nextInt(0, 170));
+				}
+			}
+			KebBody.antiPattern = false;
+			break;
+		case 19:
+			if(ctx.hud.view(Window.SKILLS)){
+				ctx.game.sleep(Random.nextInt(1000, 4000));
+			}
 			break;
 			
 			default:
