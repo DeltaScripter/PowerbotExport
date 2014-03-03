@@ -76,7 +76,7 @@ public class KebBody extends PollingScript implements PaintListener{
 	
 	
 	public static String state;
-	public double version = 0.1;
+	public double version = 0.1001;
 	public int gePrice;
 	private boolean harvest = false;
 	public static boolean antiPattern;
