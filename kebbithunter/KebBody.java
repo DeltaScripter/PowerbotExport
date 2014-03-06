@@ -51,8 +51,8 @@ public class KebBody extends PollingScript implements PaintListener{
 						System.out.println("Setting to bury via actionbar, slot: " + burySlot + ": " + buryAction);
 					}
 				}
-				
-			   gePrice = GeItem.getPrice(10117);//kebbit fur
+			   gePrice = 2200;
+					   //GeItem.getPrice(10117);//kebbit fur
 			    
 				huntAmount = Random.nextInt(23,26);
 				runtime = new Timer(0);
@@ -63,7 +63,6 @@ public class KebBody extends PollingScript implements PaintListener{
 				addNode(new KebAntipattern(ctx));
 				
 				kebbitInvMonitor = Method.inventoryGetCount(10117);//for counting number of kebbit furs
-				
 			}
 			
 		});
@@ -115,10 +114,13 @@ public class KebBody extends PollingScript implements PaintListener{
 	@Override
 	public int poll() {
 		
-		//System.out.println("dropper: " +allowDrop);
 		if(Method.inventoryGetCount(10117)!=kebbitInvMonitor){
 			kebbitCount++;
 			kebbitInvMonitor = Method.inventoryGetCount(10117);
+		}
+		while(ctx.widgets.get(669,1).isVisible()){//tut stuff
+			state = "Closing interface";
+			ctx.widgets.get(669,1).click();
 		}
 		while(ctx.widgets.get(1477,54).isVisible()){
 			state = "Closing interface";
@@ -387,11 +389,9 @@ public class KebBody extends PollingScript implements PaintListener{
 					if(pile.getLocation().distanceTo(local)<9){
 						if(pile.isValid()&&pile.isInViewport()){
 						if(!ctx.players.local().isInMotion()&&pile.interact(action)){
-						wait = new Timer(Random.nextInt(1600, 3800));
-						}else {
-							ctx.camera.turnTo(pile.getLocation().randomize(2, 3));
+						wait = new Timer(Random.nextInt(1200, 3800));
 						}
-						}else ctx.camera.turnTo(pile);
+						}else ctx.camera.turnTo(pile.getLocation().randomize(2, 5));
 					}else if(!waitClickMap.isRunning()){
 						ctx.movement.stepTowards(pile.getLocation());
 						waitClickMap = new Timer(Random.nextInt(1800, 2200));
@@ -457,9 +457,7 @@ private void setMouse(Graphics g) {
 		
 		runtimeHold = runtime.getElapsed();
 		runtimeHold = 3600000/runtimeHold;
-		//expPerHr = (int)runtimeHold * expGained;
 		String expHr = "";
-		//expHr = ""+ expPerHr;
 		if(expHr.length()>3)
 		expHr = expHr.substring(0, expHr.length() - 3);
 		
@@ -467,12 +465,11 @@ private void setMouse(Graphics g) {
 		mouseX = (int) ctx.mouse.getLocation().getX();
 		mouseY = (int) ctx.mouse.getLocation().getY();
 		setMouse(g);
-		//g.drawImage(paint, mouseX-950,mouseY-600, null);
 		int seconds = (int)(runtime.getElapsed()/1000);
 		int minutes = (int)(seconds/60);
 		int hours = (int)(minutes/60);
 		int secHold = (int)(secondsA.getElapsed()/1000);
-		int minHold = (int)(minutesA.getElapsed()/60000);
+	    int minHold = (int)(minutesA.getElapsed()/60000);
 		
 		if(secHold>=60)
 			secondsA = new Timer(0);

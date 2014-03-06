@@ -96,7 +96,7 @@ Timer timer = new Timer(0);
 		public void npcInteract(String name, String string) {
 			ArrayList<String> actions = new ArrayList<String>();
 			for(Npc n : ctx.npcs.select().name(name).nearest().first()){
-					if (n.isOnScreen()) {
+					if (n.isInViewport()) {
 						n.hover();
 						String menuItems[] = ctx.menu.getItems();
 						for(String opt: menuItems){
@@ -117,7 +117,7 @@ Timer timer = new Timer(0);
 		public void npcInteract(int i, String string) {
 			ArrayList<String> actions = new ArrayList<String>();
 			for(Npc n : ctx.npcs.select().id(i).nearest().first()){
-					if (n.isOnScreen()) {
+					if (n.isInViewport()) {
 						n.hover();
 						String menuItems[] = ctx.menu.getItems();
 						for(String opt: menuItems){
@@ -188,7 +188,7 @@ Timer timer = new Timer(0);
 					KebBody.state = o;
 							if (y.isInViewport()) {
 								y.interact(string);
-							} else ctx.camera.turnTo(y.getLocation().randomize(3, 5));
+							} else ctx.camera.turnTo(y.getLocation().randomize(1,7));
 						
 						}
 				
@@ -288,7 +288,7 @@ Timer timer = new Timer(0);
 	public void useAction(int Slot) {
 		if(ctx.combatBar.getActionAt(Slot).isReady()){
 			if(ctx.combatBar.getActionAt(Slot).select()){
-				ctx.game.sleep(Random.nextInt(Random.nextInt(100, 200), Random.nextInt(700, 1000)));
+				ctx.game.sleep(Random.nextInt(Random.nextInt(100, 200), Random.nextInt(500, 1000)));
 			}
 		}
 		

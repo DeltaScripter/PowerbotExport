@@ -6,6 +6,7 @@ import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.GameObject;
+import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Player;
 
@@ -15,8 +16,7 @@ public class KebAntipattern extends KebNode{
 		super(ctx);
 	}
 
-		private Random rand = new Random();
-		KebMethod m = new KebMethod(ctx);
+	KebMethod m = new KebMethod(ctx);
 	@Override
 	public boolean activate() {
 		return KebBody.antiPattern;
@@ -26,35 +26,43 @@ public class KebAntipattern extends KebNode{
 	public void execute() {
 		Point f = ctx.mouse.getLocation();
 		
-		int number = Random.nextInt(0, 75);
+		int number = Random.nextInt(Random.nextInt(1,40), Random.nextInt(1, 40));
+		//System.out.println(number);
 		Item i;
 		String st = "Performing antipattern technique";
 		switch(number){
 		
 		case 1:
 			KebBody.state = st;
-			ctx.camera.setAngle(Random.nextInt(60, 65));
-			ctx.game.sleep(200,400);
+			if(m.inventoryContains(526)){
+				m.interactInventory(526, "Bury", "Bones");
+			}
+			ctx.game.sleep(100,400);
 			KebBody.antiPattern = false;
 			break;
 			
 		case 2:
 			KebBody.state = st;
-			ctx.camera.setAngle(Random.nextInt(70, 90));
-			ctx.game.sleep(600,900);
+			for(GroundItem g : ctx.groundItems.select()){
+				if(g.isInViewport()){
+					ctx.mouse.move(g.getCenterPoint());
+				}
+				if(!ctx.menu.isOpen())
+					ctx.mouse.click(false);
+			}
 			KebBody.antiPattern = false;
 			break;
 			
 		case 3:
 			KebBody.state = st;
-			ctx.camera.setAngle(10);
+			ctx.camera.setAngle(Random.nextInt(10, 50));
 			ctx.game.sleep(700,1000);
 			KebBody.antiPattern = false;
 			break;
 			
 		case 4:
 			KebBody.state = st;
-			i = ctx.backpack.getItemAt(Random.nextInt(16, 20));
+			i = ctx.backpack.getItemAt(Random.nextInt(7, 20));
 				i.hover();
 				ctx.mouse.scroll(true);
 				ctx.game.sleep(200,2000);
@@ -138,17 +146,17 @@ public class KebAntipattern extends KebNode{
 			KebBody.state = st;
 			ctx.camera.setAngle(Random.nextInt(30, 60));
 			ctx.game.sleep(100,400);
-			ctx.camera.setPitch(65);
-			ctx.game.sleep(1800,2400);
+			if(Random.nextInt(1, 30)>15){
+			ctx.camera.setPitch(40);
+			ctx.game.sleep(1000,2400);
+			}
 			KebBody.antiPattern = false;
 			break;
 			
 		case 15:
 			KebBody.state = st;
-			ctx.camera.setAngle(Random.nextInt(30, 60));
+			ctx.camera.setAngle(Random.nextInt(10, 60));
 			ctx.game.sleep(200,600);
-			ctx.camera.setPitch(Random.nextInt(70, 80));
-			ctx.game.sleep(1400,2600);
 			KebBody.antiPattern = false;
 			break;
 			
