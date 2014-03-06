@@ -16,7 +16,7 @@ import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.wrappers.Action;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Tile;
-import org.powerbot.script.util.Calculations;
+import org.powerbot.script.util.GeItem;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 
@@ -52,7 +52,7 @@ public class KebBody extends PollingScript implements PaintListener{
 					}
 				}
 				
-			   // gePrice = GeItem.getPrice(10117);//kebbit fur
+			   gePrice = GeItem.getPrice(10117);//kebbit fur
 			    
 				huntAmount = Random.nextInt(23,26);
 				runtime = new Timer(0);
