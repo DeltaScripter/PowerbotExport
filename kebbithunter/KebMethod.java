@@ -285,4 +285,12 @@ Timer timer = new Timer(0);
 		//System.out.println("Amount: " + freeSlots);
 		return freeSlots;
 	}
+	public void useAction(int Slot) {
+		if(ctx.combatBar.getActionAt(Slot).isReady()){
+			if(ctx.combatBar.getActionAt(Slot).select()){
+				ctx.game.sleep(Random.nextInt(Random.nextInt(100, 200), Random.nextInt(700, 1000)));
+			}
+		}
+		
+	}
 }
