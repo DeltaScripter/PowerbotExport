@@ -130,9 +130,9 @@ public class KebBody extends PollingScript implements PaintListener{
 			state = "Closing interface";
 			ctx.widgets.get(1223,11).click();//close button
 		}
-		while(ctx.widgets.get(1401,35).isVisible()){//become a member!
+		while(ctx.widgets.get(1401,31).isVisible()){//become a member!
 			state = "Closing interface";
-			ctx.widgets.get(1401,35).click();
+			ctx.widgets.get(1401,31).click();
 		}
 		while(ctx.widgets.get(1186,0).isVisible()){//after collecting limit of 10 chronicles..
 			state = "Closing interface";
