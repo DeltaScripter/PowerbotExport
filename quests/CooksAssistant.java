@@ -77,21 +77,14 @@ public final Tile[] pathToCook = new Tile[] {
 	boolean q = true;//only runs once.
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
-		if(q){
-			TaskListing.taskRemove.clear();
-			TaskListing.taskListData.add("Start quest by speaking to the cook");
-			TaskListing.taskListData.add("Gather the special ingredients");
-			TaskListing.taskListData.add("Speak to the cook and finish quest");
-			TaskListing.updateTasks();
-			q = false;
-		}
+	
 		Method.resetTeleporting();
 		DeltaQuester.numSteps = 3;
 		failsafe();
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
 		
-		if(!DeltaQuester.checkedBank&& (ctx.settings.get(2492)&0x3) !=2){
+	if(!DeltaQuester.checkedBank&& (ctx.settings.get(2492)&0x3) !=2){
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.settings.get(2492)&0x3) !=2){
@@ -103,16 +96,12 @@ public final Tile[] pathToCook = new Tile[] {
 		if((ctx.settings.get(2492)&0x3) ==2){
 			DeltaQuester.progress = 3;
 			Method.state("The Cook's Assistant quest has been completed.");
-			TaskListing.updateTaskRemove("Start quest by speaking to the cook","Speak to the cook and finish quest");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			ctx.environment.sleep(2000);
 			DeltaQuester.e = true;
 		}else
 		if((ctx.settings.get(2492)&0x1) ==1){
 			DeltaQuester.progress = 2;
 			cs1();//Gather/make the items and finish the quest
-			TaskListing.updateTaskRemove("Start quest by speaking to the cook");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.settings.get(2492)&0x1) ==0){
 			DeltaQuester.progress = 1;
@@ -158,7 +147,7 @@ public final Tile[] pathToCook = new Tile[] {
 			}else if(Method.inventoryContains(15412) || Method.playerText("You've already given one of these eggs")){//Egg 45208
 			    Vars.DYNAMICV = false;
 				requiredItems[1] = 1;
-			}else if(new Tile(3206,3283, 0).distanceTo(player.getLocation())<7){
+			}else if(new Tile(3206,3283, 0).distanceTo(player.getLocation())<5){
 
 				if(!Method.objIsByTile(new Tile(3206,3283,0),45208, 4)){//pen door
 					Method.interactG(15412, "Take", "Special Egg");

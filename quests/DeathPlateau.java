@@ -22,9 +22,8 @@ public class DeathPlateau extends Node{
 		new Tile(2827,3555,0)};
 	
 	public final static Tile[] pathToSmith = new Tile[] {
-		new Tile(2907,3547, 0), new Tile(2918,3548, 0),
-		new Tile(2923,3558, 0), new Tile(2922,3569, 0),
-		new Tile(2919,3574, 0)};
+		new Tile(2909,3548,0), new Tile(2923,3553,0), new Tile(2923,3563,0),
+		new Tile(2918,3574,0),new Tile(2919,3574, 0)};
 	
 	public final Area dwarf1Area= new Area(new Tile[] {//Area outside the first dwarf's cave.
 			new Tile(2853,3570,0), new Tile(2862,3570,0),

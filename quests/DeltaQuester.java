@@ -1367,8 +1367,8 @@ public class DeltaQuester extends PollingScript implements PaintListener{
 	public void initiateGui() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				TaskListForm taskgui= new TaskListForm();
-				taskgui.setVisible(true);
+				//TaskListForm taskgui= new TaskListForm();
+				//taskgui.setVisible(true);
 				final DeltaQuesterGUI deltagui = new DeltaQuesterGUI();
 				deltagui.setVisible(true);
 				deltagui.setResizable(false);

@@ -147,11 +147,13 @@ public class DemonSlayer extends Node {
 		}else
 		if((ctx.settings.get(3518) & 0x7F)==117){
 			DeltaQuester.progress=8;
+			System.out.println("Here");
 			cs5();//Take the sword from the pedestal
 		
 		}else
 		if((ctx.settings.get(3518) & 0x7F)==116){
 			DeltaQuester.progress=7;
+			System.out.println("Here2");
 			cs1();//Speak to the ghosts after the trials; to release the sword.
 			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons","Complete the mind test");
 			TaskListing.removeTasks(TaskListing.taskRemove);
@@ -159,6 +161,7 @@ public class DemonSlayer extends Node {
 		}else
 		if((ctx.settings.get(3518) & 0x7F)==83){
 			DeltaQuester.progress=6;
+			System.out.println("Here3");
 			cs4();//Speak to the ghost of mind and take the test.
 			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons");
 			TaskListing.removeTasks(TaskListing.taskRemove);
@@ -166,6 +169,7 @@ public class DemonSlayer extends Node {
 		}else
 		if((ctx.settings.get(3518) & 0x7F)==67){
 			DeltaQuester.progress=5;
+			System.out.println("Here4");
 			cs3();//Speak to the ghost of body and then defeat the skeletons
 			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle");
 			TaskListing.removeTasks(TaskListing.taskRemove);
@@ -173,6 +177,7 @@ public class DemonSlayer extends Node {
 		}else
 		if((ctx.settings.get(3518) & 0x3)==3){
 			DeltaQuester.progress=4;
+			System.out.println("Here5");
 			cs2();//Speak to the ghost then complete the walking puzzle.
 			updateTaskRemove("Start the quest","Speak to the ghosts downstairs");
 			TaskListing.removeTasks(TaskListing.taskRemove);
@@ -180,6 +185,7 @@ public class DemonSlayer extends Node {
 		}else
 		if((ctx.settings.get(3518) & 0x3)==2){
 			DeltaQuester.progress=3;
+			System.out.println("Here6");
 			cs1();//Speak to the ghosts downstairs.
 		}else
 		if((ctx.settings.get(3518) & 1)==1){
@@ -458,13 +464,14 @@ public class DemonSlayer extends Node {
 			if(!local.isInMotion())
 			Method.clickOnMap(new Tile(init.getX()-12, init.getY()+23,0));
 		}
-		}else { for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
+		}else {
+		for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
 			if(o.getLocation().distanceTo(local.getLocation())<20){
 				ctx.environment.sleep(2000);
 				init = ctx.players.local().getLocation();
 			}
 		}
-		if(new Tile(3258,3483,0).distanceTo(local.getLocation())<8){
+		if(new Tile(3258,3483,0).distanceTo(local.getLocation())<6){
 			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
 				if(!TrapDoor.contains(door.getLocation())){
 					Method.interactO(82059, "Climb", "Trapdoor");

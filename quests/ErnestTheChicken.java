@@ -64,30 +64,24 @@ public class ErnestTheChicken extends Node{
 		DeltaQuester.numSteps = 4;
 		
 		
-		if(DeltaQuester.checkedBank && (ctx.settings.get(2183) & 0x3) != 3)
-			Method.determineBank(bankItems);
+	//	if(DeltaQuester.checkedBank && (ctx.settings.get(2183) & 0x3) != 3)
+		//	Method.determineBank(bankItems);
 		
-		if(!DeltaQuester.checkedBank && (ctx.settings.get(2183) & 0x3) != 3){
-			Method.checkBank();
-		}else
+		//if(!DeltaQuester.checkedBank && (ctx.settings.get(2183) & 0x3) != 3){
+		//	Method.checkBank();
+		//}else
 		if ((ctx.settings.get(2183) & 0x3) == 3) {
 			DeltaQuester.progress = 4;
 			Method.state("The Ernest The Chicken quest has been completed.");
-			TaskListing.updateTaskRemove("Start quest","Speak to the scientist","Gather the pressure gauge","Gather the rubber tube","Gather the oil","Finish quest");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		} else 
 		if ((ctx.settings.get(2183) & 0x3) == 2) {
 			DeltaQuester.progress = 3;
 			cs3();//gather all items
-			TaskListing.updateTaskRemove("Start quest","Speak to the scientist");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		} else if ((ctx.settings.get(2183) & 0x1) == 1) {
 			DeltaQuester.progress = 2;
 			cs2();//speak to the scientist
-			TaskListing.updateTaskRemove("Start quest");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		} else if ((ctx.settings.get(2183) & 0x1) == 0) {
 			DeltaQuester.progress = 1;
@@ -105,21 +99,20 @@ public class ErnestTheChicken extends Node{
 			if (Method.inventoryContains(271)) {//pressure Gauge.
 				if (Method.inventoryContains(276)){
 					if(Method.inventoryContains(277)){
+						System.out.println("here3");
 						finishQuest();
-						TaskListing.updateTaskRemove("Start quest","Speak to the scientist","Gather the pressure gauge","Gather the rubber tube","Gather the oil");
-						TaskListing.removeTasks(TaskListing.taskRemove);
 					}else{
+						System.out.println("here");
 						gatherOilCan();
-						TaskListing.updateTaskRemove("Start quest","Speak to the scientist","Gather the pressure gauge","Gather the rubber tube");
-						TaskListing.removeTasks(TaskListing.taskRemove);
 					}
 				}else{
+					System.out.println("here2");
 					gatherRubberTube();
-					TaskListing.updateTaskRemove("Start quest","Speak to the scientist","Gather the pressure gauge");
-					TaskListing.removeTasks(TaskListing.taskRemove);
 				}
-			} else
+			} else {
+				System.out.println("here0");
 				gatherPressureGauge();
+			}
 		}else if(Method.DraynorLodeIsActive()){
 			if(TeleportLode.DRAYNOR.getTile().distanceTo(local.getLocation())<10){
 				Vars.DYNAMICV = true;
@@ -166,28 +159,36 @@ public class ErnestTheChicken extends Node{
 
 
 	private void gatherOilCan() {
+		System.out.println("heretwf");
 		Tile local = ctx.players.local().getLocation();
 		if(Method.objIsNotNull(31130)){//can you rech teh basement floor bro??
 			Vars.DYNAMICV = false;
+			System.out.println("here9");
 			solvePuzzle();
 		}else{
 		if(new Tile(3095,3359,0).getMatrix(ctx).isReachable()){
+			System.out.println("climbing here");
 		Method.interactO(133, "Climb","Object");
 		}else{
 		if(new Tile(3098,3360,0).getMatrix(ctx).isReachable()){//outside the secret room that leads to basement..
+			System.out.println("here hmm");
 			if(new Tile(3098,3360,0).distanceTo(local.getLocation())<5){
 				Method.interactO(47711, "Search","Object");
-				Method.clickOnMap((new Tile(3098,3360,0)));
-			}
+				System.out.println("herehere5");
+			
+			}else 	Method.clickOnMap((new Tile(3098,3360,0)));
 		}else if(new Tile(3103,3365,0).getMatrix(ctx).isReachable()){//door outside of tube room.
 			if (new Tile(3103,3365,0).distanceTo(local.getLocation())<5){//checks distance.
+				System.out.println("here8");
 				Method.interactO(47512, "Open", "Doors");//open door leading to secret b shelf.
 			}else {
+				System.out.println("here6");
 				ctx.movement.findPath(new Tile(3103,3364,0)).traverse();//walks to the door if too far.
 			}
 		}else if(new Tile(3107,3368,0).getMatrix(ctx).isReachable()){
+			System.out.println("here7");
 			Method.interactO(47511, "Open","Door");
-		}
+		}else System.out.println("here ermm");
 
 			}
 		}
@@ -376,13 +377,19 @@ public class ErnestTheChicken extends Node{
 	
 
 	private void gatherPressureGauge() {
+		System.out.println("here?!?!");
 		Tile fountain = new Tile(3090,3335,0);
 		Player local = ctx.players.local();
 			if (itemsArray[0]==1){//Fish food check
+				System.out.println("here13");
 				if (itemsArray[1]==1){//Poison
+					System.out.println("here10");
 					if (itemsArray[2]==1){//Spade
+						System.out.println("here11");
 						if(itemsArray[3]==1){//Grimy key.
+							System.out.println("here12");
 							if (itemsArray[4]==1){
+								System.out.println("here13");
 								if(ctx.players.local().getAnimation()!=-1 ||ctx.widgets.get(1191).isValid())
 									timer = new Timer(4000);
 								

@@ -49,6 +49,8 @@ public class SweptAway extends Node {
 			new Tile(3090, 3259, 0), new Tile(3087, 3259, 0) };
 	
 	public final Tile[] pathToHetty = new Tile[] {
+			new Tile(3231,3221,0), new Tile(3228,3232,0), new Tile(3214,3236,0),
+			new Tile(3200,3231,0),
 			new Tile(3201,3236,0), new Tile(3199,3243,0), new Tile(3204,3247,0),
 			new Tile(3205,3253,0), new Tile(3202,3259,0), new  Tile(3197,3268,0),
 			new Tile(3194,3276,0), new Tile(3188,3283,0), new Tile(3177,3286,0),

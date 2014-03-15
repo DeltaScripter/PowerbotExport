@@ -725,9 +725,9 @@ public class Method extends MethodProvider{
 		
 	}
 	public boolean playerText(String string) {
-		if (ctx.widgets.get(137,89).isValid()) {
+		if (ctx.widgets.get(137,90).isValid()) {
 			//state("Checking: " + string);
-			if (ctx.widgets.get(137,89).getChild(0).getText()
+			if (ctx.widgets.get(137,90).getChild(0).getText()
 					.contains(string)) {
 				System.out.println("returning true for player text");
 				return true;
