@@ -1,16 +1,17 @@
 package quests;
 
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Hud.Window;
+
 import lodestoneActivator.Data.TeleportLode;
 import lodestoneActivator.Data.TeleportType;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.Hud.Window;
-import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.Tile;
+
 
 public class Biohazard extends Node{
 
-	public Biohazard(MethodContext ctx) {
+	public Biohazard(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -75,7 +76,7 @@ public class Biohazard extends Node{
 	};
 	
 	public Tile local;
-	public Timer wait = new Timer(0);
+	//public Timer wait = new Timer(0);
 	public boolean hasDoctorSuit = false;
 	public boolean init = false;
 	public boolean stuffInBank = false;
@@ -101,22 +102,22 @@ public class Biohazard extends Node{
 	public void execute() {
 		Method.foodSupport();
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
-		local = ctx.players.local().getLocation();
+		local = ctx.players.local().tile();
 	
-		if(DeltaQuester.checkedBank&&(ctx.settings.get(2535)&0x1F)==0)//only whenequal to 0, can't tele during quest at times
+		if(DeltaQuester.checkedBank&&(ctx.varpbits.varpbit(2535)&0x1F)==0)//only whenequal to 0, can't tele during quest at times
 			Method.determineBank(bankItems);
 		
-		if(!DeltaQuester.checkedBank&&(ctx.settings.get(2535)&0x1F)==0){
+		if(!DeltaQuester.checkedBank&&(ctx.varpbits.varpbit(2535)&0x1F)==0){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank&&(ctx.settings.get(2535)&0x1F)==0){
+	    if(Vars.useBank&&(ctx.varpbits.varpbit(2535)&0x1F)==0){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if(!init){
-			while(!checkBank&&(ctx.settings.get(2535)&0x1F)!=12&&
-					(ctx.settings.get(2535)&0x1F)!=14){
-				local = ctx.players.local().getLocation();
-				if(ctx.hud.isVisible(Window.WORN_EQUIPMENT))
+			while(!checkBank&&(ctx.varpbits.varpbit(2535)&0x1F)!=12&&
+					(ctx.varpbits.varpbit(2535)&0x1F)!=14){
+				local = ctx.players.local().tile();
+				if(ctx.hud.opened(Window.WORN_EQUIPMENT))
 				break;
 				goCheckBankForItems();
 			}
@@ -125,32 +126,32 @@ public class Biohazard extends Node{
 			}
 			init = true;
 			
-		}else if((ctx.settings.get(2535)&0x1F)==16){
+		}else if((ctx.varpbits.varpbit(2535)&0x1F)==16){
 			Method.state("The Biohazard quest has been completed.");
-			ctx.environment.sleep(2000);
+			//ctx.environment.sleep(2000);
 			DeltaQuester.e = true;
-		}else if((ctx.settings.get(2535)&0x1F)==15){
+		}else if((ctx.varpbits.varpbit(2535)&0x1F)==15){
 			cs8();//Speak to king & finish quest
-		}else if((ctx.settings.get(2535)&0x1F)==14){
+		}else if((ctx.varpbits.varpbit(2535)&0x1F)==14){
 			cs0();//Tells Elena about the results
-		}else  if((ctx.settings.get(2535)&0x1F)==12){
+		}else  if((ctx.varpbits.varpbit(2535)&0x1F)==12){
 			cs7();//give the items to people, bank sutff - tele - take stuff out - take items - speak to Guidor in varrock
-		}else if((ctx.settings.get(2535)&0x1F)==10){
+		}else if((ctx.varpbits.varpbit(2535)&0x1F)==10){
 			cs6();//bank the items, take them out & speak to chemist
-		}else if((ctx.settings.get(2535)&0x1F)==7){
+		}else if((ctx.varpbits.varpbit(2535)&0x1F)==7){
 			cs0();//give Elena her device
-		}else if((ctx.settings.get(2535)&0x1F)==6){
+		}else if((ctx.varpbits.varpbit(2535)&0x1F)==6){
 			cs5();//grab the doctor cloth and find the device
-		}else if((ctx.settings.get(2535)&0x1F)==5){
+		}else if((ctx.varpbits.varpbit(2535)&0x1F)==5){
 			cs4();//grab the rotton apple and use it on the cauldron
-		}else if((ctx.settings.get(2535)&0x1F)==4){
+		}else if((ctx.varpbits.varpbit(2535)&0x1F)==4){
 			cs4();//Speak to MArt and get inside the city
-		}else if((ctx.settings.get(2535)&0x1F)==2||
-				(ctx.settings.get(2535)&0x1F)==3){
+		}else if((ctx.varpbits.varpbit(2535)&0x1F)==2||
+				(ctx.varpbits.varpbit(2535)&0x1F)==3){
 			cs2();//go to gate and bait + release birds
-		}else if((ctx.settings.get(2535)&0x1F)==1){
+		}else if((ctx.varpbits.varpbit(2535)&0x1F)==1){
 			cs1();//Speak to Jerico about for advice + gather the bird cage and bird food
-		}else if((ctx.settings.get(2535)&0x1F)==0){
+		}else if((ctx.varpbits.varpbit(2535)&0x1F)==0){
 			cs0();//Speak to Elena and start the quest
 		}
 	
@@ -160,8 +161,8 @@ public class Biohazard extends Node{
 	private void cs8() {//speaks to the king, finishes quest
 		final String opt[] = {"I don't"};
 		
-		if(ctx.game.getPlane()==1){
-			if(new Tile(2574,3296,1).getMatrix(ctx).isReachable()){//inside room king
+		if(ctx.game.floor()==1){
+			if(new Tile(2574,3296,1).matrix(ctx).reachable()){//inside room king
 				if(Method.byCloseLoc(new Tile(2574,3296,1), 6)){//inside room
 					if(!Method.findOption(opt))
 					if(!Method.isChatting("Da Vinci")){
@@ -172,12 +173,12 @@ public class Biohazard extends Node{
 				Method.interactO(34825, "Open", "Door");
 			}
 		}else
-		if(new Tile(2572,3287,0).getMatrix(ctx).isReachable()){//by stairs
+		if(new Tile(2572,3287,0).matrix(ctx).reachable()){//by stairs
 			if(Method.byCloseLoc(new Tile(2572,3287,0), 3)){//stairs
 				Method.interactO(34871, "Climb-up", "Stairs");
 			}
 		}else
-		if(new Tile(2572,3292,0).getMatrix(ctx).isReachable()){//firt door in king plce
+		if(new Tile(2572,3292,0).matrix(ctx).reachable()){//firt door in king plce
 			if(Method.byCloseLoc(new Tile(2572,3292,0), 6)){//outside first door
 				Method.interactO(34807, "Open", "Door");
 			}
@@ -219,21 +220,21 @@ public class Biohazard extends Node{
 						}else ctx.bank.withdraw(418, 1);
 					}
 				}else Method.walking(pathToVarrockBank, "Walking to Varrock bank", false);
-			}else if(new Tile(3275,3389,0).getMatrix(ctx).isReachable()||retrievedVials){//the bar
+			}else if(new Tile(3275,3389,0).matrix(ctx).reachable()||retrievedVials){//the bar
 				if(retrievedVials){
-					if(new Tile(3283,3382,0).getMatrix(ctx).isReachable()){//analysis guy
+					if(new Tile(3283,3382,0).matrix(ctx).reachable()){//analysis guy
 						Vars.DYNAMICV = false;
 						if(!Method.findOption(opt))
 							if(!Method.isChatting("Guidor")){
 								Method.npcInteract(343, "Talk-to");
 							}
 					}else
-					if(new Tile(3281,3383,0).getMatrix(ctx).isReachable()){//second part of house
+					if(new Tile(3281,3383,0).matrix(ctx).reachable()){//second part of house
 						if(Method.byCloseLoc(new Tile(3281,3383,0),3)){//outside the analysis guy
 						   Method.interactO(2032, "Open","Door");
 						}
 					}else
-					if(new Tile(3282,3386,0).getMatrix(ctx).isReachable()){//first part of house
+					if(new Tile(3282,3386,0).matrix(ctx).reachable()){//first part of house
 						Method.state("Opening last door");
 						Method.interactO(15536, "Open", "Door");
 					}else
@@ -259,16 +260,16 @@ public class Biohazard extends Node{
 						Method.npcInteract(339,"Talk-to");
 					}
 				}
-			}else if(new Tile(3275,3389,0).getMatrix(ctx).isReachable()){//inside danger area
+			}else if(new Tile(3275,3389,0).matrix(ctx).reachable()){//inside danger area
 				if(Method.byCloseLoc(new Tile(3275,3389,0),7)){//outside the bar
 					Method.interactO(24381,"Open", "Door");
 				}
 			}else if(new Tile(3262,3406,0).distanceTo(local)<7){//outside pen dnager plce
 				if(!Method.isChatting("")){
-					if(!wait.isRunning()){
+					//if(!wait.isRunning()){
 					Method.interactO(2050, "Open", "");
-					wait = new Timer(4000);
-					}else Method.state("Waiting for search");
+					//wait = new Timer(4000);
+					//}else Method.state("Waiting for search");
 				}
 			}else if(!ctx.movement.findPath(new Tile(3262,3406,0)).traverse()){
 				Method.clickOnMap(new Tile(3262,3406,0));
@@ -281,7 +282,7 @@ public class Biohazard extends Node{
 					teleported2 = true;
 				}else Method.teleportTo(TeleportType.VARROCK.getTeleport(), "Varrock");
 			}else if(new Tile(2994,3285,0).distanceTo(local)<7){//bank
-				if(ctx.bank.isOpen()){
+				if(ctx.bank.opened()){
 					if(Method.bankContains(418)){//plague sampel
 						stuffInBank = true;
 					}else ctx.bank.deposit(418, 1);//plague sample
@@ -378,7 +379,7 @@ public class Biohazard extends Node{
 				}else Method.teleportTo(TeleportType.FALADOR.getTeleport(), "Falador");
 				
 			}else
-			if(new Tile(2933,3212,0).getMatrix(ctx).isReachable()){//inside house rinngotm
+			if(new Tile(2933,3212,0).matrix(ctx).reachable()){//inside house rinngotm
 				if(Method.byCloseLoc(new Tile(2933, 3210,0),7)){//by chemist
 					if(!Method.findOption(opt)){
 						if(!Method.isChatting("Chemist")){
@@ -403,7 +404,7 @@ public class Biohazard extends Node{
 				}else Method.teleportTo(TeleportType.FALADOR.getTeleport(), "Falador");
 			}
 				
-		}else if(!Method.inventoryContains(418) && !ctx.bank.isOpen()){//plague sample
+		}else if(!Method.inventoryContains(418) && !ctx.bank.opened()){//plague sample
 			cs0();//go get the smaple
 		}else if(new Tile(2616,3333,0).distanceTo(local)<7){//bank
 			if(ctx.bank.open()){
@@ -419,8 +420,8 @@ public class Biohazard extends Node{
 					stuffInBank = true;
 				}
 			}
-		}else if(!new Tile(2592,3338,0).getMatrix(ctx).isReachable()){
-			Method.clickOnMap(new Tile(2616,3333,0).randomize(1, 2));//bank tile
+		}else if(!new Tile(2592,3338,0).matrix(ctx).reachable()){
+			Method.clickOnMap(new Tile(2616,3333,0));//bank tile
 		}else Method.interactO(2054, "Open", "Door");
 		
 		
@@ -434,7 +435,7 @@ public class Biohazard extends Node{
 			if(Method.inventoryContains(430)){//doctor suit
 				hasDoctorSuit = true;
 			}else
-			if(new Tile(2517,3274,0).getMatrix(ctx).isReachable()){//inside house
+			if(new Tile(2517,3274,0).matrix(ctx).reachable()){//inside house
 				if(Method.byCloseLoc(new Tile(2517,3274,0), 7)){
 					Method.interactO(2062, "Open", "");
 					Method.interactO(2063, "Search", "");
@@ -443,36 +444,36 @@ public class Biohazard extends Node{
 			if(new Tile(2519,3274,0).distanceTo(local)<7){//outside house
 				Method.interactO(34807, "Open", "Door");
 			}else
-			if(new Tile(2538,3328,0).getMatrix(ctx).isReachable()){//city
+			if(new Tile(2538,3328,0).matrix(ctx).reachable()){//city
 				Method.state("Walking to house");
 				ctx.movement.findPath(new Tile(2519,3274,0)).traverse();
 			}else
-			if(new Tile(2545,3331,0).getMatrix(ctx).isReachable()){//sick house pen
+			if(new Tile(2545,3331,0).matrix(ctx).reachable()){//sick house pen
 				if(Method.byCloseLoc(new Tile(2542,3331,0), 7)){//by exit
 					Method.interactO(2068, "Squeeze", "Hole");
 				}
 			}
-		}else if(ctx.game.getPlane()==1){
+		}else if(ctx.game.floor()==1){
 			System.out.println("7");
-			if(new Tile(2553,3325,1).getMatrix(ctx).isReachable()){//in cage room
+			if(new Tile(2553,3325,1).matrix(ctx).reachable()){//in cage room
 				Method.interactO(2064,"Search", "Crate");
 			}else
-			if(new Tile(2549,3325,1).getMatrix(ctx).isReachable()){//upstairs other side
+			if(new Tile(2549,3325,1).matrix(ctx).reachable()){//upstairs other side
 				if(Method.inventoryContains(423)){//key
 					Method.useItemOn(423, 2058, "Use");//use key on cage
 				}else
 				Method.fightNPC(370);
 			}else Method.interactO(2034, "Open","Door");
-		}else if(new Tile(2545,3325,0).getMatrix(ctx).isReachable()){//by the stairs
+		}else if(new Tile(2545,3325,0).matrix(ctx).reachable()){//by the stairs
 			System.out.println("6");
 			if(Method.byCloseLoc(new Tile(2545,3325,0), 6)){//by stairs
 				Method.interactO(34548, "Climb-up", "Stairs");
 			}
-		}else if(new Tile(2550,3322,0).getMatrix(ctx).isReachable()){//inside mourner house bottom flr
+		}else if(new Tile(2550,3322,0).matrix(ctx).reachable()){//inside mourner house bottom flr
 			System.out.println("8");
 			Method.interactO(34811, "Open", "");
 		}else
-		if(new Tile(2544,3330,0).getMatrix(ctx).isReachable()){//inside pen cauldrin
+		if(new Tile(2544,3330,0).matrix(ctx).reachable()){//inside pen cauldrin
 			System.out.println("9");
 			if(Method.byCloseLoc(new Tile(2551,3328,0), 6)){//by door
 				while(Method.inventoryContains(430)){//doctor suit
@@ -482,7 +483,7 @@ public class Biohazard extends Node{
 					Method.interactO(2036, "Open", "");
 				}
 			}
-		}else if(new Tile(2535,3298,0).getMatrix(ctx).isReachable()){//the city
+		}else if(new Tile(2535,3298,0).matrix(ctx).reachable()){//the city
 			if(Method.byCloseLoc(new Tile(2540,3331,0), 7)){//outside pen
 			Method.interactO(2068, "Squeeze", "hole");
 		     }
@@ -512,9 +513,9 @@ public class Biohazard extends Node{
 	private void cs4() {//speaks to Omart, gets in city and causes food poisoning
 		final String opt[] = {"Ok, lets"};
 		System.out.println("2");
-		if((ctx.settings.get(2535)&0x1F)==5){//occurrs once in city
+		if((ctx.varpbits.varpbit(2535)&0x1F)==5){//occurrs once in city
 			if(Method.inventoryContains(1984)){//rotton apple
-				if(new Tile(2544,3330,0).getMatrix(ctx).isReachable()){//inside pen cauldrin
+				if(new Tile(2544,3330,0).matrix(ctx).reachable()){//inside pen cauldrin
 					Method.useItemOn(1984, 2043, "Use");
 				}else if(Method.byCloseLoc(new Tile(2540,3331,0), 7)){//outside pen
 					Method.interactO(2068, "Squeeze", "hole");
@@ -543,7 +544,7 @@ public class Biohazard extends Node{
 		System.out.println("3");
 		if(new Tile(2560,3300,0).distanceTo(local)<7){//gate loc
 				Vars.DYNAMICV = false;
-				if((ctx.settings.get(2535)&0x1F)==3){
+				if((ctx.varpbits.varpbit(2535)&0x1F)==3){
 					Method.interactInventory(424, "Open", "Cage");
 				}else
 				Method.useItemOn(422, 2067,"Use");
@@ -558,7 +559,7 @@ public class Biohazard extends Node{
 
 
 	private void cs2() {//Takes bird food and cage + speaks to Elena afterwards
-		if((ctx.settings.get(2535)&0x1F)==3){//we don't need the stuff below
+		if((ctx.varpbits.varpbit(2535)&0x1F)==3){//we don't need the stuff below
 			cs3();
 		}else
 		if(Method.inventoryContains(422)){//bird feed
@@ -568,7 +569,7 @@ public class Biohazard extends Node{
 		    	//by cage
 		    	Method.skipPics();
 		    	Method.interactG(424, "Take", "Cage");
-		    	ctx.game.sleep(2300);
+		    	//ctx.game.sleep(2300);
 		    }else if(new Tile(2619,3325,0).distanceTo(local)<14){
 		    	Method.byCloseLoc(new Tile(2619,3325,0),7);//cage area
 		    }else cs1();//get to the location
@@ -580,16 +581,16 @@ public class Biohazard extends Node{
 	private void cs1() {//Speaks to Jerico and takes bird food
 		final String opt[] = {"Maybe you could"};
 		
-		if(new Tile(2612,3324,0).getMatrix(ctx).isReachable()&&
+		if(new Tile(2612,3324,0).matrix(ctx).reachable()&&
 				new Tile(2612,3324,0).distanceTo(local)<14){//Jerico's house
 			
-			if((ctx.settings.get(2535)&0x1F)==2){//for grabbing bird food
+			if((ctx.varpbits.varpbit(2535)&0x1F)==2){//for grabbing bird food
 				Method.skipPics();
-				if(!wait.isRunning()){
+				//if(!wait.isRunning()){
 				Method.interactO(2056, "Open", "Storage");
 				Method.interactO(2057, "Search", "Storage");
-				wait = new Timer(2300);
-				}
+				//wait = new Timer(2300);
+				//}
 			}else
 				if(!Method.findOption(opt)){
 					Vars.DYNAMICV = false;
@@ -613,7 +614,7 @@ public class Biohazard extends Node{
 	private void cs0() {//Speaks to Elena and starts quest
 		final String opt[] = {"I'm afraid","I'll try"};
 		
-		if(new Tile(2592,3337,0).getMatrix(ctx).isReachable()&&
+		if(new Tile(2592,3337,0).matrix(ctx).reachable()&&
 				new Tile(2592,3337,0).distanceTo(local)<10){//inside Elena's house
 			Method.skipPics();
 		   if(!Method.startQuestOpen());

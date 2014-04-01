@@ -1,12 +1,12 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 
 import quests.Vars.TeleportLode;
@@ -14,7 +14,7 @@ import quests.Vars.TeleportType;
 
 public class ErnestTheChicken extends Node{
 
-	public ErnestTheChicken(MethodContext ctx) {
+	public ErnestTheChicken(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -64,26 +64,32 @@ public class ErnestTheChicken extends Node{
 		DeltaQuester.numSteps = 4;
 		
 		
-	//	if(DeltaQuester.checkedBank && (ctx.settings.get(2183) & 0x3) != 3)
-		//	Method.determineBank(bankItems);
+		if(DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2183) & 0x3) != 3)
+			Method.determineBank(bankItems);
 		
-		//if(!DeltaQuester.checkedBank && (ctx.settings.get(2183) & 0x3) != 3){
-		//	Method.checkBank();
-		//}else
-		if ((ctx.settings.get(2183) & 0x3) == 3) {
+		if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2183) & 0x3) != 3){
+			Method.checkBank();
+		}else
+		if ((ctx.varpbits.varpbit(2183) & 0x3) == 3) {
 			DeltaQuester.progress = 4;
 			Method.state("The Ernest The Chicken quest has been completed.");
+			TaskListing.updateTaskRemove("Start quest","Speak to the scientist","Gather the pressure gauge","Gather the rubber tube","Gather the oil","Finish quest");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		} else 
-		if ((ctx.settings.get(2183) & 0x3) == 2) {
+		if ((ctx.varpbits.varpbit(2183) & 0x3) == 2) {
 			DeltaQuester.progress = 3;
 			cs3();//gather all items
-		} else if ((ctx.settings.get(2183) & 0x1) == 1) {
+			TaskListing.updateTaskRemove("Start quest","Speak to the scientist");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		} else if ((ctx.varpbits.varpbit(2183) & 0x1) == 1) {
 			DeltaQuester.progress = 2;
 			cs2();//speak to the scientist
+			TaskListing.updateTaskRemove("Start quest");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 			
-		} else if ((ctx.settings.get(2183) & 0x1) == 0) {
+		} else if ((ctx.varpbits.varpbit(2183) & 0x1) == 0) {
 			DeltaQuester.progress = 1;
 			cs1();//Start the quest by speaking with Veronica
 		}
@@ -99,20 +105,21 @@ public class ErnestTheChicken extends Node{
 			if (Method.inventoryContains(271)) {//pressure Gauge.
 				if (Method.inventoryContains(276)){
 					if(Method.inventoryContains(277)){
-						System.out.println("here3");
 						finishQuest();
+						TaskListing.updateTaskRemove("Start quest","Speak to the scientist","Gather the pressure gauge","Gather the rubber tube","Gather the oil");
+						TaskListing.removeTasks(TaskListing.taskRemove);
 					}else{
-						System.out.println("here");
 						gatherOilCan();
+						TaskListing.updateTaskRemove("Start quest","Speak to the scientist","Gather the pressure gauge","Gather the rubber tube");
+						TaskListing.removeTasks(TaskListing.taskRemove);
 					}
 				}else{
-					System.out.println("here2");
 					gatherRubberTube();
+					TaskListing.updateTaskRemove("Start quest","Speak to the scientist","Gather the pressure gauge");
+					TaskListing.removeTasks(TaskListing.taskRemove);
 				}
-			} else {
-				System.out.println("here0");
+			} else
 				gatherPressureGauge();
-			}
 		}else if(Method.DraynorLodeIsActive()){
 			if(TeleportLode.DRAYNOR.getTile().distanceTo(local.getLocation())<10){
 				Vars.DYNAMICV = true;
@@ -126,8 +133,8 @@ public class ErnestTheChicken extends Node{
 		final String opt[] = {"","Change him back","I'm looking for"};
 		Tile local = ctx.players.local().getLocation();
 		
-		if (new Tile(3106,3365,2).getMatrix(ctx).isReachable()&&ctx.game.getPlane()==2 || 
-				new Tile(3110,3365,2).getMatrix(ctx).isReachable()&&ctx.game.getPlane()==2){
+		if (new Tile(3106,3365,2).getMatrix(ctx).isReachable()&&ctx.game.floor()==2 || 
+				new Tile(3110,3365,2).getMatrix(ctx).isReachable()&&ctx.game.floor()==2){
 			
 			if(new Tile(3110,3365,2).getMatrix(ctx).isReachable()){
 				if(!Method.findOption(opt))
@@ -135,7 +142,7 @@ public class ErnestTheChicken extends Node{
 						Method.speakTo(286, "Scientist");
 					}
 			}else Method.interactO(47512, "Open","Door");
-		}else if (new Tile(3105,3364,1).getMatrix(ctx).isReachable()&&ctx.game.getPlane()==1){
+		}else if (new Tile(3105,3364,1).getMatrix(ctx).isReachable()&&ctx.game.floor()==1){
 			Method.interactO(47574, "Climb","Ladder");
 		}else if(new Tile(3108,3361,0).getMatrix(ctx).isReachable()){//Within first floor.
 			
@@ -159,36 +166,28 @@ public class ErnestTheChicken extends Node{
 
 
 	private void gatherOilCan() {
-		System.out.println("heretwf");
 		Tile local = ctx.players.local().getLocation();
 		if(Method.objIsNotNull(31130)){//can you rech teh basement floor bro??
 			Vars.DYNAMICV = false;
-			System.out.println("here9");
 			solvePuzzle();
 		}else{
 		if(new Tile(3095,3359,0).getMatrix(ctx).isReachable()){
-			System.out.println("climbing here");
 		Method.interactO(133, "Climb","Object");
 		}else{
 		if(new Tile(3098,3360,0).getMatrix(ctx).isReachable()){//outside the secret room that leads to basement..
-			System.out.println("here hmm");
 			if(new Tile(3098,3360,0).distanceTo(local.getLocation())<5){
 				Method.interactO(47711, "Search","Object");
-				System.out.println("herehere5");
-			
-			}else 	Method.clickOnMap((new Tile(3098,3360,0)));
+				Method.clickOnMap((new Tile(3098,3360,0)));
+			}
 		}else if(new Tile(3103,3365,0).getMatrix(ctx).isReachable()){//door outside of tube room.
 			if (new Tile(3103,3365,0).distanceTo(local.getLocation())<5){//checks distance.
-				System.out.println("here8");
 				Method.interactO(47512, "Open", "Doors");//open door leading to secret b shelf.
 			}else {
-				System.out.println("here6");
 				ctx.movement.findPath(new Tile(3103,3364,0)).traverse();//walks to the door if too far.
 			}
 		}else if(new Tile(3107,3368,0).getMatrix(ctx).isReachable()){
-			System.out.println("here7");
 			Method.interactO(47511, "Open","Door");
-		}else System.out.println("here ermm");
+		}
 
 			}
 		}
@@ -196,7 +195,7 @@ public class ErnestTheChicken extends Node{
 
 	private void solvePuzzle() {
 		Tile local = ctx.players.local().getLocation();
-		if(ctx.settings.get(2184)==88){
+		if(ctx.varpbits.varpbit(2184)==88){
 			if(new Tile(3099,9755,0).getMatrix(ctx).isReachable()){
 				Method.interactG(277, "Take", "Oil");
 			}else if(new Tile(3101,9755,0).getMatrix(ctx).isReachable()){
@@ -214,7 +213,7 @@ public class ErnestTheChicken extends Node{
 			}
 		}else{
 		
-		if(ctx.settings.get(2184)==120){
+		if(ctx.varpbits.varpbit(2184)==120){
 			if(new Tile(3099,9765,0).getMatrix(ctx).isReachable()){
 				 Method.interactO(150, "Pull","Lever");
 				ctx.game.sleep(1200,1500);
@@ -229,7 +228,7 @@ public class ErnestTheChicken extends Node{
 			}
 		}else{
 		
-		if(ctx.settings.get(2184)==112){
+		if(ctx.varpbits.varpbit(2184)==112){
 			if(new Tile(3106,9765,0).getMatrix(ctx).isReachable()){
 				if(new Tile(3112,9760,0).distanceTo(local.getLocation())<5){
 					 Method.interactO(148, "Pull","Lever");
@@ -244,16 +243,16 @@ public class ErnestTheChicken extends Node{
 			}
 		}else{
 		
-		if(new Tile(3102,9756,0).getMatrix(ctx).isReachable() && ((ctx.settings.get(2184)==22) || ctx.settings.get(2184)==20)|| ctx.settings.get(2184)==16 || ctx.settings.get(2184)==16|| ctx.settings.get(2184)==48){
+		if(new Tile(3102,9756,0).getMatrix(ctx).isReachable() && ((ctx.varpbits.varpbit(2184)==22) || ctx.varpbits.varpbit(2184)==20)|| ctx.varpbits.varpbit(2184)==16 || ctx.varpbits.varpbit(2184)==16|| ctx.varpbits.varpbit(2184)==48){
 			
-			if(ctx.settings.get(2184)==48){
+			if(ctx.varpbits.varpbit(2184)==48){
 				Method.interactO(151, "Pull","Lever");
 				ctx.game.sleep(1200,1500);
 			}else{
 			
-			if(ctx.settings.get(2184)==16){//dominent..
+			if(ctx.varpbits.varpbit(2184)==16){//dominent..
 				if(new Tile(3097,9764,0).getMatrix(ctx).isReachable()){
-					if(ctx.settings.get(2184)==16){
+					if(ctx.varpbits.varpbit(2184)==16){
 						 Method.interactO(150, "Pull","Lever");
 						ctx.game.sleep(1200,1500);
 					}
@@ -273,12 +272,12 @@ public class ErnestTheChicken extends Node{
 					}
 				}
 			
-			}else if(ctx.settings.get(2184)==22){
+			}else if(ctx.varpbits.varpbit(2184)==22){
 				if(new Tile(3108,9745,0).distanceTo(local.getLocation())<5){
 					 Method.interactO(146, "Pull","Lever");
 					ctx.game.sleep(1200,1500);
 					 }else ctx.movement.findPath(new Tile(3108,9745,0)).traverse();
-				}else if(ctx.settings.get(2184)==20){
+				}else if(ctx.varpbits.varpbit(2184)==20){
 					if(new Tile(3118,9752,0).distanceTo(local.getLocation())<5){
 						 Method.interactO(147, "Pull","Lever");
 						ctx.game.sleep(1200,1500);
@@ -288,7 +287,7 @@ public class ErnestTheChicken extends Node{
 		}else{
 			
 		if (new Tile(3108,9759,0).getMatrix(ctx).isReachable() || new Tile(3104,9760,0).getMatrix(ctx).isReachable()){
-			if(ctx.settings.get(2184)==6){
+			if(ctx.varpbits.varpbit(2184)==6){
 			 if(new Tile(3108,9767,0).distanceTo(local.getLocation())<5){
 				 Method.interactO(149, "Pull","Lever");
 				ctx.game.sleep(1200,1500);
@@ -306,12 +305,12 @@ public class ErnestTheChicken extends Node{
 			}
 		}else{
 			
-		 if(ctx.settings.get(2184)==6){
+		 if(ctx.varpbits.varpbit(2184)==6){
 			 if(new Tile(3108,9757,0).distanceTo(local.getLocation())<5){
 				Method.interactO(144, "Open","Door");
 				ctx.game.sleep(1200,1500);
 			 }else ctx.movement.findPath(new Tile(3108,9757,0)).traverse();
-		 }else if(ctx.settings.get(2184)==4){
+		 }else if(ctx.varpbits.varpbit(2184)==4){
 			 
 			 if(new Tile(3108,9746,0).distanceTo(local.getLocation())<5){
 				 Method.interactO(146, "Pull","Lever");
@@ -377,19 +376,13 @@ public class ErnestTheChicken extends Node{
 	
 
 	private void gatherPressureGauge() {
-		System.out.println("here?!?!");
 		Tile fountain = new Tile(3090,3335,0);
 		Player local = ctx.players.local();
 			if (itemsArray[0]==1){//Fish food check
-				System.out.println("here13");
 				if (itemsArray[1]==1){//Poison
-					System.out.println("here10");
 					if (itemsArray[2]==1){//Spade
-						System.out.println("here11");
 						if(itemsArray[3]==1){//Grimy key.
-							System.out.println("here12");
 							if (itemsArray[4]==1){
-								System.out.println("here13");
 								if(ctx.players.local().getAnimation()!=-1 ||ctx.widgets.get(1191).isValid())
 									timer = new Timer(4000);
 								
@@ -467,12 +460,12 @@ public class ErnestTheChicken extends Node{
 					if (Method.inventoryContains(273)|| Method.inventoryContains(274)){
 						itemsArray[1] =1;
 					}else{
-						if (new Tile(3099,3365,0).getMatrix(ctx).isReachable() && ctx.game.getPlane()==0){
+						if (new Tile(3099,3365,0).getMatrix(ctx).isReachable() && ctx.game.floor()==0){
 							if (new Tile(3099,3365,0).distanceTo(local.getLocation())<3){
 								if(!timer.isRunning())//below grabs the poison off the table
 								for(GroundItem poison: ctx.groundItems.select().name("Poison").nearest().first()){//the poison
 									if (poison.isOnScreen()) {
-										//System.out.println("...yeah: " +poison.getLocation().getMatrix(ctx).getInteractPoint().getX());
+										//System.out.println("...yeah: " +poison.getLocation().getMatrix(ctx).getInteractPoint().x());
 										ctx.mouse.move(poison.getLocation().getMatrix(ctx).getPoint(.457D, .368D, -400));
 										ctx.mouse.click(true);
 										timer = new Timer(2000);
@@ -482,30 +475,30 @@ public class ErnestTheChicken extends Node{
 								
 							}else ctx.movement.findPath(new Tile (3099,3365,0)).traverse();
 						}else{//if you can't reach the poison room..
-							if(new Tile(3099,3369,0).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==0){
+							if(new Tile(3099,3369,0).getMatrix(ctx).isReachable()&& ctx.game.floor()==0){
 								if (new Tile(3099,3369,0).distanceTo(local.getLocation())<4){
 									Method.interactO(47512, "Open", "Door");
 								}else ctx.movement.findPath(new Tile(3099,3367,0)).traverse();
-							}else if (new Tile(3103,3371,0).getMatrix(ctx).isReachable() && ctx.game.getPlane()==0){//if you can't reach the second room to poison..
+							}else if (new Tile(3103,3371,0).getMatrix(ctx).isReachable() && ctx.game.floor()==0){//if you can't reach the second room to poison..
 								if (new Tile(3103,3371,0).distanceTo(local.getLocation())<4){
 									Method.interactO(47512, "Open", "Door");
 								}else ctx.movement.findPath(new Tile(3103,3371,0)).traverse();
 							}else{
 								
-								if(new Tile(3103,3362,0).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==0){
+								if(new Tile(3103,3362,0).getMatrix(ctx).isReachable()&& ctx.game.floor()==0){
 									if(new Tile(3103,3362,0).distanceTo(local.getLocation())<5){
 										Method.interactO(47512, "Open", "Door");
 									}else ctx.movement.findPath(new Tile(3103,3362,0)).traverse();
-								}else if(new Tile(3107,3360,0).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==0){
+								}else if(new Tile(3107,3360,0).getMatrix(ctx).isReachable()&& ctx.game.floor()==0){
 									Method.interactO(47512, "Open", "Door");
 								}else{//now checking upstairs..
-									if(new Tile(3108,3366,1).getMatrix(ctx).isReachable() &&  ctx.game.getPlane()==1){
+									if(new Tile(3108,3366,1).getMatrix(ctx).isReachable() &&  ctx.game.floor()==1){
 										if (new Tile(3109,3367,1).distanceTo(local.getLocation())<5){
 										Method.interactO(47657, "Climb","Stairs");//climbing down staircase.
 										}else ctx.movement.findPath(new Tile(3109,3367,1)).traverse();
-									}else if(new Tile(3112,3362,1).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==1){
+									}else if(new Tile(3112,3362,1).getMatrix(ctx).isReachable()&& ctx.game.floor()==1){
 										Method.interactO(47512, "Open", "Door");
-									}else if(new Tile(3109,3358,1).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==1){
+									}else if(new Tile(3109,3358,1).getMatrix(ctx).isReachable()&& ctx.game.floor()==1){
 										Method.interactO(47512, "Open", "Door");
 									}
 								}
@@ -522,14 +515,14 @@ public class ErnestTheChicken extends Node{
 						itemsArray[0] = 1;
 					}else{//RETREIVES FISH FOOD.
 					if ( !Method.objIsByTile(new Tile(3112, 3363, 1),47512,3)&&
-							!Method.objIsByTile(new Tile(3111,3358, 1),47512,3)&&  ctx.game.getPlane()==1) {
+							!Method.objIsByTile(new Tile(3111,3358, 1),47512,3)&&  ctx.game.floor()==1) {
 						if (new Tile(3109, 3357, 1).distanceTo(local.getLocation()) < 4) {
 							Method.interactG(272, "Take", "Item");
 						} else {
 							Method.state("Walking to fish food");
 							ctx.movement.findPath(new Tile(3109, 3357, 1)).traverse();
 						}
-					} else if (new Tile(3112, 3358, 1).getMatrix(ctx).isReachable() && ctx.game.getPlane()==1) {// second room to fish food.
+					} else if (new Tile(3112, 3358, 1).getMatrix(ctx).isReachable() && ctx.game.floor()==1) {// second room to fish food.
 						if (new Tile(3112, 3358, 1).distanceTo(local.getLocation()) < 3) {
 							Method.interactO(47512, "Open", "Door");
 						}else {
@@ -537,20 +530,20 @@ public class ErnestTheChicken extends Node{
 							ctx.movement.findPath(new Tile(3112, 3358, 1)).traverse();
 						}
 						
-				} else if (new Tile(3112, 3365, 1).getMatrix(ctx).isReachable() && ctx.game.getPlane()==1) {
+				} else if (new Tile(3112, 3365, 1).getMatrix(ctx).isReachable() && ctx.game.floor()==1) {
 					if (new Tile(3112,3363,1).distanceTo(local.getLocation())<4){
 						Method.interactO(47512, "Open", "Door");
 					}else {
 						Method.state("Hello1");
 						ctx.movement.findPath(new Tile(3112,3363,1)).traverse();
 					}
-				} else if (new Tile(3105, 3362, 2).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==2) {// 3rd floor by ladder.
+				} else if (new Tile(3105, 3362, 2).getMatrix(ctx).isReachable()&& ctx.game.floor()==2) {// 3rd floor by ladder.
 					if(!Method.objIsByTile(new Tile(3107,3364,2), 47512, 3)){
 						Method.interactO(47575, "Climb","Ladder");
 					}else Method.interactO(47512,"Open", "Door");
-				} else if (new Tile(3109, 3365, 2).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==2) {// in professors room.
+				} else if (new Tile(3109, 3365, 2).getMatrix(ctx).isReachable()&& ctx.game.floor()==2) {// in professors room.
 					Method.interactO(47512, "Open","Door");
-				} else if (new Tile(3105,3361, 2).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==2) {// in professors room.
+				} else if (new Tile(3105,3361, 2).getMatrix(ctx).isReachable()&& ctx.game.floor()==2) {// in professors room.
 					Method.interactO(47511, "Open","Door");
 				}else if (new Tile(3109, 3361, 0).getMatrix(ctx).isReachable()) {// bottom floor in house
 					if (new Tile(3109, 3361, 0).distanceTo(local.getLocation()) < 4) {// near staircase.
@@ -588,7 +581,7 @@ public class ErnestTheChicken extends Node{
 		Player local = ctx.players.local();
 		final String[] opt = {"Change him back","I'm looking for"};
 		
-		if(new Tile(3106,3364,2).getMatrix(ctx).isReachable() && ctx.game.getPlane()==2){//third floor
+		if(new Tile(3106,3364,2).getMatrix(ctx).isReachable() && ctx.game.floor()==2){//third floor
 			if(!Method.objIsByTile(new Tile(3107,3364,2), 47512, 3)){
 				
 				if(!Method.findOption(opt))
@@ -647,3 +640,4 @@ public class ErnestTheChicken extends Node{
 	}
 
 }
+*/

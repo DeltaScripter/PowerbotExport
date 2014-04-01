@@ -1,15 +1,15 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
 public class ClockTower extends Node{
 
-	public ClockTower(MethodContext ctx) {
+	public ClockTower(ClientContext ctx) {
 		super(ctx);
 	}
 	
@@ -66,40 +66,40 @@ public class ClockTower extends Node{
 		DeltaQuester.numSteps = 6;
 		
 		
-		if(DeltaQuester.checkedBank && (ctx.settings.get(2197)&0xF)!=8)
+		if(DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2197)&0xF)!=8)
 			Method.determineBank(bankItems);
 		
-			if(DeltaQuester.checkedBank&& (ctx.settings.get(2197)&0xF)!=8){
+			if(DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(2197)&0xF)!=8){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.settings.get(2197)&0xF)!=8){
+	    if(Vars.useBank && (ctx.varpbits.varpbit(2197)&0xF)!=8){
 			Method.useBank(bankItems, bankItemAmount);
-		}else if (DeltaQuester.GEFeature&&(ctx.settings.get(2197)&0xF)!=8) {
+		}else if (DeltaQuester.GEFeature&&(ctx.varpbits.varpbit(2197)&0xF)!=8) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else
-		if((ctx.settings.get(2197)&0xF)==8){
+		if((ctx.varpbits.varpbit(2197)&0xF)==8){
 			DeltaQuester.progress = 6;
 			DeltaQuester.state ="The Clock Tower quest has been completed";
 			ctx.environment.sleep(2000);
 			DeltaQuester.e  = true;
 		}else
-		if((ctx.settings.get(2197)&0x7)==5){
+		if((ctx.varpbits.varpbit(2197)&0x7)==5){
 			DeltaQuester.progress = 5;
 			cs0();//Speak to the man to finish the quest
 		}else
-		if((ctx.settings.get(2197)&0x7)==4){
+		if((ctx.varpbits.varpbit(2197)&0x7)==4){
 			DeltaQuester.progress = 4;
 			cs4();//Gather and place the white cog
 		}else
-		if((ctx.settings.get(2197)&0x3)==3){
+		if((ctx.varpbits.varpbit(2197)&0x3)==3){
 			DeltaQuester.progress = 3;
 			cs3();//Gather and place the blue cog
 		}else
-		if((ctx.settings.get(2197)&0x3)==2){
+		if((ctx.varpbits.varpbit(2197)&0x3)==2){
 			DeltaQuester.progress = 2;
 			cs2();//Gather and place the red cog
 		}else
-		if((ctx.settings.get(2197)&0x1)==1){
+		if((ctx.varpbits.varpbit(2197)&0x1)==1){
 			DeltaQuester.progress = 1;
 			cs1();//Gather and place the black cog
 		}else cs0();//Start the quest
@@ -112,10 +112,10 @@ public class ClockTower extends Node{
 		Player local = ctx.players.local();
 		
 		if(!Method.teleporting&& Method.inventoryContains(20)){//inv contains white cog
-			if(ctx.game.getPlane()==2){
+			if(ctx.game.floor()==2){
 				Method.useItemOn(20, 31, "Use");//use white cog on white spindle
 			}else
-			if(ctx.game.getPlane()==1){
+			if(ctx.game.floor()==1){
 				Method.interactO(1739, "Climb-up", "Stairs");//go to third floor
 			}else
 			if(new Tile(2567,3242,0).distanceTo(local.getLocation())<4){//main floor
@@ -162,7 +162,7 @@ public class ClockTower extends Node{
 			}else Method.findPath(new Tile(2576,9651,0), "Walking to the door by red tile");
 		}else Method.findPath(new Tile(2562,9662,0), "Walking to the rat poison");
 			
-		}else if(ctx.game.getPlane()==1){
+		}else if(ctx.game.floor()==1){
 			Method.interactO(1739, "Climb-down", "Stairs");//go downstairs if on the second floor
 		}else cs1();
 		
@@ -173,7 +173,7 @@ public class ClockTower extends Node{
 		Player local = ctx.players.local();
 	
 		if(!Method.teleporting && Method.inventoryContains(22)){//if inv contains blue cog
-			if(ctx.game.getPlane()==1){//upstairs
+			if(ctx.game.floor()==1){//upstairs
 				Method.useItemOn(22, 32, "Use");//use the blue cog on the spindle
 			}else
 			if(new Tile(2567,3242,0).distanceTo(local.getLocation())<4){//main floor
@@ -302,10 +302,10 @@ public class ClockTower extends Node{
 		Player local = ctx.players.local();
 		final String[] opt = {"OK old monk"};
 		
-		if(ctx.game.getPlane()==2){
+		if(ctx.game.floor()==2){
 			//ctx.camera.setYaw(70);
 			Method.interactO(1740, "Climb-down","Stairs");
-		}else if(ctx.game.getPlane()==1){
+		}else if(ctx.game.floor()==1){
 			Method.interactO(1739, "Climb-down","Stairs");
 		}else
 		if(new Tile(2570,3249,0).distanceTo(local.getLocation())<16){
@@ -342,4 +342,4 @@ public class ClockTower extends Node{
 		return DeltaQuester.scriptToStart==36;
 	}
 
-}
+}*/

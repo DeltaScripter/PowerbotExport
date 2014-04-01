@@ -1,8 +1,9 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+
+import org.powerbot.script.rs3.ClientContext;
+import org.powerbot.script.rs3.Player;
+import org.powerbot.script.rs3.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -10,7 +11,7 @@ import quests.Vars.TeleportType;
 public class VampyreSlayer extends Node{
 
 
-	public VampyreSlayer(MethodContext ctx) {
+	public VampyreSlayer(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -101,15 +102,15 @@ public class VampyreSlayer extends Node{
 		if(!DeltaQuester.checkedBank){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.settings.get(2170)&0x7)!=7){
+	    if(Vars.useBank && (ctx.varpbits.varpbit(2170)&0x7)!=7){
 			Method.useBank(bankItems, bankItemAmount);
-		}else if (DeltaQuester.GEFeature && (ctx.settings.get(2170)&0x7)!=7) {
+		}else if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2170)&0x7)!=7) {
 			Method.onlyItemsGE = true;
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else if(!DeltaQuester.exchangeBank){//should be if  false
 			Method.exchangeBank(1918,1917,3);
 		}else
-		if((ctx.settings.get(2170)&0x7)==7){
+		if((ctx.varpbits.varpbit(2170)&0x7)==7){
 			DeltaQuester.progress = 6;
 			Method.state("The Vampire Slayer quest has been completed.");
 			TaskListing.updateTaskRemove("Start quest by speaking to Morgan in Draynor","Speak to vampyre slayer in Varrock and get supplies","Kill the vampyre in Draynor mansion","Finish the quest by speaking to Morgan in Draynor");
@@ -118,25 +119,25 @@ public class VampyreSlayer extends Node{
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else	
-		if((ctx.settings.get(2170)>>3&0x1)==1){
+		if((ctx.varpbits.varpbit(2170)>>3&0x1)==1){
 			DeltaQuester.progress = 5;
 			cs0();//finish quest
 			TaskListing.updateTaskRemove("Start quest by speaking to Morgan in Draynor","Speak to vampyre slayer in Varrock and get supplies","Kill the vampyre in Draynor mansion");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(2170)&0x1F)==6){
+		if((ctx.varpbits.varpbit(2170)&0x1F)==6){
 			DeltaQuester.progress = 4;
 			cs2();//Kill the vampyre
 			TaskListing.updateTaskRemove("Start quest by speaking to Morgan in Draynor","Speak to vampyre slayer in Varrock and get supplies");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(2170)&0x3)==2){
+		if((ctx.varpbits.varpbit(2170)&0x3)==2){
 			DeltaQuester.progress = 3;
 			cs1();//Speak to the vampyre slayer (buy beer?)
 		}else
-		if((ctx.settings.get(2170)&0x1)==1){
+		if((ctx.varpbits.varpbit(2170)&0x1)==1){
 			DeltaQuester.progress = 2;
 			cs1();//Speak to the vampyre slayer and get supplies
 			TaskListing.updateTaskRemove("Start quest by speaking to Morgan in Draynor");
@@ -153,7 +154,7 @@ public class VampyreSlayer extends Node{
 		//NPC vampyre = NPCs.getNearest(9357,9356);
 		//SceneObject door = SceneEntities.getNearest(47512);
 		
-		if((ctx.settings.get(2170)>>6&0x1)==1){
+		if((ctx.varpbits.varpbit(2170)>>6&0x1)==1){
 			if(hasEquip){
 				if(Method.objIsNotNull(31130)){
 					if(Method.npcIsNotNull(9357) || Method.npcIsNotNull(9356)){//vampyres
@@ -278,3 +279,4 @@ public class VampyreSlayer extends Node{
 
 
 }
+*/

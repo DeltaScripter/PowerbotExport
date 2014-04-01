@@ -1,6 +1,7 @@
 package quests;
 
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
+
 
 public class Paths {
 	

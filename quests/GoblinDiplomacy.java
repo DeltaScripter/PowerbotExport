@@ -1,15 +1,15 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportType;
 
 public class GoblinDiplomacy extends Node{
 
-	public GoblinDiplomacy(MethodContext ctx) {
+	public GoblinDiplomacy(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -40,9 +40,9 @@ public class GoblinDiplomacy extends Node{
 	public void execute(){
 		DeltaQuester.numSteps  =5;
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
-		while(ctx.settings.get(1114)==1){
+		while(ctx.varpbits.varpbit(1114)==1){
 			Method.pressContinue();
-			if(ctx.settings.get(2137)==6){
+			if(ctx.varpbits.varpbit(2137)==6){
 				Method.state("The Goblin Diplomacy quest has been completed.");
 				Method.sleep(2000);
 				DeltaQuester.e = true;
@@ -54,10 +54,10 @@ public class GoblinDiplomacy extends Node{
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
 		
-		if(!DeltaQuester.checkedBank && (ctx.settings.get(2137) & 0x7) != 6){
+		if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2137) & 0x7) != 6){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank &&(ctx.settings.get(2137) & 0x7) != 6){
+	    if(Vars.useBank &&(ctx.varpbits.varpbit(2137) & 0x7) != 6){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if (DeltaQuester.GEFeature) {
@@ -73,7 +73,7 @@ public class GoblinDiplomacy extends Node{
 				DeltaQuester.e  =true;
 			}else init = true;
 		}else
-			if ((ctx.settings.get(2137) & 0x7) == 6) {
+			if ((ctx.varpbits.varpbit(2137) & 0x7) == 6) {
 					DeltaQuester.progress = 4;
 					if(ctx.widgets.get(1244).isValid()){
 						ctx.widgets.get(1244,19).click(true);
@@ -84,25 +84,25 @@ public class GoblinDiplomacy extends Node{
 					DeltaQuester.e = true;
 					}
 				}else
-				if((ctx.settings.get(2137) & 0x7) ==5){
+				if((ctx.varpbits.varpbit(2137) & 0x7) ==5){
 					DeltaQuester.progress = 4;
-					if(ctx.settings.get(1114)==0){
+					if(ctx.varpbits.varpbit(1114)==0){
 						cS0();
 						}else Method.isChatting("Person");
 				}else
-				if((ctx.settings.get(2137) & 0x7) ==4){
+				if((ctx.varpbits.varpbit(2137) & 0x7) ==4){
 					DeltaQuester.progress = 3;
-					if(ctx.settings.get(1114)==0){
+					if(ctx.varpbits.varpbit(1114)==0){
 						cS0();
 						}else Method.isChatting("Person");
 				}else
-				if((ctx.settings.get(2137) & 0x3) ==3){
+				if((ctx.varpbits.varpbit(2137) & 0x3) ==3){
 					DeltaQuester.progress = 2;
-					if(ctx.settings.get(1114)==0){
+					if(ctx.varpbits.varpbit(1114)==0){
 						cS0();
 						}else Method.isChatting("Person");
 				}else
-				if((ctx.settings.get(2137) & 0x1) ==0){
+				if((ctx.varpbits.varpbit(2137) & 0x1) ==0){
 					DeltaQuester.progress = 1;
 					cS0();
 				}
@@ -110,7 +110,7 @@ public class GoblinDiplomacy extends Node{
 
 
 	private void createMails() {
-		if(ctx.settings.get(1114)==0){
+		if(ctx.varpbits.varpbit(1114)==0){
 	while(Method.inventoryContains(288) &&Method.inventoryContains(1769)){
 		System.out.println("Combining items 1");
 		Method.combineItems(288, 1769);
@@ -142,8 +142,8 @@ public class GoblinDiplomacy extends Node{
 			//ctx.camera.setYaw(50);
 		if (!Method.objIsNotNull(77969)&& new Tile(2957, 3514, 0).distanceTo(local.getLocation()) < 4 || new Tile(2957, 3514, 0).distanceTo(local.getLocation()) < 4 && Method.objIsNotNull(77969) && !doorContains()) {
 			createMails();
-			if (ctx.settings.get(2137) == 3 || ctx.settings.get(2137) == 516
-					|| ctx.settings.get(2137) == 1029) {
+			if (ctx.varpbits.varpbit(2137) == 3 || ctx.varpbits.varpbit(2137) == 516
+					|| ctx.varpbits.varpbit(2137) == 1029) {
 				if (!Method.findOption(opt))
 					if (!Method.isChatting("Goblin")) {
 						Method.speakTo(4493, "Person");
@@ -172,3 +172,4 @@ public class GoblinDiplomacy extends Node{
 		return (DeltaQuester.scriptToStart==16);
 	}
 }
+*/

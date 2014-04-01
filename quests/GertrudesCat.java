@@ -1,17 +1,17 @@
-package quests;
+/*package quests;
 
 import lodestoneActivator.Data.TeleportLode;
 import lodestoneActivator.Data.TeleportType;
 
 import org.powerbot.script.methods.Hud.Window;
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 
 public class GertrudesCat extends Node{
 
-	public GertrudesCat(MethodContext ctx) {
+	public GertrudesCat(ClientContext ctx) {
 		super(ctx);
 	}
 	public boolean activate(){
@@ -63,7 +63,7 @@ public class GertrudesCat extends Node{
 	public void execute() {
 	
 		
-		// * ctx.settings used:
+		// * ctx.varpbits.varpbit used:
 		// * 2175-main steps
 		// * /*
 	
@@ -72,7 +72,7 @@ public class GertrudesCat extends Node{
 			if(DeltaQuester.checkedBank)
 				Method.determineBank(bankItems);
 			
-			if((ctx.settings.get(2175) & 0x7) ==6){
+			if((ctx.varpbits.varpbit(2175) & 0x7) ==6){
 				DeltaQuester.progress = 7;
 				DeltaQuester.state = "The Gertrudes Cat quest has been completed";
 				ctx.game.sleep(2000);
@@ -88,23 +88,23 @@ public class GertrudesCat extends Node{
 			if (DeltaQuester.GEFeature) {
 				Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 			}else
-			if((ctx.settings.get(2175) & 0x7) ==5){
+			if((ctx.varpbits.varpbit(2175) & 0x7) ==5){
 				DeltaQuester.progress = 6;
 				cs0();//go back to Gertrude
 			}else
-			if((ctx.settings.get(2175) & 0x7) ==4){
+			if((ctx.varpbits.varpbit(2175) & 0x7) ==4){
 				DeltaQuester.progress = 5;
 				cs3();//find the kittens in the crates
 			}else
-			if((ctx.settings.get(2175) & 0x3) ==2 ||
-					(ctx.settings.get(2175) & 0x7) ==3){
+			if((ctx.varpbits.varpbit(2175) & 0x3) ==2 ||
+					(ctx.varpbits.varpbit(2175) & 0x7) ==3){
 				DeltaQuester.progress = 3;
 				cs2();//Go to the cat and feed it.
 			}else
-			if((ctx.settings.get(2175) & 0x1) ==1){
+			if((ctx.varpbits.varpbit(2175) & 0x1) ==1){
 				cs1();//Bribe the punks.
 			}else
-			if((ctx.settings.get(2175) & 0x1) ==0){
+			if((ctx.varpbits.varpbit(2175) & 0x1) ==0){
 				DeltaQuester.progress = 1;
 				cs0();//start the quest.
 			}
@@ -117,7 +117,7 @@ public class GertrudesCat extends Node{
 		 Tile local = ctx.players.local().getLocation();
 		
 			if(Method.inventoryContains(13236)){//kittens?
-				if(new Tile(3309,3510,1).getMatrix(ctx).isReachable() && ctx.game.getPlane()==1){//tree house, cat loc
+				if(new Tile(3309,3510,1).getMatrix(ctx).isReachable() && ctx.game.floor()==1){//tree house, cat loc
 					Vars.DYNAMICV = false;
 					if(!Method.isChatting("Cat..")){
 						Method.useItemOnNpc(13236, 759, "Shizzle");//use kittens on cat
@@ -154,7 +154,7 @@ public class GertrudesCat extends Node{
 							}
 				}
 				
-			}else if(ctx.game.getPlane()==1){
+			}else if(ctx.game.floor()==1){
 				Method.interactO(24355, "Climb-down", "Ladder");
 			}else cs2();
 				  
@@ -169,7 +169,7 @@ public class GertrudesCat extends Node{
 		 
 		if(requiredItems[0]==1){//Do we have a doogle leaf?
 			if(requiredItems[1]==1){//Do we have the ....sandwich?
-		if(new Tile(3310,3508,1).getMatrix(ctx).isReachable() && ctx.game.getPlane()==1){//tree house I assume
+		if(new Tile(3310,3508,1).getMatrix(ctx).isReachable() && ctx.game.floor()==1){//tree house I assume
 			
 			while(ctx.widgets.get(1184,0).isVisible()){//for pressing space when talking to the cat, 
 				Method.state("Pressing continue with this special dialogue");
@@ -177,7 +177,7 @@ public class GertrudesCat extends Node{
 			}
 			
 			if(!Method.isChatting("Self"))
-			if((ctx.settings.get(2175) & 0x7)==3){//If we need to feed the cat a sandwich.
+			if((ctx.varpbits.varpbit(2175) & 0x7)==3){//If we need to feed the cat a sandwich.
 				if(!wait.isRunning()){
 				Method.useItemOnNpc(1552,759, "");//on the cat, sandwich
 				wait = new Timer(3300);
@@ -272,3 +272,4 @@ public class GertrudesCat extends Node{
 
 
 }
+*/

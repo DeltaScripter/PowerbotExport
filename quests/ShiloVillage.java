@@ -253,7 +253,7 @@ public class ShiloVillage extends Node{
 
 	private void CS9() {
 		if(initTile!=null){
-			if(new Tile(initTile.getX()-36,initTile.getY()-39,0).canReach()){
+			if(new Tile(initTile.x()-36,initTile.getY()-39,0).canReach()){
 				while(Widgets.get(1186).validate()||Widgets.get(1189).validate()){
 					ChatOptions.getContinueOption().select(true);
 				}
@@ -267,8 +267,8 @@ public class ShiloVillage extends Node{
 					Method.npcInteract(508, "Attack");
 				}else Method.interactO(2258, "Search", "Tomb Dolmen");
 			}else
-			if(new Tile(initTile.getX(),initTile.getY()-18,0).canReach()){
-				if(new Tile(initTile.getX()-36,initTile.getY()-45,0).distanceTo()<10){
+			if(new Tile(initTile.x(),initTile.getY()-18,0).canReach()){
+				if(new Tile(initTile.x()-36,initTile.getY()-45,0).distanceTo()<10){
 					if(Method.isInCombat()){
 						final int[] monst = {5358,5353,5357,505};
 						for(int y: monst){
@@ -296,16 +296,16 @@ public class ShiloVillage extends Node{
 					}else Method.state("You need bones x 3");
 				}else {
 					Method.state("Walking to the skeleton gate");
-					new Tile(initTile.getX()-36,initTile.getY()-45,0).clickOnMap();
+					new Tile(initTile.x()-36,initTile.getY()-45,0).clickOnMap();
 				}
 			}else
-			if(new Tile(initTile.getX(),initTile.getY()-10,0).canReach()){
+			if(new Tile(initTile.x(),initTile.getY()-10,0).canReach()){
 				Method.interactO(2257, "Climb", "Rocks");
 			}else
-			if(!new Tile(initTile.getX(),initTile.getY()-10,0).canReach()){
-				if(new Tile(initTile.getX(),initTile.getY()-10,0).distanceTo()<4){
+			if(!new Tile(initTile.x(),initTile.getY()-10,0).canReach()){
+				if(new Tile(initTile.x(),initTile.getY()-10,0).distanceTo()<4){
 					Method.interactO(2255, "Open", "Metal door");
-				}else new Tile(initTile.getX(),initTile.getY()-10,0).clickOnMap();
+				}else new Tile(initTile.x(),initTile.getY()-10,0).clickOnMap();
 			}
 		}else if(SceneEntities.getNearest(31130)!=null){//CAve check.
 			initTile = Players.getLocal().getLocation();
@@ -474,7 +474,7 @@ public class ShiloVillage extends Node{
 	
 	private void getToTomb() {//Gets to the tomb and searchs the rock for the items.
 		if(initTile!=null){
-			if(new Tile(initTile.getX()+5,initTile.getY()-23,0).distanceTo()<7){
+			if(new Tile(initTile.x()+5,initTile.getY()-23,0).distanceTo()<7){
 				if((Vars.STEPX & 0xF) ==14){
 					while(Widgets.get(1189).validate()){
 						ChatOptions.getContinueOption().select(true);
@@ -493,7 +493,7 @@ public class ShiloVillage extends Node{
 				
 			}else {
 				Method.state("Walking closer to the strange rocks.");
-				new Tile(initTile.getX()+5,initTile.getY()-23,0).clickOnMap();
+				new Tile(initTile.x()+5,initTile.getY()-23,0).clickOnMap();
 			}
 		  }else if(SceneEntities.getNearest(2235)!=null){
 			  initTile = Players.getLocal().getLocation();
@@ -657,7 +657,7 @@ public class ShiloVillage extends Node{
 		}
 		if(cave2Check!=null || hasCorpse){
 			if(initTile2!=null|| hasCorpse){
-				//Method.state("Y:"+(initTile2.getLocation().getY() - Players.getLocal().getLocation().getY())+": X:"+(initTile2.getLocation().getX() - Players.getLocal().getLocation().getX()));
+				//Method.state("Y:"+(initTile2.getLocation().getY() - Players.getLocal().getLocation().getY())+": X:"+(initTile2.getLocation().x() - Players.getLocal().getLocation().x()));
 				if(hasScroll1){//If you've gathered the first scroll!
 					if(hasScroll2){//If you've gathered the second scroll!
 						if(hasCorpse){//If we've gathered the corpse!
@@ -689,7 +689,7 @@ public class ShiloVillage extends Node{
 							}else CS0();//Get to Trufitus's location
 							
 							
-						}else if(new Tile(initTile2.getX()+47, initTile2.getY()+45,0).distanceTo()<8){//Third item
+						}else if(new Tile(initTile2.x()+47, initTile2.getY()+45,0).distanceTo()<8){//Third item
 							if(!Method.teleporting&&!Method.teleporting&&Inventory.getItem(610)!=null){//The corpse ID, the one we retrieved from the gallows.
 								Vars.DYNAMICV = false;
 								Vars.DYNAMICV2 = false;
@@ -712,12 +712,12 @@ public class ShiloVillage extends Node{
 							}
 						}else {
 							Method.state("Walking to gather the last item");
-							new Tile(initTile2.getX()+47, initTile2.getY()+45,0).clickOnMap();
+							new Tile(initTile2.x()+47, initTile2.getY()+45,0).clickOnMap();
 						}
 						
 						
 					}else //Below gather the second scroll item.
-						if(new Tile(initTile2.getX()+53, initTile2.getY()+2,0).distanceTo()<8){//Second item
+						if(new Tile(initTile2.x()+53, initTile2.getY()+2,0).distanceTo()<8){//Second item
 						if(Widgets.get(137).validate()){
 							if(Widgets.get(137,58).getChild(0).getText().contains("You find nothing in the")){
 								hasScroll2 = true;
@@ -728,12 +728,12 @@ public class ShiloVillage extends Node{
 						}else Method.state("Requires updating");
 					}else {
 						Method.state("Walking closer to the second item");
-						new Tile(initTile2.getX()+53, initTile2.getY()+2,0).clickOnMap();
+						new Tile(initTile2.x()+53, initTile2.getY()+2,0).clickOnMap();
 					}
 					
 				}else//Below gathers the first scroll..
 			
-				if(new Tile(initTile2.getX()-2, initTile2.getY()+35,0).distanceTo()<4){//First item
+				if(new Tile(initTile2.x()-2, initTile2.getY()+35,0).distanceTo()<4){//First item
 					if(Method.isInCombat()){
 						Method.basicFightNPC(505);
 					}else
@@ -742,13 +742,13 @@ public class ShiloVillage extends Node{
 					}
 				}else {
 					Method.state("Walking closer to the first item");
-					new Tile(initTile2.getX()-2, initTile2.getY()+35,0).clickOnMap();
+					new Tile(initTile2.x()-2, initTile2.getY()+35,0).clickOnMap();
 				}
 			}else initTile2 = Players.getLocal().getLocation();
 		}else
 		if(caveCheck!=null){//Below will enter the second part of the cave.
 			if(initTile!=null){
-				if(new Tile(initTile.getX()-10, initTile.getY()-28,0).distanceTo()<9){
+				if(new Tile(initTile.x()-10, initTile.getY()-28,0).distanceTo()<9){
 					while(Method.isInCombat()){
 						Method.basicFightNPC(skele.getId());
 					}
@@ -757,7 +757,7 @@ public class ShiloVillage extends Node{
 					}
 				}else {
 					Method.state("Walking closer to a crack in the cave wall");
-					new Tile(initTile.getX()-10, initTile.getY()-28,0).clickOnMap();
+					new Tile(initTile.x()-10, initTile.getY()-28,0).clickOnMap();
 				}
 			}else initTile = Players.getLocal().getLocation();
 		}else if(new Tile(2921, 3001, 0).distanceTo() < 10){//<<<This part is outside the cave area.

@@ -1,13 +1,11 @@
-package quests;
+/*package quests;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Author: Aadil Farouk Date: 6/17/13 Time: 3:59 PM
- */
+
 
 public class JobContainer {
 	private List<Job> jobList = new ArrayList();
@@ -44,4 +42,4 @@ public class JobContainer {
 		}
 		return null;
 	}
-}
+}*/

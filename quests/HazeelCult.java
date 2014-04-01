@@ -3,7 +3,7 @@
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -72,7 +72,7 @@ public class HazeelCult extends Node{
 		DeltaQuester.numSteps = 8;
 		Method.resetTeleporting();//Make sure to use banking that pulls out the mark!
 		
-		if((ctx.settings.get(2592)&0xF)==9){
+		if((ctx.varpbits.varpbit(2592)&0xF)==9){
 			DeltaQuester.progress = 8;
 			Method.state("The Hazeel Cult quest has been completed.");
 			Delay.sleep(2000);
@@ -80,31 +80,31 @@ public class HazeelCult extends Node{
 		}else// if(Method.useBank){
 			//Method.useBank(bankItems, 1, 90, 90);
 		//}else
-		if((ctx.settings.get(2592)&0x7)==7){
+		if((ctx.varpbits.varpbit(2592)&0x7)==7){
 			DeltaQuester.progress = 7;
-			while((ctx.settings.get(1114)&0x1)==1){
+			while((ctx.varpbits.varpbit(1114)&0x1)==1){
 				Method.skipPics();
 				Method.isChatting("Cutscene");
 			}
 			cs3();//Give the scroll to the 'other' member and summon the demon
 		}else 
-		if((ctx.settings.get(2592)&0x7)==6){
+		if((ctx.varpbits.varpbit(2592)&0x7)==6){
 			DeltaQuester.progress = 6;
 			cs4();//Finds key in basement then takes the scroll in the hidden chest using the key
 		}else 
-		if((ctx.settings.get(2592)&0x7)==5){
+		if((ctx.varpbits.varpbit(2592)&0x7)==5){
 			DeltaQuester.progress = 5;
 			cs3();//Turn the valves and enter the secret hide-out as well with speak to the member
 		}else 
-		if((ctx.settings.get(2592)&0x7)==4){
+		if((ctx.varpbits.varpbit(2592)&0x7)==4){
 			DeltaQuester.progress = 4;
 			cs2();//Enter ceril's basement and use poison on the range
 		}else 
-		if((ctx.settings.get(2592)&0x3)==3){
+		if((ctx.varpbits.varpbit(2592)&0x3)==3){
 			DeltaQuester.progress = 3;
 			cs1();//Speak to the cultist to learn the truth about the situation(and join him)
 		}else 
-		if((ctx.settings.get(2592)&0x3)==2){
+		if((ctx.varpbits.varpbit(2592)&0x3)==2){
 			DeltaQuester.progress = 2;
 			cs1();//Speak to the cult leader in the cave
 		}else {
@@ -139,7 +139,7 @@ public class HazeelCult extends Node{
 		}else if(!Method.teleporting && Method.inventoryContains(2404)){
 			hasKey  =true;
 		}else
-		if(new Tile(2569,9668,0).canReach() && ctx.game.getPlane()==0){
+		if(new Tile(2569,9668,0).canReach() && ctx.game.floor()==0){
 			Method.interactO(2858, "Search", "Crate");
 		}else cs2();//Enter the basement
 		
@@ -148,11 +148,11 @@ public class HazeelCult extends Node{
 	private void cs3() {
 		Player local = ctx.players.getLocal();
 		if(hasMark){
-			if((ctx.settings.get(2594)>>1&0x1)==1){
-				if((ctx.settings.get(2594)>>2&0x1)==1){
-					if((ctx.settings.get(2594)>>3&0x1)==1){
-						if((ctx.settings.get(2594)>>4&0x1)==1){
-							if((ctx.settings.get(2594)>>5&0x1)==1){
+			if((ctx.varpbits.varpbit(2594)>>1&0x1)==1){
+				if((ctx.varpbits.varpbit(2594)>>2&0x1)==1){
+					if((ctx.varpbits.varpbit(2594)>>3&0x1)==1){
+						if((ctx.varpbits.varpbit(2594)>>4&0x1)==1){
+							if((ctx.varpbits.varpbit(2594)>>5&0x1)==1){
 								if(new Tile(2606,9692,0).canReach()){
 									if(new Tile(2608,9670,0).distanceTo(local.getLocation())<5){
 												Vars.DYNAMICV = false;

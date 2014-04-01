@@ -1,15 +1,15 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
 public class LetThemEatPie extends Node{
 
-public LetThemEatPie(MethodContext ctx) {
+public LetThemEatPie(ClientContext ctx) {
 		super(ctx);
 		
 	}
@@ -122,75 +122,75 @@ boolean q = true;
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
 		
-			if(!DeltaQuester.checkedBank&& (ctx.settings.get(2674)&0x3F)!=40){
+			if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(2674)&0x3F)!=40){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.settings.get(2674)&0x3F)!=40){
+	    if(Vars.useBank && (ctx.varpbits.varpbit(2674)&0x3F)!=40){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
-		if (DeltaQuester.GEFeature&&(ctx.settings.get(2674)&0x3F)!=40) {
+		if (DeltaQuester.GEFeature&&(ctx.varpbits.varpbit(2674)&0x3F)!=40) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else
-		if((ctx.settings.get(2674)&0x3F)==40){
+		if((ctx.varpbits.varpbit(2674)&0x3F)==40){
 			DeltaQuester.progress = 13;
 			Method.state("The Let Them Eat Pie quest has been completed.");
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
-		if((ctx.settings.get(2674)&0x3F)==35){
+		if((ctx.varpbits.varpbit(2674)&0x3F)==35){
 			DeltaQuester.progress = 12;
 			cs0();//Speak to Nails and finish the quest
 		}else
-		if((ctx.settings.get(2674)&0x3F)==30){
+		if((ctx.varpbits.varpbit(2674)&0x3F)==30){
 			DeltaQuester.progress = 11;
 			cs5();//Speak to Pierre with the letter
 			updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again","Make the manky crayfish","Gather and combine the potato with the dish","Cook the uncooked pie","Speak to Newton Nails about the cooked pie","Pickpocket Pierre","Feed pie to man","Take seal and show it to Newton Nails");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
-		if((ctx.settings.get(2674)&0x3F)==25){
+		if((ctx.varpbits.varpbit(2674)&0x3F)==25){
 			DeltaQuester.progress = 10;
 			cs6();//Take the seal and show it to Nails
 			updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again","Make the manky crayfish","Gather and combine the potato with the dish","Cook the uncooked pie","Speak to Newton Nails about the cooked pie","Pickpocket Pierre","Feed pie to man");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
-		if((ctx.settings.get(2674)&0x3F)==20){
+		if((ctx.varpbits.varpbit(2674)&0x3F)==20){
 			DeltaQuester.progress = 9;
 			cs6();//Feed the man the pie
 			updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again","Make the manky crayfish","Gather and combine the potato with the dish","Cook the uncooked pie","Speak to Newton Nails about the cooked pie","Pickpocket Pierre");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
-		if((ctx.settings.get(2674)&0xF)==15){
+		if((ctx.varpbits.varpbit(2674)&0xF)==15){
 			DeltaQuester.progress = 8;
 		    cs5();//Pickpocket Pierre
 		    updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again","Make the manky crayfish","Gather and combine the potato with the dish","Cook the uncooked pie","Speak to Newton Nails about the cooked pie");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
-		if((ctx.settings.get(2674)&0xF)==13){
+		if((ctx.varpbits.varpbit(2674)&0xF)==13){
 			DeltaQuester.progress = 7;
 		    cs0();//Speak to Nails about the cooked pie, "Cook the uncooked pie"
 		    updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again","Make the manky crayfish","Gather and combine the potato with the dish","Cook the uncooked pie");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
-		if((ctx.settings.get(2674)&0xF)==12){
+		if((ctx.varpbits.varpbit(2674)&0xF)==12){
 			DeltaQuester.progress = 6;
 		    cs4();//Cook the uncooked pie
 		    updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again","Make the manky crayfish","Gather and combine the potato with the dish");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
-		if((ctx.settings.get(2674)&0xF)==10){
+		if((ctx.varpbits.varpbit(2674)&0xF)==10){
 			DeltaQuester.progress = 5;
 		    cs3();//Gather and combine the potato with the dish
 		    updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again","Make the manky crayfish");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
-		if((ctx.settings.get(2674)&0xF)==9){
+		if((ctx.varpbits.varpbit(2674)&0xF)==9){
 			DeltaQuester.progress = 4;
 		    cs2();//Mkae the stinky crayfish
 		    updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again");
@@ -198,19 +198,19 @@ boolean q = true;
 			
 			
 		}else
-		if((ctx.settings.get(2674)&0x7)==6){
+		if((ctx.varpbits.varpbit(2674)&0x7)==6){
 			DeltaQuester.progress = 3;
 		    cs1();//Make the maggotry flour and speak to Nails again
 		    updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 			
-		}else if((ctx.settings.get(2674)&0x7)==5){
+		}else if((ctx.varpbits.varpbit(2674)&0x7)==5){
 			DeltaQuester.progress = 2;
 			cs0();//Speak to Nails again to gather instructions
 			updateTaskRemove("Start quest by speaking to Newton Nails");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 			
-		}else if((ctx.settings.get(2674)&0x7)==0){
+		}else if((ctx.varpbits.varpbit(2674)&0x7)==0){
 			DeltaQuester.progress = 1;
 			cs0();//Speak to Nails Newton to begin the quest
 		
@@ -231,7 +231,7 @@ boolean q = true;
 		Player local = ctx.players.local();
 		
 		final String opt[] = {"I have nerves","Crayfish"};
-		while((ctx.settings.get(1114)&0x1)==1){
+		while((ctx.varpbits.varpbit(1114)&0x1)==1){
 			Method.skipPics();
 			if(!Method.findOption(opt))
 			Method.isChatting("Cutscene");
@@ -242,8 +242,8 @@ boolean q = true;
 		if(!Method.teleporting&& Method.inventoryContains(23079)){
 			hasSeal = true;
 		}else
-		if(ctx.game.getPlane()==1){
-             if((ctx.settings.get(2674)&0x3F)==25){
+		if(ctx.game.floor()==1){
+             if((ctx.varpbits.varpbit(2674)&0x3F)==25){
             	 Method.interactO(67552, "Open", "Chest");
              }else
 			if(!Method.isChatting("Roloe the Stout")){
@@ -270,7 +270,7 @@ boolean q = true;
 		}else
 		if(new Tile(2881, 3425, 0).distanceTo(local.getLocation())<8){
 			Vars.DYNAMICV = false;
-			if((ctx.settings.get(2674)&0x3F)==30){
+			if((ctx.varpbits.varpbit(2674)&0x3F)==30){
 				if(!Method.isChatting("Pierre")){
 					Method.speakTo(15086, "Pierre");
 				}
@@ -323,7 +323,7 @@ boolean q = true;
 	private void cs2() {
 		Player local = ctx.players.local();
 		
-		while((ctx.settings.get(1114)&0x1)==1){
+		while((ctx.varpbits.varpbit(1114)&0x1)==1){
 			Method.skipPics();
 			Method.isChatting("Cutscene");
 		}
@@ -350,12 +350,12 @@ boolean q = true;
 			Vars.DYNAMICV = false;
 			hasMFlour = true;
 		}else
-		if((ctx.settings.get(2674)>>11&0x1)==1){
-			if(new Tile(2890,3428,0).distanceTo(local.getLocation())<8 && ctx.game.getPlane()==0){
+		if((ctx.varpbits.varpbit(2674)>>11&0x1)==1){
+			if(new Tile(2890,3428,0).distanceTo(local.getLocation())<8 && ctx.game.floor()==0){
 				if(new Tile(2892,3425,0).distanceTo(local.getLocation())<4){
 					Method.interactO(67770, "Take", "Flour bin");
 				}else Method.clickOnMap(new Tile(2892,3425,0));
-			}else if(ctx.game.getPlane()==1){
+			}else if(ctx.game.floor()==1){
 				Method.interactO(66638, "Climb", "Stairs");
 			}else if(Vars.DYNAMICV){
 				Method.walking(pathToMill, "Walking to the water mill", false);
@@ -363,8 +363,8 @@ boolean q = true;
 				Vars.DYNAMICV = true;
 			}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 			
-		}else if(new Tile(2892,3426,1).distanceTo(local.getLocation())<8 && ctx.game.getPlane()==1){
-			if((ctx.settings.get(2674)>>10&0x1)==1){
+		}else if(new Tile(2892,3426,1).distanceTo(local.getLocation())<8 && ctx.game.floor()==1){
+			if((ctx.varpbits.varpbit(2674)>>10&0x1)==1){
 				Method.interactO(67775, "Operate", "Controls");
 			}else{
 			Method.skipPics();
@@ -393,7 +393,7 @@ boolean q = true;
 				if(!Method.isChatting("Nails Newton")){
 					Method.speakTo(15085, "Nails Newton");
 				}
-		}else if(ctx.game.getPlane()==1 && new Tile(2893,3442,1).distanceTo(local.getLocation())<10){
+		}else if(ctx.game.floor()==1 && new Tile(2893,3442,1).distanceTo(local.getLocation())<10){
 			Vars.DYNAMICV = true;
 			Method.interactO(7107, "Climb-down", "Stairs");
 		}else if(Vars.DYNAMICV){
@@ -404,3 +404,4 @@ boolean q = true;
 		
 	}
 }
+*/

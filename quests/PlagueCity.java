@@ -1,18 +1,18 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
 public class PlagueCity extends Node{
 
-	public PlagueCity(MethodContext ctx) {
+	public PlagueCity(ClientContext ctx) {
 		super(ctx);
 	}
 final Tile[] pathToEdmond = new Tile[] {
@@ -67,53 +67,53 @@ public int bankItemAmount[] = {1,1,4,1,1,1,1};
 		if (DeltaQuester.GEFeature) {
 			Method.onlyItemsGE = true;
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
-		}else if((ctx.settings.get(2386)&0x1F)==29){
+		}else if((ctx.varpbits.varpbit(2386)&0x1F)==29){
 			DeltaQuester.progress  =12;
 			Method.state("The Plague City quest has been completed.");
 			ctx.environment.sleep(2000);
 			DeltaQuester.e = true;
-		}else if((ctx.settings.get(2386)&0x1F)==28){
+		}else if((ctx.varpbits.varpbit(2386)&0x1F)==28){
 			DeltaQuester.progress  =11;
 			cs10();
-		}else if((ctx.settings.get(2386)&0x1F)==27){
+		}else if((ctx.varpbits.varpbit(2386)&0x1F)==27){
 			DeltaQuester.progress  =10;
 			cs9();//go and rescue the daughter
-		}else if((ctx.settings.get(2386)&0x1F)==26||
-				(ctx.settings.get(2386)&0x1F)==27){
+		}else if((ctx.varpbits.varpbit(2386)&0x1F)==26||
+				(ctx.varpbits.varpbit(2386)&0x1F)==27){
 			DeltaQuester.progress  =9;
 			cs8();//makes drunk-cure and feed
-		}else if((ctx.settings.get(2386)&0x1F)==24||
-				(ctx.settings.get(2386)&0x1F)==25){
+		}else if((ctx.varpbits.varpbit(2386)&0x1F)==24||
+				(ctx.varpbits.varpbit(2386)&0x1F)==25){
 			DeltaQuester.progress  =8;
 			cs7();//go to priest and speak to drunk
-		}else if((ctx.settings.get(2386)&0x1F)==22||
-				(ctx.settings.get(2386)&0x1F)==23){
+		}else if((ctx.varpbits.varpbit(2386)&0x1F)==22||
+				(ctx.varpbits.varpbit(2386)&0x1F)==23){
 			DeltaQuester.progress  =7;
 			cs6();//Head to the odd house and try the door
-		}else if((ctx.settings.get(2386)&0x1F)==20||
-				(ctx.settings.get(2386)&0x1F)==21){
+		}else if((ctx.varpbits.varpbit(2386)&0x1F)==20||
+				(ctx.varpbits.varpbit(2386)&0x1F)==21){
 		DeltaQuester.progress = 6;
 		    cs5();//Grab the book + give it and speak to people in house
 		  }else
-		 if((ctx.settings.get(2386)&0xF)==10){
+		 if((ctx.varpbits.varpbit(2386)&0xF)==10){
 		    DeltaQuester.progress = 5;
 		    cs4();//Speak to Jesthick in plague city about the missing daughter
 	    }else
-		if((ctx.settings.get(2386)&0xF)==8||
-				(ctx.settings.get(2386)&0xF)==9){
+		if((ctx.varpbits.varpbit(2386)&0xF)==8||
+				(ctx.varpbits.varpbit(2386)&0xF)==9){
 			DeltaQuester.progress = 4;
 			cs3();//Goe into the sewer and pulls of the grill
 		}else
-		if((ctx.settings.get(2386)&0x3)==2||//various settings of using the buckets
-				(ctx.settings.get(2386)&0x3)==3||
-				(ctx.settings.get(2386)&0x7)==4||
-				(ctx.settings.get(2386)&0x7)==5||
-				(ctx.settings.get(2386)&0x7)==6){
+		if((ctx.varpbits.varpbit(2386)&0x3)==2||//various settings of using the buckets
+				(ctx.varpbits.varpbit(2386)&0x3)==3||
+				(ctx.varpbits.varpbit(2386)&0x7)==4||
+				(ctx.varpbits.varpbit(2386)&0x7)==5||
+				(ctx.varpbits.varpbit(2386)&0x7)==6){
 			DeltaQuester.progress = 3;
 			
 			cs2();//Put water on the hole + dig it
 		}else
-		if((ctx.settings.get(2386)&0x1)==1){
+		if((ctx.varpbits.varpbit(2386)&0x1)==1){
 			DeltaQuester.progress = 2;
 			cs1();//Speak to Alrena in house and get the mask
 		}else {
@@ -162,9 +162,9 @@ public int bankItemAmount[] = {1,1,4,1,1,1,1};
 		String opt[] = {"They won't"};
 		
 		
-		if(ctx.game.getPlane()==1){
+		if(ctx.game.floor()==1){
 		if(new Tile(2535,3314,0).getMatrix(ctx).isReachable()){
-			if((ctx.settings.get(2386)&0x1F)==27){//after feeding
+			if((ctx.varpbits.varpbit(2386)&0x1F)==27){//after feeding
 				Method.skipPics();
 				if(!Method.findOption(opt)){
 					if(!Method.isChatting("Drunk")){
@@ -190,8 +190,8 @@ public int bankItemAmount[] = {1,1,4,1,1,1,1};
 
 	private void cs7() {//speaks to priest + the drunk
 		String opt[] = {"Do you know","This is really","This is urgent","I need"};
-		if((ctx.settings.get(2386)&0x1F)==25){
-			if(ctx.game.getPlane()==1){
+		if((ctx.varpbits.varpbit(2386)&0x1F)==25){
+			if(ctx.game.floor()==1){
 				if(new Tile(2535,3314,0).getMatrix(ctx).isReachable()){//drunks room
 					
 					Method.skipPics();
@@ -226,7 +226,7 @@ public int bankItemAmount[] = {1,1,4,1,1,1,1};
 
 	private void cs6() {//Heads to the odd house
 		String opt[] = {"I want to check","But I think"};
-		if(ctx.game.getPlane()==1){
+		if(ctx.game.floor()==1){
 			if(new Tile(2532,3315,0).getMatrix(ctx).isReachable()){//outside drunk room
 				Method.interactO(34499, "Climb-down", "Stairs");
 			}else Method.interactO(2528, "Open", "Door");
@@ -238,12 +238,12 @@ public int bankItemAmount[] = {1,1,4,1,1,1,1};
 				Method.interactO(2548, "Open", "Door");
 			}
 		}
-		if((ctx.settings.get(2386)&0x1F)==23||//after speaking to louis up[stairs
-				(ctx.settings.get(2386)&0x1F)==27){
+		if((ctx.varpbits.varpbit(2386)&0x1F)==23||//after speaking to louis up[stairs
+				(ctx.varpbits.varpbit(2386)&0x1F)==27){
 			System.out.println("HEERER5");
-			if(new Tile(2538,3308,0).getMatrix(ctx).isReachable() && ctx.game.getPlane()==0){//in city
+			if(new Tile(2538,3308,0).getMatrix(ctx).isReachable() && ctx.game.floor()==0){//in city
 				System.out.println("HEERER6");
-				if((ctx.settings.get(2386)&0x1F)==27){
+				if((ctx.varpbits.varpbit(2386)&0x1F)==27){
 					if(Method.byCloseLoc(new Tile(2538,3274), 5)){//slightly diff loc
 					
 						 Method.skipPics();
@@ -263,15 +263,15 @@ public int bankItemAmount[] = {1,1,4,1,1,1,1};
 					   Method.interactO(35991, "Open", "Door");
 				   }
 			   }
-			}else if(ctx.game.getPlane()==1){
+			}else if(ctx.game.floor()==1){
 				if(Method.byCloseLoc(new Tile(2527,3332,1),4))//by ladder
 				Method.interactO(34396,"Climb-down", "Ladder");
 			}else if(new Tile(2529,3332,0).getMatrix(ctx).isReachable()){//inside houe bottom floor
 				Method.interactO(2537, "Open", "Door");
 			}else cs4();//get to city
 		}else
-		if((ctx.settings.get(2386)&0x1F)==22){//now go speak to louis
-			if(ctx.game.getPlane()==1){
+		if((ctx.varpbits.varpbit(2386)&0x1F)==22){//now go speak to louis
+			if(ctx.game.floor()==1){
 				if(!Method.isChatting("Person")){
 					Method.npcInteract(724, "Talk-to");
 				}
@@ -337,14 +337,14 @@ public int bankItemAmount[] = {1,1,4,1,1,1,1};
 
 	private void cs3() {//pulls the sewer grill off
 		
-		while(ctx.settings.get(1113)!=0){
+		while(ctx.varpbits.varpbit(1113)!=0){
 			Method.state("Cutscene");
 			Method.pressContinue();
 		}
 		
 		if(new Tile(2517,9758,0).getMatrix(ctx).isReachable()){//sewer system
 			Vars.DYNAMICV  =false;
-			if((ctx.settings.get(2387)&0x1F)==29){//After putting rope on grill
+			if((ctx.varpbits.varpbit(2387)&0x1F)==29){//After putting rope on grill
 				if(Method.byCloseLoc(new Tile(2516,9755,0),7)){//by edmond in sewer
 				Method.skipPics();
 				if(!Method.isChatting("Edmond")){
@@ -353,7 +353,7 @@ public int bankItemAmount[] = {1,1,4,1,1,1,1};
 				}
 			
 			}else
-			if((ctx.settings.get(2387)&0xF)==13){//After initially attempting to open the grill
+			if((ctx.varpbits.varpbit(2387)&0xF)==13){//After initially attempting to open the grill
 				if(Method.byCloseLoc(new Tile(2514,9739,0),7))
 				Method.useItemOn(954, 11422, "Use");//use rope on grill
 			}else//try to open grill initially
@@ -374,15 +374,15 @@ public int bankItemAmount[] = {1,1,4,1,1,1,1};
 			Method.interactInventory(1506, "Wear", "Mask");//gas mask
 		}
 		
-		if((ctx.settings.get(2386)&0x1F)==3||//keep using water buckets until done
-				(ctx.settings.get(2386)&0x1F)==4||
-				(ctx.settings.get(2386)&0x1F)==5||
-				(ctx.settings.get(2386)&0x1F)==6){//after knowing what to do
+		if((ctx.varpbits.varpbit(2386)&0x1F)==3||//keep using water buckets until done
+				(ctx.varpbits.varpbit(2386)&0x1F)==4||
+				(ctx.varpbits.varpbit(2386)&0x1F)==5||
+				(ctx.varpbits.varpbit(2386)&0x1F)==6){//after knowing what to do
 			if(new Tile(2568,3333,0).distanceTo(local)<7){
 				Method.useItemOn(1929, 2532, "Use");//water on mud
 			}else cs0();//get to the garden
 		}else
-		if((ctx.settings.get(2386)&0x1F)==2){//need to speak to Edmond
+		if((ctx.varpbits.varpbit(2386)&0x1F)==2){//need to speak to Edmond
 			cs0();//Speaks to Edmond
 		}else{
 			if(new Tile(2568,3333,0).distanceTo(local)<7){
@@ -469,3 +469,4 @@ public int bankItemAmount[] = {1,1,4,1,1,1,1};
 	}
 
 }
+*/

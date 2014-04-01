@@ -1,11 +1,11 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.methods.Hud.Window;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -15,7 +15,7 @@ public class SweptAway extends Node {
 
 
 
-	public SweptAway(MethodContext ctx) {
+	public SweptAway(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -49,8 +49,6 @@ public class SweptAway extends Node {
 			new Tile(3090, 3259, 0), new Tile(3087, 3259, 0) };
 	
 	public final Tile[] pathToHetty = new Tile[] {
-			new Tile(3231,3221,0), new Tile(3228,3232,0), new Tile(3214,3236,0),
-			new Tile(3200,3231,0),
 			new Tile(3201,3236,0), new Tile(3199,3243,0), new Tile(3204,3247,0),
 			new Tile(3205,3253,0), new Tile(3202,3259,0), new  Tile(3197,3268,0),
 			new Tile(3194,3276,0), new Tile(3188,3283,0), new Tile(3177,3286,0),
@@ -159,16 +157,16 @@ public class SweptAway extends Node {
 		DeltaQuester.numSteps = 10;
 		
 		
-		if(DeltaQuester.checkedBank && (ctx.settings.get(2198) & 0x1F) !=18)
+		if(DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2198) & 0x1F) !=18)
 		Method.determineBank(bankItems);
 		
 			if(!DeltaQuester.checkedBank){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.settings.get(2198) & 0x1F) !=18){
+	    if(Vars.useBank && (ctx.varpbits.varpbit(2198) & 0x1F) !=18){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
-		if((ctx.settings.get(2198) & 0x1F) ==18){
+		if((ctx.varpbits.varpbit(2198) & 0x1F) ==18){
 			DeltaQuester.progress = 10;
 			Method.state("The Swept Away quest has been completed.");
 			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation","Solve Hetty's crate puzzle","Speak to Betty about her wand","Solve the animal puzzle and bring Betty her wand","Speak to Maggie and finish quest");
@@ -177,28 +175,28 @@ public class SweptAway extends Node {
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
-		if((ctx.settings.get(2198)>>25 & 0x7) ==5||(ctx.settings.get(2198) & 0x7) ==6||(ctx.settings.get(2198) & 0xF) ==8){
+		if((ctx.varpbits.varpbit(2198)>>25 & 0x7) ==5||(ctx.varpbits.varpbit(2198) & 0x7) ==6||(ctx.varpbits.varpbit(2198) & 0xF) ==8){
 			DeltaQuester.progress = 9;
 			cs1();//Speak to Maggie for the last time.
 			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation","Solve Hetty's crate puzzle","Speak to Betty about her wand","Solve the animal puzzle and bring Betty her wand");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(2198)>>23 & 0x1) ==1||(ctx.settings.get(2198)>>24 & 0x1) ==1||(ctx.settings.get(2198)>>25 & 0x1) ==1){
+		if((ctx.varpbits.varpbit(2198)>>23 & 0x1) ==1||(ctx.varpbits.varpbit(2198)>>24 & 0x1) ==1||(ctx.varpbits.varpbit(2198)>>25 & 0x1) ==1){
 			DeltaQuester.progress = 8;
 			cs6();//Bring Betty her wand after completing the puzzle
 			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation","Solve Hetty's crate puzzle","Speak to Betty about her wand");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(2198)>>8 & 0x7) ==6){
+		if((ctx.varpbits.varpbit(2198)>>8 & 0x7) ==6){
 			DeltaQuester.progress = 7;
 			cs5();//Speak to Betty about the wand
 			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation","Solve Hetty's crate puzzle");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(2198)>>8 & 0x7) ==4||(ctx.settings.get(2198)>>8 & 0x1) ==1){
+		if((ctx.varpbits.varpbit(2198)>>8 & 0x7) ==4||(ctx.varpbits.varpbit(2198)>>8 & 0x1) ==1){
 				if(hasOintment){
 					if(!Method.teleporting){
 						DeltaQuester.progress = 6;
@@ -214,26 +212,26 @@ public class SweptAway extends Node {
 				}else cs4();//Gather the newt from the crate.
 			
 		}else
-		if((ctx.settings.get(2198)>>8 & 0x1) ==1 || (ctx.settings.get(2198)>>9 & 0x1) ==1){
+		if((ctx.varpbits.varpbit(2198)>>8 & 0x1) ==1 || (ctx.varpbits.varpbit(2198)>>9 & 0x1) ==1){
 			DeltaQuester.progress = 4;
 			cs4();//Solve the crate puzzle Hetty needed us to do.
 			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(2198)>>11 & 0x1) ==1){
+		if((ctx.varpbits.varpbit(2198)>>11 & 0x1) ==1){
 			DeltaQuester.progress = 3;
 			cs3();//Speak to Hetty about the broom situation
 			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
-		if((ctx.settings.get(2198)&0x1F) == 20){
+		if((ctx.varpbits.varpbit(2198)&0x1F) == 20){
 			DeltaQuester.progress = 2;
 			cs2();//Speak to Aggie and solve her puzzle with the brooms
 			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
-		if((ctx.settings.get(2198)&0xFF) == 0||(ctx.settings.get(2198)&0xFF) == 5||(ctx.settings.get(2198)&0xFF) == 10){
+		if((ctx.varpbits.varpbit(2198)&0xFF) == 0||(ctx.varpbits.varpbit(2198)&0xFF) == 5||(ctx.varpbits.varpbit(2198)&0xFF) == 10){
 			DeltaQuester.progress = 1;
 			cs1();//Start the quest by speaking to Maggie
 		}
@@ -252,8 +250,8 @@ private void cs6() {
 		  hasWand = true;
 	  }else
 	if(Method.objIsNotNull(39321)){//If inside betty's basement
-		if((ctx.settings.get(2198)>>25 & 0x1) ==1){
-			if((ctx.settings.get(2199)>>4 & 0x1) ==1){//If finished the puzzle
+		if((ctx.varpbits.varpbit(2198)>>25 & 0x1) ==1){
+			if((ctx.varpbits.varpbit(2199)>>4 & 0x1) ==1){//If finished the puzzle
 				if(!Method.teleporting && Method.inventoryContains(14068)){//Betty' wand
 					for(GameObject o : ctx.objects.select().id(39273).nearest().first()){
 						if(o.getLocation().distanceTo(local.getLocation())<5){
@@ -262,15 +260,15 @@ private void cs6() {
 					}
 				}else for(GameObject o : ctx.objects.select().id(39443).nearest().first()){
 					if(o.getLocation().distanceTo(local.getLocation())<5){
-						if((ctx.settings.get(2198) >>26 & 0x7) == 5){
+						if((ctx.varpbits.varpbit(2198) >>26 & 0x7) == 5){
 							Method.interactO(39443, "Search", "Chest");
 						}else Method.interactO(39443, "Open", "Chest");
 					}else Method.clickOnMap(new Tile(3220,4524,0));
 				}
 			}else {//Complete animal puzzle
 				if(nextPhase ==2){//should be 2
-					if((ctx.settings.get(2199) >>29 & 0x3)==3){//if reptile in proper cage
-						if((ctx.settings.get(2199) >>28 & 0x1)==1){//if spider in proper cage
+					if((ctx.varpbits.varpbit(2199) >>29 & 0x3)==3){//if reptile in proper cage
+						if((ctx.varpbits.varpbit(2199) >>28 & 0x1)==1){//if spider in proper cage
 							
 							if(!Method.inventoryContains(14071)){//the bird (final step)
 								controlAnimal(new Tile(3231,4521,0),39314);//go to holding pen and grab bird (final step)
@@ -285,9 +283,9 @@ private void cs6() {
 					}else controlAnimal(new Tile(3240,4502,0),39303);//go to reptile pen
 				}else
 				if(nextPhase ==1){
-					if((ctx.settings.get(2199) >>26 & 0x3)==3){//If reptile is in spider cage
-						if((ctx.settings.get(2199) >>19 & 0x1)==1){//If spider in bird cage
-							if((ctx.settings.get(2199) >>21 & 0x3)==3){//if rat in rat pen
+					if((ctx.varpbits.varpbit(2199) >>26 & 0x3)==3){//If reptile is in spider cage
+						if((ctx.varpbits.varpbit(2199) >>19 & 0x1)==1){//If spider in bird cage
+							if((ctx.varpbits.varpbit(2199) >>21 & 0x3)==3){//if rat in rat pen
 								nextPhase  =2;
 							}else if(!Method.inventoryContains(14074)){//the rat
 								controlAnimal(new Tile(3240,4502,0),39303);//go to reptile pen
@@ -301,11 +299,11 @@ private void cs6() {
 						controlAnimal(new Tile(3231,4515,0),39281);// go to bird pen
 					}else controlAnimal(new Tile(3231,4502,0),39297);//go to spider pen
 				}else//Begin the initial shifting of the animals.
-				if((ctx.settings.get(2199) >>12 & 0x1)==1){//If blackbird is in holding pen.
-					if((ctx.settings.get(2199) >>17 & 0x3)==3){//If reptile is in bird cage
+				if((ctx.varpbits.varpbit(2199) >>12 & 0x1)==1){//If blackbird is in holding pen.
+					if((ctx.varpbits.varpbit(2199) >>17 & 0x3)==3){//If reptile is in bird cage
 						
-						if((ctx.settings.get(2199) >>22 & 0x1)==1){//If spider is in rat cage
-							if((ctx.settings.get(2199) >>30 & 0x1)==1){
+						if((ctx.varpbits.varpbit(2199) >>22 & 0x1)==1){//If spider is in rat cage
+							if((ctx.varpbits.varpbit(2199) >>30 & 0x1)==1){
 								nextPhase =  1;
 							}else if(!Method.inventoryContains(14074)){//the rat
 								controlAnimal(new Tile(3231,4502,0),39297);//go to spider pen
@@ -315,67 +313,13 @@ private void cs6() {
 							controlAnimal(new Tile(3240,4502,0),39303);//go to reptile pen
 						}else controlAnimal(new Tile(3240,4511,0),39309);//go to rat cage
 						
-					}else if((ctx.settings.get(2199) >>20 & 0x3)==3){//If reptile is in initial cage
+					}else if((ctx.varpbits.varpbit(2199) >>20 & 0x3)==3){//If reptile is in initial cage
 						controlAnimal(new Tile(3240,4511,0),39309);
 					}else controlAnimal(new Tile(3231,4515,0),39281);
-				}else if((ctx.settings.get(2199) >>18 & 0x1)==1){//If blackbird is in initial cage
+				}else if((ctx.varpbits.varpbit(2199) >>18 & 0x1)==1){//If blackbird is in initial cage
 					controlAnimal(new Tile(3231,4515,0),39281);
 				}else controlAnimal(new Tile(3231,4521,0),39314);
-			}/*
-				for(int step = 1; step !=7;){
-					if(ctx.hud.isVisible(Window.SKILLS)){
-						break;
-					}
-				if((ctx.settings.get(2199)>>4 & 0x1) ==1){
-				break;
-				}else{
-					Method.sleep(1500);//due to lag
-				if (step==1){
-					if (Method.playerText("You put the blackbird")){
-						step = 2;
-						Method.sleep(2000);
-					}else{
-						doPuzzleStep(14071,39281,39314, new Tile(3231,4515,0), new Tile(3231,4521,0));
-					}
-				}else if(step==2){
-					if (Method.playerText("You put the rat")){
-						step = 3;
-						Method.sleep(2000);
-					}else{
-						doPuzzleStep(14074,39297,39281, new Tile(3231,4506,0), new Tile(3231,4511,0));
-					}
-				}else if(step==3){
-					if (Method.playerText("You put the spider")){
-						step = 4;
-						Method.sleep(2000);
-					}else{
-						doPuzzleStep(14073,39303,39297, new Tile(3238,4504,0), new Tile(3233,4504,0));
-					}
-				}else if(step==4){
-					if (Method.playerText("You put the reptile")){
-						step = 5;
-						Method.sleep(2000);
-					}else{
-						doPuzzleStep(14070,39309,39303, new Tile(3240,4511,0), new Tile(3240,4506,0));
-					}
-				}else if (step==5){
-					if (Method.playerText("You put the rat")){
-						step = 6;
-						Method.sleep(2000);
-					}else{
-						doPuzzleStep(14074,39281,39309, new Tile(3233,4513,0), new Tile(3238,4513,0));
-					}
-				}else if (step==6){
-					if (Method.playerText("You put the blackbird")){
-						step = 8;
-						Method.sleep(2000);
-					}else{
-						doPuzzleStep(14071,39314,39281, new Tile(3231,4521,0), new Tile(3231,4515,0));
-							}
-						}
-					}
-				}
-			*/
+			}
 			
 			
 		}else if(!Method.findOption(opt)){
@@ -384,7 +328,7 @@ private void cs6() {
 			}
 		}
 		} else if (new Tile(3015, 3258, 0).distanceTo(local.getLocation()) < 10 && BettyArea.contains(local.getLocation())) {
-			if ((ctx.settings.get(2198) >> 28 & 0x1) == 1) {
+			if ((ctx.varpbits.varpbit(2198) >> 28 & 0x1) == 1) {
 				Method.interactO(39442, "Climb", "Trap door");
 			} else 	Method.interactO(39442, "Open", "Trap door");
 		} else cs5();// Get to Betty's shop
@@ -447,7 +391,7 @@ private void cs5() {
 			ctx.camera.setPitch(80);
 		if(Method.objIsNotNull(39321)){
 			Vars.DYNAMICV = false;
-			if((ctx.settings.get(2198)>>10 & 0x1) ==1){//after placing the labels
+			if((ctx.varpbits.varpbit(2198)>>10 & 0x1) ==1){//after placing the labels
 				for(int g = 0;g< crates.length;){
 					
 					if(!Method.teleporting && Method.inventoryContains(14064)){
@@ -470,12 +414,12 @@ private void cs5() {
 					}
 				}
 			}else//Solve the puzzle
-			if((ctx.settings.get(2198)>>9 & 0x1) ==1){
+			if((ctx.varpbits.varpbit(2198)>>9 & 0x1) ==1){
 				if(hasLabel){
 					
-					if ((ctx.settings.get(2198) >> 22 & 0x1) == 1) {
+					if ((ctx.varpbits.varpbit(2198) >> 22 & 0x1) == 1) {
 						solveCrates(14067,14065,14066);
-					} else if ((ctx.settings.get(2198) >> 6 & 0x3) == 3) {
+					} else if ((ctx.varpbits.varpbit(2198) >> 6 & 0x3) == 3) {
 						solveCrates(14066,14067,14065);
 					}else {
 						if(Method.objIsNotNull(39447) && Method.getObject(39447).getLocation().distanceTo(local.getLocation())<7){
@@ -498,7 +442,7 @@ private void cs5() {
 			}
 		}else if (new Tile(2967,3201,0).distanceTo(local.getLocation())<7){
 			if(new Tile(2967,3201,0).distanceTo(local.getLocation())<3&& !HettyArea.contains(local.getLocation())){
-				if((ctx.settings.get(2199) >>3 &0x1) ==1){
+				if((ctx.varpbits.varpbit(2199) >>3 &0x1) ==1){
 					Method.interactO(39444, "Climb", "Trapdoor");
 				}else Method.interactO(39444, "Open", "Trapdoor");
 				
@@ -672,7 +616,7 @@ private void cs5() {
 		 Player local = ctx.players.local();
 		 if(new Tile(3127, 3212, 0).distanceTo(local.getLocation())<8 || (Method.npcIsNotNull(8078) && Method.getNPC(8078).getLocation().distanceTo(
 				 ctx.players.local().getLocation())<8)){
-			 if((ctx.settings.get(2198) & 0x7) ==6){
+			 if((ctx.varpbits.varpbit(2198) & 0x7) ==6){
 				 Method.interactO(39228, "Stir", "Cauldron");
 			 }else
 			 if(!Method.startQuestOpen()){
@@ -698,3 +642,4 @@ private void cs5() {
 	}
 
 }
+*/

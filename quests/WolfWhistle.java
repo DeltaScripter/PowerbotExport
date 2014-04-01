@@ -1,9 +1,9 @@
-
+/*
 package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.wrappers.Npc;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -95,7 +95,7 @@ public class WolfWhistle extends Node{
 	Vars Vars = new Vars();
 	Method Method = new Method(ctx);
 	
-	public WolfWhistle(MethodContext ctx) {
+	public WolfWhistle(ClientContext ctx) {
 		super(ctx);
 	}
 	boolean q = true;
@@ -120,16 +120,16 @@ public class WolfWhistle extends Node{
 			DeltaQuester.numSteps = 12;
 			failsafe();
 			
-			if(DeltaQuester.checkedBank && (ctx.settings.get(2506)&0x3F)!=35)
+			if(DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2506)&0x3F)!=35)
 				Method.determineBank(bankItems);
 			
-			if(!DeltaQuester.checkedBank && (ctx.settings.get(2506)&0x3F)!=35){
+			if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2506)&0x3F)!=35){
 				Method.checkBank();
 			}else
-		   if(Vars.useBank && (ctx.settings.get(2506)&0x3F)!=35){
+		   if(Vars.useBank && (ctx.varpbits.varpbit(2506)&0x3F)!=35){
 				Method.useBank(bankItems, bankItemAmount);
 			}else
-			if((ctx.settings.get(2506)&0x3F)==35){
+			if((ctx.varpbits.varpbit(2506)&0x3F)==35){
 				DeltaQuester.progress = 12;
 				Method.state("The Wolf Whistle quest has been completed.");
 				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping","Search drawers for the pouch","Buy hare meat from the pet owner","Search the corpse in the mountains for the amulet","Bring the items to Pikkupstix","Create the special pouch","Show Pikkupstix the new pouch","Speak to Scaletrix and finish the quest");
@@ -138,72 +138,72 @@ public class WolfWhistle extends Node{
 				Method.sleep(2000);
 				DeltaQuester.e = true;
 			}else
-			if((ctx.settings.get(2506)&0x1F)==30){
+			if((ctx.varpbits.varpbit(2506)&0x1F)==30){
 				DeltaQuester.progress = 11;
 				cs11();//Speak to Scaletrix and finish the quest
 				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping","Search drawers for the pouch","Buy hare meat from the pet owner","Search the corpse in the mountains for the amulet","Bring the items to Pikkupstix","Create the special pouch","Show Pikkupstix the new pouch");
 				TaskListing.removeTasks(TaskListing.taskRemove);
 			
 			}else
-			if((ctx.settings.get(2506)&0x1F)==25){
+			if((ctx.varpbits.varpbit(2506)&0x1F)==25){
 				DeltaQuester.progress = 10;
 				cs10();//Show Pikkupstix your pouch
 				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping","Search drawers for the pouch","Buy hare meat from the pet owner","Search the corpse in the mountains for the amulet","Bring the items to Pikkupstix","Create the special pouch");
 				TaskListing.removeTasks(TaskListing.taskRemove);
 			}else
-			if((ctx.settings.get(2506)&0x1F)==20){
+			if((ctx.varpbits.varpbit(2506)&0x1F)==20){
 				DeltaQuester.progress = 9;
 				cs9();//Crete the special pouch by using the obelisk
 				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping","Search drawers for the pouch","Buy hare meat from the pet owner","Search the corpse in the mountains for the amulet","Bring the items to Pikkupstix");
 				TaskListing.removeTasks(TaskListing.taskRemove);
 			}else
-			if((ctx.settings.get(2506)>>12&0x1)==1){
+			if((ctx.varpbits.varpbit(2506)>>12&0x1)==1){
 				DeltaQuester.progress = 8;
 				cs8();//Still bringing the items
 			
 			}else
-			if((ctx.settings.get(2506)>>8&0x1)==1){
+			if((ctx.varpbits.varpbit(2506)>>8&0x1)==1){
 				DeltaQuester.progress = 7;
 				cs7();//Bring the items to Piikupstix
 				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping","Search drawers for the pouch","Buy hare meat from the pet owner","Search the corpse in the mountains for the amulet");
 				TaskListing.removeTasks(TaskListing.taskRemove);
 			
 			}else
-			if((ctx.settings.get(2506)>>9&0x1)==1){
+			if((ctx.varpbits.varpbit(2506)>>9&0x1)==1){
 				DeltaQuester.progress = 6;
 				cs6();//Search the corpse in the mountains for an amulet
 				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping","Search drawers for the pouch","Buy hare meat from the pet owner");
 				TaskListing.removeTasks(TaskListing.taskRemove);
 			
 			}else
-			if((ctx.settings.get(2506)>>10&0x1)==1){
+			if((ctx.varpbits.varpbit(2506)>>10&0x1)==1){
 				DeltaQuester.progress = 5;
 				cs5();//Buy hare meat from shop owner
 				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping","Search drawers for the pouch");
 				TaskListing.removeTasks(TaskListing.taskRemove);
 			
 			}else
-			if((ctx.settings.get(2506)&0xF)==15){
+			if((ctx.varpbits.varpbit(2506)&0xF)==15){
 				DeltaQuester.progress = 4;
 				cs4();//Search drawers in Pikkupstix's house for a pouch
 				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix","Tell Pikkupstix about the kidnapping");
 				TaskListing.removeTasks(TaskListing.taskRemove);
 			
 			}else
-			if((ctx.settings.get(2506)&0xF)==10){
+			if((ctx.varpbits.varpbit(2506)&0xF)==10){
 				DeltaQuester.progress = 3;
 				cs3();//Go back and tell Pikkupstix about the kidnapping
 				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix","Speak to Scaletrix");
 				TaskListing.removeTasks(TaskListing.taskRemove);
 			
 			}else
-			if((ctx.settings.get(2506)&0x7)==5){
+			if((ctx.varpbits.varpbit(2506)&0x7)==5){
 				DeltaQuester.progress = 2;
 				cs2();//Speak to Scaletrix
 				TaskListing.updateTaskRemove("Start quest by speaking to Pikkupstix");
 				TaskListing.removeTasks(TaskListing.taskRemove);
 			}else
-			if(ctx.settings.get(2506)>>15==1 || ctx.settings.get(2506)==0){
+			if(ctx.varpbits.varpbit(2506)>>15==1 || ctx.varpbits.varpbit(2506)==0){
 				DeltaQuester.progress = 1;
 				cs1();//Start the quest by speaking to Pikkupstix
 			}
@@ -217,13 +217,13 @@ public class WolfWhistle extends Node{
 	}
 	private void cs11() {
 		Method Method = new Method(ctx);
-		if(ctx.settings.get(1114)==1){
+		if(ctx.varpbits.varpbit(1114)==1){
 			Method.isChatting("People");
 		}else
 		if (new Tile(2881,3430,0).distanceTo(ctx.players.local().getLocation())<6) {//Mrs stix region.
 			Vars.DYNAMICV = false;
 			if (!Method.isChatting("Scaletrix")) {
-				if(ctx.settings.get(1241)!=1)
+				if(ctx.varpbits.varpbit(1241)!=1)
 				Method.speakTo(15055, "Scaletrix");
 			}
 		} else if (Vars.DYNAMICV) {
@@ -266,7 +266,7 @@ public class WolfWhistle extends Node{
 					Method.clickOnMap(ctx.players.local().getLocation());
 				}
 				if(Method.inventoryContains(RAREITEMS_ID)){
-					if(ctx.backpack.isItemSelected()){
+					if(ctx.backpack.itemSelected()){
 						Method.interactO(OBELISK_ID, "Use","Obelisk");
 					}else Method.interactInventory(RAREITEMS_ID, "Use", "Rare items");
 					
@@ -376,7 +376,7 @@ public class WolfWhistle extends Node{
 			
 		} else {
 			if (Vars.hasBeenInMS1) {
-				if (ctx.game.getPlane()==1) {
+				if (ctx.game.floor()==1) {
 					Method.interactO(STIXSTAIRSTOP_ID, "Climb","Stairs");
 				}else {
 					Method.state("Walking to the pet shop");
@@ -385,10 +385,10 @@ public class WolfWhistle extends Node{
 				}
 				//Method.walking(pathToPetShopFMS,"Walking to the pet shop.",false);
 			} else {
-				if (new Tile(2929,3447,0).distanceTo(ctx.players.local().getLocation())<6  && ctx.game.getPlane()==0) {
+				if (new Tile(2929,3447,0).distanceTo(ctx.players.local().getLocation())<6  && ctx.game.floor()==0) {
 					Vars.hasBeenInMS1 = true;
 				} else {
-					if (ctx.game.getPlane()==1) {
+					if (ctx.game.floor()==1) {
 						Method.interactO(STIXSTAIRSTOP_ID, "Climb","Stairs");
 					} else if(Vars.DYNAMICV){
 						Method.state("Walking to pet shop");
@@ -408,7 +408,7 @@ public class WolfWhistle extends Node{
 
 	private void cs4() {
 		Method Method = new Method(ctx);
-		if (ctx.game.getPlane()==1) {
+		if (ctx.game.floor()==1) {
 				Method.interactO(CLUTTEREDDRAWERS_ID, "Search","Drawer");
 		} else {
 			if (new Tile(2928,3448,0).distanceTo(ctx.players.local().getLocation())<5) {
@@ -495,4 +495,4 @@ public class WolfWhistle extends Node{
 	public boolean activate() {
 		return (DeltaQuester.scriptToStart == 2);
 	}
-}
+}*/

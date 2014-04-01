@@ -1,8 +1,8 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -11,7 +11,7 @@ import quests.Vars.TeleportType;
 
 public class DruidicRitual extends Node{
 
-	public DruidicRitual(MethodContext ctx) {
+	public DruidicRitual(ClientContext ctx) {
 		super(ctx);
 	}
 	public final Tile[] pathToCircle = new Tile[] { 
@@ -77,32 +77,32 @@ public class DruidicRitual extends Node{
 		
 		DeltaQuester.numSteps = 6;
 		Method.foodSupport();
-		while (ctx.settings.get(1113)!=0){//If cutscene is occurring.
+		while (ctx.varpbits.varpbit(1113)!=0){//If cutscene is occurring.
 			Method.isChatting("Cutscene");
 		}
 		
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
-		if(!DeltaQuester.checkedBank && (ctx.settings.get(2694) & 0xFF)!=136){
+		if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2694) & 0xFF)!=136){
 			Method.checkBank();
 		}else
-		 if(Vars.useBank && (ctx.settings.get(2694) & 0xFF)!=136){
+		 if(Vars.useBank && (ctx.varpbits.varpbit(2694) & 0xFF)!=136){
 			Method.useBank(bankItems,bankItemAmount);
 			}else 
-		if (DeltaQuester.GEFeature && (ctx.settings.get(2694) & 0xFF)!=136) {
+		if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2694) & 0xFF)!=136) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else{
 		DeltaQuester.numSteps = 6;
 		if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<10)
 			Method.teleporting = false;
 		
-		if((ctx.settings.get(2694) & 0xFF)==136){
+		if((ctx.varpbits.varpbit(2694) & 0xFF)==136){
 			DeltaQuester.progress=6;
 			Method.state("The Druidic Ritual quest has been completed.");
 			ctx.environment.sleep(2000);
 			DeltaQuester.e = true;
 		}else
-		if((ctx.settings.get(2694) & 0x7F)==118){
+		if((ctx.varpbits.varpbit(2694) & 0x7F)==118){
 			DeltaQuester.progress=5;
 			cS4();//Speaks to Kaqemeex at the stone circle, finishing the quest, "Speak to Sanfew again."
 			
@@ -116,7 +116,7 @@ public class DruidicRitual extends Node{
 				TaskListing.taskRemove.add("Speak to Sanfew again.");
 			    TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
-		if((ctx.settings.get(2694) & 0x7F)==116){
+		if((ctx.varpbits.varpbit(2694) & 0x7F)==116){
 			DeltaQuester.progress=4;
 			cS3();//Speaks to Sanfew again.., "Gather special water, wandering wyrm wood and fish scales"
 			
@@ -129,7 +129,7 @@ public class DruidicRitual extends Node{
 			
 			    TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
-		if((ctx.settings.get(2694) & 0x7)==4){
+		if((ctx.varpbits.varpbit(2694) & 0x7)==4){
 			DeltaQuester.progress=3;
 			cS2();//Gathers items & makes another item, "Speak to Sanfew"
 			if(!TaskListing.taskRemove.contains("Start quest by speaking to Sanfew"))
@@ -139,14 +139,14 @@ public class DruidicRitual extends Node{
 			
 			    TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
-		if((ctx.settings.get(2694) & 0x3)==2){
+		if((ctx.varpbits.varpbit(2694) & 0x3)==2){
 			DeltaQuester.progress=2;
 			cS1();//Speaks to Sanfew
 			if(!TaskListing.taskRemove.contains("Start quest by speaking to Sanfew"))
 				TaskListing.taskRemove.add("Start quest by speaking to Sanfew");
 			    TaskListing.removeTasks(TaskListing.taskRemove);
 			    
-		}else if((ctx.settings.get(2694) & 0x1)==0){
+		}else if((ctx.varpbits.varpbit(2694) & 0x1)==0){
 			DeltaQuester.progress=1;
 			cS0();//Speaks to Kaqemeex and starts the quest
 		}
@@ -157,7 +157,7 @@ public class DruidicRitual extends Node{
 	private void cS4() {
 		final String opt[] = {"I'm pretty sure","What do you need","Talk about Druidic"};
 		Player local = ctx.players.local();
-		while(ctx.settings.get(1113)==5){
+		while(ctx.varpbits.varpbit(1113)==5){
 			Method.pressContinue();
 		}
 		if(new Tile(2909,3501,0).distanceTo(local.getLocation())<6){
@@ -370,3 +370,4 @@ public class DruidicRitual extends Node{
 	}
 
 }
+*/

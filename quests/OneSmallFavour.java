@@ -916,9 +916,9 @@ public class OneSmallFavour extends Node{
 	private void cs16() {
 		int wall[] = {2180,21801};
 		if(initTile!=null){
-			//Method.state("X: " + (initTile.getX() - Players.getLocal().getLocation().getX())+" Y: " +
+			//Method.state("X: " + (initTile.x() - Players.getLocal().getLocation().x())+" Y: " +
 			//(initTile.getY() - Players.getLocal().getLocation().getY()));
-			if(new Tile(initTile.getX(), initTile.getY()+38,0).distanceTo()<8){
+			if(new Tile(initTile.x(), initTile.getY()+38,0).distanceTo()<8){
 				if((Settings.get(2671)&0xFF) ==155){
 					if(NPCs.getNearest(1801)==null){
 						if(Players.getLocal().isIdle())
@@ -938,7 +938,7 @@ public class OneSmallFavour extends Node{
 				for(int h: wall)
 				Method.interactO(h, "Search", "Wall");
 				}
-			}else new Tile(initTile.getX(), initTile.getY()+38,0).clickOnMap();
+			}else new Tile(initTile.x(), initTile.getY()+38,0).clickOnMap();
 		}else if(SceneEntities.getNearest(31130)!=null){
 			initTile = Players.getLocal().getLocation();
 		}else
@@ -1087,7 +1087,7 @@ public class OneSmallFavour extends Node{
 		final int gangMembers[] = {1796,1797,1795};
 		if(initTile!=null){
 			if(loc1){
-				if(new Tile(initTile.getX()-51, initTile.getY()-39,0).distanceTo()<10){
+				if(new Tile(initTile.x()-51, initTile.getY()-39,0).distanceTo()<10){
 					if(Method.isInCombat()){
 						for(int g: gangMembers)
 						Method.basicFightNPC(g);
@@ -1099,10 +1099,10 @@ public class OneSmallFavour extends Node{
 							Method.speakTo(1794, "Hammer");
 						}
 					}
-				}else new Tile(initTile.getX()-51, initTile.getY()-39,0).clickOnMap();
-			}else if(new Tile(initTile.getX()+1, initTile.getY()-36,0).distanceTo()<10){
+				}else new Tile(initTile.x()-51, initTile.getY()-39,0).clickOnMap();
+			}else if(new Tile(initTile.x()+1, initTile.getY()-36,0).distanceTo()<10){
 				loc1 = true;
-			}else new Tile(initTile.getX()+1, initTile.getY()-36,0).clickOnMap();
+			}else new Tile(initTile.x()+1, initTile.getY()-36,0).clickOnMap();
 		}else if(SceneEntities.getNearest(31130)!=null){
 			initTile = Players.getLocal().getLocation();
 		}else
@@ -1259,24 +1259,24 @@ public class OneSmallFavour extends Node{
 		final String opt[]  ={"You're in luck","Ok, Jimmy","And I suppose","I'm looking for"};
 		
 		if(initTile!=null){
-			if(new Tile(initTile.getX()+24,initTile.getY()-33,0).canReach()){
-				if(new Tile(initTile.getX()+24,initTile.getY()-34,0).distanceTo()<10){
+			if(new Tile(initTile.x()+24,initTile.getY()-33,0).canReach()){
+				if(new Tile(initTile.x()+24,initTile.getY()-34,0).distanceTo()<10){
 					Vars.DYNAMICV = false;
 					if(!Method.findOption(opt)){
 						if(!Method.isChatting("Johan")){
 							Method.speakTo(1709, "Johan");
 						}
 					}
-				}else new Tile(initTile.getX()+24,initTile.getY()-34,0).clickOnMap();
+				}else new Tile(initTile.x()+24,initTile.getY()-34,0).clickOnMap();
 			}else
-			if(new Tile(initTile.getX()+10,initTile.getY()-13,0).canReach()){
-				if(new Tile(initTile.getX()+24,initTile.getY()-33,0).distanceTo()<10){
+			if(new Tile(initTile.x()+10,initTile.getY()-13,0).canReach()){
+				if(new Tile(initTile.x()+24,initTile.getY()-33,0).distanceTo()<10){
 					Method.interactO(1530, "Open", "Door");
-				}else new Tile(initTile.getX()+24,initTile.getY()-33,0).clickOnMap();
+				}else new Tile(initTile.x()+24,initTile.getY()-33,0).clickOnMap();
 				
-			}else if (new Tile(initTile.getX()+8,initTile.getY()-10,0).distanceTo()<7){
+			}else if (new Tile(initTile.x()+8,initTile.getY()-10,0).distanceTo()<7){
 				Method.interactO(1530, "Open", "Door");
-			}else new Tile(initTile.getX()+8,initTile.getY()-10,0).clickOnMap();
+			}else new Tile(initTile.x()+8,initTile.getY()-10,0).clickOnMap();
 		}else if(SceneEntities.getNearest(31130)!=null){
 			initTile = Players.getLocal().getLocation();
 		}else

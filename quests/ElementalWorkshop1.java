@@ -1,15 +1,15 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
 public class ElementalWorkshop1 extends Node{
 
-	public ElementalWorkshop1(MethodContext ctx) {
+	public ElementalWorkshop1(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -56,26 +56,26 @@ public class ElementalWorkshop1 extends Node{
 		Method.foodSupport();
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		DeltaQuester.numSteps = 10;
-		//if(Method.useBank && (ctx.settings.get(2675)>>20&0x1)!=1){
+		//if(Method.useBank && (ctx.varpbits.varpbit(2675)>>20&0x1)!=1){
 		//	Method.useBank(bankItems, 1,1,90);
 		//}else
-		if (DeltaQuester.GEFeature && (ctx.settings.get(2675)>>20&0x1)!=1) {
+		if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2675)>>20&0x1)!=1) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
-		}//else if(Method.useBank&& (ctx.settings.get(2675)>>20&0x1)!=1){
+		}//else if(Method.useBank&& (ctx.varpbits.varpbit(2675)>>20&0x1)!=1){
 			//Method.useBank(bankItems, 9,1,90);
 		//}
-		else if((ctx.settings.get(2675)>>20&0x1)==1){
+		else if((ctx.varpbits.varpbit(2675)>>20&0x1)==1){
 			DeltaQuester.progress=10;
 			Method.state("The Elemental Workshop I quest has been completed.");
 			Method.sleep(2000);
 			DeltaQuester.e = true;
-		}else if((ctx.settings.get(2675)&0x7)==6){
+		}else if((ctx.varpbits.varpbit(2675)&0x7)==6){
 			
-			if((ctx.settings.get(2675)>>5&0x1)==1){
+			if((ctx.varpbits.varpbit(2675)>>5&0x1)==1){
 				cs2();
 			}else cs1();//Start the water machine(wheel)
 			
-		}else if((ctx.settings.get(2675)&0x3)==2){
+		}else if((ctx.varpbits.varpbit(2675)&0x3)==2){
 			Method.interactInventory(2886, "Cut", "Book");//Cuts the book to find key
 		}else cs0();//Search the book shelf and read the book
 		
@@ -86,8 +86,8 @@ public class ElementalWorkshop1 extends Node{
 		//GroundItem ore = GroundItems.getNearest(2892);
 		Player local = ctx.players.local();
 		if(Method.objIsNotNull(18585)){
-		if((ctx.settings.get(2675)>>6&0x1)==1){//if bellows is fixed
-			if((ctx.settings.get(2675)>>7&0x1)==1){//If furnace is fixed
+		if((ctx.varpbits.varpbit(2675)>>6&0x1)==1){//if bellows is fixed
+			if((ctx.varpbits.varpbit(2675)>>7&0x1)==1){//If furnace is fixed
 				if(Method.inventoryContains(2893)){
 					DeltaQuester.progress = 9;
 					if(new Tile(2718,9890,0).distanceTo(local.getLocation())<4){
@@ -100,7 +100,7 @@ public class ElementalWorkshop1 extends Node{
 					}else Method.clickOnMap(new Tile(2718,9890,0));
 				}else
 				if(Method.inventoryContains(2892)){
-					if((ctx.settings.get(2675)>>9&0x1)==1){//Is the bellows turned on?
+					if((ctx.varpbits.varpbit(2675)>>9&0x1)==1){//Is the bellows turned on?
 						DeltaQuester.progress = 8;
 						if(new Tile(2723,9875,0).distanceTo(local.getLocation())<4){
 							Method.useItemOn(2892, 3410, "Furnace");
@@ -156,8 +156,8 @@ public class ElementalWorkshop1 extends Node{
 		Player local = ctx.players.local();
 	if(Method.objIsNotNull(18585)){
 		
-		if((ctx.settings.get(2675)>>4&0x1)==1){//right lever(water controls)
-			if((ctx.settings.get(2675)>>3&0x1)==1){//left lever(water controls)
+		if((ctx.varpbits.varpbit(2675)>>4&0x1)==1){//right lever(water controls)
+			if((ctx.varpbits.varpbit(2675)>>3&0x1)==1){//left lever(water controls)
 				if(new Tile(2722,9905,0).distanceTo(local.getLocation())<4){
 					Method.interactO(3406, "Pull", "Lever");
 				}else Method.clickOnMap(new Tile(2722,9905,0));
@@ -214,3 +214,4 @@ public class ElementalWorkshop1 extends Node{
 	}
 	
 }
+*/

@@ -1,8 +1,8 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -12,7 +12,7 @@ import quests.Vars.TeleportType;
 public class ImpCatcher extends Node {
 
 	
-	public ImpCatcher(MethodContext ctx) {
+	public ImpCatcher(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -50,16 +50,16 @@ public class ImpCatcher extends Node {
 		}
 		if(DeltaQuester.checkedBank)
 		Method.determineBank(bankItems);
-		if(!DeltaQuester.checkedBank && (ctx.settings.get(2669)&0x3)!=2){
+		if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2669)&0x3)!=2){
 			Method.checkBank();
 		}else
-		if(Vars.useBank && (ctx.settings.get(2669)&0x3)!=2){
+		if(Vars.useBank && (ctx.varpbits.varpbit(2669)&0x3)!=2){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
-		if (DeltaQuester.GEFeature && (ctx.settings.get(2669)&0x3)!=2) {
+		if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2669)&0x3)!=2) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else
-		if((ctx.settings.get(2669)&0x3)==2){
+		if((ctx.varpbits.varpbit(2669)&0x3)==2){
 			DeltaQuester.progress = 3;
 			DeltaQuester.state = "The Imp Catcher quest has been completed.";
 			TaskListing.updateTaskRemove("Start quest by speaking to the wizard","Finish quest by giving the beads");
@@ -67,13 +67,13 @@ public class ImpCatcher extends Node {
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
-		if((ctx.settings.get(2669)&0x1)==1){
+		if((ctx.varpbits.varpbit(2669)&0x1)==1){
 			DeltaQuester.progress = 2;
 			cS1();//Finish the quest by giving beads
 			TaskListing.updateTaskRemove("Start quest by speaking to the wizard");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
-		if((ctx.settings.get(2669)&0x1)==0){
+		if((ctx.varpbits.varpbit(2669)&0x1)==0){
 			DeltaQuester.progress = 1;
 			cS1();//Start the quest
 		}
@@ -89,7 +89,7 @@ public class ImpCatcher extends Node {
 		final String opt[]  ={"I've got","Can I help"};
 		Player local = ctx.players.local();
 		
-		if(ctx.game.getPlane()==1){
+		if(ctx.game.floor()==1){
 			if(new Tile(3107,3147,1).distanceTo(local.getLocation())<5){
 				Method.skipPics();
 				if(Method.npcIsNotNull(16187)){
@@ -121,3 +121,4 @@ public class ImpCatcher extends Node {
 	}
 	
 }
+*/

@@ -1,10 +1,10 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -12,7 +12,7 @@ import quests.Vars.TeleportType;
 public class PiratesTreasure extends Node{
 
 	
-	public PiratesTreasure(MethodContext ctx) {
+	public PiratesTreasure(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -117,13 +117,13 @@ public class PiratesTreasure extends Node{
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
 		
-			if(!DeltaQuester.checkedBank && (ctx.settings.get(2227) & 0x7) !=4){
+			if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2227) & 0x7) !=4){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.settings.get(2227) & 0x7) !=4){
+	    if(Vars.useBank && (ctx.varpbits.varpbit(2227) & 0x7) !=4){
 	    	Method.useBank(bankItems, bankItemAmount);
 		}else
-		if (DeltaQuester.GEFeature && (ctx.settings.get(2227) & 0x7) !=4) {
+		if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2227) & 0x7) !=4) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else
 		if(!Method.interference())
@@ -134,7 +134,7 @@ public class PiratesTreasure extends Node{
 				DeltaQuester.e  =true;
 			}else init = true;
 		}else
-			if((ctx.settings.get(2227) & 0x7) ==4){
+			if((ctx.varpbits.varpbit(2227) & 0x7) ==4){
 				DeltaQuester.progress = 5;
 				Method.state("The Pirates Treasure quest has been completed.");
 				TaskListing.updateTaskRemove("Start quest by speaking to the pirate","Head to Karamja and smuggle some rum in the crates","Find the treasure chest in Varrock","Find the buried treasure in Falador and finish quest");
@@ -150,20 +150,20 @@ public class PiratesTreasure extends Node{
 						Method.interactInventory(1005, "Wear", "Apron");
 					}
 			}else{
-			if((ctx.settings.get(2227) & 0x3) ==3){
+			if((ctx.varpbits.varpbit(2227) & 0x3) ==3){
 				DeltaQuester.progress = 4;
 				cs5();//Find the treasure!!
 				TaskListing.updateTaskRemove("Start quest by speaking to the pirate","Head to Karamja and smuggle some rum in the crates","Find the treasure chest in Varrock");
 				TaskListing.removeTasks(TaskListing.taskRemove);
 			
 			}else
-			if((ctx.settings.get(2227) & 0x3) ==2){
+			if((ctx.varpbits.varpbit(2227) & 0x3) ==2){
 				DeltaQuester.progress = 3;
 				cs4();//Find the chest!!
 				TaskListing.updateTaskRemove("Start quest by speaking to the pirate","Head to Karamja and smuggle some rum in the crates");
 				TaskListing.removeTasks(TaskListing.taskRemove);
 			}else
-			if((ctx.settings.get(2227) & 0x1) ==1){
+			if((ctx.varpbits.varpbit(2227) & 0x1) ==1){
 				DeltaQuester.progress = 2;
 				try {
 					cs1();//Heads to karamja and finishes the job(gets the wine stored)
@@ -173,7 +173,7 @@ public class PiratesTreasure extends Node{
 					e.printStackTrace();
 				}
 			}else
-			if((ctx.settings.get(2227) & 0x1) ==0){
+			if((ctx.varpbits.varpbit(2227) & 0x1) ==0){
 				DeltaQuester.progress = 1;
 				cs0();//Speak to the pirate and begin the quest
 			}
@@ -216,13 +216,13 @@ public class PiratesTreasure extends Node{
 			Vars.DYNAMICV = false;
 			Method.interactInventory(433, "Read","Map");
 		}else{
-				if(Method.objIsNotNull(24376) && !BarUpDoor.contains(Method.getObject(24376).getLocation())&&ctx.game.getPlane()==1 || 
-						!Method.objIsNotNull(24376) && ctx.game.getPlane()==1){
+				if(Method.objIsNotNull(24376) && !BarUpDoor.contains(Method.getObject(24376).getLocation())&&ctx.game.floor()==1 || 
+						!Method.objIsNotNull(24376) && ctx.game.floor()==1){
 					if(new Tile(3221,3395,1).distanceTo(local.getLocation())<5){
 					Method.interactO(2079, "Open","Chest");
 					}else Method.clickOnMap(new Tile(3221,3395,1));
 				}else
-			if(ctx.game.getPlane()==1){
+			if(ctx.game.floor()==1){
 			Method.interactO(24376, "Open","Door");
 		}else {
 			if(new Tile(3226,3394,0).distanceTo(local.getLocation())<30){
@@ -276,7 +276,7 @@ public class PiratesTreasure extends Node{
 		final String opt[] = {"Well, can","Ok.","Search","journey"};
 		Player local = ctx.players.local();
 		
-		while (ctx.game.getPlane()==1) {
+		while (ctx.game.floor()==1) {
 			Method.interactO(2084, "Cross","Plank");
 		}
 		if (Method.inventoryContains(431)) {
@@ -285,7 +285,7 @@ public class PiratesTreasure extends Node{
 			if (DoorByCrateOfWine.contains(local.getLocation())) {
 				Method.interactO(2071, "Search","Object");
 			} else {
-				if (ctx.game.getPlane()==0 && new Tile(3017, 3207, 0).distanceTo(local.getLocation()) < 30) {
+				if (ctx.game.floor()==0 && new Tile(3017, 3207, 0).distanceTo(local.getLocation()) < 30) {
 					if (new Tile(3017, 3207, 0).distanceTo(local.getLocation()) < 7) {
 						
 						for(GameObject door : ctx.objects.select().id(40108).nearest().first()){
@@ -312,12 +312,12 @@ public class PiratesTreasure extends Node{
 		}
 	}
 	
-	/*Heads to Karamja, takes the job, stores the rum*/
+	/*Heads to Karamja, takes the job, stores the rum
 	private void cs1() throws Exception {
 		final String opt[] = {"Could you","Yes"};
 		Player local = ctx.players.local();
 		int[] bananaIds = {2073,2074,2075,2076};
-		while (ctx.game.getPlane()==1 && !Vars.finishedJ){//To get off the boat
+		while (ctx.game.floor()==1 && !Vars.finishedJ){//To get off the boat
 			Method.interactO(2082, "Cross", "Gangplank");
 		}
 		
@@ -451,3 +451,4 @@ public class PiratesTreasure extends Node{
 	}
 
 }
+*/

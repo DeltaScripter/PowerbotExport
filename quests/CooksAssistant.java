@@ -1,9 +1,9 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -11,7 +11,7 @@ import quests.Vars.TeleportType;
 public class CooksAssistant extends Node{
 
 	
- public CooksAssistant(MethodContext ctx) {
+ public CooksAssistant(ClientContext ctx) {
 		super(ctx);
 	}
 public final Tile[] pathToCook = new Tile[] { 
@@ -77,33 +77,44 @@ public final Tile[] pathToCook = new Tile[] {
 	boolean q = true;//only runs once.
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
-	
+		if(q){
+			TaskListing.taskRemove.clear();
+			TaskListing.taskListData.add("Start quest by speaking to the cook");
+			TaskListing.taskListData.add("Gather the special ingredients");
+			TaskListing.taskListData.add("Speak to the cook and finish quest");
+			TaskListing.updateTasks();
+			q = false;
+		}
 		Method.resetTeleporting();
 		DeltaQuester.numSteps = 3;
 		failsafe();
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
 		
-	if(!DeltaQuester.checkedBank&& (ctx.settings.get(2492)&0x3) !=2){
+		if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(2492)&0x3) !=2){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.settings.get(2492)&0x3) !=2){
+	    if(Vars.useBank && (ctx.varpbits.varpbit(2492)&0x3) !=2){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
-		if (DeltaQuester.GEFeature && (ctx.settings.get(2492)&0x3) !=2) {
+		if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2492)&0x3) !=2) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else
-		if((ctx.settings.get(2492)&0x3) ==2){
+		if((ctx.varpbits.varpbit(2492)&0x3) ==2){
 			DeltaQuester.progress = 3;
 			Method.state("The Cook's Assistant quest has been completed.");
+			TaskListing.updateTaskRemove("Start quest by speaking to the cook","Speak to the cook and finish quest");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 			ctx.environment.sleep(2000);
 			DeltaQuester.e = true;
 		}else
-		if((ctx.settings.get(2492)&0x1) ==1){
+		if((ctx.varpbits.varpbit(2492)&0x1) ==1){
 			DeltaQuester.progress = 2;
 			cs1();//Gather/make the items and finish the quest
+			TaskListing.updateTaskRemove("Start quest by speaking to the cook");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
-		if((ctx.settings.get(2492)&0x1) ==0){
+		if((ctx.varpbits.varpbit(2492)&0x1) ==0){
 			DeltaQuester.progress = 1;
 			cs0();//Speak to the cook and start the quest
 		}
@@ -130,8 +141,8 @@ public final Tile[] pathToCook = new Tile[] {
 			}else if(Method.inventoryContains(15414)){//Flour
 				Vars.DYNAMICV = false;
 				requiredItems[2] = 1;
-			}else if(new Tile(3166,3304,0).distanceTo(player.getLocation())<10 && ctx.game.getPlane()==0 || sFlour){
-				if((ctx.settings.get(3193)&0x1) ==1){//Whether or not there is flour already made
+			}else if(new Tile(3166,3304,0).distanceTo(player.getLocation())<10 && ctx.game.floor()==0 || sFlour){
+				if((ctx.varpbits.varpbit(3193)&0x1) ==1){//Whether or not there is flour already made
 					opHopper = true;
 				}
 				if(!Method.objIsByTile(new Tile(3167,3302,0), 45966,5)){//mill door
@@ -147,7 +158,7 @@ public final Tile[] pathToCook = new Tile[] {
 			}else if(Method.inventoryContains(15412) || Method.playerText("You've already given one of these eggs")){//Egg 45208
 			    Vars.DYNAMICV = false;
 				requiredItems[1] = 1;
-			}else if(new Tile(3206,3283, 0).distanceTo(player.getLocation())<5){
+			}else if(new Tile(3206,3283, 0).distanceTo(player.getLocation())<7){
 
 				if(!Method.objIsByTile(new Tile(3206,3283,0),45208, 4)){//pen door
 					Method.interactG(15412, "Take", "Special Egg");
@@ -180,18 +191,18 @@ public final Tile[] pathToCook = new Tile[] {
 	private void doMillStuff(){
 		final String opt[] = {"I'm looking for"};
 		if(opHopper){//Is true if the wheat was passed down the shout; after pulling the controls.
-			if(ctx.game.getPlane()==2){
+			if(ctx.game.floor()==2){
 				Method.interactO(36797, "Climb-down", "Ladder");
 			}else
-			if(ctx.game.getPlane()==1){
+			if(ctx.game.floor()==1){
 				Method.interactO(36796, "Climb-down", "Ladder");
 			}else
-			if(ctx.game.getPlane()==0){
+			if(ctx.game.floor()==0){
 				Method.interactO(36880, "Take", "Flour bin");
 			}
 		}else//Below should put wheat in shout and use controls
 		if(sFlour){//Checks if we are now making 'special flour'
-			if(ctx.game.getPlane()==2){
+			if(ctx.game.floor()==2){
 				if(Method.playerText("You operate the")){
 					opHopper = true;//becomes true after operating the controls (pushing the wheat down)
 				}else if(Method.playerText("There is already") || Method.playerText("You put the wheat")){
@@ -201,7 +212,7 @@ public final Tile[] pathToCook = new Tile[] {
 					Method.useItemOn(1947, 70034, "Hopper");//if no wheat in hopper; put some in.
 				}
 			}else//below climbs up to the point
-			if(ctx.game.getPlane()==1){
+			if(ctx.game.floor()==1){
 				Method.interactO(36796, "Climb-up", "Ladder");
 			}else
 			Method.interactO(36795, "Climb", "Ladder");
@@ -248,3 +259,4 @@ public final Tile[] pathToCook = new Tile[] {
 
 }
 
+*/

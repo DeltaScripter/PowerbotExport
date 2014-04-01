@@ -1,9 +1,9 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -12,7 +12,7 @@ import quests.Vars.TeleportType;
 
 public class DemonSlayer extends Node {
 
-	public DemonSlayer(MethodContext ctx) {
+	public DemonSlayer(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -87,10 +87,10 @@ public class DemonSlayer extends Node {
 		
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
-			if(!DeltaQuester.checkedBank&& (ctx.settings.get(3518) & 0x7F)!=121){
+			if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(3518) & 0x7F)!=121){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.settings.get(3518) & 0x7F)!=121){
+	    if(Vars.useBank && (ctx.varpbits.varpbit(3518) & 0x7F)!=121){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if(!inits){
@@ -100,7 +100,7 @@ public class DemonSlayer extends Node {
 				DeltaQuester.e  =true;
 			}else inits = true;
 		}else 
-		if((ctx.settings.get(3518) & 0x7F)==121){
+		if((ctx.varpbits.varpbit(3518) & 0x7F)==121){
 			DeltaQuester.progress=14;
 			Method.state("The Demon Slayer quest has been completed.");
 			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons","Complete the mind test","Speak to the ghosts and recieve the sword","Inform Grufeld Bach of your success","Defeat the supporters of the demon","Defeat the demon","Complete the quest");
@@ -109,92 +109,86 @@ public class DemonSlayer extends Node {
 			ctx.environment.sleep(2000);
 			DeltaQuester.e = true;
 		}else
-		if((ctx.settings.get(3518) & 0x7F)==120){
+		if((ctx.varpbits.varpbit(3518) & 0x7F)==120){
 			DeltaQuester.progress=13;
 			cs0();//Complete the quest
 			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons","Complete the mind test","Speak to the ghosts and recieve the sword","Inform Grufeld Bach of your success","Defeat the supporters of the demon","Defeat the demon");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
-		if((ctx.settings.get(3518) & 0x3FF)==1015){
+		if((ctx.varpbits.varpbit(3518) & 0x3FF)==1015){
 			DeltaQuester.progress=12;
 			cs9();//Fight delrith
 			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons","Complete the mind test","Speak to the ghosts and recieve the sword","Inform Grufeld Bach of your success","Defeat the supporters of the demon");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
-		if((ctx.settings.get(3518) & 0x1FF)==503){
+		if((ctx.varpbits.varpbit(3518) & 0x1FF)==503){
 			DeltaQuester.progress=11;
 			cs8();//Fight wave 3 of enemies
 		}else
-		if((ctx.settings.get(3518) & 0xFF)==247){
+		if((ctx.varpbits.varpbit(3518) & 0xFF)==247){
 			DeltaQuester.progress=10;
 			cs7();//Fight wave 2 of enemies
 		}else
-		if((ctx.settings.get(3518) & 0x7F)==119){
+		if((ctx.varpbits.varpbit(3518) & 0x7F)==119){
 			DeltaQuester.progress=9;
 			cs6();//Fight wave 1 of enemies
 			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons","Complete the mind test","Speak to the ghosts and recieve the sword","Inform Grufeld Bach of your success");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
-		if((ctx.settings.get(3518) & 0x7F)==118){
+		if((ctx.varpbits.varpbit(3518) & 0x7F)==118){
 			DeltaQuester.progress=9;
 			cs0();//Inform Bach you have the silverlight sword
 			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons","Complete the mind test","Speak to the ghosts and recieve the sword");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(3518) & 0x7F)==117){
+		if((ctx.varpbits.varpbit(3518) & 0x7F)==117){
 			DeltaQuester.progress=8;
-			System.out.println("Here");
 			cs5();//Take the sword from the pedestal
 		
 		}else
-		if((ctx.settings.get(3518) & 0x7F)==116){
+		if((ctx.varpbits.varpbit(3518) & 0x7F)==116){
 			DeltaQuester.progress=7;
-			System.out.println("Here2");
 			cs1();//Speak to the ghosts after the trials; to release the sword.
 			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons","Complete the mind test");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(3518) & 0x7F)==83){
+		if((ctx.varpbits.varpbit(3518) & 0x7F)==83){
 			DeltaQuester.progress=6;
-			System.out.println("Here3");
 			cs4();//Speak to the ghost of mind and take the test.
 			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(3518) & 0x7F)==67){
+		if((ctx.varpbits.varpbit(3518) & 0x7F)==67){
 			DeltaQuester.progress=5;
-			System.out.println("Here4");
 			cs3();//Speak to the ghost of body and then defeat the skeletons
 			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(3518) & 0x3)==3){
+		if((ctx.varpbits.varpbit(3518) & 0x3)==3){
 			DeltaQuester.progress=4;
-			System.out.println("Here5");
 			cs2();//Speak to the ghost then complete the walking puzzle.
 			updateTaskRemove("Start the quest","Speak to the ghosts downstairs");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(3518) & 0x3)==2){
+		if((ctx.varpbits.varpbit(3518) & 0x3)==2){
 			DeltaQuester.progress=3;
-			System.out.println("Here6");
 			cs1();//Speak to the ghosts downstairs.
 		}else
-		if((ctx.settings.get(3518) & 1)==1){
+		if((ctx.varpbits.varpbit(3518) & 1)==1){
 			DeltaQuester.progress=2;
 			cs0();//Speak to bach initially
 			updateTaskRemove("Start the quest");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
-		if((ctx.settings.get(3518) & 1)==0){
+		if((ctx.varpbits.varpbit(3518) & 1)==0){
 			DeltaQuester.progress=1;
 			cs0();//Start the quest
 		}
@@ -214,7 +208,7 @@ public class DemonSlayer extends Node {
 		//SceneObject door = SceneEntities.getNearest(24381);
 		if(init!=null){
 			if(!Method.isChatting("People"))
-			if((ctx.settings.get(82)&0x3FF)==1018){
+			if((ctx.varpbits.varpbit(82)&0x3FF)==1018){
 				if(!Method.isChatting("Cutscene")){//16724
 					
 					if(local.getAppearance().equals(18019)){
@@ -226,7 +220,7 @@ public class DemonSlayer extends Node {
 				}
 			}else if(silverEquip){
 				if(!Method.npcIsNotNull(16722) || !Method.npcIsNotNull(16723)){//Denath, not the demon
-				Method.clickOnMap(new Tile(init.getX()+31,init.getY()-30,0));
+				Method.clickOnMap(new Tile(init.x()+31,init.getY()-30,0));
 				ctx.game.sleep(5000);
 				}
 			}else if(!Method.EquipmentContains(2402)){
@@ -267,14 +261,14 @@ public class DemonSlayer extends Node {
 		Player local = ctx.players.local();
 		
 		if(init!=null){
-			  if(new Tile(init.getX()+27,init.getY()-20,0).distanceTo(local.getLocation())<8){
+			  if(new Tile(init.x()+27,init.getY()-20,0).distanceTo(local.getLocation())<8){
 				
 				if(local.getAppearance().equals(18019)){
 					Vars.DYNAMICV = false;
 					Method.npcInteract(16723, "Attack");
 				}else Method.fightNPC(16723);
 				
-			}else Method.clickOnMap(new Tile(init.getX()+27,init.getY()-20,0));
+			}else Method.clickOnMap(new Tile(init.x()+27,init.getY()-20,0));
 		}else
 	{for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
 			if(o.getLocation().distanceTo(local.getLocation())<20){
@@ -304,13 +298,13 @@ public class DemonSlayer extends Node {
 		 Player local = ctx.players.local();
 		
 		if(init!=null){
-			if(new Tile(init.getX()+14,init.getY()-13,0).distanceTo(local.getLocation())<8){
+			if(new Tile(init.x()+14,init.getY()-13,0).distanceTo(local.getLocation())<8){
 				
 				if(local.getAppearance().equals(18019)){
 					Method.npcInteract(16723, "Attack");
 				}else Method.fightNPC(16723);
 				
-			}else Method.clickOnMap(new Tile(init.getX()+14,init.getY()-13,0));
+			}else Method.clickOnMap(new Tile(init.x()+14,init.getY()-13,0));
 		}else { for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
 			if(o.getLocation().distanceTo(local.getLocation())<20){
 				ctx.environment.sleep(2000);
@@ -338,13 +332,13 @@ public class DemonSlayer extends Node {
 		 Player local = ctx.players.local();
 		
 		if(init!=null){
-			if(new Tile(init.getX(),init.getY()-11,0).distanceTo(local.getLocation())<8){
+			if(new Tile(init.x(),init.getY()-11,0).distanceTo(local.getLocation())<8){
 				
 				if(local.getAppearance().equals(18019)){
 					Method.npcInteract(16723, "Attack");
 				}else Method.fightNPC(16723);
 				
-			}else Method.clickOnMap(new Tile(init.getX(),init.getY()-11,0));
+			}else Method.clickOnMap(new Tile(init.x(),init.getY()-11,0));
 		}else { 
 			for(GameObject  o : ctx.objects.select().id(71036).nearest().first()){
 			if(o.getLocation().distanceTo(local.getLocation())<20){
@@ -368,7 +362,7 @@ public class DemonSlayer extends Node {
 		 Player local = ctx.players.local();
 		
 		if(init!=null){
-			if(new Tile(init.getX(), init.getY()+19,0).distanceTo(local.getLocation())<8){
+			if(new Tile(init.x(), init.getY()+19,0).distanceTo(local.getLocation())<8){
 				Vars.DYNAMICV = false;
 				if(!local.isInMotion()){
 					Method.state("Waiting");
@@ -378,7 +372,7 @@ public class DemonSlayer extends Node {
 				Method.interactO(82189, "Take", "Silverlight");
 			}else {
 				if(!local.isInMotion())
-				Method.clickOnMap(new Tile(init.getX(), init.getY()+19,0));
+				Method.clickOnMap(new Tile(init.x(), init.getY()+19,0));
 			}
 		}else { for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
 			if(o.getLocation().distanceTo(local.getLocation())<20){
@@ -409,13 +403,13 @@ public class DemonSlayer extends Node {
 		
 		//SceneObject door = SceneEntities.getNearest(15536);
 		if(init!=null){
-			if(new Tile(init.getX()+13,init.getY()+24,0).distanceTo(local.getLocation())<7){
+			if(new Tile(init.x()+13,init.getY()+24,0).distanceTo(local.getLocation())<7){
 				if(!Method.findOption(opt)){
 					if(!Method.isChatting("Spirit of the Mind")){
 						Method.speakTo(16718, "Spirit of the Mind");
 					}
 				}
-			}else Method.clickOnMap(new Tile(init.getX()+13,init.getY()+24,0));
+			}else Method.clickOnMap(new Tile(init.x()+13,init.getY()+24,0));
 		}else {
 			for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
 			if(o.getLocation().distanceTo(local.getLocation())<20){
@@ -454,7 +448,7 @@ public class DemonSlayer extends Node {
 			Method.pressContinue();
 			spokeToBody = true;
 		}else
-		if(new Tile(init.getX()-12, init.getY()+23,0).distanceTo(local.getLocation())<6){
+		if(new Tile(init.x()-12, init.getY()+23,0).distanceTo(local.getLocation())<6){
 			if(!Method.findOption(t)){
 				if(!Method.isChatting("Spirit of Body")){
 					Method.speakTo(16717, "Spirit of Body");
@@ -462,16 +456,15 @@ public class DemonSlayer extends Node {
 			}
 		}else {
 			if(!local.isInMotion())
-			Method.clickOnMap(new Tile(init.getX()-12, init.getY()+23,0));
+			Method.clickOnMap(new Tile(init.x()-12, init.getY()+23,0));
 		}
-		}else {
-		for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
+		}else { for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
 			if(o.getLocation().distanceTo(local.getLocation())<20){
 				ctx.environment.sleep(2000);
 				init = ctx.players.local().getLocation();
 			}
 		}
-		if(new Tile(3258,3483,0).distanceTo(local.getLocation())<6){
+		if(new Tile(3258,3483,0).distanceTo(local.getLocation())<8){
 			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
 				if(!TrapDoor.contains(door.getLocation())){
 					Method.interactO(82059, "Climb", "Trapdoor");
@@ -544,7 +537,7 @@ public class DemonSlayer extends Node {
 				Method.pressContinue();
 				spokeToFaith = true;
 			}else
-			if(new Tile(init.getX(), init.getY()+33,0).distanceTo(local.getLocation())<9){
+			if(new Tile(init.x(), init.getY()+33,0).distanceTo(local.getLocation())<9){
 				if(!Method.findOption(opt)){
 					if(!Method.isChatting("Spirit of Faith")){
 						Method.speakTo(16719, "Spirit of Faith");
@@ -552,7 +545,7 @@ public class DemonSlayer extends Node {
 				}
 			}else {
 				if(!ctx.players.local().isInMotion()){
-					Method.clickOnMap(new Tile(init.getX(), init.getY()+33,0));
+					Method.clickOnMap(new Tile(init.x(), init.getY()+33,0));
 						ctx.environment.sleep(1200,1300);
 				}
 			}
@@ -582,12 +575,12 @@ public class DemonSlayer extends Node {
 	private void moveToTile(int x, int y, int p) {
 		 Player local = ctx.players.local();
 		 
-		if(new Tile(init.getX()+x,init.getY()+y,0).distanceTo(local.getLocation())==0){
+		if(new Tile(init.x()+x,init.getY()+y,0).distanceTo(local.getLocation())==0){
 			tileArray[p]=1;
 		}else {
 			Method.state("Attempting faith traversal");
 			ctx.camera.getAngleTo(87);
-			new Tile(init.getX()+x,init.getY()+y,0).getMatrix(ctx).click();
+			new Tile(init.x()+x,init.getY()+y,0).getMatrix(ctx).click();
 			ctx.environment.sleep(1500,1600);
 		}
 		
@@ -600,7 +593,7 @@ public class DemonSlayer extends Node {
 		
 		final String opt[] = {"I come seeking"};
 		if(init!=null){
-			if(new Tile(init.getX(), init.getY()+19,0).distanceTo(local.getLocation())<8){
+			if(new Tile(init.x(), init.getY()+19,0).distanceTo(local.getLocation())<8){
 				if(!Method.findOption(opt)){
 					if(!Method.isChatting("Spirit of Faith")){
 						Method.speakTo(16719, "Spirit of Faith");
@@ -608,7 +601,7 @@ public class DemonSlayer extends Node {
 				}
 			}else {
 				if(!ctx.players.local().isInMotion())
-					Method.clickOnMap(new Tile(init.getX(), init.getY()+19,0));
+					Method.clickOnMap(new Tile(init.x(), init.getY()+19,0));
 			}
 		}else{ for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
 			if(o.getLocation().distanceTo(local.getLocation())<20){
@@ -651,3 +644,4 @@ public class DemonSlayer extends Node {
 	  
 	  
   }
+*/

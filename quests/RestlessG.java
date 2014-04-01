@@ -1,8 +1,12 @@
 package quests;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Npc;
-import org.powerbot.script.wrappers.Tile;
+
+
+
+
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -61,53 +65,73 @@ public class RestlessG extends Node{
 	public Vars Vars = new Vars();
 	public Method Method = new Method(ctx);
 	
-	public RestlessG(MethodContext ctx) {
+	public RestlessG(ClientContext ctx) {
 		super(ctx);
 	}
+	boolean q = true;
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
-		
+		if(q){
+			TaskListing.taskRemove.clear();
+			TaskListing.taskListData.add("Start quest by speaking to the priest");
+			TaskListing.taskListData.add("Speak to the irrational priest in the swamp");
+			TaskListing.taskListData.add("Speak to the ghost in the cemetary");
+			TaskListing.taskListData.add("Retrieve the ghost's skull");
+			TaskListing.taskListData.add("Place the ghost's skull in his coffin and finish quest");
+			TaskListing.updateTasks();
+			q = false;
+		}
 		Method.resetTeleporting();
 		
 		DeltaQuester.numSteps = 6;
 		Method.foodSupport();
 		
 		
-		if(DeltaQuester.checkedBank &&(ctx.settings.get(2324)&0x7) !=5)
+		if(DeltaQuester.checkedBank &&(ctx.varpbits.varpbit(2324)&0x7) !=5)
 			Method.determineBank(bankItems);
 		
-			if(!DeltaQuester.checkedBank && (ctx.settings.get(2324)&0x7) !=5){
+			if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2324)&0x7) !=5){
 			Method.checkBank();
 		}else
-	   if(Vars.useBank && (ctx.settings.get(2324)&0x7) !=5){
+	    if(Vars.useBank && (ctx.varpbits.varpbit(2324)&0x7) !=5){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
-		if((ctx.settings.get(2324)&0x7) ==5){
+		if((ctx.varpbits.varpbit(2324)&0x7) ==5){
 			DeltaQuester.progress = 6;
 			Method.state("The Restless Ghost quest has been completed.");
+			TaskListing.updateTaskRemove("Start quest by speaking to the priest","Speak to the irrational priest in the swamp","Speak to the ghost in the cemetary","Retrieve the ghost's skull","Place the ghost's skull in his coffin and finish quest");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
-		if((ctx.settings.get(2324)&0x7) ==4){
+		if((ctx.varpbits.varpbit(2324)&0x7) ==4){
 			DeltaQuester.progress = 5;
 			cs4();//go back to the ghost and place the skull in his grave
-			
+			TaskListing.updateTaskRemove("Start quest by speaking to the priest","Speak to the irrational priest in the swamp","Speak to the ghost in the cemetary","Retrieve the ghost's skull");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
-		if((ctx.settings.get(2324)&0x3) ==3){
+		if((ctx.varpbits.varpbit(2324)&0x3) ==3){
 			DeltaQuester.progress = 4;
 			cs3();//Take the skull from the rock
-			
+			TaskListing.updateTaskRemove("Start quest by speaking to the priest","Speak to the irrational priest in the swamp","Speak to the ghost in the cemetary");
+			TaskListing.removeTasks(TaskListing.taskRemove);
+		
 		}else
-		if((ctx.settings.get(2324)&0x3) ==2){
+		if((ctx.varpbits.varpbit(2324)&0x3) ==2){
 			DeltaQuester.progress = 3;
 			cs2();//Speak to the ghost
+			TaskListing.updateTaskRemove("Start quest by speaking to the priest","Speak to the irrational priest in the swamp");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
-		if((ctx.settings.get(2324)&0x1) ==1){
+		if((ctx.varpbits.varpbit(2324)&0x1) ==1){
 			DeltaQuester.progress =2;
 			cs1();//Speak to the crazy priest in the swamp.
+			TaskListing.updateTaskRemove("Start quest by speaking to the priest");
+			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
-		if((ctx.settings.get(2324)&0x1) ==0){
+		if((ctx.varpbits.varpbit(2324)&0x1) ==0){
 			DeltaQuester.progress = 1;
 			cs0();//Start the quest
 		}
@@ -116,23 +140,23 @@ public class RestlessG extends Node{
 
 	private void cs4() {
 		Method m = new Method(ctx);
-		if(new Tile(3248,3193,0).distanceTo(ctx.players.local().getLocation())<5){
-			if(!ctx.objects.select().nearest().id(89483).first().isEmpty()){
-				m.useItemOn(553, 89483, "Skull");
-			}else m.interactO(89480, "Open", "Coffin");
+		if(new Tile(3248,3193,0).distanceTo(ctx.players.local().tile())<5){
+			if(!ctx.objects.select().nearest().id(15061).first().isEmpty()){
+				m.useItemOn(553, 15061, "Skull");
+			}else m.interactO(2145, "Open", "Coffin");
 		}else cs2();//get to the ghost
 		
 	}
 
 	private void cs3() {//Take the skull from the rock
 		Method m = new Method(ctx);
-		if(new Tile(3236,3147,0).distanceTo(ctx.players.local().getLocation())<7){
+		if(new Tile(3236,3147,0).distanceTo(ctx.players.local().tile())<7){
 			Vars.DYNAMICV = false;
 			Vars.DYNAMICV2 = true;
 			m.interactO(47713, "Search", "Rock");
 		}else if(Vars.DYNAMICV){
 			m.walking(to_Rock, "Walking to ghost remains", false);
-		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().getLocation())<10){
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().tile())<10){
 			Vars.DYNAMICV = true;
 		}else m.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 		
@@ -142,17 +166,17 @@ public class RestlessG extends Node{
 		Method m = new Method(ctx);
 		String opt[] = {"Yep."};
 		if(Vars.gAmuEquip){
-			if(new Tile(3248,3193,0).distanceTo(ctx.players.local().getLocation())<5){
+			if(new Tile(3248,3193,0).distanceTo(ctx.players.local().tile())<5){
 				Vars.DYNAMICV = false;
 				for(Npc n : ctx.npcs.select().nearest().id(457).first()){
 					if(!m.findOption(opt))
 						if(!m.isChatting("Ghost")){
-							m.speakTo(n.getId(), "Ghost");
+							m.speakTo(n.id(), "Ghost");
 							break;
 						}
 				}
-				if(!ctx.players.local().isInMotion()){
-					m.interactO(89480, "Open", "Coffin");
+				if(!ctx.players.local().inMotion()){
+					m.interactO(2145, "Open", "Coffin");
 				}
 				
 				
@@ -160,7 +184,7 @@ public class RestlessG extends Node{
 				m.walking(PathToGhostFromRock, "Walking back to ghost", false);
 			}else if(Vars.DYNAMICV){
 				m.walking(to_GhostShack, "Walking to the ghost", false);
-			}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().getLocation())<10){
+			}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().tile())<10){
 				Vars.DYNAMICV = true;
 			}else m.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 			
@@ -175,8 +199,8 @@ public class RestlessG extends Node{
 		
 		Method Method = new Method(ctx);
 		final String opt[] = {"A ghost","sent me to talk"};
-		if(new Tile(3206, 3153, 0).distanceTo(ctx.players.local().getLocation())<6){
-			if(swampInsideHut.contains(ctx.players.local().getLocation())){
+		if(new Tile(3206, 3153, 0).distanceTo(ctx.players.local().tile())<6){
+			if(swampInsideHut.contains(ctx.players.local().tile())){
 				Vars.DYNAMICV = false;
 				if(!Method.findOption(opt))
 					if(!Method.isChatting("Aereck")){
@@ -187,7 +211,7 @@ public class RestlessG extends Node{
 			}else ctx.movement.newTilePath(new Tile(3206,3149,0)).traverse();
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToLonePriest, "Walking to the swamp priest", false);
-		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().getLocation())<10){
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().tile())<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 	}
@@ -196,7 +220,7 @@ public class RestlessG extends Node{
 		final String opt[] = {"I'm looking for"};
 		Method Method = new Method(ctx);
 		
-		if(new Tile(3243,3205,0).distanceTo(ctx.players.local().getLocation())<5){
+		if(new Tile(3243,3205,0).distanceTo(ctx.players.local().tile())<5){
 			Vars.DYNAMICV = false;
 			if(!Method.startQuestOpen())
 			if(!Method.findOption(opt))
@@ -205,7 +229,7 @@ public class RestlessG extends Node{
 			}
 		}else if(Vars.DYNAMICV){
 			Method.walking(to_Fath_PathFL, "Walking to Aereck", false);
-		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().getLocation())<10){
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().tile())<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 		

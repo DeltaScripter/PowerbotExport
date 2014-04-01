@@ -1,16 +1,16 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
 public class LostCity extends Node{
 
-	public LostCity(MethodContext ctx) {
+	public LostCity(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -109,7 +109,7 @@ public class LostCity extends Node{
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		DeltaQuester.numSteps = 5;
-		while(ctx.settings.get(1045)!=0){//The setting used when the mini boat appears.
+		while(ctx.varpbits.varpbit(1045)!=0){//The setting used when the mini boat appears.
 			Method.state("Now sailing");
 			Method.sleep(20);
 		}
@@ -117,34 +117,34 @@ public class LostCity extends Node{
 		Method.foodSupport();
 		
 		
-		if(DeltaQuester.checkedBank && (ctx.settings.get(2551)&0x7) != 6)
+		if(DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2551)&0x7) != 6)
 			Method.determineBank(bankItems);
 		
-		if(!DeltaQuester.checkedBank && (ctx.settings.get(2551)&0x7) != 6){
+		if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2551)&0x7) != 6){
 			System.out.println("In check bank");
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.settings.get(2551)&0x7) != 6){
+	    if(Vars.useBank && (ctx.varpbits.varpbit(2551)&0x7) != 6){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
-		if((ctx.settings.get(2551)&0x7) == 6){
+		if((ctx.varpbits.varpbit(2551)&0x7) == 6){
 			DeltaQuester.progress  =5;
 			Method.state("The Lost City quest has been completed");
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
-		if((ctx.settings.get(2551)&0x7) == 4||(ctx.settings.get(2551)&0x7) == 5){
+		if((ctx.varpbits.varpbit(2551)&0x7) == 4||(ctx.varpbits.varpbit(2551)&0x7) == 5){
 			DeltaQuester.progress  =4;
 			cs3();//Make the staff, then enter the mysterious shed
 		}else
-		if((ctx.settings.get(2551)&0x3) == 2||(ctx.settings.get(2551)&0x3) == 3){
+		if((ctx.varpbits.varpbit(2551)&0x3) == 2||(ctx.varpbits.varpbit(2551)&0x3) == 3){
 			DeltaQuester.progress  =3;
 			cs2();//Get to the dungeon and defeat the tree spirit, then chop the tree again.
 		}else
-		if((ctx.settings.get(2551)&0x1) == 1){
+		if((ctx.varpbits.varpbit(2551)&0x1) == 1){
 			DeltaQuester.progress  =2;
 			cs1();//Speak to the leprechaun
-		}else if((ctx.settings.get(2551)&0x1) ==0){
+		}else if((ctx.varpbits.varpbit(2551)&0x1) ==0){
 			DeltaQuester.progress  =1;
 		cs0();//Start the quest(speak to the warrior)
 		}
@@ -185,8 +185,8 @@ public class LostCity extends Node{
 			Method.interactO(2415, "Cross", "Plank");
 		}
 		if(initTile!=null){
-			if(new Tile(initTile.getX()+34, initTile.getY()-39,0).distanceTo(local.getLocation())<10){
-				if((ctx.settings.get(2551)&0x3) == 3){//After defeating the spirit
+			if(new Tile(initTile.x()+34, initTile.getY()-39,0).distanceTo(local.getLocation())<10){
+				if((ctx.varpbits.varpbit(2551)&0x3) == 3){//After defeating the spirit
 					
 					if(!local.isInMotion())
 					Method.interactO(1292, "Chop","Tree");
@@ -198,7 +198,7 @@ public class LostCity extends Node{
 				}else Method.interactO(1292, "Chop", "Dramen Tree");
 			}else {
 				Method.state("Walking to special tree");
-				Method.clickOnMap(new Tile(initTile.getX()+34, initTile.getY()-39,0));
+				Method.clickOnMap(new Tile(initTile.x()+34, initTile.getY()-39,0));
 			}
 		}else
 		if(Method.objIsNotNull(31130)){
@@ -271,3 +271,4 @@ public class LostCity extends Node{
 	}
 
 }
+*/

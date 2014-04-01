@@ -2,7 +2,8 @@ package quests;
 
 import java.util.ArrayList;
 
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
+
 
 
 

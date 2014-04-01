@@ -1,10 +1,10 @@
-package quests;
+/*package quests;
 
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 
 import quests.Vars.TeleportLode;
@@ -12,7 +12,7 @@ import quests.Vars.TeleportType;
 
 public class DragonSlayer extends Node{
 
-	public DragonSlayer(MethodContext ctx) {
+	public DragonSlayer(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -228,7 +228,7 @@ public class DragonSlayer extends Node{
 	   if (DeltaQuester.GEFeature) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else
-			if((ctx.settings.get(2268)&0x1F) == 10){
+			if((ctx.varpbits.varpbit(2268)&0x1F) == 10){
 			DeltaQuester.progress = 16;
 			Method.state("The Dragon Slayer quest has been completed.");
 			ctx.game.sleep(2000);
@@ -237,33 +237,33 @@ public class DragonSlayer extends Node{
 		if(init){
 			init();//Determines what part of the quest the player is on(map pieces), it checks alkharid bank for the map pieces you have
 		}else
-			if((ctx.settings.get(2268)&0x1F) == 9){
+			if((ctx.varpbits.varpbit(2268)&0x1F) == 9){
 			DeltaQuester.progress = 15;
 			cs1();//Speak to Oziach
 		}else
-		if((ctx.settings.get(2268)&0x3F) == 2||(ctx.settings.get(2268)&0x3F) == 3||(ctx.settings.get(2268)&0x7) == 6||(ctx.settings.get(2268)&0x7) == 7||(ctx.settings.get(2268)&0x1F) == 8){
-			if((ctx.settings.get(2268)&0x1F) == 8){
+		if((ctx.varpbits.varpbit(2268)&0x3F) == 2||(ctx.varpbits.varpbit(2268)&0x3F) == 3||(ctx.varpbits.varpbit(2268)&0x7) == 6||(ctx.varpbits.varpbit(2268)&0x7) == 7||(ctx.varpbits.varpbit(2268)&0x1F) == 8){
+			if((ctx.varpbits.varpbit(2268)&0x1F) == 8){
 				DeltaQuester.progress = 14;
 				cs12();
 			}else
-			if((ctx.settings.get(2268)&0x7) == 7){
+			if((ctx.varpbits.varpbit(2268)&0x7) == 7){
 				DeltaQuester.progress = 13;
 				cs11();//Set sail for Crandor
-			}else if((ctx.settings.get(2269)&0xFFFFF)==0 || (ctx.settings.get(2269)&0x7)==4){
-			//if((ctx.settings.get(3077)&0x1F)==16){//did we get the dragon shield from the duke yet?
+			}else if((ctx.varpbits.varpbit(2269)&0xFFFFF)==0 || (ctx.varpbits.varpbit(2269)&0x7)==4){
+			//if((ctx.varpbits.varpbit(3077)&0x1F)==16){//did we get the dragon shield from the duke yet?
 				
 				if(hasMalzarMap){
 					if(hasLazarMap){
 						if(hasWormMap){
 							
-							if((ctx.settings.get(2269)>>21&0x1)==1){//After speaking to Ned
-								if((ctx.settings.get(2268)&0x7) == 6){
+							if((ctx.varpbits.varpbit(2269)>>21&0x1)==1){//After speaking to Ned
+								if((ctx.varpbits.varpbit(2268)&0x7) == 6){
 									DeltaQuester.progress = 12;
 									if(Method.goBank){
 										Method.bankItems(bankItems3, bankItemAmount3);//planks & nails, not needed, need to test is it grabs the stuff below
 									}else cs10();//equips sheild & speaks to ned
 								}else
-								if((ctx.settings.get(2268)&0x3F) == 3){
+								if((ctx.varpbits.varpbit(2268)&0x3F) == 3){
 									DeltaQuester.progress = 11;
 									if(Method.goBank){
 										Method.bankItems(bankItems3, bankItemAmount3);//planks & nails
@@ -278,7 +278,7 @@ public class DragonSlayer extends Node{
 							cs7();//Speak to Ned about him being captain
 							}
 						}else
-						if((ctx.settings.get(2269)>>23&0x1)==1){//Setting to determine if we spoke to the goblins in the village yet
+						if((ctx.varpbits.varpbit(2269)>>23&0x1)==1){//Setting to determine if we spoke to the goblins in the village yet
 							DeltaQuester.progress = 8;
 							cs6();//Obtain Wormmap from the goblin in the jail
 						}else{
@@ -314,12 +314,12 @@ public class DragonSlayer extends Node{
 		     cs0();//Speak to the Guildmaster and gather more information
 		    }
 		}else
-		if((ctx.settings.get(2268)&0x3F) == 1){
+		if((ctx.varpbits.varpbit(2268)&0x3F) == 1){
 		DeltaQuester.progress = 2;
 		System.out.println("Now onto cs1");
 		cs1();//Speak to Oziach about obtaining a Rune platebody
 		}else
-		if((ctx.settings.get(2268)&0x3F) == 0){
+		if((ctx.varpbits.varpbit(2268)&0x3F) == 0){
 		DeltaQuester.progress = 1;
 		cs0();//Begin the quest by speaking to the Guildmaster in Varrok
 		}
@@ -355,7 +355,7 @@ public class DragonSlayer extends Node{
 			ctx.movement.findPath(new Tile(2835,3258,0)).traverse();//top of mountain
 		}else if(Method.goBank){
 			Method.bankItems(bankItems3, bankItemAmount3);//planks & nails
-		}else if((ctx.settings.get(2269)>>8&0x7)==7){
+		}else if((ctx.varpbits.varpbit(2269)>>8&0x7)==7){
 			cs11();//Set sail again
 		}else{
 			cs9();
@@ -365,17 +365,17 @@ public class DragonSlayer extends Node{
 
 	private void cs11() {
 		final String opt[] = {"Yes, let's"};
-		while(ctx.settings.get(1114)==1){
+		while(ctx.varpbits.varpbit(1114)==1){
 			Method.isChatting("Cutscene");
 		}
 		
 		if( Method.inventoryContains(1535)){
 			Method.combineItems(1535, 1536);
 		}else if(hasShieldEquip){
-			if(new Tile(3047,3208,0).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==0){
+			if(new Tile(3047,3208,0).getMatrix(ctx).isReachable()&& ctx.game.floor()==0){
 				Method.interactO(272, "Climb-up", "Ladder");
 			}else
-			if(new Tile(3047,3207,1).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==1){
+			if(new Tile(3047,3207,1).getMatrix(ctx).isReachable()&& ctx.game.floor()==1){
 				if(!Method.findOption(opt))
 					if(!Method.isChatting("Ned")){
 						Method.speakTo(6082, "Ned");
@@ -401,7 +401,7 @@ public class DragonSlayer extends Node{
 		}
 		//if(Method.useBank){g
 		//	Method.useBank(bankItems5, 22, 1, 90);
-		//}else if(Bank.isOpen()){
+		//}else if(bank.opened()){
 		///	Bank.close();
 		//}else
 		if( Method.inventoryContains(1535)){
@@ -417,11 +417,11 @@ public class DragonSlayer extends Node{
 	private void cs9() {//Repair the ship
 		
 		
-		if(new Tile(3048,3208,0).getMatrix(ctx).isReachable()&&ctx.game.getPlane()==0){
+		if(new Tile(3048,3208,0).getMatrix(ctx).isReachable()&&ctx.game.floor()==0){
 			Vars.DYNAMICV = false;
 			Method.interactO(25036, "Repair", "Hole");
 		}else
-		if(new Tile(3047,3207,1).getMatrix(ctx).isReachable()&&ctx.game.getPlane()==1){
+		if(new Tile(3047,3207,1).getMatrix(ctx).isReachable()&&ctx.game.floor()==1){
 			Method.interactO(2590, "Climb", "Ladder");
 		}else
 		if(new Tile(3047,3204,0).distanceTo(ctx.players.local().getLocation())<7){
@@ -434,11 +434,11 @@ public class DragonSlayer extends Node{
 	private void cs8() {//Buy the ship
 		final String opt[] = {"Yep, sounds good","I'd like to buy"};
 		
-		if( !Method.inventoryContains(960) && !Method.inventoryContains(1539)&&(ctx.settings.get(2268)&0x7) != 7
-				&&(ctx.settings.get(2268)&0x1F) != 8){
+		if( !Method.inventoryContains(960) && !Method.inventoryContains(1539)&&(ctx.varpbits.varpbit(2268)&0x7) != 7
+				&&(ctx.varpbits.varpbit(2268)&0x1F) != 8){
 			Method.useBank = true;
 		}
-		//if(Method.useBank&&(ctx.settings.get(2268)&0x7) != 7&&(ctx.settings.get(2268)&0x1F) != 8){
+		//if(Method.useBank&&(ctx.varpbits.varpbit(2268)&0x7) != 7&&(ctx.varpbits.varpbit(2268)&0x1F) != 8){
 		//	Method.useBank(bankItems4, 1, 90, 0);
 		//}else
 		if(new Tile(3043, 3203, 0).distanceTo(ctx.players.local().getLocation())<6){//Location at docks
@@ -533,11 +533,11 @@ public class DragonSlayer extends Node{
 	private void cs4() {//Obtains Lazar's map piece
 		final String opt[] = {"I seek a piece"};
 		
-		if( ((ctx.settings.get(2269)>>17&0x1)!=1 || (ctx.settings.get(2269)>>18&0x1)!=1||(ctx.settings.get(2269)>>19&0x1)!=1||(ctx.settings.get(2269)>>20&0x1)!=1)
+		if( ((ctx.varpbits.varpbit(2269)>>17&0x1)!=1 || (ctx.varpbits.varpbit(2269)>>18&0x1)!=1||(ctx.varpbits.varpbit(2269)>>19&0x1)!=1||(ctx.varpbits.varpbit(2269)>>20&0x1)!=1)
 				&& (!Method.inventoryContains(1791)&&!Method.inventoryContains(1907) && !Method.inventoryContains(13431)&&!Method.inventoryContains(950))){
 			Method.useBank = true;
 		}
-			if((ctx.settings.get(2269)&0x7)==4){//After speaking to the Oracle
+			if((ctx.varpbits.varpbit(2269)&0x7)==4){//After speaking to the Oracle
 			 if(Method.inventoryContains(1537)){
 				hasLazarMap = true;
 			}else
@@ -553,10 +553,10 @@ public class DragonSlayer extends Node{
 					}else Method.clickOnMap(new Tile(3055,9841,0));
 				}else
 				if (new Tile(3049,9840,0).distanceTo(ctx.players.local().getLocation()) < 7) {
-					if((ctx.settings.get(2269)>>18&0x1)==1){
-						if((ctx.settings.get(2269)>>20&0x1)==1){
-							if((ctx.settings.get(2269)>>19&0x1)==1){
-								if((ctx.settings.get(2269)>>17&0x1)==1){
+					if((ctx.varpbits.varpbit(2269)>>18&0x1)==1){
+						if((ctx.varpbits.varpbit(2269)>>20&0x1)==1){
+							if((ctx.varpbits.varpbit(2269)>>19&0x1)==1){
+								if((ctx.varpbits.varpbit(2269)>>17&0x1)==1){
 									Method.interactO(25115, "Open", "Magic door");
 								}else Method.useItemOn(950,25115, "Door");
 							}else Method.useItemOn(13431,25115, "Door");
@@ -593,7 +593,7 @@ public class DragonSlayer extends Node{
 	private void init() {//Determines what part of the quest by checking the bank
 		Method.state("Initializing - checking bank for map pieces");
 		if(new Tile(3181,3481, 0).distanceTo(ctx.players.local().getLocation())<6){//lummy bank(outside)
-			if(ctx.bank.isOpen()){
+			if(ctx.bank.opened()){
 				if(Method.bankContains(1535) || Method.inventoryContains(1535)){//malzar map
 					System.out.println("Found Malzar map");
 					hasMalzarMap = true;
@@ -633,13 +633,13 @@ public class DragonSlayer extends Node{
 			Method.interactInventory(526, "Drop", "Bones");
 		}else if(!Method.teleporting&& Method.inventoryContains((1535))){
 			hasMalzarMap = true;
-		}else if(new Tile(2936,9656,0).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==0){
+		}else if(new Tile(2936,9656,0).getMatrix(ctx).isReachable()&& ctx.game.floor()==0){
 			Vars.DYNAMICV = false;
 			Method.goBank = true;//use bank for later
 			Method.skipPics();
 			Method.interactO(2603, "Open", "Chest");
 			Method.interactO(2604, "Search", "Chest");
-		}else if(new Tile(2929,9652,0).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==0){
+		}else if(new Tile(2929,9652,0).getMatrix(ctx).isReachable()&& ctx.game.floor()==0){
 			
 			if(hasGreenKey){
 				if(new Tile(2936,9655,0).distanceTo(ctx.players.local().getLocation())<6){
@@ -660,7 +660,7 @@ public class DragonSlayer extends Node{
 				}else Method.clickOnMap(Method.getNPC(6101).getLocation());//demon loc
 			}
 			
-		}else if(new Tile(2929,9643,0).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==0){
+		}else if(new Tile(2929,9643,0).getMatrix(ctx).isReachable()&& ctx.game.floor()==0){
 			
 			if(hasPurpleKey){
 				Method.interactO(2600, "Open", "Magenta door");
@@ -675,7 +675,7 @@ public class DragonSlayer extends Node{
 				Method.fightNPC(753);//melzar
 			}else Method.npcInteract(753, "Attack");//melzar
 			
-		}else if(Method.objIsNotNull(31130) && new Tile(2933,9640,0).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==0){
+		}else if(Method.objIsNotNull(31130) && new Tile(2933,9640,0).getMatrix(ctx).isReachable()&& ctx.game.floor()==0){
 			if(hasBlueKey){
 				Method.interactO(2599, "Open", "Blue door");
 			}else
@@ -689,21 +689,21 @@ public class DragonSlayer extends Node{
 				Method.fightNPC(6099);//zombies
 			}else Method.npcInteract(6099, "Attack");
 			
-		}else if(new Tile(2924,3248,2).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==2||
-				new Tile(2938,3241,2).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==2||
-				new Tile(2939,3239,1).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==1||
-				new Tile(2938,3240,0).getMatrix(ctx).isReachable()&& ctx.game.getPlane()==0){
+		}else if(new Tile(2924,3248,2).getMatrix(ctx).isReachable()&& ctx.game.floor()==2||
+				new Tile(2938,3241,2).getMatrix(ctx).isReachable()&& ctx.game.floor()==2||
+				new Tile(2939,3239,1).getMatrix(ctx).isReachable()&& ctx.game.floor()==1||
+				new Tile(2938,3240,0).getMatrix(ctx).isReachable()&& ctx.game.floor()==0){
 			
-			if(new Tile(2938,3240,0).getMatrix(ctx).isReachable()&&ctx.game.getPlane()==0){
+			if(new Tile(2938,3240,0).getMatrix(ctx).isReachable()&&ctx.game.floor()==0){
 				Method.interactO(2605, "Climb-down", "Ladder");
 			}else
-			if(new Tile(2939,3239,1).getMatrix(ctx).isReachable()&&ctx.game.getPlane()==1){
+			if(new Tile(2939,3239,1).getMatrix(ctx).isReachable()&&ctx.game.floor()==1){
 				Method.interactO(1746, "Climb-down", "Ladder");
 			}else
 			if(new Tile(2938,3240,2).distanceTo(ctx.players.local().getLocation())<2){
 				Method.interactO(1746, "Climb-down", "Ladder");
 			}else Method.clickOnMap(new Tile(2938,3240,2));
-		}else if(new Tile(2934,3253,2).getMatrix(ctx).isReachable() && ctx.game.getPlane()==2){//third level, skeletons
+		}else if(new Tile(2934,3253,2).getMatrix(ctx).isReachable() && ctx.game.floor()==2){//third level, skeletons
 			
 			if(hasYellowKey){//enters to the above location
 				if(new Tile(2923,3250,2).distanceTo(ctx.players.local().getLocation())<2){
@@ -726,9 +726,9 @@ public class DragonSlayer extends Node{
 			}
 			
 			
-		}else if(new Tile(2933,3254,1).getMatrix(ctx).isReachable() && ctx.game.getPlane()==1){//the final location in the second level(ghosts)
+		}else if(new Tile(2933,3254,1).getMatrix(ctx).isReachable() && ctx.game.floor()==1){//the final location in the second level(ghosts)
 			Method.interactO(1747, "Climb", "Ladder");
-		}else if(new Tile(2926,3255,1).getMatrix(ctx).isReachable() && ctx.game.getPlane()==1){//second level; where the ghosts are
+		}else if(new Tile(2926,3255,1).getMatrix(ctx).isReachable() && ctx.game.floor()==1){//second level; where the ghosts are
 			
 			if(hasOrangeKey){//enters to the above location
 				if(new Tile(2930,3253,1).distanceTo(ctx.players.local().getLocation())<1){
@@ -767,7 +767,7 @@ public class DragonSlayer extends Node{
 					Method.interactO(2596, "Open", "Red door");
 				}else Method.clickOnMap((new Tile(2926,3253,0)));
 			}else
-			if(new Tile(2937,3249,0).getMatrix(ctx).isReachable() && ctx.game.getPlane()==0){//inside first floor
+			if(new Tile(2937,3249,0).getMatrix(ctx).isReachable() && ctx.game.floor()==0){//inside first floor
 				if( Method.inventoryContains(1543)){
 					hasRedKey = true;
 				}else if(Method.gItemIsNotNull(1543)){//red key
@@ -803,10 +803,10 @@ public class DragonSlayer extends Node{
 	private void cs1() {//Speak to Oziach about obtaining a Rune platebody
 		final String opt[] = {"A dragon, that sounds","I thought you were going","The Guildmaster of the","Can you sell me a "};
 		
-		if( !Method.inventoryContains(11279) && (ctx.settings.get(2268)&0x1F) == 9){
+		if( !Method.inventoryContains(11279) && (ctx.varpbits.varpbit(2268)&0x1F) == 9){
 			Method.useBank = true;
 		}
-		//if(Method.useBank && (ctx.settings.get(2268)&0x1F) == 9){
+		//if(Method.useBank && (ctx.varpbits.varpbit(2268)&0x1F) == 9){
 		//	Method.useBank(bankItems6, 1, 1, 90);
 		//}else
 		if(new Tile(3067, 3513, 0).distanceTo(ctx.players.local().getLocation())<5){
@@ -837,18 +837,18 @@ public class DragonSlayer extends Node{
 			if(new Tile(3191,3361,0).getMatrix(ctx).isReachable()){
 				Vars.DYNAMICV = false;
 				Method.skipPics();
-				if((ctx.settings.get(2268)&0x3F) == 2){
+				if((ctx.varpbits.varpbit(2268)&0x3F) == 2){
 					
-					if((ctx.settings.get(2269)>>13&0x7)==5 && ctx.widgets.get(1188).isValid()){
+					if((ctx.varpbits.varpbit(2269)>>13&0x7)==5 && ctx.widgets.get(1188).isValid()){
 						Method.findOption(opt3);
 					}else
-					if((ctx.settings.get(2269)>>15&0x1)==1 && ctx.widgets.get(1188).isValid()){
+					if((ctx.varpbits.varpbit(2269)>>15&0x1)==1 && ctx.widgets.get(1188).isValid()){
 						Method.findOption(opt2);
-					}else if((ctx.settings.get(2269)>>10&0xF)==14 && ctx.widgets.get(1188).isValid()){
+					}else if((ctx.varpbits.varpbit(2269)>>10&0xF)==14 && ctx.widgets.get(1188).isValid()){
 						Method.findOption(opt4);
-					}else if((ctx.settings.get(2269)>>11&0x7)==6 && ctx.widgets.get(1188).isValid()){
+					}else if((ctx.varpbits.varpbit(2269)>>11&0x7)==6 && ctx.widgets.get(1188).isValid()){
 						Method.findOption(opt5);
-					}else if((ctx.settings.get(2269)>>10&0xF)==8 && ctx.widgets.get(1188).isValid()){
+					}else if((ctx.varpbits.varpbit(2269)>>10&0xF)==8 && ctx.widgets.get(1188).isValid()){
 						Method.findOption(opt6);
 					}
 						
@@ -870,3 +870,4 @@ public class DragonSlayer extends Node{
 	
 }
 
+*/

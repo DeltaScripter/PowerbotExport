@@ -1,18 +1,18 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.methods.Skills;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
 public class MineIsYours extends Node{
 
-	public MineIsYours(MethodContext ctx) {
+	public MineIsYours(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -135,7 +135,7 @@ public class MineIsYours extends Node{
 		}
 		DeltaQuester.numSteps = 17;
 		Method.foodSupport();
-		while(ctx.settings.get(1114)==1 && (ctx.settings.get(2231)&0x3F) !=35){//When the cinimatic plays
+		while(ctx.varpbits.varpbit(1114)==1 && (ctx.varpbits.varpbit(2231)&0x3F) !=35){//When the cinimatic plays
 			if(!Method.isChatting("Listening")){
 			}
 		}
@@ -148,10 +148,10 @@ public class MineIsYours extends Node{
 		Method.skipPics();
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
-			if(!DeltaQuester.checkedBank&& (ctx.settings.get(2231)&0x3F) !=55){
+			if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(2231)&0x3F) !=55){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.settings.get(2231)&0x3F) !=55){
+	    if(Vars.useBank && (ctx.varpbits.varpbit(2231)&0x3F) !=55){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if(!init){
@@ -161,7 +161,7 @@ public class MineIsYours extends Node{
 				DeltaQuester.e  = true;
 			}else init = true;
 		}else
-		if((ctx.settings.get(2231)&0x3F) ==55){
+		if((ctx.varpbits.varpbit(2231)&0x3F) ==55){
 			DeltaQuester.progress = 17;
 			DeltaQuester.state ="The What's Mine Is Yours quest has been completed.";
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement","Give Askel the report","Speak to the squire in Falador","Resolve family conflict","Speak to Doric for the last time","Make armour","Mine the rocks in the basement","Finish quest");
@@ -170,111 +170,111 @@ public class MineIsYours extends Node{
 			Method.sleep(2000);
 			DeltaQuester.e  = true;
 		}else
-		if((ctx.settings.get(2231)>>17& 0x1) ==1 ||((ctx.settings.get(2231)&0x3F) ==50)){
+		if((ctx.varpbits.varpbit(2231)>>17& 0x1) ==1 ||((ctx.varpbits.varpbit(2231)&0x3F) ==50)){
 			DeltaQuester.progress = 16;
 			cs1();//Speak to Doric for the last time
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement","Give Askel the report","Speak to the squire in Falador","Resolve family conflict","Speak to Doric for the last time","Make armour","Mine the rocks in the basement");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(2231)>>14& 0x7) ==7){
+		if((ctx.varpbits.varpbit(2231)>>14& 0x7) ==7){
 			DeltaQuester.progress = 15;
 			cs11();//Mine the rocks in basement
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement","Give Askel the report","Speak to the squire in Falador","Resolve family conflict","Speak to Doric for the last time","Make armour");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if(((ctx.settings.get(2231)&0x3F) ==45)){
+		if(((ctx.varpbits.varpbit(2231)&0x3F) ==45)){
 			DeltaQuester.progress = 14;
 			cs10();//Make the ornamental armour
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement","Give Askel the report","Speak to the squire in Falador","Resolve family conflict","Speak to Doric for the last time");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if(((ctx.settings.get(2231)&0x3F) ==40)){
+		if(((ctx.varpbits.varpbit(2231)&0x3F) ==40)){
 			DeltaQuester.progress = 13;
 			cs1();//Speak to Doric again.
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement","Give Askel the report","Speak to the squire in Falador","Resolve family conflict");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if(((ctx.settings.get(2231)&0x1F) ==30)||(ctx.settings.get(2231)&0x3F) ==35){
+		if(((ctx.varpbits.varpbit(2231)&0x1F) ==30)||(ctx.varpbits.varpbit(2231)&0x3F) ==35){
 			DeltaQuester.progress = 12;
 			cs1();//Resolve the family conflict
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement","Give Askel the report","Speak to the squire in Falador");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if(((ctx.settings.get(2231)&0x1F) ==20)||(ctx.settings.get(2231)&0x1F) ==25){
+		if(((ctx.varpbits.varpbit(2231)&0x1F) ==20)||(ctx.varpbits.varpbit(2231)&0x1F) ==25){
 			DeltaQuester.progress = 11;
 			cs9();//Speak to the squire
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement","Give Askel the report");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if(((ctx.settings.get(2231)&0x1F) ==19)){
+		if(((ctx.varpbits.varpbit(2231)&0x1F) ==19)){
 			DeltaQuester.progress = 10;
 			cs7();//Give aksel the report we just recieved.\
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador","Get the report from sten in the basement");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if(((ctx.settings.get(2231)&0x1F) ==18)){
+		if(((ctx.varpbits.varpbit(2231)&0x1F) ==18)){
 			DeltaQuester.progress = 9;
 			cs8();//Get report from Sten in the workshop
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house","Speak to Askel at the workshop in Falador");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if(((ctx.settings.get(2231)&0xF) ==15)){
+		if(((ctx.varpbits.varpbit(2231)&0xF) ==15)){
 			DeltaQuester.progress = 8;
 			cs7();//Speak to Aksel in the workshop
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again","Make weapons at Doric's house");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if(((ctx.settings.get(2231)&0xF) ==10)){
+		if(((ctx.varpbits.varpbit(2231)&0xF) ==10)){
 			DeltaQuester.progress = 7;
 			cs1();//Make some weapons at Dorics house.
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine","Speak to Doric again");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(2231)>>9 & 0x1F) ==31){
+		if((ctx.varpbits.varpbit(2231)>>9 & 0x1F) ==31){
 			DeltaQuester.progress = 6;
 			cs1();//Speak to Doric again
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine","Gather the high-quality coper ore from Rimmington mine");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(2231)>>10 & 0x1) ==1){
+		if((ctx.varpbits.varpbit(2231)>>10 & 0x1) ==1){
 			DeltaQuester.progress = 5;
 			cs5();//Gather more copper ore at the rimmington mine
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine","Gather the high-quality copper ore from Varrock western mine");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(2231)>>11 & 0x1) ==1){
+		if((ctx.varpbits.varpbit(2231)>>11 & 0x1) ==1){
 			DeltaQuester.progress = 4;
 			cs4();//Gather the high-quality copper ore(Varrok western mine)
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine","Gather the high-quality tin ore from Varrock eastern mine");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
-		if((ctx.settings.get(2231)>>9 &0x1)==1){
+		if((ctx.varpbits.varpbit(2231)>>9 &0x1)==1){
 			DeltaQuester.progress = 3;
 			cs3();//Gather the high-quality tin ore(Varrok eastern mine)
 			TaskListing.updateTaskRemove("Start the quest","Gather the high-quality copper ore from Falador mine");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
-		if((ctx.settings.get(2231)&0x7)==6){
+		if((ctx.varpbits.varpbit(2231)&0x7)==6){
 			DeltaQuester.progress = 2;
 			cs2();//Gather the high-quality copper ore(Faldor dwarven mine)
 			TaskListing.updateTaskRemove("Start the quest");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
-		if((ctx.settings.get(2231)&0x7)==0 || (ctx.settings.get(2231)&0x7)==1||
-				(ctx.settings.get(2231)&0x7)==4||(ctx.settings.get(2231)&0x7)==5){
+		if((ctx.varpbits.varpbit(2231)&0x7)==0 || (ctx.varpbits.varpbit(2231)&0x7)==1||
+				(ctx.varpbits.varpbit(2231)&0x7)==4||(ctx.varpbits.varpbit(2231)&0x7)==5){
 			DeltaQuester.progress = 1;
 		cs1();//Start the quest
 		}
@@ -355,7 +355,7 @@ public class MineIsYours extends Node{
 		final String opt[] = {"ghrer"};
 		Player local = ctx.players.local();
 		//SceneObject door = SceneEntities.getNearest(11721);
-		while(ctx.settings.get(1113)==1){//Cutscene
+		while(ctx.varpbits.varpbit(1113)==1){//Cutscene
 			if(!Method.isChatting("Cutscene")){
 				Method.sleep(30);
 			}
@@ -570,7 +570,7 @@ public class MineIsYours extends Node{
 		//NPC rock = NPCs.getNearest(6514);
 		Player local = ctx.players.local();
 		if(initTile!=null){
-			if(new Tile(initTile.getX()+12,initTile.getY()-23,0).distanceTo(local.getLocation())<6){Vars.DYNAMICV = false;
+			if(new Tile(initTile.x()+12,initTile.getY()-23,0).distanceTo(local.getLocation())<6){Vars.DYNAMICV = false;
 				if(!Method.teleporting&& !Method.isInCombat()&&Method.inventoryContains(25328)){
 					
 				}else if(Method.gItemIsNotNull(25328)){//High-quality copper ore
@@ -586,7 +586,7 @@ public class MineIsYours extends Node{
 					Method.interactO(5779, "Mine", "Copper Rock");
 				}
 				//Get the player to the cave, ands then to the rock
-			}else Method.clickOnMap(new Tile(initTile.getX()+12,initTile.getY()-23,0));
+			}else Method.clickOnMap(new Tile(initTile.x()+12,initTile.getY()-23,0));
 		}else if(Method.objIsNotNull(33495)){
 			Method.sleep(1500);
 			initTile = local.getLocation();
@@ -613,7 +613,7 @@ public class MineIsYours extends Node{
 		while(ctx.widgets.get(1186,0).isVisible() ||ctx.widgets.get(1189,0).isVisible()){
 			Method.pressContinue();
 		}
-		while(ctx.settings.get(1113)!=0){
+		while(ctx.varpbits.varpbit(1113)!=0){
 			if(ctx.widgets.get(1186).isValid()){
 				Method.pressContinue();
 			}else
@@ -625,7 +625,7 @@ public class MineIsYours extends Node{
 		}
 			
 		if (new Tile(2958, 3439, 0).distanceTo(local.getLocation()) < 7) {//Doric's House
-			if((ctx.settings.get(2231)&0xF) ==10){
+			if((ctx.varpbits.varpbit(2231)&0xF) ==10){
 				Vars.DYNAMICV = false;
 				if(Method.inventoryContains(25330) && Method.inventoryContains(25331)){
 						if(!Method.isChatting("Doric")){
@@ -653,3 +653,4 @@ public class MineIsYours extends Node{
 	}
 	
 }
+*/

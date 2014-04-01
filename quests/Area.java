@@ -4,9 +4,11 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Locatable;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Locatable;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+
+
 
 /**
  * A polygonal area of tiles.
@@ -15,7 +17,7 @@ import org.powerbot.script.wrappers.Tile;
  */
 public class Area {
 
-	private static MethodContext ctx = null;
+	private static ClientContext ctx = null;
 
 	protected final Polygon polygon;
 	protected int plane = -1;
@@ -25,13 +27,13 @@ public class Area {
 	 * Constructs a rectangular area.
 	 */
 	public Area(final Tile t1, final Tile t2) {
-		this(new Tile(Math.min(t1.getX(), t2.getX()), Math.min(t1.getY(),
-				t2.getY()), t1.getPlane()), new Tile(Math.max(t1.getX(),
-				t2.getX()), Math.min(t1.getY(), t2.getY()), t1.getPlane()),
-				new Tile(Math.max(t1.getX(), t2.getX()), Math.max(t1.getY(),
-						t2.getY()), t2.getPlane()), new Tile(Math.min(
-						t1.getX(), t2.getX()), Math.max(t1.getY(), t2.getY()),
-						t2.getPlane()));
+		this(new Tile(Math.min(t1.x(), t2.x()), Math.min(t1.y(),
+				t2.y()), t1.floor()), new Tile(Math.max(t1.x(),
+				t2.x()), Math.min(t1.y(), t2.y()), t1.floor()),
+				new Tile(Math.max(t1.x(), t2.x()), Math.max(t1.y(),
+						t2.y()), t2.floor()), new Tile(Math.min(
+						t1.x(), t2.x()), Math.max(t1.y(), t2.y()),
+						t2.floor()));
 	}
 
 	/**
@@ -40,19 +42,19 @@ public class Area {
 	public Area(final Tile... bounds) {
 		polygon = new Polygon();
 		for (final Tile tile : bounds) {
-			if (plane != -1 && tile.getPlane() != plane) {
+			if (plane != -1 && tile.floor() != plane) {
 				throw new RuntimeException("area does not support 3d");
 			}
-			plane = tile.getPlane();
+			plane = tile.floor();
 			addTile(tile);
 		}
 	}
 
-	public static void setContext(final MethodContext context) {
+	public static void setContext(final ClientContext context) {
 		ctx = context;
 	}
 
-	public static MethodContext getContext() {
+	public static ClientContext getContext() {
 		return ctx;
 	}
 
@@ -71,7 +73,7 @@ public class Area {
 	/**
 	 * @return the plane of this area.
 	 */
-	public int getPlane() {
+	public int floor() {
 		return plane;
 	}
 
@@ -82,7 +84,7 @@ public class Area {
 	 *            The Tile to add.
 	 */
 	public void addTile(final Tile t) {
-		addTile(t.getX(), t.getY());
+		addTile(t.x(), t.y());
 	}
 
 	/**
@@ -125,9 +127,9 @@ public class Area {
 			if (loc == null) {
 				continue;
 			}
-			final Tile tile = loc.getLocation();
-			if (tile != null && plane == tile.getPlane()
-					&& contains(tile.getX(), tile.getY())) {
+			final Tile tile = loc.tile();
+			if (tile != null && plane == tile.floor()
+					&& contains(tile.x(), tile.y())) {
 				return true;
 			}
 		}
@@ -199,10 +201,10 @@ public class Area {
 	 */
 	public static double distance(final Locatable locatable1,
 			final Locatable locatable2) {
-		final Tile tile1 = locatable1.getLocation(), tile2 = locatable2
-				.getLocation();
-		return Math.sqrt(Math.pow(tile1.getX() - tile2.getX(), 2)
-				+ Math.pow(tile1.getY() - tile2.getY(), 2));
+		final Tile tile1 = locatable1.tile(), tile2 = locatable2
+				.tile();
+		return Math.sqrt(Math.pow(tile1.x() - tile2.x(), 2)
+				+ Math.pow(tile1.y() - tile2.y(), 2));
 	}
 
 	/**

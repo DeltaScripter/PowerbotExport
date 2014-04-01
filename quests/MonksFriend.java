@@ -1,16 +1,16 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
 public class MonksFriend extends Node{
 
-	public MonksFriend(MethodContext ctx) {
+	public MonksFriend(ClientContext ctx) {
 		super(ctx);
 	}
 	
@@ -62,45 +62,45 @@ public class MonksFriend extends Node{
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
 		
-			if(!DeltaQuester.checkedBank && (ctx.settings.get(2370) & 0x7F) != 80){
+			if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2370) & 0x7F) != 80){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.settings.get(2370) & 0x7F) != 80){
+	    if(Vars.useBank && (ctx.varpbits.varpbit(2370) & 0x7F) != 80){
 			Method.useBank(bankItems, bankItemAmount);
-		}else if (DeltaQuester.GEFeature && (ctx.settings.get(2370) & 0x7F) != 80) {
+		}else if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2370) & 0x7F) != 80) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else
-		if((ctx.settings.get(2370) & 0x7F) == 80){
+		if((ctx.varpbits.varpbit(2370) & 0x7F) == 80){
 			DeltaQuester.progress = 8;
 			Method.state("The Monk's Friend quest has been completed");
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
-		if((ctx.settings.get(2370) & 0x7F) == 70){
+		if((ctx.varpbits.varpbit(2370) & 0x7F) == 70){
 			DeltaQuester.progress = 7;
 			cs0();//Return to brother Omad
 		}else
-		if((ctx.settings.get(2370) & 0x3F) == 60){
+		if((ctx.varpbits.varpbit(2370) & 0x3F) == 60){
 			DeltaQuester.progress = 6;
 			cs2();//Give Brother Omad logs.
 		}else
-		if((ctx.settings.get(2370) & 0x3F) == 50){
+		if((ctx.varpbits.varpbit(2370) & 0x3F) == 50){
 			DeltaQuester.progress = 5;
 			cs2();//Give Brother Omad a jug of water
 		}else
-		if((ctx.settings.get(2370) & 0x3F) == 40){
+		if((ctx.varpbits.varpbit(2370) & 0x3F) == 40){
 			DeltaQuester.progress = 4;
 			cs2();//continue speaking to brother cedric
 		}else
-		if((ctx.settings.get(2370) & 0x1F) == 30){
+		if((ctx.varpbits.varpbit(2370) & 0x1F) == 30){
 			DeltaQuester.progress = 3;
 			cs2();//Speak to Brother Cedric 
 		}else
-		if((ctx.settings.get(2370) & 0x1F) == 20){
+		if((ctx.varpbits.varpbit(2370) & 0x1F) == 20){
 			DeltaQuester.progress = 2;
 			cs0();//Speak to brother Omad to find out if he needs anything else(he does)
 		}else
-		if((ctx.settings.get(2370) & 0xF) == 10){
+		if((ctx.varpbits.varpbit(2370) & 0xF) == 10){
 			DeltaQuester.progress = 1;
 			cs1();//Gather the blanket from the thieves and bring it to brother Omad
 		}else cs0();//Start the quest by speaking to brother Omad
@@ -209,3 +209,4 @@ public class MonksFriend extends Node{
 	}
 
 }
+*/

@@ -1,16 +1,15 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.Hud.Window;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.Skills;
-import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Player;
+
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
 public class BuyersAndCellars extends Node {
-	public BuyersAndCellars(MethodContext ctx) {
+	public BuyersAndCellars(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -53,11 +52,11 @@ public class BuyersAndCellars extends Node {
 	private Method Method = new Method(ctx);
 	public void execute() {
 		/*
-		 * ctx.settings used:
+		 * ctx.varpbits.varpbit used:
 		 * 2086-indication if distracted(crazy father)
 		 * 2085-steps for quest
 		 * 1297-More possibilities for starting quest and ending quest.
-		 */
+		 
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		Method.resetTeleporting();
 		DeltaQuester.numSteps =9;
@@ -65,42 +64,42 @@ public class BuyersAndCellars extends Node {
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
 		
-		if(!DeltaQuester.checkedBank&& (ctx.settings.get(2085) & 0x7FF) != 1930){
+		if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(2085) & 0x7FF) != 1930){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.settings.get(2085) & 0x7FF) != 1930){
+	    if(Vars.useBank && (ctx.varpbits.varpbit(2085) & 0x7FF) != 1930){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
-		if (DeltaQuester.GEFeature && (ctx.settings.get(2085) & 0x7FF) != 1930) {
+		if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2085) & 0x7FF) != 1930) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else
-			if ((ctx.settings.get(2085) & 0x7FF) == 1930) {
+			if ((ctx.varpbits.varpbit(2085) & 0x7FF) == 1930) {
 			DeltaQuester.progress=9;
 			Method.state("The Buyers and Cellars quest has been completed.");
-			ctx.environment.sleep(2000);
+			//ctx.environment.sleep(2000);
 			DeltaQuester.e = true;
-		}else if ((ctx.settings.get(2085) & 0x7FF) == 1605) {
+		}else if ((ctx.varpbits.varpbit(2085) & 0x7FF) == 1605) {
 			cS7();
 			DeltaQuester.progress=8;
-		}else if ((ctx.settings.get(2085) & 0x7FF) == 1413) {
+		}else if ((ctx.varpbits.varpbit(2085) & 0x7FF) == 1413) {
 			cS6();
 			DeltaQuester.progress=7;
-		}else if ((ctx.settings.get(2085) & 0x7FF) == 1285) {
+		}else if ((ctx.varpbits.varpbit(2085) & 0x7FF) == 1285) {
 			cS5();
 			DeltaQuester.progress=6;
-		}else if ((ctx.settings.get(2085) & 0x3FF) == 965) {
+		}else if ((ctx.varpbits.varpbit(2085) & 0x3FF) == 965) {
 			cS2();//Speaks to the theif obin again
 			DeltaQuester.progress=5;
-		}else if ((ctx.settings.get(2085) & 0x3FF) == 645) {
+		}else if ((ctx.varpbits.varpbit(2085) & 0x3FF) == 645) {
 			cS3();//Speaks to the old priest
 			DeltaQuester.progress=4;
-		}else if ((ctx.settings.get(2085) & 0x1FF) == 453) {
+		}else if ((ctx.varpbits.varpbit(2085) & 0x1FF) == 453) {
 			cS2();//Walks and speaks to maste theif Robin
 			DeltaQuester.progress=3;
-		} else if ((ctx.settings.get(2085) & 0x7F) == 69) {
+		} else if ((ctx.varpbits.varpbit(2085) & 0x7F) == 69) {
 			cS1();//Pickpockets the dummy in the cellar
 			DeltaQuester.progress=2;
-		} else if (ctx.settings.get(2085) == 0) {
+		} else if (ctx.varpbits.varpbit(2085) == 0) {
 			DeltaQuester.progress=1;
 			cS0();//Head into the cellar and start the quest
 		}
@@ -119,7 +118,7 @@ public class BuyersAndCellars extends Node {
 				if(!Method.isChatting("Head-thief")){
 					Vars.DYNAMICV = false;
 					if(ctx.hud.isOpen(Window.BACKPACK)){//If the inventory is open
-					if (ctx.backpack.isItemSelected()) {
+					if (ctx.backpack.itemSelected()) {
 						Method.npcInteract(11273, "Use");
 					} else Method.interactInventory(18648, "Use","Trophy");
 				}else ctx.hud.open(Window.BACKPACK);//open backpack
@@ -154,7 +153,7 @@ public class BuyersAndCellars extends Node {
 		if (new Tile(3207, 3153, 0).distanceTo(local.getLocation()) < 7) {
 			if (fireValid()) {
 				if (Method.objIsNotNull(45539) && !FatherDoor.contains(Method.getObject(45539).getLocation()) || !Method.objIsNotNull(45539)) {
-					if (ctx.settings.get(2086) == 1) {
+					if (ctx.varpbits.varpbit(2086) == 1) {
 						Method.npcInteract(458, "Pick");
 					} else {
 						while(ctx.widgets.get(1186).isValid()){
@@ -209,24 +208,7 @@ public class BuyersAndCellars extends Node {
 		}
 		return false;
 	}
-/*
-	private void cS4() {//Speaks to the theif robin again..
-		Player local = ctx.players.local();
-		if (new Tile(3212, 3207, 0).distanceTo(local.getLocation()) < 5) {
-			final String opt[] = {"egre"};
-			if(!Method.findOption(opt)){Vars.DYNAMICV = false;
-				if(!Method.isChatting("Thief Robin")){
-					Method.speakTo(11268, "Thief Robin");
-				}
-			}
-		} else if (Vars.DYNAMICV) {
-			Method.walking(pathToRobin, "Walking to thief Robin",false);
-		} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10) {
-			Vars.DYNAMICV = true;
-		} else
-			Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
-	}
-*/
+
 	private void cS3() {//Speaks to the old priest initially
 		Player local = ctx.players.local();
 		//SceneObject door = SceneEntities.getNearest(45539);
@@ -358,3 +340,4 @@ public class BuyersAndCellars extends Node {
 	}
 
 }
+*/

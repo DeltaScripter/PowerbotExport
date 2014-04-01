@@ -1,10 +1,10 @@
-package quests;
+/*package quests;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 import divination.DivineBody;
 
@@ -13,7 +13,7 @@ import quests.Vars.TeleportType;
 
 public class TheBloodPact extends Node{
 
-	 public TheBloodPact(MethodContext ctx) {
+	 public TheBloodPact(ClientContext ctx) {
 			super(ctx);
 		}
 	
@@ -43,43 +43,43 @@ public class TheBloodPact extends Node{
 		
 		//if(DeltaQuester.checkedBank)
 		//	Method.determineBank(bankItems);
-			if(DeltaQuester.checkedBank&& (ctx.settings.get(2334)&0x3F)!=60){
+			if(DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(2334)&0x3F)!=60){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.settings.get(2334)&0x3F)!=60){
+	    if(Vars.useBank && (ctx.varpbits.varpbit(2334)&0x3F)!=60){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
-		if((ctx.settings.get(2334)&0x3F)==60){
+		if((ctx.varpbits.varpbit(2334)&0x3F)==60){
 		DeltaQuester.progress = 8;
 		Method.state("The Blood Pact quest has been completed");
 		Method.sleep(2000);
 		DeltaQuester.e = true;
 		}else
-		if((ctx.settings.get(2334)&0x3F)==55){
+		if((ctx.varpbits.varpbit(2334)&0x3F)==55){
 			DeltaQuester.progress =7;
 		cs0();//Speak to Xenia at the end of quest
 		}else
-		if((ctx.settings.get(2334)&0x3F)==40||(ctx.settings.get(2334)&0x3F)==41||(ctx.settings.get(2334)&0x3F)==45||(ctx.settings.get(2334)&0x3F)==50){
+		if((ctx.varpbits.varpbit(2334)&0x3F)==40||(ctx.varpbits.varpbit(2334)&0x3F)==41||(ctx.varpbits.varpbit(2334)&0x3F)==45||(ctx.varpbits.varpbit(2334)&0x3F)==50){
 			DeltaQuester.progress =6;
 		cs4();//Fight Reese
 		}else
-		if((ctx.settings.get(2334)&0x3F)==35||(ctx.settings.get(2334)&0x3F)==36){
+		if((ctx.varpbits.varpbit(2334)&0x3F)==35||(ctx.varpbits.varpbit(2334)&0x3F)==36){
 			DeltaQuester.progress =5;
 		cs3();//Speak to the defeated Caitlin and finish off.
 		}else
-		if((ctx.settings.get(2334)&0x1F)==30){
+		if((ctx.varpbits.varpbit(2334)&0x1F)==30){
 			DeltaQuester.progress =4;
 		cs2();//Walk to Caitlin and attack her.
 		}else
-		if((ctx.settings.get(2334)&0xF)==12|| (ctx.settings.get(2334)&0xF)==15|| (ctx.settings.get(2334)&0x1F)==25){
+		if((ctx.varpbits.varpbit(2334)&0xF)==12|| (ctx.varpbits.varpbit(2334)&0xF)==15|| (ctx.varpbits.varpbit(2334)&0x1F)==25){
 			DeltaQuester.progress =3;
 		cs1();//Enter the catacombs and kill Kayle
 		}else
-		if((ctx.settings.get(2334)&0xF)==10){
+		if((ctx.varpbits.varpbit(2334)&0xF)==10){
 			DeltaQuester.progress =2;
 		cs1();//Enter the catacombs to trigger the cutscene
 		}else
-		if((ctx.settings.get(2334)&0xF)==0){
+		if((ctx.varpbits.varpbit(2334)&0xF)==0){
 			DeltaQuester.progress =1;
 		cs0();//Speak to Xenia to start the quest
 		}
@@ -88,20 +88,20 @@ public class TheBloodPact extends Node{
 	private void cs4() {
 		final String opt[] = {"die","I'm your worst","Go downstairs"};
 		if(initTile2!=null){
-			 if(new Tile(initTile2.getX()+9, initTile2.getY()-6,initTile2.getPlane()).distanceTo(ctx.players.local().getLocation())<6){
-				 if((ctx.settings.get(2334)&0x3F)==50){
+			 if(new Tile(initTile2.x()+9, initTile2.getY()-6,initTile2.floor()).distanceTo(ctx.players.local().getLocation())<6){
+				 if((ctx.varpbits.varpbit(2334)&0x3F)==50){
 					 if(!Method.findOption(opt))
 						 if(!Method.isChatting("Ilona")){
 							 Method.npcInteract(9630, "Untie");
 						 }
 				 }else
-				 if((ctx.settings.get(2334)&0x3F)==45){//After defeating Reese finish him off
+				 if((ctx.varpbits.varpbit(2334)&0x3F)==45){//After defeating Reese finish him off
 					 if(!Method.findOption(opt))
 					 if(!Method.isChatting("Reese")){
 						 Method.speakTo(9625, "Reese");
 					 }
 				 }else
-				 if((ctx.settings.get(2334)&0x3F)==41){//Defeat Reese
+				 if((ctx.varpbits.varpbit(2334)&0x3F)==41){//Defeat Reese
 					 if(ctx.players.local().isInCombat()){
 						 Method.basicFightNPC(9624);
 					 }else Method.npcInteract(9624, "Attack");
@@ -111,20 +111,20 @@ public class TheBloodPact extends Node{
 				 Method.interactO(48793, "Open", "Tomb door");
 			}else {
 				Method.state("Walking to Reese");
-				ctx.movement.newTilePath(new Tile(initTile2.getX()+9, initTile2.getY()-6,initTile2.getPlane())).traverse();
+				ctx.movement.newTilePath(new Tile(initTile2.x()+9, initTile2.getY()-6,initTile2.floor())).traverse();
 			}
 		}else 
 		if(!ctx.objects.select().nearest().id(48677).first().isEmpty()){
 			initTile2 = ctx.players.local().getLocation();
 		}else if(initTile!=null){
-			 if(new Tile(initTile.getX()-20, initTile.getY()+9,initTile.getPlane()).distanceTo(ctx.players.local().getLocation())<4){
+			 if(new Tile(initTile.x()-20, initTile.getY()+9,initTile.floor()).distanceTo(ctx.players.local().getLocation())<4){
 				  if(!Method.findOption(opt))
 				  if(!Method.isChatting("Xenia"))
 				 Method.interactO(48678, "Climb", "Stairs");
 				  
 			}else {
 				Method.state("Walking to stairs" + initTile);
-				Method.clickOnMap(new Tile(initTile.getX()-20, initTile.getY()+9,initTile.getPlane()));
+				Method.clickOnMap(new Tile(initTile.x()-20, initTile.getY()+9,initTile.floor()));
 			}
 		}else if(!ctx.objects.select().nearest().id(48742).first().isEmpty()){//if it does exist
 			Method.sleep(1300);
@@ -142,22 +142,22 @@ public class TheBloodPact extends Node{
 		final String opt[] = {"Time for you to die!"};
 		if(initTile!=null){
 			
-			 if((ctx.settings.get(1261)>>18&0x3) == 2){
-				  if(new Tile(initTile.getX()-15, initTile.getY()+12,initTile.getPlane()).distanceTo(ctx.players.local().getLocation())<8){
+			 if((ctx.varpbits.varpbit(1261)>>18&0x3) == 2){
+				  if(new Tile(initTile.x()-15, initTile.getY()+12,initTile.floor()).distanceTo(ctx.players.local().getLocation())<8){
 					  if(!Method.findOption(opt))
 					  if(!Method.isChatting("Caitlin")){
 						  Method.speakTo(9627, "Caitlin");
 					  }
 				}else {
 					Method.state("Walking to Caitlin");
-					Method.clickOnMap(new Tile(initTile.getX()-15, initTile.getY()+12,initTile.getPlane()));
+					Method.clickOnMap(new Tile(initTile.x()-15, initTile.getY()+12,initTile.floor()));
 				}
 			}else
-			  if(new Tile(initTile.getX()-9, initTile.getY()+12,initTile.getPlane()).distanceTo(ctx.players.local().getLocation())<8){
+			  if(new Tile(initTile.x()-9, initTile.getY()+12,initTile.floor()).distanceTo(ctx.players.local().getLocation())<8){
 				  Method.interactO(48791, "Operate", "Door Mechanism");
 			}else {
 				Method.state("Walking to Caitlin");
-				ctx.movement.newTilePath(new Tile(initTile.getX()-9, initTile.getY()+12,initTile.getPlane())).traverse();
+				ctx.movement.newTilePath(new Tile(initTile.x()-9, initTile.getY()+12,initTile.floor())).traverse();
 			}
 			
 		}else if(!ctx.objects.select().nearest().id(48742).first().isEmpty()){//if it does exist
@@ -177,13 +177,13 @@ public class TheBloodPact extends Node{
 
 		if(initTile!=null){
 			
-			  if(new Tile(initTile.getX()-9, initTile.getY()+12,initTile.getPlane()).distanceTo(ctx.players.local().getLocation())<8){
+			  if(new Tile(initTile.x()-9, initTile.getY()+12,initTile.floor()).distanceTo(ctx.players.local().getLocation())<8){
 			   if(Method.isInCombat()){
 				   Method.basicFightNPC(9626);
 			   }else Method.npcInteract(9626,"Attack");
 			}else {
 				Method.state("Walking to Caitlin");
-				ctx.movement.newTilePath(new Tile(initTile.getX()-9, initTile.getY()+12,initTile.getPlane())).traverse();
+				ctx.movement.newTilePath(new Tile(initTile.x()-9, initTile.getY()+12,initTile.floor())).traverse();
 			}
 			
 		}else if(!ctx.objects.select().nearest().id(48742).first().isEmpty()){//if it does exist
@@ -203,13 +203,13 @@ public class TheBloodPact extends Node{
 		final String opt[]  ={"Yes"};
 		Player local = ctx.players.local();
 		
-		while((ctx.settings.get(1114)&0x1)==1){
+		while((ctx.varpbits.varpbit(1114)&0x1)==1){
 			Method.isChatting("Cutscene");
 		}
 		if(initTile!=null){
-			final Tile loc1 = new Tile(initTile.x, initTile.y+15,initTile.getPlane());
+			final Tile loc1 = new Tile(initTile.x, initTile.y+15,initTile.floor());
 			if(loc1.getLocation().distanceTo(ctx.players.local().getLocation())<8){
-				if((ctx.settings.get(2334)&0x1F)==25){
+				if((ctx.varpbits.varpbit(2334)&0x1F)==25){
 					if(!Method.findOption(opt))
 					if(!Method.isChatting("Kayle")){
 						Method.speakTo(9629, "Kayle");
@@ -267,3 +267,4 @@ public class TheBloodPact extends Node{
 	}
 
 }
+*/

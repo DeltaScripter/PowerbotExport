@@ -1,4 +1,4 @@
-package quests;
+/*package quests;
 
 import java.awt.Graphics;
 
@@ -6,13 +6,13 @@ import lodestoneActivator.Data.TeleportLode;
 import lodestoneActivator.Data.TeleportType;
 
 import org.powerbot.script.methods.Hud.Window;
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 public class RuneMysteries extends Node{
 
-	public RuneMysteries(MethodContext ctx) {
+	public RuneMysteries(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -82,86 +82,86 @@ public class RuneMysteries extends Node{
 				init = false;
 			}else init = false;
 		}else
-		if((ctx.settings.get(3294) & 0x3FF) ==938){
+		if((ctx.varpbits.varpbit(3294) & 0x3FF) ==938){
 			DeltaQuester.progress = 20;
 			DeltaQuester.state = "The Rune Mysteries quest has been completed.";
 			ctx.game.sleep(2000);
 			DeltaQuester.e = true;
 		}else
-		if((ctx.settings.get(3294) & 0x3FF) ==928||(ctx.settings.get(3294) & 0x3FF) ==929){
+		if((ctx.varpbits.varpbit(3294) & 0x3FF) ==928||(ctx.varpbits.varpbit(3294) & 0x3FF) ==929){
 			DeltaQuester.progress = 19;
 			CS6();//Speak to Ariane one last time to finish the quest.
 		}else
-		if((ctx.settings.get(3294) & 0x3FF) ==919 || (ctx.settings.get(3294) & 0x3FF) ==920){
+		if((ctx.varpbits.varpbit(3294) & 0x3FF) ==919 || (ctx.varpbits.varpbit(3294) & 0x3FF) ==920){
 			DeltaQuester.progress = 18;
 			CS10();//Play the organ once 
 		}else
-		if((ctx.settings.get(3294) & 0x3FF) ==918||(ctx.settings.get(3294) & 0x3FF) ==908){
+		if((ctx.varpbits.varpbit(3294) & 0x3FF) ==918||(ctx.varpbits.varpbit(3294) & 0x3FF) ==908){
 			DeltaQuester.progress = 17;
 			CS10();//Return to the modern tower and annoy the wizards and speak to a wizard(not intentional)
 		}else
-		if((ctx.settings.get(3294) & 0x3FF) ==898){
+		if((ctx.varpbits.varpbit(3294) & 0x3FF) ==898){
 			DeltaQuester.progress = 16;
 			CS9();//Play the orb game in the secret tower.
 		}else
-		if((ctx.settings.get(3294) & 0x3FF) ==888){
+		if((ctx.varpbits.varpbit(3294) & 0x3FF) ==888){
 			DeltaQuester.progress = 15;
 			CS8();//Cross the fallen statue and enter the room at which you speak to Ariane again.
 		}else
-		if((ctx.settings.get(3294) & 0x3FF) ==878){
+		if((ctx.varpbits.varpbit(3294) & 0x3FF) ==878){
 			DeltaQuester.progress = 14;
 			CS8();//Enter the door after golem and push down the statue.
 		}else
-		if((ctx.settings.get(3294) & 0x7F) ==101){
+		if((ctx.varpbits.varpbit(3294) & 0x7F) ==101){
 			DeltaQuester.progress = 13;
 			CS7();//Speak to the golem and answer its questions.
 		}else
-		if((ctx.settings.get(3294) & 0x7F) ==100){
+		if((ctx.varpbits.varpbit(3294) & 0x7F) ==100){
 			DeltaQuester.progress = 12;
 			CS7();//Speak to Ariane initially upon entering the tower.
 		}else
-		if((ctx.settings.get(3294) & 0x7F) ==90){
+		if((ctx.varpbits.varpbit(3294) & 0x7F) ==90){
 			DeltaQuester.progress = 11;
 			CS6();//Walk to and enter the secret-old tower.
 		}else
-		if((ctx.settings.get(3294) & 0x7F) ==80){
+		if((ctx.varpbits.varpbit(3294) & 0x7F) ==80){
 			DeltaQuester.progress = 10;
 			CS2();//Speak to Ariane again with the newly found key.
 		}else
-		if((ctx.settings.get(3294) & 0x7F) ==70){
+		if((ctx.varpbits.varpbit(3294) & 0x7F) ==70){
 			DeltaQuester.progress = 9;
 			CS5();//Walk to organ and solve puzzle
 		}else
-		if((ctx.settings.get(3294) & 0x3F) ==60){
+		if((ctx.varpbits.varpbit(3294) & 0x3F) ==60){
 			DeltaQuester.progress = 8;
 			CS4();//Search for the book Ellaron mentioned
 		}else
-		if((ctx.settings.get(3294) & 0x7FFF) ==28722){
+		if((ctx.varpbits.varpbit(3294) & 0x7FFF) ==28722){
 			DeltaQuester.progress = 7;
 			CS3();//Speak to the wizard Ellaron
 		}else
-		if((ctx.settings.get(3294) & 0x7FFF) ==28717){
+		if((ctx.varpbits.varpbit(3294) & 0x7FFF) ==28717){
 			DeltaQuester.progress = 6;
 			CS2();//Speak to Ariane regardin what to do next.
 		}else
-		if((ctx.settings.get(3294) & 0x7FFF) ==28712){
+		if((ctx.varpbits.varpbit(3294) & 0x7FFF) ==28712){
 			DeltaQuester.progress = 5;
 			CS2();//Speak to Ariane regarding the issues.
 		}else
-		if((ctx.settings.get(3294) & 0x3F) ==40){
+		if((ctx.varpbits.varpbit(3294) & 0x3F) ==40){
 			DeltaQuester.progress = 4;
 			CS3();//Speak to the wizards in the tower
 		}else
-		if((ctx.settings.get(3294) & 0x1F) ==30){
+		if((ctx.varpbits.varpbit(3294) & 0x1F) ==30){
 			DeltaQuester.progress = 3;
 			Method.state("Here up to");
 			//CS2();//Speak to Ariane the wizards tower for the first time.
 		}else
-		if((ctx.settings.get(3294) & 0xF) ==10){
+		if((ctx.varpbits.varpbit(3294) & 0xF) ==10){
 			DeltaQuester.progress = 2;
 			cs1();//Pick-up staff and complete the first puzzle(pull the orb in the circle)
 		}else
-		if((ctx.settings.get(3294) & 0x1) ==0){
+		if((ctx.varpbits.varpbit(3294) & 0x1) ==0){
 			DeltaQuester.progress = 1;
 			System.out.println("Here");
 			cs0();//Start the quest by speaking to Ariane
@@ -169,49 +169,15 @@ public class RuneMysteries extends Node{
 	}
 	
 
-/*
-
-	private void setAutoCast() {
-		if(ctx.hud.view(Window.MAGIC_ABILITIES)){
-			
-			if((ctx.settings.get(682)&0x7)==4){
-				if(ctx.widgets.get(275,19).getChild(0).isVisible()){
-					ctx.widgets.get(275,19).getChild(0).interact("Auto");
-				}else ctx.widgets.get(275,37).click(true);
-			}else ctx.widgets.get(275,41).click(true);
-			
-		}else Tabs.ABILITY_BOOK.open();
-		
-	}*/
 
 
 
-	private void cslolcats() {//Speaks to Ariane in the Wizards Tower
-	/*	final String opt[] = {"What can I do","What's happening here"};
-		
-		Method.isChatting("People");
-		if(new Tile(3102,3171,0).distanceTo()<5){//Ariane's initial location
-			
-			if(!Method.startQuestOpen())
-			if(!Method.findOption(opt))
-			if(!Method.isChatting("People")){
-				Method.speakTo(16160, "Ariane");
-			}
-		}else if(Vars.DYNAMICV){
-			Method.walking(pathToArianeWizardTower, "Walking to Ariane", false);
-		}else if(Vars.DRAYNORLODE.distanceTo()<10 || Vars.LUMMBRIDGELODE.distanceTo()<10){
-			Vars.DYNAMICV = true;
-		}else if(Method.DraynorLodeIsActive()){
-			Method.teleportTo(Vars.DRAYNORTELEPORT);
-		}else Method.teleportTo(Vars.LUMBRIDGETELEPORT);
-		*/
-	}
 
 
 
 	private void CS10() {
 		/*
-		if(ctx.settings.get(3294)==137130902 || ctx.settings.get(3294)==141325208||ctx.settings.get(3294)==141325206 || ctx.settings.get(3294)==141325207){//We must distract the wizards.
+		if(ctx.varpbits.varpbit(3294)==137130902 || ctx.varpbits.varpbit(3294)==141325208||ctx.varpbits.varpbit(3294)==141325206 || ctx.varpbits.varpbit(3294)==141325207){//We must distract the wizards.
 			
 			if(new Tile(3103,3141,0).distanceTo()<5 && new Tile(3103,3141,0).canReach()){
 			Vars.DYNAMICV = false;
@@ -251,7 +217,7 @@ public class RuneMysteries extends Node{
 		}else if(Quests.findOption("Okay, so what")){
 			Quests.clickOption(1188, Quests.value);
 		}
-		}else Quests.speakTo(16167);*/
+		}else Quests.speakTo(16167);
 	}
 
 
@@ -279,9 +245,9 @@ public class RuneMysteries extends Node{
 		Quests.state("Attempting");
 		NPC greyOrb = NPCs.getNearest(16157);
 		SceneObject vortex = SceneEntities.getNearest(79907);
-		int x = greyOrb.getLocation().getX() - vortex.getLocation().getX();
+		int x = greyOrb.getLocation().x() - vortex.getLocation().x();
 		int y = greyOrb.getLocation().getY() - vortex.getLocation().getY();
-		distanceMarker = new Tile(Players.getLocal().getLocation().getX() - x, Players.getLocal().getLocation().getY()-y, 0);
+		distanceMarker = new Tile(Players.getLocal().getLocation().x() - x, Players.getLocal().getLocation().getY()-y, 0);
 		if (greyOrb.getLocation().distanceTo() < 8) {
 		
 			if(greyOrb.getLocation().distanceTo()<3){
@@ -298,17 +264,17 @@ public class RuneMysteries extends Node{
 			if(distanceMarker.distanceTo()<3 && !Players.getLocal().isMoving()){
 			
 			}else {
-				new Tile(Players.getLocal().getLocation().getX() - x, Players.getLocal().getLocation().getY()-y, 0).clickOnMap();
+				new Tile(Players.getLocal().getLocation().x() - x, Players.getLocal().getLocation().getY()-y, 0).clickOnMap();
 				Task.sleep(2300,2500);
 			}
 		}else greyOrb.getLocation().clickOnMap(); 
-*/
+
 	}
 
 
 
 	private void CS8() {/*
-		if(ctx.settings.get(3294)==137130872){
+		if(ctx.varpbits.varpbit(3294)==137130872){
 			SceneObject door = SceneEntities.getNearest(79914);
 			SceneObject something = SceneEntities.getNearest(80497);
 			
@@ -347,7 +313,7 @@ public class RuneMysteries extends Node{
 				}else if (!Quests.tActive())Quests.interactO(79938, "Climb-behind");
 			}else SceneEntities.getNearest(79938).getLocation().clickOnMap();
 		}else Quests.interactO(80306, "Open");
-		*/
+		
 	}
 
 
@@ -358,7 +324,7 @@ public class RuneMysteries extends Node{
 	
 	if(fire!=null){
 		if(NPCs.getNearest(16171)!=null){
-			if(ctx.settings.get(3294)==137130085){
+			if(ctx.varpbits.varpbit(3294)==137130085){
 		if(NPCs.getNearest(16171).getLocation().distanceTo()<6){
 			if(Quests.tActive()){
 				if(Quests.chatting()){
@@ -399,14 +365,14 @@ public class RuneMysteries extends Node{
 	}else if(Quests.LUMMBRIDGELODE.distanceTo()<6){
 		Vars.DYNAMICV = true;
 	}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport());//Lummbridge teleport.
-		*/
+		
 	}
 
 
 
 	private void CS6() {/*
 		if(new Tile(3129,3169,9).distanceTo()<6){
-			if(ctx.settings.get(3294)==141325216 || ctx.settings.get(3294)==141456289 || ctx.settings.get(3294)==141521825){
+			if(ctx.varpbits.varpbit(3294)==141325216 || ctx.varpbits.varpbit(3294)==141456289 || ctx.varpbits.varpbit(3294)==141521825){
 				if(Quests.tActive()){
 					if(Quests.chatting()){
 						Quests.clickContinue();
@@ -431,14 +397,14 @@ public class RuneMysteries extends Node{
 			Vars.DYNAMICV=true;
 		}else if(new Tile(3103,3141,0).distanceTo()<5){
 			new Tile(3103,3150,0).clickOnMap();
-		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport());*/
+		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport());
 	}
 
 
 
 	private void CS5() {/*
 		if(new Tile(3103,3141,0).distanceTo()<5 && new Tile(3103,3141,0).canReach()){
-			if(ctx.settings.get(3294)==136605766){
+			if(ctx.varpbits.varpbit(3294)==136605766){
 				if(ctx.widgets.get(193).validate()){
 				
 					for(int i= 0; i<=widgetKeys.length;){
@@ -491,7 +457,7 @@ public class RuneMysteries extends Node{
 		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local)<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport());
-		*/
+		
 	}
 
 /*
@@ -504,7 +470,7 @@ public class RuneMysteries extends Node{
 		return false;
 
 	}
-*/
+
 
 	private void CS4() {/*
 		if(new Tile(3114,3155,0).distanceTo()<4 &&new Tile(3114,3155,0).canReach()){
@@ -528,14 +494,14 @@ public class RuneMysteries extends Node{
 		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local)<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport());
-		*/
+		
 	}
 
 
 
 	private void CS3() {/*
 		if(new Tile(3108,3158,2).canReach()){
-			if(ctx.settings.get(3294)==136327208){
+			if(ctx.varpbits.varpbit(3294)==136327208){
 				if(new Tile(3094,3159,2).distanceTo()<8){
 					if(Quests.tActive()){
 						Vars.DYNAMICV = false;
@@ -551,7 +517,7 @@ public class RuneMysteries extends Node{
 					}else Quests.speakTo(16179);
 				}else new Tile(3094,3159,2).clickOnMap();
 			}else
-			if(ctx.settings.get(3294)==136323112){
+			if(ctx.varpbits.varpbit(3294)==136323112){
 				if(new Tile(3100,3147,2).distanceTo()<5){
 					if(Quests.tActive()){
 						Vars.DYNAMICV = true;
@@ -597,7 +563,7 @@ public class RuneMysteries extends Node{
 		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local)<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport());
-		*/
+		
 	}
 
 	private void CS2() {
@@ -639,7 +605,7 @@ public class RuneMysteries extends Node{
 		}else if(new Tile(3103,3141,0).distanceTo()<5){
 			new Tile(3103,3150,0).clickOnMap();
 		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport());//teleport to lummbridge.
-		*/
+		
 	}
 
 	public Timer wait = new Timer(1);
@@ -650,10 +616,10 @@ public class RuneMysteries extends Node{
 			Method.interactInventory(26109, "Wield", "Staff");
 		}
 		
-		if((ctx.settings.get(3295)>>23&0x1)==1){
-			if((ctx.settings.get(3295)>>24&0x1)==1){//if didn't pick up staff
+		if((ctx.varpbits.varpbit(3295)>>23&0x1)==1){
+			if((ctx.varpbits.varpbit(3295)>>24&0x1)==1){//if didn't pick up staff
 				if(staffEquip){
-				//	if((ctx.settings.get(715)>>6&0x3)==2){
+				//	if((ctx.varpbits.varpbit(715)>>6&0x3)==2){
 						if(Method.npcIsNotNull(16141)){
 							Tile vortex = Method.getNPC(16141).getLocation();
 							Vars.DYNAMICV = false;
@@ -668,7 +634,7 @@ public class RuneMysteries extends Node{
 							if(vortex.distanceTo(local)<3){
 								System.out.println("Adjustin g pos");
 							  Method.state("Adjusting position; " +vortex.distanceTo(local));
-							new Tile(local.getX()+3,local.getY()-3,0).getMatrix(ctx).click();
+							new Tile(local.x()+3,local.getY()-3,0).getMatrix(ctx).click();
 							ctx.game.sleep(1200);
 							}else System.out.println("Waiting on orb..");
 						}
@@ -691,7 +657,7 @@ public class RuneMysteries extends Node{
 		String opt[] = {"What's happening","What can",
 				"We should find out","I've got the key to the","I'll get right","Then let's","Wizard Traiborn said",
 				"I've spoken to some","I'll get on","What do you"};
-		if(ctx.settings.get(82)==1018){//cut scenes....
+		if(ctx.varpbits.varpbit(82)==1018){//cut scenes....
 		Method.pressContinue();
 		}else
 		if(new Tile(3102,3170,0).distanceTo(local)<6){//Ariane location.
@@ -713,3 +679,4 @@ public class RuneMysteries extends Node{
 	}
 		
 }
+*/

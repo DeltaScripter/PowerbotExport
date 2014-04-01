@@ -78,80 +78,80 @@ public class MythsOfTheWhiteLands extends Node{
 			DeltaQuester.progress = 9;
 			if((Settings.get(2774)>>4 &0x1) !=1){
 				if(Players.getLocal().isIdle()){
-					new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+					new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 					Task.sleep(4000);
 				}
 			}else
 			if(initTile2!=null){
 				NPC iceblock = NPCs.getNearest(8298);
-				Method.state("" + (initTile2.getX() - Players.getLocal().getLocation().getX()) + ": " + 
+				Method.state("" + (initTile2.x() - Players.getLocal().getLocation().x()) + ": " + 
 						(initTile2.getY() - Players.getLocal().getLocation().getY()));
 				
 				
-				if(new Tile(initTile2.getX()+6, initTile2.getY()+3,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+6, initTile2.getY()+3,0).distanceTo()<1){
 					Method.state("Very good");
 				}else
-				if(new Tile(initTile2.getX()+1, initTile2.getY()+3,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+1, initTile2.getY()+3,0).distanceTo()<1){
 					if(iceblock!=null){
 						if(iceblock.getLocation().distanceTo()<2){
 						Method.npcInteract(8298, "Push");
 						}else if(Players.getLocal().isIdle()){
-							new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+							new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 							Task.sleep(4000);
 						}
 					}
 				}else
-				if(new Tile(initTile2.getX(), initTile2.getY()+2,0).distanceTo()<1){
+				if(new Tile(initTile2.x(), initTile2.getY()+2,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY()+1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY()+1,0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile2.getX()+2, initTile2.getY()+2,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+2, initTile2.getY()+2,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()-1,Players.getLocal().getLocation().getY(),0).click(true);
+						new Tile(Players.getLocal().getLocation().x()-1,Players.getLocal().getLocation().getY(),0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile2.getX()+2, initTile2.getY()-3,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+2, initTile2.getY()-3,0).distanceTo()<1){
 					if(iceblock!=null){
 						if(iceblock.getLocation().distanceTo()<2){
 						Method.npcInteract(8298, "Push");
 						}else if(Players.getLocal().isIdle()){
-							new Tile(Players.getLocal().getLocation().getX(),Players.getLocal().getLocation().getY()+1,0).click(true);
+							new Tile(Players.getLocal().getLocation().x(),Players.getLocal().getLocation().getY()+1,0).click(true);
 							Task.sleep(4000);
 						}
 					}
 				}else
-				if(new Tile(initTile2.getX()+5, initTile2.getY()-6,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+5, initTile2.getY()-6,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()-1,Players.getLocal().getLocation().getY()+1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x()-1,Players.getLocal().getLocation().getY()+1,0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile2.getX()+5, initTile2.getY()-2,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+5, initTile2.getY()-2,0).distanceTo()<1){
 					if(iceblock!=null){
 						if(iceblock.getLocation().distanceTo()<2){
 						Method.npcInteract(8298, "Push");
 						}else if(Players.getLocal().isIdle()){
-							new Tile(Players.getLocal().getLocation().getX(),Players.getLocal().getLocation().getY()-1,0).click(true);
+							new Tile(Players.getLocal().getLocation().x(),Players.getLocal().getLocation().getY()-1,0).click(true);
 							Task.sleep(4000);
 						}
 					}
 				}else
-				if(new Tile(initTile2.getX()+5, initTile2.getY()-1,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+5, initTile2.getY()-1,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX(),Players.getLocal().getLocation().getY()-1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x(),Players.getLocal().getLocation().getY()-1,0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile2.getX()+1, initTile2.getY()-1,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+1, initTile2.getY()-1,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+						new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 						Task.sleep(4000);
 					}
 				}else if(Players.getLocal().isIdle()){
-					new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY()-1,0).click(true);
+					new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY()-1,0).click(true);
 					Task.sleep(4000);
 				}
 				
@@ -165,31 +165,31 @@ public class MythsOfTheWhiteLands extends Node{
 			if(initTile!=null){
 				initTile2 = null;
 				Method.state("Navigating maze # 6");
-				if(new Tile(initTile.getX()+11, initTile.getY()+1,0).distanceTo()<1){
+				if(new Tile(initTile.x()+11, initTile.getY()+1,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+						new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile.getX()+12, initTile.getY()+2,0).distanceTo()<1){
+				if(new Tile(initTile.x()+12, initTile.getY()+2,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()-1,Players.getLocal().getLocation().getY()-1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x()-1,Players.getLocal().getLocation().getY()-1,0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile.getX()+1, initTile.getY()+2,0).distanceTo()<1){
+				if(new Tile(initTile.x()+1, initTile.getY()+2,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+						new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile.getX()+3, initTile.getY(),0).distanceTo()<1){
+				if(new Tile(initTile.x()+3, initTile.getY(),0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()-1,Players.getLocal().getLocation().getY()+1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x()-1,Players.getLocal().getLocation().getY()+1,0).click(true);
 						Task.sleep(4000);
 					}
 				}else if(Players.getLocal().isIdle()){
-					new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+					new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 					Task.sleep(4000);
 				}
 				
@@ -205,43 +205,43 @@ public class MythsOfTheWhiteLands extends Node{
 			if(initTile2!=null){
 				initTile = null;
 				Method.state("Navigating maze # 5");
-				if(new Tile(initTile2.getX()+11, initTile2.getY(),0).distanceTo()<1){
+				if(new Tile(initTile2.x()+11, initTile2.getY(),0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+						new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile2.getX()+13, initTile2.getY()+2,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+13, initTile2.getY()+2,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()-1,Players.getLocal().getLocation().getY()-1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x()-1,Players.getLocal().getLocation().getY()-1,0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile2.getX()+7, initTile2.getY()+8,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+7, initTile2.getY()+8,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY()-1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY()-1,0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile2.getX()+7, initTile2.getY()+4,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+7, initTile2.getY()+4,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX(),Players.getLocal().getLocation().getY()+1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x(),Players.getLocal().getLocation().getY()+1,0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile2.getX()+2, initTile2.getY()+4,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+2, initTile2.getY()+4,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+						new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile2.getX()+2, initTile2.getY()+2,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+2, initTile2.getY()+2,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX(),Players.getLocal().getLocation().getY()+1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x(),Players.getLocal().getLocation().getY()+1,0).click(true);
 						Task.sleep(4000);
 					}
 				}else if(Players.getLocal().isIdle()){
-					new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY()+1,0).click(true);
+					new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY()+1,0).click(true);
 					Task.sleep(4000);
 				}
 				
@@ -257,37 +257,37 @@ public class MythsOfTheWhiteLands extends Node{
 			if(initTile!=null){
 				initTile2 = null;
 				Method.state("Navigating maze # 4");
-				if(new Tile(initTile.getX()+8, initTile.getY(),0).distanceTo()<1){
+				if(new Tile(initTile.x()+8, initTile.getY(),0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+						new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile.getX()+8, initTile.getY()+5,0).distanceTo()<1){
+				if(new Tile(initTile.x()+8, initTile.getY()+5,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX(),Players.getLocal().getLocation().getY()-1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x(),Players.getLocal().getLocation().getY()-1,0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile.getX()+4, initTile.getY()+5,0).distanceTo()<1){
+				if(new Tile(initTile.x()+4, initTile.getY()+5,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+						new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile.getX()+4, initTile.getY()+4,0).distanceTo()<1){
+				if(new Tile(initTile.x()+4, initTile.getY()+4,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX(),Players.getLocal().getLocation().getY()+1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x(),Players.getLocal().getLocation().getY()+1,0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile.getX(), initTile.getY()+8,0).distanceTo()<1){
+				if(new Tile(initTile.x(), initTile.getY()+8,0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY()-1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY()-1,0).click(true);
 						Task.sleep(4000);
 					}
 				}else if(Players.getLocal().isIdle()){
-					new Tile(Players.getLocal().getLocation().getX(),Players.getLocal().getLocation().getY()+1,0).click(true);
+					new Tile(Players.getLocal().getLocation().x(),Players.getLocal().getLocation().getY()+1,0).click(true);
 				
 				}
 			}else if(pad!=null){
@@ -304,28 +304,28 @@ public class MythsOfTheWhiteLands extends Node{
 				initTile = null;
 				Method.state("Navigating maze # 3");
 				
-				if(new Tile(initTile2.getX()+11, initTile2.getY(),0).distanceTo()<1){
+				if(new Tile(initTile2.x()+11, initTile2.getY(),0).distanceTo()<1){
 					if(Players.getLocal().isIdle()){
-						new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+						new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 						Task.sleep(4000);
 					}
 				}else
-				if(new Tile(initTile2.getX()+11, initTile2.getY()-1,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+11, initTile2.getY()-1,0).distanceTo()<1){
 					if(Players.getLocal().isIdle())
-						new Tile(Players.getLocal().getLocation().getX(),Players.getLocal().getLocation().getY()+1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x(),Players.getLocal().getLocation().getY()+1,0).click(true);
 					
 				}else
-				if(new Tile(initTile2.getX()+8, initTile2.getY()-1,0).distanceTo()<1){
+				if(new Tile(initTile2.x()+8, initTile2.getY()-1,0).distanceTo()<1){
 					if(Players.getLocal().isIdle())
-						new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+						new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 					
 				}else
-				if(new Tile(initTile2.getX()+9, initTile2.getY(),0).distanceTo()<1){
+				if(new Tile(initTile2.x()+9, initTile2.getY(),0).distanceTo()<1){
 					if(Players.getLocal().isIdle())
-						new Tile(Players.getLocal().getLocation().getX()-1,Players.getLocal().getLocation().getY()-1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x()-1,Players.getLocal().getLocation().getY()-1,0).click(true);
 					
 				}else if(Players.getLocal().isIdle())
-					new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+					new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 				
 			}else{
 				Task.sleep(4000);
@@ -337,37 +337,37 @@ public class MythsOfTheWhiteLands extends Node{
 			if(initTile!=null){
 				Method.state("Navigating maze # 2");
 				
-				if(new Tile(initTile.getX()+12, initTile.getY(),0).distanceTo()<1){
+				if(new Tile(initTile.x()+12, initTile.getY(),0).distanceTo()<1){
 					if(Players.getLocal().isIdle())
-						new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+						new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 					
 				}else
-				if(new Tile(initTile.getX()+12, initTile.getY()+4,0).distanceTo()<1){
+				if(new Tile(initTile.x()+12, initTile.getY()+4,0).distanceTo()<1){
 					if(Players.getLocal().isIdle())
-						new Tile(Players.getLocal().getLocation().getX(),Players.getLocal().getLocation().getY()-1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x(),Players.getLocal().getLocation().getY()-1,0).click(true);
 					
 				}else
-				if(new Tile(initTile.getX()+8, initTile.getY()+4,0).distanceTo()<1){
+				if(new Tile(initTile.x()+8, initTile.getY()+4,0).distanceTo()<1){
 					if(Players.getLocal().isIdle())
-						new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+						new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 					
 				}else
-				if(new Tile(initTile.getX()+8, initTile.getY()+8,0).distanceTo()<1){
+				if(new Tile(initTile.x()+8, initTile.getY()+8,0).distanceTo()<1){
 					if(Players.getLocal().isIdle())
-						new Tile(Players.getLocal().getLocation().getX(),Players.getLocal().getLocation().getY()-1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x(),Players.getLocal().getLocation().getY()-1,0).click(true);
 					
 				}else
-				if(new Tile(initTile.getX()+10, initTile.getY()+8,0).distanceTo()<1){
+				if(new Tile(initTile.x()+10, initTile.getY()+8,0).distanceTo()<1){
 					if(Players.getLocal().isIdle())
-						new Tile(Players.getLocal().getLocation().getX()-1,Players.getLocal().getLocation().getY(),0).click(true);
+						new Tile(Players.getLocal().getLocation().x()-1,Players.getLocal().getLocation().getY(),0).click(true);
 					
 				}else
-				if(new Tile(initTile.getX()+10, initTile.getY(),0).distanceTo()<3){
+				if(new Tile(initTile.x()+10, initTile.getY(),0).distanceTo()<3){
 					if(Players.getLocal().isIdle())
-						new Tile(Players.getLocal().getLocation().getX(),Players.getLocal().getLocation().getY()+1,0).click(true);
+						new Tile(Players.getLocal().getLocation().x(),Players.getLocal().getLocation().getY()+1,0).click(true);
 					
 				}else if(Players.getLocal().isIdle())
-					new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+					new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 				
 				
 			}else initTile = Players.getLocal().getLocation();
@@ -387,18 +387,18 @@ public class MythsOfTheWhiteLands extends Node{
 			}else
 			if(new Tile(2083,5795,0).distanceTo()<4){
 				if(Players.getLocal().isIdle())
-					new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+					new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 			
 			}else
 			if(new Tile(2083,5783,0).distanceTo()<4){
 				if(Players.getLocal().isIdle())
-					new Tile(Players.getLocal().getLocation().getX(),Players.getLocal().getLocation().getY()+1,0).click(true);
+					new Tile(Players.getLocal().getLocation().x(),Players.getLocal().getLocation().getY()+1,0).click(true);
 			}else
 			if(new Tile(2069,5783,0).distanceTo()<4){
 				if(Players.getLocal().isIdle())
-					new Tile(Players.getLocal().getLocation().getX()+1,Players.getLocal().getLocation().getY(),0).click(true);
+					new Tile(Players.getLocal().getLocation().x()+1,Players.getLocal().getLocation().getY(),0).click(true);
 			}else if(Players.getLocal().isIdle())
-				new Tile(Players.getLocal().getLocation().getX(),Players.getLocal().getLocation().getY()-1,0).click(true);
+				new Tile(Players.getLocal().getLocation().x(),Players.getLocal().getLocation().getY()-1,0).click(true);
 		}else
 		if(new Tile(3093,3154,1).canReach()){//Second floor of wizards tower
 			if(new Tile(3093,3154,1).distanceTo()<7){

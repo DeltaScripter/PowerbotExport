@@ -363,9 +363,9 @@ public final Tile[] pathToChestFV =new Tile[] {
 			}else Quests.interactO(2351, "Operate");
 			
 		}else if(SceneEntities.getNearest(31130)!=null){//inside first cave...
-			if(new Tile(SceneEntities.getNearest(2353).getLocation().getX(),SceneEntities.getNearest(2353).getLocation().getY(),0).distanceTo()<5){
+			if(new Tile(SceneEntities.getNearest(2353).getLocation().x(),SceneEntities.getNearest(2353).getLocation().getY(),0).distanceTo()<5){
 				Quests.interactO(2353, "Climb");
-			}else new Tile(SceneEntities.getNearest(2353).getLocation().getX(),SceneEntities.getNearest(2353).getLocation().getY(),0).clickOnMap();
+			}else new Tile(SceneEntities.getNearest(2353).getLocation().x(),SceneEntities.getNearest(2353).getLocation().getY(),0).clickOnMap();
 		}else if(new Tile(3354,3417,0).distanceTo()<17){
 			Quests.findPath(new Tile(3369,3427,0));
 		}else if(Quests.DYNAMICV){
@@ -421,7 +421,7 @@ public final Tile[] pathToChestFV =new Tile[] {
 	private void cS6() {
 		if(SceneEntities.getNearest(31130)!=null){
 			if(Inventory.getItem(708)!=null){//stupid root.
-				if(new Tile(SceneEntities.getNearest(2353).getLocation().getX()+8,SceneEntities.getNearest(2353).getLocation().getY()-2,0).distanceTo()<5){//by the rocks.
+				if(new Tile(SceneEntities.getNearest(2353).getLocation().x()+8,SceneEntities.getNearest(2353).getLocation().getY()-2,0).distanceTo()<5){//by the rocks.
 					if(Settings.get(2209)==990 || Settings.get(2209)==7){
 						if(Widgets.get(1179).validate()){
 							Widgets.get(1179, 54).click(true);
@@ -435,7 +435,7 @@ public final Tile[] pathToChestFV =new Tile[] {
 						}else Quests.interactO(2362, "Search");
 					}else
 					Quests.interactO(2362, "Search");
-				}else new Tile(SceneEntities.getNearest(2353).getLocation().getX()+8,SceneEntities.getNearest(2353).getLocation().getY()-2,0).clickOnMap();
+				}else new Tile(SceneEntities.getNearest(2353).getLocation().x()+8,SceneEntities.getNearest(2353).getLocation().getY()-2,0).clickOnMap();
 			}else Quests.interactG(708);
 		}else
 		if (new Tile(3353, 3408, 0).distanceTo() < 13) {

@@ -1,21 +1,23 @@
-package quests;
+/*package quests;
+
+import org.powerbot.script.Filter;
+import org.powerbot.script.rs3.ClientContext;
+import org.powerbot.script.rs3.Component;
+import org.powerbot.script.rs3.GameObject;
+import org.powerbot.script.rs3.Hud.Window;
+import org.powerbot.script.rs3.Item;
+import org.powerbot.script.rs3.ItemQuery;
+import org.powerbot.script.rs3.MobileIdNameQuery;
+import org.powerbot.script.rs3.Tile;
 
 import lodestoneActivator.Data.TeleportLode;
 import lodestoneActivator.Data.TeleportType;
 
-import org.powerbot.script.lang.BasicNamedQuery;
-import org.powerbot.script.lang.Filter;
-import org.powerbot.script.lang.ItemQuery;
-import org.powerbot.script.methods.Hud.Window;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Component;
-import org.powerbot.script.wrappers.GameObject;
-import org.powerbot.script.wrappers.Item;
-import org.powerbot.script.wrappers.Tile;
+
 
 public class TowerOfLife extends Node{
 
-	public TowerOfLife(MethodContext ctx) {
+	public TowerOfLife(ClientContext ctx) {
 		super(ctx);
 	}
 	public final Tile[] pathToEffigy = {
@@ -43,9 +45,9 @@ public class TowerOfLife extends Node{
 	@Override
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
-		if((ctx.settings.get(2190)&0x7FF)==1362){
+		if((ctx.varpbits.varpbit(2190)&0x7FF)==1362){
 			Method.state("The Tower of Life quest has been completed");
-			ctx.environment.sleep(2000);
+			//ctx.environment.sleep(2000);
 			DeltaQuester.e = true;
 		}else	
 		if(!init){
@@ -69,77 +71,77 @@ public class TowerOfLife extends Node{
 				init = true;
 			}
 		}else
-		if((ctx.settings.get(2190)&0x7FF)==1361){
+		if((ctx.varpbits.varpbit(2190)&0x7FF)==1361){
 			hasParts1 = true;//so we don't grab parts we no longer need
 			hasParts2 = true;//so we don't grab parts we no longer need
 			hasParts3 = true;//so we don't grab parts we no longer need
 			cs9();//speak to effigy yet again, at the base of the tower
 		}else	
-		if((ctx.settings.get(2190)&0x7FF)==1360){
+		if((ctx.varpbits.varpbit(2190)&0x7FF)==1360){
 			hasParts1 = true;//so we don't grab parts we no longer need
 			hasParts2 = true;//so we don't grab parts we no longer need
 			hasParts3 = true;//so we don't grab parts we no longer need
 			cs1();//speak to effigy yet again, at the base of the tower
 		}else	
-		if((ctx.settings.get(2190)&0x7FF)==1356||
-		(ctx.settings.get(2190)&0x7FF)==1358){
+		if((ctx.varpbits.varpbit(2190)&0x7FF)==1356||
+		(ctx.varpbits.varpbit(2190)&0x7FF)==1358){
 			hasParts1 = true;//so we don't grab parts we no longer need
 			hasParts2 = true;//so we don't grab parts we no longer need
 			hasParts3 = true;//so we don't grab parts we no longer need
 			cs7();
 		}else		
-		if((ctx.settings.get(2190)&0x7FF)==1355){
+		if((ctx.varpbits.varpbit(2190)&0x7FF)==1355){
 			hasParts1 = true;//so we don't grab parts we no longer need
 			hasParts2 = true;//so we don't grab parts we no longer need
 			hasParts3 = true;//so we don't grab parts we no longer need
 			cs1();//speak to effigy again, at the base of the tower
 		}else	
-		if((ctx.settings.get(2190)&0x7FF)==1354){
+		if((ctx.varpbits.varpbit(2190)&0x7FF)==1354){
 			hasParts1 = true;//so we don't grab parts we no longer need
 			hasParts2 = true;//so we don't grab parts we no longer need
 			hasParts3 = true;//so we don't grab parts we no longer need
 			cs7();//head up to the top of the tower initially
 		}else		
-		if((ctx.settings.get(2190)&0x7FF)==1352){
+		if((ctx.varpbits.varpbit(2190)&0x7FF)==1352){
 			cs1();//Tell Effigy about the tower
 		}else	
-		if((ctx.settings.get(2190)&0x3FF)==840){
+		if((ctx.varpbits.varpbit(2190)&0x3FF)==840){
 			hasParts1 = true;//so we don't grab parts we no longer need
 			hasParts2 = true;//so we don't grab parts we no longer need
 			hasParts3 = true;//so we don't grab parts we no longer need
 		if(!Method.isChatting(""))
 		cs6();//solve the puzzle # 3
 		}else	
-		if((ctx.settings.get(2190)&0x1FF)==328){
+		if((ctx.varpbits.varpbit(2190)&0x1FF)==328){
 			hasParts1 = true;//so we don't grab parts we no longer need
 			hasParts2 = true;//so we don't grab parts we no longer need
 		if(!Method.isChatting(""))
 		cs6();//gather all parts for third machine
 		}else	
-		if((ctx.settings.get(2190)&0xFF)==200){
+		if((ctx.varpbits.varpbit(2190)&0xFF)==200){
 				hasParts1 = true;//so we don't grab parts we no longer need
 				hasParts2 = true;//so we don't grab parts we no longer need
 			if(!Method.isChatting(""))
 			cs5();//Caliberate the second machine.
 		}else	
-		if((ctx.settings.get(2190)&0x7F)==72){
+		if((ctx.varpbits.varpbit(2190)&0x7F)==72){
 			hasParts1 = true;//so we don't grab parts we no longer need
 			if(!Method.isChatting(""))
 			cs5();//gather the parts and put them in the machine
 		}else	
-		if((ctx.settings.get(2190)&0x3F)==40){
+		if((ctx.varpbits.varpbit(2190)&0x3F)==40){
 			hasParts1 = true;//so we don't grab parts we no longer need
 			if(!Method.isChatting(""))
 			cs4();//caliberate the first machine
 		}else	
-		if((ctx.settings.get(2190)&0xF)==6 ||(ctx.settings.get(2190)&0xF)==8){
+		if((ctx.varpbits.varpbit(2190)&0xF)==6 ||(ctx.varpbits.varpbit(2190)&0xF)==8){
 			if(!Method.isChatting(""))
 			cs4();//Gather the parts and fix the first machine
 		}else
-        if((ctx.settings.get(2190)&0x7)==4){
+        if((ctx.varpbits.varpbit(2190)&0x7)==4){
 			cs3();//Gather all the cloth items & speak to Bonafido
 		}else
-		if((ctx.settings.get(2190)&0x3)==2){
+		if((ctx.varpbits.varpbit(2190)&0x3)==2){
 			cs2();//Speak to Bonafido
 		}else cs1();//speak to effigy and start quest
 		
@@ -164,14 +166,14 @@ public class TowerOfLife extends Node{
 	private void cs7() {
 		final String[] opt = {"Sure","Take a rune","People mix","Run,",
 				"Bury them","Fletching","By ignition","Get some logs"};
-		ctx.antipatterns.setEnabled(false);
-		while(ctx.settings.get(1113)!=0){
+		//ctx.antipatterns.setEnabled(false);
+		while(ctx.varpbits.varpbit(1113)!=0){
 			Vars.DYNAMICV = false;
 			Method.state("Cutscene");
 			Method.pressContinue();
 		}
 		Method.skipPics();
-		if(ctx.game.getPlane()==3){
+		if(ctx.game.floor()==3){
 			Vars.DYNAMICV = false;
 			if(!Method.findOption(opt))
 				if(!Method.isChatting("Creature")){
@@ -185,7 +187,7 @@ public class TowerOfLife extends Node{
 		final String opt[] = {"Yes"};
 		
 		if(hasParts3){
-			if(ctx.game.getPlane()==3){
+			if(ctx.game.floor()==3){
 				Vars.DYNAMICV = false;
 				if(!Method.findOption(opt))
 					if(ctx.widgets.get(509,0).isVisible()){//puzzle itnerface
@@ -195,20 +197,20 @@ public class TowerOfLife extends Node{
 					Method.pressContinue();
 				}else
 				Method.interactO(21941, "Fix", "");//fix cage, put parts in..
-			}else if(ctx.game.getPlane()==2){
+			}else if(ctx.game.floor()==2){
 				if(getToObject(17974)){
 					Method.interactO(17974, "Climb-up", "Ladder");
 				}
-			}else if(ctx.game.getPlane()==1){
+			}else if(ctx.game.floor()==1){
 				if(getToObject(21871)){
 					Method.interactO(21871, "Climb-up", "Stairs");
 				}
 			}else cs4();//get upstairs
-		}else if(ctx.game.getPlane()==2){
+		}else if(ctx.game.floor()==2){
 			if(getToObject(21872)){
 				Method.interactO(21872, "Climb-down", "Stairs");
 			}
-		}else if(ctx.game.getPlane()==1){
+		}else if(ctx.game.floor()==1){
 			if(getToObject(21872)){
 				Method.interactO(21872, "Climb-down", "Stairs");
 			}
@@ -317,11 +319,11 @@ public class TowerOfLife extends Node{
 				}else if(Integer.parseInt(length.getText())<lengthText){
 					Method.state("Increasing size");
 					plus.click();
-					ctx.game.sleep(1200);
+					//ctx.game.sleep(1200);
 				}else {
 					Method.state("Decreasing size");
 					minus.click();
-					ctx.game.sleep(1200);
+					//ctx.game.sleep(1200);
 				}
 			}else {
 				Method.state("Clicking horizontal");
@@ -335,11 +337,11 @@ public class TowerOfLife extends Node{
 			}else if(Integer.parseInt(length.getText())<lengthText){
 				Method.state("Increasing size");
 				plus.click();
-				ctx.game.sleep(1200);
+				//ctx.game.sleep(1200);
 			}else {
 				Method.state("Decreasing size");
 				minus.click();
-				ctx.game.sleep(1200);
+				//ctx.game.sleep(1200);
 			}
 		}else {
 			Method.state("Clicking vertical");
@@ -352,7 +354,7 @@ public class TowerOfLife extends Node{
 		Tile local = ctx.players.local().getLocation();
 		final String opt[] = {"Yes"};
 		if(hasParts2){
-			if(ctx.game.getPlane()==2){
+			if(ctx.game.floor()==2){
 				if(!Method.findOption(opt))
 				if(getToObject(21943)){//machine
 					if(ctx.widgets.get(1186,0).isVisible()){
@@ -360,14 +362,14 @@ public class TowerOfLife extends Node{
 					}else solvePuzzle2();
 					
 				}
-			}else if(ctx.game.getPlane()==1){
+			}else if(ctx.game.floor()==1){
 				 if(Method.objIsNotNull(21871)){//stairs
 					  if(Method.getObject(21871).getLocation().distanceTo(local)<6){
 						  Method.interactO(21871, "Climb-up", "Stairs");
 					  }else Method.clickOnMap(Method.getObject(21871).getLocation());
 				  }
 			}else cs4();//get to first floor
-		}else if(ctx.game.getPlane()==1){//if upstairs, climb downstairs
+		}else if(ctx.game.floor()==1){//if upstairs, climb downstairs
 			if(Method.objIsNotNull(21872)){//stairs
 				if(Method.getObject(21872).getLocation().distanceTo(local)<6){
 					Method.interactO(21872, "Climb-down", "Stairs");
@@ -410,7 +412,7 @@ public class TowerOfLife extends Node{
 		Component oneHoleOnSidePipe = ctx.widgets.get(511,6);
 		Component largestPipe = ctx.widgets.get(511,4);
 		
-		if((ctx.settings.get(2190)>>7&0x1)==1){//after putting parts in machine
+		if((ctx.varpbits.varpbit(2190)>>7&0x1)==1){//after putting parts in machine
 			Method.state("Solving Puzzle");
 			if(ctx.widgets.get(511,0).isVisible()){//puzzle interface
 				System.out.println("Y position: " + (base.getBoundingRect().y - smallBentPipe.getBoundingRect().y));
@@ -427,56 +429,56 @@ public class TowerOfLife extends Node{
 							if(straightPipe.getAbsoluteLocation().x==227&&
 									straightPipe.getAbsoluteLocation().y==195){//straight pipe fitted
 							
-								if((ctx.settings.get(2190)>>12&0x1)==1){//small bent pipe selected
+								if((ctx.varpbits.varpbit(2190)>>12&0x1)==1){//small bent pipe selected
 									 yDist = base.getBoundingRect().y - smallBentPipe.getBoundingRect().y;
 									 xDist = base.getBoundingRect().x - smallBentPipe.getBoundingRect().x;
 									setY(-99,-100,yDist,xDist);//the the straight pipe
 								}else {
 									smallBentPipe.click();
-									ctx.game.sleep(200,500);
+									//ctx.game.sleep(200,500);
 								}
 								
-							}else if((ctx.settings.get(2190)>>11&0x1)==1){//two-hole pipe on side selected
+							}else if((ctx.varpbits.varpbit(2190)>>11&0x1)==1){//two-hole pipe on side selected
 								 yDist = base.getBoundingRect().y - straightPipe.getBoundingRect().y;
 								 xDist = base.getBoundingRect().x - straightPipe.getBoundingRect().x;
 								setY(-96,-43,yDist,xDist);//the the straight pipe
 							}else {
 								straightPipe.click();
-								ctx.game.sleep(200,500);
+								//ctx.game.sleep(200,500);
 							}
 							
 						}else
 						
-						if((ctx.settings.get(2190)>>15&0x1)==1){//selected bent pipe
+						if((ctx.varpbits.varpbit(2190)>>15&0x1)==1){//selected bent pipe
 							 yDist = base.getBoundingRect().y - largeBentPipe.getBoundingRect().y;
 							 xDist = base.getBoundingRect().x - largeBentPipe.getBoundingRect().x;
 							setY(-187,-193,yDist,xDist);//the the large bent pipe
 						}else {
 							largeBentPipe.click();
-							ctx.game.sleep(200,500);
+							//ctx.game.sleep(200,500);
 						}
 					}else
-					if((ctx.settings.get(2190)>>14&0x1)==1){//oneholeonesidepipe selected
+					if((ctx.varpbits.varpbit(2190)>>14&0x1)==1){//oneholeonesidepipe selected
 						 yDist = base.getBoundingRect().y - oneHoleOnSidePipe.getBoundingRect().y;
 						 xDist = base.getBoundingRect().x - oneHoleOnSidePipe.getBoundingRect().x;
 						setY(-97,-211,yDist,xDist);//the the largestPipe
 					}else {
 						oneHoleOnSidePipe.click();
-						ctx.game.sleep(200,500);
+						//ctx.game.sleep(200,500);
 					}
 				}else//set the largestPipe
-				if((ctx.settings.get(2190)>>13&0x1)==1){//selected largestPipe
+				if((ctx.varpbits.varpbit(2190)>>13&0x1)==1){//selected largestPipe
 					 yDist = base.getBoundingRect().y - largestPipe.getBoundingRect().y;
 					 xDist = base.getBoundingRect().x - largestPipe.getBoundingRect().x;
 					if(largestPipe.getModelId()==22547){//for rotation of the pipe
 					setY(-101,-89, yDist,xDist);//the the largestPipe
 				  }else{
 					  rotateButton.click();
-					  ctx.game.sleep(300,500);
+					  //ctx.game.sleep(300,500);
 				  }
 					 }else {
 					largestPipe.click();
-					ctx.game.sleep(1200,1400);
+					//ctx.game.sleep(1200,1400);
 				}
 				
 			}else Method.interactO(21943, "Fix", "Machine");//opens up the screen
@@ -529,8 +531,8 @@ public class TowerOfLife extends Node{
 		Tile local = ctx.players.local().getLocation();
 		final String opt[] = {"Yes"};
 		if(hasParts1){
-			if(ctx.game.getPlane()==1){
-				if((ctx.settings.get(2190)&0x3F)==40){//if put parts in machine..
+			if(ctx.game.floor()==1){
+				if((ctx.varpbits.varpbit(2190)&0x3F)==40){//if put parts in machine..
 					solvePuzzle1();
 				}else	//put the parts in the machine..
 				  if(Method.objIsNotNull(21873)){//machine
@@ -578,63 +580,63 @@ public class TowerOfLife extends Node{
 			 Method.pressContinue();
 		 }else
 		if(ctx.widgets.get(510,1).isVisible()){//puzzle screen
-			if((ctx.settings.get(2190)>>18&0x1)==1){//plugged first hole
-				if((ctx.settings.get(2190)>>19&0x1)==1){//plugged second hole
-					if((ctx.settings.get(2190)>>20&0x1)==1){//plugged third hole
-						if((ctx.settings.get(2190)>>21&0x1)==1){//plugged fourth hole
-							if((ctx.settings.get(2190)>>28&0x7)==5){//fixed some pipes
-								if((ctx.settings.get(2190)>>25&0x7)==5){
-									if((ctx.settings.get(2191)>>3&0x1)==0){//left lever is up
+			if((ctx.varpbits.varpbit(2190)>>18&0x1)==1){//plugged first hole
+				if((ctx.varpbits.varpbit(2190)>>19&0x1)==1){//plugged second hole
+					if((ctx.varpbits.varpbit(2190)>>20&0x1)==1){//plugged third hole
+						if((ctx.varpbits.varpbit(2190)>>21&0x1)==1){//plugged fourth hole
+							if((ctx.varpbits.varpbit(2190)>>28&0x7)==5){//fixed some pipes
+								if((ctx.varpbits.varpbit(2190)>>25&0x7)==5){
+									if((ctx.varpbits.varpbit(2191)>>3&0x1)==0){//left lever is up
 										Method.state("Performing last step");
 										ctx.widgets.get(510,83).click();//first wheel right
-										ctx.game.sleep(1200,1600);
+										//ctx.game.sleep(1200,1600);
 									}else {
 										ctx.widgets.get(510,160).click();//flick left lever up
 									}
 							
 								}else {
 									ctx.widgets.get(510,85).click();//second wheel right
-									ctx.game.sleep(1200,1600);
+									//ctx.game.sleep(1200,1600);
 								}
 							}else
-							 if((ctx.settings.get(2191)&0x7)==5){//fixed 4th pipe
+							 if((ctx.varpbits.varpbit(2191)&0x7)==5){//fixed 4th pipe
 								 System.out.println("Here5");
-								if((ctx.settings.get(2191)>>4&0x1)==0){//right lever is up
+								if((ctx.varpbits.varpbit(2191)>>4&0x1)==0){//right lever is up
 									ctx.widgets.get(510,87).click();//third wheel right
-									ctx.game.sleep(1200,1600);
+									//ctx.game.sleep(1200,1600);
 								}else ctx.widgets.get(510,161).click();//flick right lever up
 							}else {
 								ctx.widgets.get(510,88).click();//fourth wheel right
-								ctx.game.sleep(1200,1600);
+								//ctx.game.sleep(1200,1600);
 							}
 							 
-						}else if((ctx.settings.get(2191)&0x7)==4){//ready to turn left
+						}else if((ctx.varpbits.varpbit(2191)&0x7)==4){//ready to turn left
 							ctx.widgets.get(510,89).click();//fourth wheel left
-							ctx.game.sleep(1200,1600);
-						}else if((ctx.settings.get(2191)>>4&0x1)==1){//right lever down
+							//ctx.game.sleep(1200,1600);
+						}else if((ctx.varpbits.varpbit(2191)>>4&0x1)==1){//right lever down
 							ctx.widgets.get(510,88).click();//fourth wheel right
-							ctx.game.sleep(1200,1600);
+							//ctx.game.sleep(1200,1600);
 						}else ctx.widgets.get(510,119).click();//flick right-lever down
 					}else//plug third hole 
-						if((ctx.settings.get(2190)>>28&0x3)==3){//ready to turn wheel left
+						if((ctx.varpbits.varpbit(2190)>>28&0x3)==3){//ready to turn wheel left
 						ctx.widgets.get(510,86).click();//third wheel left
-						ctx.game.sleep(1200,1400);
+						//ctx.game.sleep(1200,1400);
 					}else {
 						ctx.widgets.get(510,87).click();//third wheel right
-						ctx.game.sleep(1200,1400);
+						//ctx.game.sleep(1200,1400);
 					}
 				}else//plug second hole
-			    if((ctx.settings.get(2191)>>3&0x1)==1){//if left lever down.
-				  if((ctx.settings.get(2191)>>4&0x1)==0){//right lever up
+			    if((ctx.varpbits.varpbit(2191)>>3&0x1)==1){//if left lever down.
+				  if((ctx.varpbits.varpbit(2191)>>4&0x1)==0){//right lever up
 					  ctx.widgets.get(510,84).click();//second wheel left
-						ctx.game.sleep(1200,1500);
+						//ctx.game.sleep(1200,1500);
 				  }else ctx.widgets.get(510,161).click();//flick right lever up
 			  }else ctx.widgets.get(510,118).click();//flick left lever down
 			
 			}else//plug first hole
-			if((ctx.settings.get(2191)>>4&0x1)==1){//right lever down.
+			if((ctx.varpbits.varpbit(2191)>>4&0x1)==1){//right lever down.
 				ctx.widgets.get(510,82).click();//first wheel left
-				ctx.game.sleep(1200,1500);
+				//ctx.game.sleep(1200,1500);
 			}else ctx.widgets.get(510,119).click();//flick the right lever down
 		}else Method.interactO(21873, "Fix", "Machine");
 		
@@ -672,7 +674,7 @@ public class TowerOfLife extends Node{
 				items[3]=1;//if you have the trousers
 			}else if(bushTile.distanceTo(local)<7){//bush area
 				
-				BasicNamedQuery<GameObject> findBush =ctx.objects.select().select(new Filter<GameObject>() {
+				MobileIdNameQuery<GameObject> findBush =ctx.objects.select().select(new Filter<GameObject>() {
 					public boolean accept(GameObject g) {
 						return g.getLocation().distanceTo(bushTile)<=1&& g.getId()==21924;
 					}
@@ -699,7 +701,7 @@ public class TowerOfLife extends Node{
 					//err..ingore this part..taken care of up there ^
 					}else if(Method.inventoryContains(10865)){//boots ID
 						items[2]=1;//if you have the boots
-					}else if((ctx.settings.get(2191)>>26&0x1)==1){//occurs after speaking to him initially
+					}else if((ctx.varpbits.varpbit(2191)>>26&0x1)==1){//occurs after speaking to him initially
 						Method.npcInteract(5590, "Pickpocket");
 					}else if(!Method.findOption(opt))//speak to him initially
 						if(!Method.isChatting("No fingers")){
@@ -761,3 +763,4 @@ public class TowerOfLife extends Node{
 	}
 
 }
+*/

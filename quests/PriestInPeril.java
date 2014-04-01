@@ -128,12 +128,12 @@ public class PriestInPeril extends Node{
 
 
 	private void cs5() {
-		if(Game.getPlane()==2){
+		if(Game.floor()==2){
 			if(new Tile(3413,3487,2).distanceTo()<6){
 				Method.useItemOn(2945, 3463, "Use");
 			}else new Tile(3413,3487,2).clickOnMap();
 		}else
-		   if (Game.getPlane() == 1) {
+		   if (Game.floor() == 1) {
 			if (new Tile(3409, 3485, 1).distanceTo() < 4) {
 				Method.interactO(30489, "Climb", "Ladder");// Climb ladder on
 															// second floor
@@ -158,8 +158,8 @@ public class PriestInPeril extends Node{
 			
 			if(initTile!=null){
 				Method.displayTileDifference(initTile);
-				if(new Tile(initTile.getX(),initTile.getY() -14,0).canReach() ||
-						new Tile(initTile.getX()+12,initTile.getY() -17,0).canReach()){
+				if(new Tile(initTile.x(),initTile.getY() -14,0).canReach() ||
+						new Tile(initTile.x()+12,initTile.getY() -17,0).canReach()){
 				
 					if(found){
 						Vars.DYNAMICV = false;
@@ -170,53 +170,53 @@ public class PriestInPeril extends Node{
 					}else switch(numStatue){
 					
 					case 0:
-						if(new Tile(initTile.getX()+12,initTile.getY() -17,0).distanceTo()<2){
+						if(new Tile(initTile.x()+12,initTile.getY() -17,0).distanceTo()<2){
 							invest();
-						}else new Tile(initTile.getX()+12,initTile.getY() -17,0).clickOnMap();
+						}else new Tile(initTile.x()+12,initTile.getY() -17,0).clickOnMap();
 						break;
 						
 					case 1:
-						if(new Tile(initTile.getX()+14,initTile.getY() -13,0).distanceTo()<2){
+						if(new Tile(initTile.x()+14,initTile.getY() -13,0).distanceTo()<2){
 							invest();
-						}else new Tile(initTile.getX()+14,initTile.getY() -13,0).clickOnMap();
+						}else new Tile(initTile.x()+14,initTile.getY() -13,0).clickOnMap();
 						break;
 					
 					case 2:
-						if(new Tile(initTile.getX()+19,initTile.getY() -12,0).distanceTo()<2){
+						if(new Tile(initTile.x()+19,initTile.getY() -12,0).distanceTo()<2){
 							invest();
-						}else new Tile(initTile.getX()+19,initTile.getY() -12,0).clickOnMap();
+						}else new Tile(initTile.x()+19,initTile.getY() -12,0).clickOnMap();
 						break;
 						
 					case 3:
-						if(new Tile(initTile.getX()+22,initTile.getY() -13,0).distanceTo()<2){
+						if(new Tile(initTile.x()+22,initTile.getY() -13,0).distanceTo()<2){
 							invest();
-						}else new Tile(initTile.getX()+22,initTile.getY() -13,0).clickOnMap();
+						}else new Tile(initTile.x()+22,initTile.getY() -13,0).clickOnMap();
 						break;
 						
 					case 4:
-						if(new Tile(initTile.getX()+22,initTile.getY() -16,0).distanceTo()<2){
+						if(new Tile(initTile.x()+22,initTile.getY() -16,0).distanceTo()<2){
 							invest();
-						}else new Tile(initTile.getX()+22,initTile.getY() -16,0).clickOnMap();
+						}else new Tile(initTile.x()+22,initTile.getY() -16,0).clickOnMap();
 						break;
 						
 					case 5:
-						if(new Tile(initTile.getX()+22,initTile.getY() -19,0).distanceTo()<2){
+						if(new Tile(initTile.x()+22,initTile.getY() -19,0).distanceTo()<2){
 							invest();
-						}else new Tile(initTile.getX()+22,initTile.getY() -19,0).clickOnMap();
+						}else new Tile(initTile.x()+22,initTile.getY() -19,0).clickOnMap();
 						break;
 						
 					case 6:
-						if(new Tile(initTile.getX()+18,initTile.getY() -20,0).distanceTo()<2){
+						if(new Tile(initTile.x()+18,initTile.getY() -20,0).distanceTo()<2){
 							invest();
-						}else new Tile(initTile.getX()+18,initTile.getY() -20,0).clickOnMap();
+						}else new Tile(initTile.x()+18,initTile.getY() -20,0).clickOnMap();
 						break;
 					}
 					
 					
 				}else
-				if(new Tile(initTile.getX(),initTile.getY() -11,0).distanceTo()<5){
+				if(new Tile(initTile.x(),initTile.getY() -11,0).distanceTo()<5){
 					Method.interactO(3444, "Open", "Gate");
-				}else new Tile(initTile.getX(),initTile.getY() -11,0).clickOnMap();
+				}else new Tile(initTile.x(),initTile.getY() -11,0).clickOnMap();
 				
 			}else initTile = Players.getLocal().getLocation();
 		}else cs2();//Get the player to the cave
@@ -242,7 +242,7 @@ public class PriestInPeril extends Node{
 		
 		if(hasKey){
 			Vars.DYNAMICV2 = false;
-			if(Game.getPlane()==2){
+			if(Game.floor()==2){
 				if(new Tile(3413,3487,2).distanceTo()<6){
 					if(!Method.findOption(opt))
 						if(!Method.isChatting("Drezel")){
@@ -252,7 +252,7 @@ public class PriestInPeril extends Node{
 						}
 				}else new Tile(3413,3487,2).clickOnMap();
 			}else
-			if(Game.getPlane()==1){
+			if(Game.floor()==1){
 				if(new Tile(3409,3485,1).distanceTo()<4){
 					Method.interactO(30489, "Climb", "Ladder");//Climb ladder on second floor
 				}else new Tile(3409,3485,1).clickOnMap();//Move closer to the ladder
@@ -308,15 +308,15 @@ public class PriestInPeril extends Node{
 		}else if(Vars.DYNAMICV2){
 			Method.findPath(new Tile(3405,3504,0));//outside cave
 			
-		}else if(new Tile(3409,3489,0).canReach() && Game.getPlane()==0){//first floor
+		}else if(new Tile(3409,3489,0).canReach() && Game.floor()==0){//first floor
 			if(Method.getToTile(new Tile(3407,3489,0))){
 				Method.interactO(30707, "Open", "Door");
 			}
-		}else if(new Tile(3410,3484,1).canReach() && Game.getPlane()==1){//inside temp[le second floor
+		}else if(new Tile(3410,3484,1).canReach() && Game.floor()==1){//inside temp[le second floor
 			if(Method.getToTile(new Tile(3414,3486,1))){
 				Method.interactO(30723, "Climb", "Staircase");
 			}
-		}else if(Game.getPlane()==2){//inside temple top floor
+		}else if(Game.floor()==2){//inside temple top floor
 			if(Method.getToTile(new Tile(3408,3485,2))){
 				Method.interactO(30733, "Climb", "Staircase");
 			}

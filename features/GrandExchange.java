@@ -1,46 +1,46 @@
 package features;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.MethodProvider;
-import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.rt6.ClientAccessor;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Component;
 
 import quests.DeltaQuester;
 import quests.Method;
 
-public class GrandExchange extends MethodProvider{
 
-	Timer wait = new Timer(0);
+public class GrandExchange extends ClientAccessor{
+
+	//Timer wait = new Timer(0);
 	
-	public GrandExchange(MethodContext ctx) {
+	public GrandExchange(ClientContext ctx) {
 		super(ctx);
 	}
 
 	public boolean geIsOpen(){
-		if(ctx.widgets.get(105,5).isValid()){
-			while(ctx.widgets.get(105,5).getText().contains("Sell Offer") && 
-					ctx.widgets.get(105,5).isVisible()){
+		if(ctx.widgets.component(105,5).valid()){
+			while(ctx.widgets.component(105,5).text().contains("Sell Offer") && 
+					ctx.widgets.component(105,5).visible()){
 				DeltaQuester.state = "Closing sell screen";
-				ctx.widgets.get(105,87).click();
+				ctx.widgets.component(105,87).click();
 			}
 		}
-		return (ctx.widgets.get(105,86).getChild(14).isVisible());
+		return (ctx.widgets.component(105,86).component(14).visible());
 	}
 
 	public boolean isSlotEmpty() {
-		return ctx.widgets.get(105,28).getChild(1).getText().contains("Empty");
+		return ctx.widgets.component(105,28).component(1).text().contains("Empty");
 	}
 
 	public void createBuyItem(String name, int itemAmount, int itemPrice) {
 	
-		if(ctx.widgets.get(105,149).isVisible()){//buy screen
+		if(ctx.widgets.component(105,149).visible()){//buy screen
 		
 			if(itemName().equals(name)){
 				if(quantity()==(itemAmount)){
 					if(price()==itemPrice){
-						Component buy = ctx.widgets.get(105, 166);
-						if(ctx.widgets.get(1469,0).isVisible()){
-							ctx.widgets.get(1469,2).click();
+						Component buy = ctx.widgets.component(105, 166);
+						if(ctx.widgets.component(1469,0).visible()){
+							ctx.widgets.component(1469,2).click();
 							setPrice(itemPrice);
 						}else buy.click(true);
 					}else setPrice(itemPrice);
@@ -49,26 +49,26 @@ public class GrandExchange extends MethodProvider{
 			}else typeItem(name);
 			
 			
-		}else ctx.widgets.get(105,19).click();//click the slot buy button
+		}else ctx.widgets.component(105,19).click();//click the slot buy button
 		
 	}
 
 	private void setPrice(int i) {
 		DeltaQuester.state = "setting price";
 		String price = ""+i;
-		Component g = ctx.widgets.get(1469,2);//search box for price
-		if(g.isVisible() && g.getText().contains("you wish to buy for")){//if open
-			if(ctx.widgets.get(1469,3).getText().equals(price)){
+		Component g = ctx.widgets.component(1469,2);//search box for price
+		if(g.visible() && g.text().contains("you wish to buy for")){//if open
+			if(ctx.widgets.component(1469,3).text().equals(price)){
 				ctx.keyboard.sendln("");
-			}else if(ctx.widgets.get(1469,3).getText().isEmpty()){
+			}else if(ctx.widgets.component(1469,3).text().isEmpty()){
 				sendText(price);
-			}else ctx.widgets.get(105,154).click();//re-open the search textbox
-		}else ctx.widgets.get(105,154).click();
+			}else ctx.widgets.component(105,154).click();//re-open the search textbox
+		}else ctx.widgets.component(105,154).click();
 		
 	}
 
 	private int price() {
-		String price = ctx.widgets.get(105,52).getText();
+		String price = ctx.widgets.component(105,52).text();
 		price = price.replaceAll(" gp", "");
 		price = price.replaceAll(",", "");
 		return Integer.parseInt(price);
@@ -77,106 +77,106 @@ public class GrandExchange extends MethodProvider{
 	private void setQuantity(int itemAmount) {
 		String amount = ""+itemAmount;
 		DeltaQuester.state = "setting quantity";
-		if(ctx.widgets.get(1469,2).isVisible()){//typing box for quantity
-			if(ctx.widgets.get(1469,3).getText().equals(amount)){
+		if(ctx.widgets.component(1469,2).visible()){//typing box for quantity
+			if(ctx.widgets.component(1469,3).text().equals(amount)){
 			ctx.keyboard.sendln("");
-			}else if(ctx.widgets.get(1469,3).getText().isEmpty()){
+			}else if(ctx.widgets.component(1469,3).text().isEmpty()){
 				sendText(amount);
 			}else {
-				ctx.widgets.get(105,131).click();//empty the search box (try again)
-				ctx.game.sleep(1200);
+				ctx.widgets.component(105,131).click();//empty the search box (try again)
+				//ctx.game.sleep(1200);
 			}
 		
-		}else ctx.widgets.get(105,131).click();//search quantity button
+		}else ctx.widgets.component(105,131).click();//search quantity button
 	
 		
 	}
 
 	private void sendText(String amount) {
-		if(!wait.isRunning()){
-			ctx.keyboard.sleep(1500);
+		//if(!wait.isRunning()){
+			//ctx.keyboard.sleep(1500);
 			ctx.keyboard.send(amount);
-			wait = new Timer(2000);
-		}
+		//	wait = new Timer(2000);
+		//}
 		
 	}
 
 	private int quantity() {
-		return Integer.parseInt(ctx.widgets.get(105,49).getText().toString());
+		return Integer.parseInt(ctx.widgets.component(105,49).text().toString());
 	}
 
 	private void typeItem(String name) {
 		DeltaQuester.state = "Inside typing item";
 		Component[] spot = null;
-		Component results = ctx.widgets.get(389, 4);
+		Component results = ctx.widgets.component(389, 4);
 		Method Method = new Method(ctx);
-		if(ctx.widgets.get(389,11).isVisible()){//magnifying glass button is visible
-			if(ctx.widgets.get(389,7).getText().equals(name + "*")){
-				spot = ctx.widgets.get(389,4).getChildren();//grabs all items in search result
+		if(ctx.widgets.component(389,11).visible()){//magnifying glass button is visible
+			if(ctx.widgets.component(389,7).text().equals(name + "*")){
+				spot = ctx.widgets.component(389,4).components();//grabs all items in search result
 				for (int s = 0; s < spot.length;) {
 					System.out.println("Searching for item:(num results: " + spot.length);
-					if(!ctx.widgets.get(105).isValid())//assume ge?
+					if(!ctx.widgets.component(105,0).valid())//assume ge?
 						break;
 				
 					Method.state("Searching for item");
-					if (ctx.widgets.get(389, 4).getChild(s).getText().equals(name)) {
-						if(results.getBoundingRect().contains(ctx.widgets.get(389, 4).getChild(s).getAbsoluteLocation())){
+					if (ctx.widgets.component(389, 4).component(s).text().equals(name)) {
+						if(results.boundingRect().contains(ctx.widgets.component(389, 4).component(s).centerPoint())){
 							System.out.println("Clicking option");
-							ctx.widgets.get(389, 4).getChild(s).click();
+							ctx.widgets.component(389, 4).component(s).click();
 						}else
-						if(results.getAbsoluteLocation().y>ctx.widgets.get(389, 4).getChild(s).getAbsoluteLocation().y){
+						if(results.centerPoint().y>ctx.widgets.component(389, 4).component(s).centerPoint().y){
 							System.out.println("scrolling list down");
-							ctx.mouse.move(results);
+							ctx.mouse.move(results.centerPoint());
 							ctx.mouse.scroll(false);
 						}else {
 							System.out.println("scrolling mouse");
-							ctx.mouse.move(results);
+							ctx.mouse.move(results.centerPoint());
 							ctx.mouse.scroll(true);
 						}
 					}else s++;
 
 				}
-			}else if(ctx.widgets.get(389,7).getText().equals("*")){
+			}else if(ctx.widgets.component(389,7).text().equals("*")){
 				sendText(name);
 			}else {
-				ctx.widgets.get(105,11).click();//reset search box
-				ctx.environment.sleep(1200);
+				ctx.widgets.component(105,11).click();//reset search box
+				//ctx.environment.sleep(1200);
 			}
 		}else {
 			System.out.println("Opening the textbox");
-			ctx.widgets.get(105,11).click();//open the textbox
-			ctx.keyboard.sleep(800);
+			ctx.widgets.component(105,11).click();//open the textbox
+			//ctx.keyboard.sleep(800);
 		}
 		
 	}
 
 	private String itemName() {
-		return ctx.widgets.get(105,4).getText().toString();
+		return ctx.widgets.component(105,4).text().toString();
 	}
 
 	public void collectItem(String name) {
 		int collect[] = {77,79};
-		if(ctx.widgets.get(105,5).isVisible()){//collect area
-			if(ctx.widgets.get(1469,1).isVisible()){//search bar still open(causes glitch)
-				ctx.widgets.get(105,87).click();//the exit button in GE
+		if(ctx.widgets.component(105,5).visible()){//collect area
+			if(ctx.widgets.component(1469,1).visible()){//search bar still open(causes glitch)
+				ctx.widgets.component(105,87).click();//the exit button in GE
 			}else if(!itemName().equals(name)){//if something else is being bought
-				ctx.widgets.get(105,200).click();//cancel the existing order
+				ctx.widgets.component(105,200).click();//cancel the existing order
 			}
 			for (int col : collect) {
-				if (ctx.widgets.get(105, col).getItemId() != -1) {
-					if(Method.onlyItemsGE && ctx.widgets.get(105, col).interact("Collect-items")){
+				if (ctx.widgets.component(105, col).itemId() != -1) {
+					if(Method.onlyItemsGE && ctx.widgets.component(105, col).interact("Collect-items")){
 						DeltaQuester.state = "Taking item out as an item from collection box";
-						ctx.widgets.get(105, col).interact("Collect-items");
+						ctx.widgets.component(105, col).interact("Collect-items");
 					}else{
 						DeltaQuester.state = "Selecting item in collection box";
-						ctx.widgets.get(105, col).click();
+						ctx.widgets.component(105, col).click();
 					
 					  }
 					}
 			}
 		}else {
 			DeltaQuester.state = "Opening collection area";
-			ctx.widgets.get(105,28).click();//open the collect area
+			ctx.widgets.component(105,28).click();//open the collect area
 		}
 		
 	}

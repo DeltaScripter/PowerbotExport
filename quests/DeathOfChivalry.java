@@ -1,15 +1,15 @@
-package quests;
+/*package quests;
 
 import lodestoneActivator.Data.TeleportLode;
 import lodestoneActivator.Data.TeleportType;
 
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.ClientContext;
 import org.powerbot.script.wrappers.GameObject;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
 
 public class DeathOfChivalry extends Node{
 
-	public DeathOfChivalry(MethodContext ctx) {
+	public DeathOfChivalry(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -33,11 +33,11 @@ public class DeathOfChivalry extends Node{
 	Method Method = new Method(ctx);
 	@Override
 	public void execute() {
-		if((ctx.settings.get(3820)&0xFF)==10||
-				(ctx.settings.get(3820)&0xFF)==20){
+		if((ctx.varpbits.varpbit(3820)&0xFF)==10||
+				(ctx.varpbits.varpbit(3820)&0xFF)==20){
 			cs3();//
 		}else
-		if((ctx.settings.get(3820)&0xFF)==5){
+		if((ctx.varpbits.varpbit(3820)&0xFF)==5){
 			cs2();//pick-up he armour & speak to the false-god
 		}else cs1();//Start the quest
 		
@@ -51,7 +51,7 @@ public class DeathOfChivalry extends Node{
 		if(!Method.findOption(opt))
 			if(!Method.isChatting("Guard")){
 				
-		if(ctx.game.getPlane()==1){
+		if(ctx.game.floor()==1){
 			Method.state("Now on floor 1");
 		}else if(new Tile(3004,3575,0).distanceTo(local)<7){
 			Method.interactO(86701, "Climb-up", "Stairs");
@@ -66,7 +66,7 @@ public class DeathOfChivalry extends Node{
 		Tile local = ctx.players.local().getLocation();
 		String[] opt = {"Yes, teleport us to the Black"};
 		
-		while(ctx.settings.get(1113)!=0){
+		while(ctx.varpbits.varpbit(1113)!=0){
 			Method.state("Cutscene occurring");
 			Method.pressContinue();
 		}
@@ -85,7 +85,7 @@ public class DeathOfChivalry extends Node{
 				Method.interactInventory("Black Knight captain's gown", "Wear", "Item");
 			}
 			
-			if((ctx.settings.get(3820)>>16&0xFF)!=2){//if picked up armour
+			if((ctx.varpbits.varpbit(3820)>>16&0xFF)!=2){//if picked up armour
 				if(!Method.findOption(opt))
 					if(!Method.isChatting("Blue man")){
 						Method.npcInteract("Saradomin", "Talk-to");
@@ -107,7 +107,7 @@ public class DeathOfChivalry extends Node{
 		Tile local = ctx.players.local().getLocation();
 		String[] opt = {"How can I help?","You are no god of","Saradomin must have had",
 				"I guess I have one","Actually, it was a","The raven caws"};
-		while(ctx.settings.get(1113)!=0){
+		while(ctx.varpbits.varpbit(1113)!=0){
 			Method.state("Cutscene occurring");
 			Method.pressContinue();
 		}
@@ -127,3 +127,4 @@ public class DeathOfChivalry extends Node{
 	}
 
 }
+*/
