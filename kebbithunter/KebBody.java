@@ -7,46 +7,43 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.powerbot.event.PaintListener;
+
+import org.powerbot.script.Filter;
 import org.powerbot.script.PollingScript;
-import org.powerbot.script.lang.BasicNamedQuery;
-import org.powerbot.script.lang.Filter;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.Hud.Window;
-import org.powerbot.script.wrappers.Action;
-import org.powerbot.script.wrappers.GameObject;
-import org.powerbot.script.wrappers.Tile;
-import org.powerbot.script.util.GeItem;
-import org.powerbot.script.util.Random;
-import org.powerbot.script.util.Timer;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.Script;
+import org.powerbot.script.rt6.Action;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.GameObject;
+import org.powerbot.script.rt6.Hud.Window;
+import org.powerbot.script.rt6.MobileIdNameQuery;
 
 
+@Script.Manifest(name = "Delta Kebbit Hunter", 
+description = "Hunts Kebbits for money, 200k/hr", properties = "topic = 1134247")
 
-
-@org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "Delta Kebbit Hunter", 
-description = "Hunts polar kebbits for fur, banks them, repeat. 300K GP/hr",topic=1134247, version = 1
-)
-public class KebBody extends PollingScript implements PaintListener{
+public class KebBody extends PollingScript<ClientContext> implements org.powerbot.script.PaintListener{
 
 	public KebBody(){
 		getExecQueue(State.STOP).add(new Runnable() {
-			@Override
+			
 			public void run() {
-				getController().stop();
+				// getController().stop();
+				stop();
 			}
-			});
+		});
 		getExecQueue(State.START).add(new Runnable() {
-			@Override
+			
 			public void run() {
-				
-				for(Action g: ctx.combatBar.getActions()){
-					if(g.getId()==9986){//bear meat
-						dropSlot = g.getSlot();
+				for(Action g: ctx.combatBar.actions()){
+					if(g.id()==9986){//bear meati
+						dropSlot = g.slot();
 						dropAction = true;
 						System.out.println("Setting to drop via actionbar, slot: " + dropSlot + ": " + dropAction);
 					}
-					if(g.getId()==526){//bones
-						burySlot = g.getSlot();
+					if(g.id()==526){//bones
+						burySlot = g.slot();
 						buryAction = true;
 						System.out.println("Setting to bury via actionbar, slot: " + burySlot + ": " + buryAction);
 					}
@@ -55,9 +52,9 @@ public class KebBody extends PollingScript implements PaintListener{
 					   //GeItem.getPrice(10117);//kebbit fur
 			    
 				huntAmount = Random.nextInt(23,26);
-				runtime = new Timer(0);
-				secondsA = new Timer(0);
-				minutesA = new Timer(0);
+				//runtime = new Timer(0);
+				//secondsA = new Timer(0);
+				//minutesA = new Timer(0);
 				addNode(new hunt(ctx));
 				addNode(new bank(ctx));
 				addNode(new KebAntipattern(ctx));
@@ -66,6 +63,7 @@ public class KebBody extends PollingScript implements PaintListener{
 			}
 			
 		});
+		System.out.println("Done start");
 	}
 	public Tile pathToKebbit[] = {
 			 new Tile(2880, 3543, 0), new Tile(2884, 3540, 0), new Tile(2888, 3537, 0), 
@@ -84,7 +82,7 @@ public class KebBody extends PollingScript implements PaintListener{
 	
 	
 	public static String state;
-	public double version = 0.1002;
+	public double version = 0.1004;
 	
 	int dropSlot;
 	boolean dropAction = false;
@@ -95,11 +93,11 @@ public class KebBody extends PollingScript implements PaintListener{
 	public static boolean antiPattern;
 	private Random rand = new Random();
 	private boolean start = false;
-	public static Timer waitClickMap = new Timer(0);
-	public static Timer wait = new Timer(0);//General use timer
-	private Timer runtime;
-	private Timer secondsA;
-	private Timer minutesA;
+	//public static Timer waitClickMap = new Timer(0);
+	//public static Timer wait = new Timer(0);//General use timer
+	//private Timer runtime;
+	//private Timer secondsA;
+	//private Timer minutesA;
 	private int initialExp;
 	KebMethod Method = new KebMethod(ctx);
 	KebAntipattern anti = new KebAntipattern(ctx);
@@ -111,32 +109,33 @@ public class KebBody extends PollingScript implements PaintListener{
 	
 	public int kebbitInvMonitor = 0;
 	public int kebbitCount = 0;
+	
+
 	@Override
-	public int poll() {
-		
+	public void poll() {
 		if(Method.inventoryGetCount(10117)!=kebbitInvMonitor){
 			kebbitCount++;
 			kebbitInvMonitor = Method.inventoryGetCount(10117);
 		}
-		while(ctx.widgets.get(669,1).isVisible()){//tut stuff
+		while(ctx.widgets.component(669,1).visible()){//tut stuff
 			state = "Closing interface";
-			ctx.widgets.get(669,1).click();
+			ctx.widgets.component(669,1).click();
 		}
-		while(ctx.widgets.get(1477,54).isVisible()){
+		while(ctx.widgets.component(1477,54).visible()){
 			state = "Closing interface";
-			ctx.widgets.get(1477,54).getChild(2).click();
+			ctx.widgets.component(1477,54).component(2).click();
 		}
-		while(ctx.widgets.get(1223,11).isVisible()){//task complete
+		while(ctx.widgets.component(1223,11).visible()){//task complete
 			state = "Closing interface";
-			ctx.widgets.get(1223,11).click();//close button
+			ctx.widgets.component(1223,11).click();//close button
 		}
-		while(ctx.widgets.get(1401,31).isVisible()){//become a member!
+		while(ctx.widgets.component(1401,31).visible()){//become a member!
 			state = "Closing interface";
-			ctx.widgets.get(1401,31).click();
+			ctx.widgets.component(1401,31).click();
 		}
-		while(ctx.widgets.get(1186,0).isVisible()){//after collecting limit of 10 chronicles..
+		while(ctx.widgets.component(1186,0).visible()){//after collecting limit of 10 chronicles..
 			state = "Closing interface";
-			Method.clickOnMap(ctx.players.local().getLocation().randomize(3, 5));
+			ctx.movement.step(ctx.players.local().tile());
 		}
 		for(KebNode node: nodeList){
 			if(node.activate()){
@@ -144,7 +143,6 @@ public class KebBody extends PollingScript implements PaintListener{
 			}
 		}
 		
-		return 400;
 	}
 	
 	   private void addNode(final KebNode...nodes) {
@@ -157,7 +155,7 @@ public class KebBody extends PollingScript implements PaintListener{
 	    }
 	   class bank extends KebNode{
 
-		public bank(MethodContext ctx) {
+		public bank(ClientContext ctx) {
 			super(ctx);
 		}
 
@@ -168,23 +166,24 @@ public class KebBody extends PollingScript implements PaintListener{
 		public Tile bankTile = new Tile(2888,3536,0);
 		@Override
 		public void execute() {
-			Tile local = ctx.players.local().getLocation();
+			Tile local = ctx.players.local().tile();
 			if(!Method.inventoryContains(10117)){//kebbit fur
 				hunt = true;
 			}
 			if(bankTile.distanceTo(local)<6){
-				if(ctx.bank.isOpen()){
+				if(ctx.bank.open()){
 					ctx.bank.depositInventory();
-				}else if(!wait.isRunning()){
+				}else{
 					Method.interactO(25688, "Bank", "Bank");
-					wait = new Timer(Random.nextInt(100, 2000));
+					Method.sleep(2500);
 				}
-			}else if(!ctx.players.local().isInMotion() ||
-					ctx.players.local().getLocation().distanceTo(ctx.movement.getDestination())<6){
+			}else if(!ctx.players.local().inMotion() ||
+					ctx.players.local().tile().distanceTo(ctx.movement.destination())<6){
 				state = "Walking to bank";
-				if(!ctx.movement.findPath(bankTile.randomize(1, 2)).traverse()){
-				ctx.movement.newTilePath(pathToBank).randomize(1, 2).traverse();
+				if(!ctx.movement.findPath(bankTile.derive(1, 2)).traverse()){
+				ctx.movement.newTilePath(pathToBank).traverse();
 				}//wait = new Timer(Random.nextInt(2300,2600));
+				Method.sleep(2500);
 			}
 			
 		}
@@ -193,7 +192,7 @@ public class KebBody extends PollingScript implements PaintListener{
 	   }
 	   class hunt extends KebNode {
 
-		public hunt(MethodContext ctx) {
+		public hunt(ClientContext ctx) {
 			super(ctx);
 		}
 
@@ -214,7 +213,7 @@ public class KebBody extends PollingScript implements PaintListener{
 			while((hasJunkItems() && allowDrop)||
 					(hasJunkItems()&&Method.backPackFreeSlots()>24)){
 				
-				if(ctx.hud.isVisible(Window.FRIENDS))
+				if(ctx.hud.opened(Window.FRIENDS))
 					break;
 				
 				state  ="Dealing with items";
@@ -229,10 +228,10 @@ public class KebBody extends PollingScript implements PaintListener{
 				
 			}
 			allowDrop = false;
-			if(ctx.camera.getPitch()>70){
-				ctx.camera.setPitch(Random.nextInt(30, 65));
-			}else if(ctx.camera.getPitch()<30)
-				ctx.camera.setPitch(Random.nextInt(33, 68));
+			if(ctx.camera.pitch()>70){
+				ctx.camera.pitch(Random.nextInt(30, 65));
+			}else if(ctx.camera.pitch()<30)
+				ctx.camera.pitch(Random.nextInt(33, 68));
 			
 			int backPackItems;
 			backPackItems = Method.inventoryGetCount(10117);
@@ -240,115 +239,115 @@ public class KebBody extends PollingScript implements PaintListener{
 				hunt = false;
 			}
 			
-			if (new Tile(2871,3481,0).distanceTo(ctx.players.local().getLocation())>25){//kebbit area
+			if (new Tile(2871,3481,0).distanceTo(ctx.players.local().tile())>25){//kebbit area
 				ctx.bank.close();
-				if(!ctx.players.local().isInMotion() ||
-						ctx.players.local().getLocation().distanceTo(ctx.movement.getDestination())<6){
+				if(!ctx.players.local().inMotion() ||
+						ctx.players.local().tile().distanceTo(ctx.movement.destination())<6){
 				state = "Walking back to kebbit area";
 				ctx.movement.newTilePath(pathToKebbit).traverse();//goes to kebbit area
 				}
 			}else
-			if(ctx.settings.get(1218)==0){
+			if(ctx.varpbits.varpbit(1218)==0){
 				state = "Initialize the hunt.";
 				set = 0;//reset the variable
 				catchKebbit(new Tile(2873,3488,0),66473,"Inspect");//initial hole
 			}
-			if((ctx.settings.get(1218)>>27&0x3) ==2){
+			if((ctx.varpbits.varpbit(1218)>>27&0x3) ==2){
 				catchKebbit(new Tile(2867,3483,0),66496, "Attack");//east snow pile
-			}else if((ctx.settings.get(1218)>>27&0x3) ==3){
+			}else if((ctx.varpbits.varpbit(1218)>>27&0x3) ==3){
 				catchKebbit(new Tile(2876,3479,0),66496,"Attack");//west snow pile
 			}else
 			if(set==1){
 				//do set
-				if(((ctx.settings.get(1218)>>6&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>6&0x1) ==1)){
 					state = "Go to the lowest rock";
 					checkRock(new Tile(2875,3482,0),66469);
-				}else if(((ctx.settings.get(1218)>>3&0x1) ==1)){
+				}else if(((ctx.varpbits.varpbit(1218)>>3&0x1) ==1)){
 					state = "Go to the center rock";
 					checkRock(new Tile(2871,3483,0),66468);
 				}
 			}else if(set==2){
 				//do set
-				if(((ctx.settings.get(1218)>>6&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>6&0x1) ==1)){
 					state = "Go to lowest rock";
 					checkRock(new Tile(2875,3482,0),66469);
 				}else
-				if(((ctx.settings.get(1218)>>5&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>5&0x1) ==1)){
 					state = "Go to upper-right center rock";
 					checkRock(new Tile(2869,3486,0),66467);
 				}
 			}else if(set==3){
 				//do set
-				if(((ctx.settings.get(1218)>>16&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>16&0x1) ==1)){
 					state = "Go to largest rock to the left";
 					checkRock(new Tile(2873,3476,0),66472);
 				}else
-				if(((ctx.settings.get(1218)>>13&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>13&0x1) ==1)){
 					state = "Go to left-most rock by center";
 					checkRock(new Tile(2872,3479,0),66471);
 				}else
-				if(((ctx.settings.get(1218)>>10&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>10&0x1) ==1)){
 					state = "Go to largest rock near top";
 					checkRock(new Tile(2867,3481,0),66470);
 				}
 			}else if(set==4){
 				//do set
-				if(((ctx.settings.get(1218)>>13&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>13&0x1) ==1)){
 					state = "Go to left-most rock by center";
 					checkRock(new Tile(2872,3479,0),66471);
 				}else
-				if(((ctx.settings.get(1218)>>16&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>16&0x1) ==1)){
 					state = "Go to largest rock to the left";
 					checkRock(new Tile(2873,3476,0),66472);
 				}else
-				if(((ctx.settings.get(1218)>>10&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>10&0x1) ==1)){
 					state = "Go to largest rock near top";
 					checkRock(new Tile(2867,3481,0),66470);
 				}
 			}else if(set==5){
 				//do set
-				if(((ctx.settings.get(1218)>>16&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>16&0x1) ==1)){
 					state = "Go to largest rock to the left";
 					checkRock(new Tile(2873,3476,0),66472);
 				}else
-				if(((ctx.settings.get(1218)>>9&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>9&0x1) ==1)){
 					state = "Go to largest rock near top";
 					checkRock(new Tile(2867,3481,0),66470);
 				}else
-				if(((ctx.settings.get(1218)>>12&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>12&0x1) ==1)){
 					state = "Go to left-most rock by center";
 					checkRock(new Tile(2872,3479,0),66471);
 				}
 		    	}else if(set==6){
 				//do set
-				if(((ctx.settings.get(1218)>>13&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>13&0x1) ==1)){
 					state = "Go to left-most rock by center";
 					checkRock(new Tile(2872,3479,0),66471);
 				}else
-				if(((ctx.settings.get(1218)>>9&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>9&0x1) ==1)){
 					state = "Go to largest rock near top";
 					checkRock(new Tile(2867,3481,0),66470);
 				}else
-				if(((ctx.settings.get(1218)>>15&0x1) ==1)){
+				if(((ctx.varpbits.varpbit(1218)>>15&0x1) ==1)){
 					state = "Go to largest rock to the left";
 					checkRock(new Tile(2873,3476,0),66472);
 				}
 			}
 			
-			if((ctx.settings.get(1218)&0xF) ==12){
+			if((ctx.varpbits.varpbit(1218)&0xF) ==12){
 				set = 1;
-			}else if((ctx.settings.get(1218)&0x3F) ==33 ||
-					(ctx.settings.get(1218)&0x1) ==1){
+			}else if((ctx.varpbits.varpbit(1218)&0x3F) ==33 ||
+					(ctx.varpbits.varpbit(1218)&0x1) ==1){
 				set = 2;
-			}else if((ctx.settings.get(1218)&0x7FF) ==1028||
-					(ctx.settings.get(1218)&0xFFF) ==2052){
+			}else if((ctx.varpbits.varpbit(1218)&0x7FF) ==1028||
+					(ctx.varpbits.varpbit(1218)&0xFFF) ==2052){
 				set = 3;
-			}else if((ctx.settings.get(1218)&0x7FF) ==1056||
-					(ctx.settings.get(1218)&0xFFF) ==2080){
+			}else if((ctx.varpbits.varpbit(1218)&0x7FF) ==1056||
+					(ctx.varpbits.varpbit(1218)&0xFFF) ==2080){
 				set = 4;
-			}else if((ctx.settings.get(1218)&0x1FFF) ==4288){
+			}else if((ctx.varpbits.varpbit(1218)&0x1FFF) ==4288){
 				set = 5;
-			}else if((ctx.settings.get(1218)&0xFFFF) ==32960){
+			}else if((ctx.varpbits.varpbit(1218)&0xFFFF) ==32960){
 				set = 6;
 			}
 		}
@@ -374,64 +373,69 @@ public class KebBody extends PollingScript implements PaintListener{
 		}
 
 		private void catchKebbit(final Tile snowTile, final int id, String action) {
-			Tile local =ctx.players.local().getLocation();
-			BasicNamedQuery<GameObject> findPile =ctx.objects.select().select(new Filter<GameObject>() {
+			Tile local =ctx.players.local().tile();
+			MobileIdNameQuery<GameObject> findPile =ctx.objects.select().select(new Filter<GameObject>() {
 				public boolean accept(GameObject g) {
-					return g.getLocation().distanceTo(snowTile)<2&& g.getId()==id;
+					return g.tile().distanceTo(snowTile)<2&& g.id()==id;
 				}
 		         });
-			while (ctx.players.local().getAnimation()!=-1){
+			while (ctx.players.local().animation()!=-1){
 				state = "Inspecting snow pile";
-				wait = new Timer(500);
+				Method.sleep(Random.nextInt(1000,1200));
 			}
-			if(!wait.isRunning())
 				for(GameObject pile: findPile){
-					if(pile.getLocation().distanceTo(local)<9){
-						if(pile.isValid()&&pile.isInViewport()){
-						if(!ctx.players.local().isInMotion()&&pile.interact(action)){
-						wait = new Timer(Random.nextInt(1200, 3800));
+					if(pile.tile().distanceTo(local)<9){
+						if(pile.valid()&&pile.inViewport()){
+						if(!ctx.players.local().inMotion()&&pile.interact(action)){
+							Method.sleep(Random.nextInt(200,300));
 						}
-						}else ctx.camera.turnTo(pile.getLocation().randomize(2, 5));
-					}else if(!waitClickMap.isRunning()){
-						ctx.movement.stepTowards(pile.getLocation());
-						waitClickMap = new Timer(Random.nextInt(1800, 2200));
+						}else ctx.camera.turnTo(pile.tile().derive(2, 3));
+					}else{
+					   ctx.movement.step(pile.tile());
+					   Method.sleep(Random.nextInt(2200,2500));
 					}
 				}
+				while (ctx.players.local().animation()!=-1){
+					state = "Inspecting snow pile";
+					Method.sleep(Random.nextInt(2000,2200));
+				}
+				Method.sleep(Random.nextInt(1000,1300));
 		}
 
 		private void checkRock(final Tile rockTile, final int id) {
-			Tile local =ctx.players.local().getLocation();
+			Tile local =ctx.players.local().tile();
 			
-			BasicNamedQuery<GameObject> findRock =ctx.objects.select().select(new Filter<GameObject>() {
+			MobileIdNameQuery<GameObject> findRock =ctx.objects.select().select(new Filter<GameObject>() {
 				public boolean accept(GameObject g) {
-				return g.getLocation().distanceTo(rockTile)<2 && g.getId()==id;
+				return g.tile().distanceTo(rockTile)<2 && g.id()==id;
 					
 				}
 		         });
-			while (ctx.players.local().getAnimation()!=-1){
-				state = "Inspecting rock";
-				wait = new Timer(Random.nextInt(200, 400));
-			}
-			if(!wait.isRunning())
+			
 			for(GameObject rock: findRock){
-				if(rock.getLocation().distanceTo(local)<15){
-					if(rock.isValid()&&rock.isInViewport()){
-					if(!ctx.players.local().isInMotion()&&rock.interact("Inspect")){
-					wait = new Timer(Random.nextInt(1700, 3200));
+				if(rock.tile().distanceTo(local)<15){
+					if(rock.valid()&&rock.inViewport()){
+					if(!ctx.players.local().inMotion()&&rock.interact("Inspect")){
+						//Method.sleep(Random.nextInt(2500,4500));
 					}else {
-						ctx.camera.turnTo(rock.getLocation().randomize(1, 4));
+						ctx.camera.turnTo(rock.tile().derive(1, 3));
 					}
-					}else ctx.camera.turnTo(rock.getLocation());
-				}else if(!waitClickMap.isRunning()){
-					ctx.movement.stepTowards(rock.getLocation().randomize(1,4));
-					waitClickMap = new Timer(Random.nextInt(1800, 2800));
-				}
+					}else ctx.camera.turnTo(rock.tile());
+				}else{
+					ctx.movement.step(rock.tile().derive(1,4));
+					Method.sleep(Random.nextInt(2000,2300));
+				    }
 			}
+			while (ctx.players.local().animation()!=-1){
+				state = "Inspecting rock";
+				Method.sleep(Random.nextInt(1500,2400));
+			}
+			Method.sleep(Random.nextInt(1500,1600));
 		}
 		   
 	   }
 	   private boolean calcAntiPattern() {
-			int number = rand.nextInt(0,5);
+			int number = rand.nextInt(0,29);
 			if(number == 1){
 				antiPattern = true;
 				return true;
@@ -451,12 +455,11 @@ private void setMouse(Graphics g) {
 	g.drawLine(mouseX - 800, mouseY, mouseX + 800, mouseY);
 }
 
-	@Override
 	public void repaint(Graphics g) {
 		double runtimeHold;
 		
-		runtimeHold = runtime.getElapsed();
-		runtimeHold = 3600000/runtimeHold;
+		//runtimeHold = runtime.getElapsed();
+		//runtimeHold = 3600000/runtimeHold;
 		String expHr = "";
 		if(expHr.length()>3)
 		expHr = expHr.substring(0, expHr.length() - 3);
@@ -465,16 +468,16 @@ private void setMouse(Graphics g) {
 		mouseX = (int) ctx.mouse.getLocation().getX();
 		mouseY = (int) ctx.mouse.getLocation().getY();
 		setMouse(g);
-		int seconds = (int)(runtime.getElapsed()/1000);
-		int minutes = (int)(seconds/60);
-		int hours = (int)(minutes/60);
-		int secHold = (int)(secondsA.getElapsed()/1000);
-	    int minHold = (int)(minutesA.getElapsed()/60000);
+		//int seconds = (int)(runtime.getElapsed()/1000);
+		//int minutes = (int)(seconds/60);
+		//int hours = (int)(minutes/60);
+		//int secHold = (int)(secondsA.getElapsed()/1000);
+	   // int minHold = (int)(minutesA.getElapsed()/60000);
 		
-		if(secHold>=60)
-			secondsA = new Timer(0);
-		if(minHold>=60)
-			minutesA = new Timer(0);
+		//if(secHold>=60)
+		//	secondsA = new Timer(0);
+		//if(minHold>=60)
+		//	minutesA = new Timer(0);
 		
 		
 		g.setFont(myStateFont);
@@ -484,7 +487,7 @@ private void setMouse(Graphics g) {
 		g.drawString("State: "+state, 20, 130);
 		g.setFont(myFont);
 		g.setColor(Color.CYAN);
-		g.drawString("Runtime: " +hours+":"+minHold +":" + secHold, 20, 150);
+		//g.drawString("Runtime: " +hours+":"+minHold +":" + secHold, 20, 150);
 		g.drawString("Current pattern: " +set, 20, 170);
 		g.drawString("Gathered kebbit fur: " +kebbitCount, 20, 190);
 		String moneyNum = ""+(kebbitCount * gePrice);
@@ -511,7 +514,7 @@ private void setMouse(Graphics g) {
 	}
 
 	private void calcExpHr() {
-		int current = ctx.skills.getExperience(25);
+		int current = ctx.skills.experience(25);
 		int diff = current - initialExp;
 		//expGained = diff;
 		

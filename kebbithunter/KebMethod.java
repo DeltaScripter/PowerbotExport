@@ -2,25 +2,32 @@ package kebbithunter;
 
 import java.util.ArrayList;
 
-import org.powerbot.script.lang.ItemQuery;
-import org.powerbot.script.methods.Hud.Window;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.MethodProvider;
-import org.powerbot.script.util.Random;
-import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.GameObject;
-import org.powerbot.script.wrappers.Item;
-import org.powerbot.script.wrappers.Npc;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientAccessor;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.GameObject;
+import org.powerbot.script.rt6.Hud.Window;
+import org.powerbot.script.rt6.Item;
+import org.powerbot.script.rt6.ItemQuery;
+import org.powerbot.script.rt6.Npc;
 
-public class KebMethod extends MethodProvider{
+
+
+public class KebMethod extends ClientAccessor{
 
 	
 	
-	public KebMethod(MethodContext ctx) {
+	public KebMethod(ClientContext ctx) {
 		super(ctx);
 	}
-Timer timer = new Timer(0);
+	public void sleep(int millis){
+		try {
+			Thread.sleep(Math.max(5, (int) (millis * Random.nextDouble(0.85, 1.5))));
+		} catch (InterruptedException ignored) {
+		}
+	}
+//Timer timer = new Timer(0);
 	public GameObject getObject(int i) {
 		for(GameObject obj : ctx.objects.select().id(i).nearest().first()){
 			return obj;
@@ -33,6 +40,7 @@ Timer timer = new Timer(0);
 		}
 		return null;
 	}
+	/*
 	public void clickOnMap(Tile t) {
 		Tile winner = null;
 		 
@@ -48,13 +56,13 @@ Timer timer = new Timer(0);
 		 
 		int xTiles = ctx.widgets.get(1465, 12).getScrollWidth()/10;
 		int yTiles = ctx.widgets.get(1465, 12).getScrollHeight()/10;
-		int myX = ctx.players.local().getLocation().getX();
-		int myY = ctx.players.local().getLocation().getY();
-		int myPlane = ctx.players.local().getLocation().getPlane();
+		int myX = ctx.players.local().tile().x();
+		int myY = ctx.players.local().tile().y();
+		int myPlane = ctx.players.local().tile().z();
 		 
 		for(int i = 0; i < xTiles; i++)
 		for(int j = 0; j < yTiles; j++){
-		if(new Tile(myX - i, myY - j, myPlane).getMatrix(ctx).isOnMap()){
+		if(new Tile(myX - i, myY - j, myPlane).tile()..getMatrix(ctx).isOnMap()){
 		l.add(new Tile(myX - i, myY - j, myPlane));
 		}
 		if(new Tile(myX + i, myY - j, myPlane).getMatrix(ctx).isOnMap()){
@@ -68,7 +76,7 @@ Timer timer = new Timer(0);
 		}
 		}
 		return l;
-	}
+	}*/
 		public boolean npcIsNotNull(int id) {
 			if(!ctx.npcs.select().id(id).nearest().first().isEmpty()){
 				return true;
@@ -96,9 +104,9 @@ Timer timer = new Timer(0);
 		public void npcInteract(String name, String string) {
 			ArrayList<String> actions = new ArrayList<String>();
 			for(Npc n : ctx.npcs.select().name(name).nearest().first()){
-					if (n.isInViewport()) {
+					if (n.inViewport()) {
 						n.hover();
-						String menuItems[] = ctx.menu.getItems();
+						String menuItems[] = ctx.menu.items();
 						for(String opt: menuItems){
 							if(!actions.contains(opt))
 								actions.add(opt);
@@ -117,9 +125,9 @@ Timer timer = new Timer(0);
 		public void npcInteract(int i, String string) {
 			ArrayList<String> actions = new ArrayList<String>();
 			for(Npc n : ctx.npcs.select().id(i).nearest().first()){
-					if (n.isInViewport()) {
+					if (n.inViewport()) {
 						n.hover();
-						String menuItems[] = ctx.menu.getItems();
+						String menuItems[] = ctx.menu.items();
 						for(String opt: menuItems){
 							if(!actions.contains(opt))
 								actions.add(opt);
@@ -127,7 +135,7 @@ Timer timer = new Timer(0);
 						for(String text: actions){
 							if(text.contains(string)){
 								  n.interact(string);
-								   sleep(2000);
+								 //  sleep(2000);
 								   break;
 								
 							}
@@ -137,7 +145,7 @@ Timer timer = new Timer(0);
 		}
 		public boolean objIsByTile(Tile tile, int object, int dist) {
 			for(GameObject obj : ctx.objects.select().id(object).nearest(tile)){
-				if(obj.getLocation().distanceTo(tile)<dist){
+				if(obj.tile().distanceTo(tile)<dist){
 					return true;
 				}
 			}
@@ -157,15 +165,15 @@ Timer timer = new Timer(0);
 			}
 			public boolean backPackIsFull() {
 				ArrayList<Integer> inventory = new ArrayList<Integer>();
-				for(Item i : ctx.backpack.getAllItems()){
-						if(i.getId()!=-1)
-						inventory.add(i.getId());
+				for(Item i : ctx.backpack.select()){
+						if(i.id()!=-1)
+						inventory.add(i.id());
 				}
 				return inventory.size()>=28;
 			}
 			public int inventoryGetCount(int id) {
-				if(!ctx.hud.isOpen(Window.BACKPACK) || !ctx.hud.isVisible(Window.BACKPACK))
-					ctx.hud.view(Window.BACKPACK);
+				if(!ctx.hud.opened(Window.BACKPACK) || !ctx.hud.opened(Window.BACKPACK))
+					ctx.hud.open(Window.BACKPACK);
 				
 				ItemQuery<Item> g;
 				g = null;
@@ -174,8 +182,8 @@ Timer timer = new Timer(0);
 				return g.count(false);
 			}
 			public int inventoryGetCount(String name) {
-				if(!ctx.hud.isOpen(Window.BACKPACK) || !ctx.hud.isVisible(Window.BACKPACK))
-					ctx.hud.view(Window.BACKPACK);
+				if(!ctx.hud.open(Window.BACKPACK) || !ctx.hud.opened(Window.BACKPACK))
+					ctx.hud.open(Window.BACKPACK);
 				
 				ItemQuery<Item> g;
 				g = null;
@@ -186,17 +194,17 @@ Timer timer = new Timer(0);
 			public void interactO(final int id, final String string, final String o) {
 				for(GameObject y: ctx.objects.select().id(id).nearest().first()){
 					KebBody.state = o;
-							if (y.isInViewport()) {
+							if (y.inViewport()) {
 								y.interact(string);
-							} else ctx.camera.turnTo(y.getLocation().randomize(1,7));
+							} else ctx.camera.turnTo(y.tile().derive(1,7));
 						
 						}
 				
 			}
 			public boolean inventoryContains(String name) {
-				if(!ctx.hud.isVisible(Window.BACKPACK)){
-					ctx.hud.view(Window.BACKPACK);
-					sleep(2000);
+				if(!ctx.hud.opened(Window.BACKPACK)){
+					ctx.hud.open(Window.BACKPACK);
+					//sleep(2000);
 				}
 					while (!ctx.backpack.select().name(name).first().isEmpty()) {
 						return true;
@@ -205,9 +213,9 @@ Timer timer = new Timer(0);
 				return false;
 			}
 			public boolean inventoryContains(int ID) {
-				if(!ctx.hud.isVisible(Window.BACKPACK)){
-					ctx.hud.view(Window.BACKPACK);
-					sleep(2000);
+				if(!ctx.hud.opened(Window.BACKPACK)){
+					ctx.hud.open(Window.BACKPACK);
+					//sleep(2000);
 				}
 					while (!ctx.backpack.select().id(ID).first().isEmpty()) {
 						return true;
@@ -217,29 +225,29 @@ Timer timer = new Timer(0);
 			}
 	public void interactInventory(final int id, final String string, final String o) {
 		for(Item t : ctx.backpack.select().id(id).first()){
-			if(ctx.hud.view(Window.BACKPACK) && ctx.widgets.get(1473,7).contains(
-				t.getComponent().getCenterPoint())){
+			if(ctx.hud.open(Window.BACKPACK) && ctx.widgets.component(1473,7).contains(
+				t.component().centerPoint())){
 				t.hover();
 				t.interact(string);
-				ctx.game.sleep(150,500);
+				sleep(Random.nextInt(150,500));
 				 
 			}else
-			if(ctx.widgets.get(1473,7).getBoundingRect().getCenterY()>
-			t.getComponent().getBoundingRect().getCenterY()){
-				ctx.mouse.move(ctx.widgets.get(1473, 7).getAbsoluteLocation());
+			if(ctx.widgets.component(1473,7).boundingRect().getCenterY()>
+			t.component().boundingRect().getCenterY()){
+				ctx.mouse.move(ctx.widgets.component(1473, 7).centerPoint());
 				ctx.mouse.scroll(false);
 			}else {
-				ctx.mouse.move(ctx.widgets.get(1473, 7).getAbsoluteLocation());
+				ctx.mouse.move(ctx.widgets.component(1473, 7).centerPoint());
 				ctx.mouse.scroll(true);
 				}
 			}
 	}
 	public void teleportTo(int loc, String teleName) {
-		while(ctx.bank.isOpen())
+		while(ctx.bank.open())
 			ctx.bank.close();
 		KebBody.state = "Teleporting to: " + teleName;
-		if(!timer.isRunning()){
-		if(ctx.widgets.get(1092,loc).isVisible()){//lodestone screen
+		/*if(!timer.isRunning()){
+		if(ctx.widgets.get(1092,loc).opened()){//lodestone screen
 			ctx.mouse.move(ctx.widgets.get(1092).getComponent(loc).getCenterPoint());
 			ctx.widgets.get(1092).getComponent(loc).click(true);
 			timer = new Timer(6000);
@@ -249,16 +257,16 @@ Timer timer = new Timer(0);
 					for(String t: ctx.menu.getItems()){
 						if(t.contains("Teleport")){
 							ctx.widgets.get(1465,10).click();//select lodestone button
-							timer = new Timer(1000);
+							//timer = new Timer(1000);
 						}
 					}
 				
 				}
 		}		
-		}
+		}*/
 	}
 	public int inventoryStackSize(String name) {
-		if(ctx.hud.view(Window.BACKPACK)){
+		if(ctx.hud.open(Window.BACKPACK)){
 		
 		ItemQuery<Item> g;
 		g = null;
@@ -268,7 +276,7 @@ Timer timer = new Timer(0);
 		return 0;
 	}
 	public int inventoryStackSize(int ID) {
-		if(ctx.hud.view(Window.BACKPACK)){
+		if(ctx.hud.open(Window.BACKPACK)){
 		
 		ItemQuery<Item> g;
 		g = null;
@@ -286,9 +294,9 @@ Timer timer = new Timer(0);
 		return freeSlots;
 	}
 	public void useAction(int Slot) {
-		if(ctx.combatBar.getActionAt(Slot).isReady()){
-			if(ctx.combatBar.getActionAt(Slot).select()){
-				ctx.game.sleep(Random.nextInt(Random.nextInt(100, 200), Random.nextInt(500, 1000)));
+		if(ctx.combatBar.actionAt(Slot).ready()){
+			if(ctx.combatBar.actionAt(Slot).select()){
+				sleep(Random.nextInt(Random.nextInt(100, 200), Random.nextInt(500, 1000)));
 			}
 		}
 		

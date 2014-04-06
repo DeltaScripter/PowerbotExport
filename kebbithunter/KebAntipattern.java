@@ -2,17 +2,20 @@ package kebbithunter;
 
 import java.awt.Point;
 
-import org.powerbot.script.methods.Hud.Window;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Random;
-import org.powerbot.script.wrappers.GameObject;
-import org.powerbot.script.wrappers.GroundItem;
-import org.powerbot.script.wrappers.Item;
-import org.powerbot.script.wrappers.Player;
+import org.powerbot.script.Random;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.GameObject;
+import org.powerbot.script.rt6.GroundItem;
+import org.powerbot.script.rt6.Hud.Window;
+import org.powerbot.script.rt6.Item;
+import org.powerbot.script.rt6.Player;
+
+
+
 
 public class KebAntipattern extends KebNode{
 
-	public KebAntipattern(MethodContext ctx) {
+	public KebAntipattern(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -30,24 +33,26 @@ public class KebAntipattern extends KebNode{
 		//System.out.println(number);
 		Item i;
 		String st = "Performing antipattern technique";
+		System.out.println("Antipattern");
 		switch(number){
 		
 		case 1:
+			
 			KebBody.state = st;
 			if(m.inventoryContains(526)){
 				m.interactInventory(526, "Bury", "Bones");
 			}
-			ctx.game.sleep(100,400);
+			//ctx.game.sleep(100,400);
 			KebBody.antiPattern = false;
 			break;
 			
 		case 2:
 			KebBody.state = st;
 			for(GroundItem g : ctx.groundItems.select()){
-				if(g.isInViewport()){
-					ctx.mouse.move(g.getCenterPoint());
+				if(g.inViewport()){
+					ctx.mouse.move(g.centerPoint());
 				}
-				if(!ctx.menu.isOpen())
+				if(!ctx.menu.opened())
 					ctx.mouse.click(false);
 			}
 			KebBody.antiPattern = false;
@@ -55,19 +60,19 @@ public class KebAntipattern extends KebNode{
 			
 		case 3:
 			KebBody.state = st;
-			ctx.camera.setAngle(Random.nextInt(10, 50));
-			ctx.game.sleep(700,1000);
+			ctx.camera.angle(Random.nextInt(10, 50));
+			m.sleep(Random.nextInt(700,1000));
 			KebBody.antiPattern = false;
 			break;
 			
 		case 4:
 			KebBody.state = st;
-			i = ctx.backpack.getItemAt(Random.nextInt(7, 20));
+			i = ctx.backpack.itemAt(Random.nextInt(7, 20));
 				i.hover();
 				ctx.mouse.scroll(true);
-				ctx.game.sleep(200,2000);
+				m.sleep(Random.nextInt(200,2000));
 				ctx.mouse.move(f.x-Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
-				ctx.game.sleep(1956,3200);
+				m.sleep(Random.nextInt(1956,3200));
 				KebBody.antiPattern = false;
 			
 			break;
@@ -75,7 +80,7 @@ public class KebAntipattern extends KebNode{
 		case 5:
 			KebBody.state = st;
 			ctx.mouse.move(Random.nextInt(100, 300),Random.nextInt(100, 300));
-			ctx.game.sleep(700,1000);
+			m.sleep(Random.nextInt(700,1000));
 			KebBody.antiPattern = false;
 			break;
 			
@@ -83,28 +88,28 @@ public class KebAntipattern extends KebNode{
 			
 			KebBody.state = st;
 			ctx.mouse.move(f.x+Random.nextInt(40, 70),f.y-Random.nextInt(20, 70));
-			ctx.game.sleep(Random.nextInt(300, 1900));
+			m.sleep(Random.nextInt(300, 1900));
 			KebBody.antiPattern = false;
 			break;
 			
 		case 7:
 			KebBody.state = st;
 			ctx.mouse.move(f.x-Random.nextInt(20, 100),f.y+Random.nextInt(40, 200));
-			ctx.game.sleep(Random.nextInt(1300, 2900));
+			m.sleep(Random.nextInt(1300, 2900));
 			KebBody.antiPattern = false;
 			break;
 			
 		case 8:
 			KebBody.state = st;
 			ctx.mouse.move(f.x-Random.nextInt(20, 100),f.y+Random.nextInt(40, 200));
-			ctx.game.sleep(Random.nextInt(100, 900));
+			m.sleep(Random.nextInt(100, 900));
 			KebBody.antiPattern = false;
 			break;
 			
 		case 9:
 			KebBody.state = st;
 			ctx.mouse.move(f.x+Random.nextInt(0, 200),f.y+Random.nextInt(100, 300));
-			ctx.game.sleep(Random.nextInt(100, 900));
+			m.sleep(Random.nextInt(100, 900));
 			KebBody.antiPattern = false;
 			break;
 			
@@ -112,26 +117,26 @@ public class KebAntipattern extends KebNode{
 			KebBody.state = st;
 			ctx.mouse.move(f.x+Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
 			ctx.mouse.scroll(true);
-			ctx.game.sleep(Random.nextInt(100, 900));
+			m.sleep(Random.nextInt(100, 900));
 			KebBody.antiPattern = false;
 			break;
 			
 		case 11:
 			KebBody.state = st;
-			i = ctx.backpack.getItemAt(Random.nextInt(2, 25));
+			i = ctx.backpack.itemAt(Random.nextInt(2, 25));
 				i.hover();
 				i.click(false);
-				ctx.game.sleep(200,2000);
+				m.sleep(Random.nextInt(200,2000));
 				ctx.mouse.move(f.x-Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
-				ctx.game.sleep(1956,3200);
+				m.sleep(Random.nextInt(1956,3200));
 				KebBody.antiPattern = false;
 				break;
 				
 		case 12:
 			KebBody.state = st;
-			  if(m.objIsNotNull(66946)&&m.getObject(66946).isInViewport()){
+			  if(m.objIsNotNull(66946)&&m.getObject(66946).inViewport()){
 				  m.interactO(66946, "Attack", "Attack snow");
-				  ctx.game.sleep(Random.nextInt(2300, 4000));
+				  m.sleep(Random.nextInt(2300, 4000));
 			  }
 				KebBody.antiPattern = false;
 				break;
@@ -144,19 +149,19 @@ public class KebAntipattern extends KebNode{
 				
 		case 14:
 			KebBody.state = st;
-			ctx.camera.setAngle(Random.nextInt(30, 60));
-			ctx.game.sleep(100,400);
+			ctx.camera.angle(Random.nextInt(30, 60));
+			m.sleep(Random.nextInt(100,400));
 			if(Random.nextInt(1, 30)>15){
-			ctx.camera.setPitch(40);
-			ctx.game.sleep(1000,2400);
+			ctx.camera.pitch(40);
+			m.sleep(Random.nextInt(1000,2400));
 			}
 			KebBody.antiPattern = false;
 			break;
 			
 		case 15:
 			KebBody.state = st;
-			ctx.camera.setAngle(Random.nextInt(10, 60));
-			ctx.game.sleep(200,600);
+			ctx.camera.angle(Random.nextInt(10, 60));
+			m.sleep(Random.nextInt(200,600));
 			KebBody.antiPattern = false;
 			break;
 			
@@ -169,8 +174,8 @@ public class KebAntipattern extends KebNode{
 		case 17:
 			KebBody.state = st;
 			for(GameObject g : ctx.objects.select().first()){
-				if(g.isInViewport()){
-					ctx.mouse.move(g);
+				if(g.inViewport()){
+					ctx.mouse.move(g.centerPoint());
 				}
 			}
 			KebBody.antiPattern = false;
@@ -178,28 +183,28 @@ public class KebAntipattern extends KebNode{
 		case 18:
 			KebBody.state = st;
 			for(Player g : ctx.players.select().first()){
-				if(g.isInViewport()){
-					ctx.mouse.move(g);
-					if(!ctx.menu.isOpen())
+				if(g.inViewport()){
+					ctx.mouse.move(g.centerPoint());
+					if(!ctx.menu.opened())
 					ctx.mouse.click(false);
-					ctx.game.sleep(Random.nextInt(1200, 1600));
+					m.sleep(Random.nextInt(1200, 1600));
 					ctx.mouse.move(f.x-Random.nextInt(300, 10),f.y+Random.nextInt(0, 170));
 				}
 			}
 			KebBody.antiPattern = false;
 			break;
 		case 19:
-			if(ctx.hud.view(Window.SKILLS)){
-				ctx.game.sleep(Random.nextInt(1000, 4000));
+			if(ctx.hud.open(Window.SKILLS)){
+				m.sleep(Random.nextInt(1000, 4000));
 			}
 			break;
 			
 		case 20:
 			KebBody.state = st;
 			for(Player g : ctx.players.select().first()){
-				if(g.isInViewport()){
-					ctx.mouse.move(g);
-					ctx.game.sleep(Random.nextInt(200, 600));
+				if(g.inViewport()){
+					ctx.mouse.move(g.centerPoint());
+					m.sleep(Random.nextInt(200, 600));
 					ctx.mouse.move(f.x-Random.nextInt(300, 10),f.y+Random.nextInt(154, 23));
 				}
 			}
@@ -214,9 +219,9 @@ public class KebAntipattern extends KebNode{
 	}
 	public void closeInteruptions(){
 		//Reach Divination level cap; become a member dialogue
-		while(ctx.widgets.get(1401,36).isVisible()){
+		while(ctx.widgets.component(1401,36).visible()){
 			KebBody.state = "Closing 'Become a member!' advertisement";
-			ctx.widgets.get(1401,36).click();//close button
+			ctx.widgets.component(1401,36).click();//close button
 		}
 	}
 	
