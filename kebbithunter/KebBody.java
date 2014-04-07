@@ -48,7 +48,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 						System.out.println("Setting to bury via actionbar, slot: " + burySlot + ": " + buryAction);
 					}
 				}
-			   gePrice = 2200;
+			   gePrice = 1700;
 					   //GeItem.getPrice(10117);//kebbit fur
 			    
 				huntAmount = Random.nextInt(23,26);
@@ -82,7 +82,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 	
 	
 	public static String state;
-	public double version = 0.1004;
+	public double version = 0.10041;
 	
 	int dropSlot;
 	boolean dropAction = false;
@@ -388,8 +388,14 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 						if(pile.valid()&&pile.inViewport()){
 						if(!ctx.players.local().inMotion()&&pile.interact(action)){
 							Method.sleep(Random.nextInt(200,300));
+						}else {
+							System.out.println("Turning camera, catching kebbit");
+							ctx.camera.turnTo(pile.tile());
 						}
-						}else ctx.camera.turnTo(pile.tile().derive(2, 3));
+						}else {
+							System.out.println("Turning camera, catching kebbit");
+							ctx.camera.turnTo(pile.tile());
+						}
 					}else{
 					   ctx.movement.step(pile.tile());
 					   Method.sleep(Random.nextInt(2200,2500));
