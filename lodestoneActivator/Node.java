@@ -1,8 +1,9 @@
 package lodestoneActivator;
 
+import org.powerbot.script.rt6.ClientContext;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.MethodProvider;
+
+
 
 /**
 * Created For Educational Purposes, please do not use maliciously.
@@ -12,11 +13,11 @@ import org.powerbot.script.methods.MethodProvider;
 * To change this template use File | Settings | File Templates.
 */
 
-    public abstract class Node extends MethodProvider {
+    public abstract class Node extends ClientContext {
 
-    protected MethodContext ctx;
+    protected ClientContext ctx;
 
-    public Node(MethodContext ctx) {
+    public Node(ClientContext ctx) {
         super(ctx);
         this.ctx = ctx;
     }

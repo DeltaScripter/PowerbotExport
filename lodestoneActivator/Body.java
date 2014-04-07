@@ -7,21 +7,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.powerbot.script.PollingScript;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.GameObject;
+
 import lodestoneActivator.Data.TeleportLode;
 import lodestoneActivator.Data.TeleportType;
-
-import org.powerbot.event.PaintListener;
-import org.powerbot.script.PollingScript;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.GameObject;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Script;
 
 
 
-@org.powerbot.script.Manifest(authors = { "Delta Scripter" }, name = "DeltaLodestone", 
-description = "Simply unlocks 5 main F2P lodestones.", website = "", version = .12,topic = 1129211)
-public class Body extends PollingScript implements PaintListener{
+@Script.Manifest(name = "DeltaLodestone", 
+description = "Unlocks various F2P lodestones",properties = "topic = 1129211")
+
+public class Body extends PollingScript <ClientContext> implements org.powerbot.script.PaintListener{
 
 	public final Tile pathToVarrock[] = new Tile[]{
 			new Tile(3207,3233,0),new Tile(3217,3232,0), new Tile(3221,3223,0),
@@ -72,8 +73,6 @@ public class Body extends PollingScript implements PaintListener{
 		new Tile(3292,3189,0),new Tile(3298,3184,0)
 	};
 	private final List<Node> nodeList = Collections.synchronizedList(new ArrayList<Node>());
-	private Timer teleportTimer = new Timer(0);
-	private Timer walkingTimer = new Timer(0);
 	private String state;
 	private String countLodestones;
 	
@@ -86,15 +85,18 @@ public class Body extends PollingScript implements PaintListener{
 		});
 	}
 	@Override
-	public int poll() {
+	public void poll() {
 		
+		if(ctx.widgets.component(1223,11).component(1).visible()){
+			state = "Closing interface";
+			ctx.widgets.component(1223,11).component(1).click();
+		}else
 		for(Node node: nodeList){
 			if(node.activate()){
 				node.execute();
 			}
 		}
 		
-		return 200;
 	}
 	
 	   private void addNode(final Node...nodes) {
@@ -111,7 +113,7 @@ public class Body extends PollingScript implements PaintListener{
 	   
 	private boolean dynamicV;
 
-	public walkTo(MethodContext ctx) {
+	public walkTo(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -123,19 +125,19 @@ public class Body extends PollingScript implements PaintListener{
 	@Override
 	public void execute() {
 		
-		if((ctx.settings.get(3) >> 11 & 0x1)==1){//Varrok is active
+		if((ctx.varpbits.varpbit(3) >> 11 & 0x1)==1){//Varrok is active
 			countLodestones = "5 lodestones left";
-			if((ctx.settings.get(3) >>6 &0x1)==1){//Falador
+			if((ctx.varpbits.varpbit(3) >>6 &0x1)==1){//Falador
 				countLodestones = "4 lodestones left";
-				if((ctx.settings.get(3) >>4 &0x1)==1){//Draynor
+				if((ctx.varpbits.varpbit(3) >>4 &0x1)==1){//Draynor
 					countLodestones = "3 lodestones left";
-					if((ctx.settings.get(3) >> 10 &0x1) == 1){//Taverly
+					if((ctx.varpbits.varpbit(3) >> 10 &0x1) == 1){//Taverly
 						countLodestones = "2 lodestones left";
-						if((ctx.settings.get(3) >> 8 & 0x1) == 1){//Port Sarim
+						if((ctx.varpbits.varpbit(3) >> 8 & 0x1) == 1){//Port Sarim
 							countLodestones = "1 lodestones left";
-							if((ctx.settings.get(3) & 0x1) == 1){//Alkharid
-								System.out.println("Finished");
-								getController().stop();
+							if((ctx.varpbits.varpbit(3) & 0x1) == 1){//Alkharid
+								System.out.println("Finished unlocking lodestones");
+								this.controller().stop();
 							}else unlockLodeStone(TeleportLode.ALHARID.getTile(), 69829,pathToAlkharid,TeleportLode.LUMMBRIDGE.getTile(),TeleportType.LUMBRIDGE.getTeleport(),"Unlocking Alkharid");
 						}else unlockLodeStone(TeleportLode.PORTSARIM.getTile(), 69837,pathToPortSarim,TeleportLode.FALADOR.getTile(),TeleportType.FALADOR.getTeleport(),"Unlocking Port Sarim");
 					}else unlockLodeStone(TeleportLode.TAVERLY.getTile(), 69839,pathToTaverly,TeleportLode.BURTHORPE.getTile(),TeleportType.BURTHHORPE.getTeleport(),"Unlocking Taverly");
@@ -149,20 +151,20 @@ public class Body extends PollingScript implements PaintListener{
 
 	private void unlockLodeStone(Tile lodeArea, int lodestoneID, Tile[] pathToLode,Tile teleLodeTile, int teleport,String condition) {
 		state = condition;
-		if(lodeArea.distanceTo(ctx.players.local().getLocation())<7){
+		if(lodeArea.distanceTo(ctx.players.local().tile())<7){
 			dynamicV = false;
 			for(GameObject lode: ctx.objects.select().id(lodestoneID).nearest().first()){
 				lode.interact("Activate");
-				ctx.game.sleep(700,1000);
+			    sleep(Random.nextInt(100, 500));
 			}
 		}else if(dynamicV){
-			if(new Tile(2943,3440,0).distanceTo(ctx.players.local().getLocation())<8 && 
+			if(new Tile(2943,3440,0).distanceTo(ctx.players.local().tile())<8 && 
 					objIsNotNull(28690) && objIsByTile(new Tile(2943,3440,0),28690,5)){
 				for(GameObject gate: ctx.objects.select().id(28690).nearest().first()){
 				 gate.interact("Open");
 				}
 			}else walk(pathToLode);
-		}else if(teleLodeTile.distanceTo(ctx.players.local().getLocation())<7){
+		}else if(teleLodeTile.distanceTo(ctx.players.local().tile())<7){
 			dynamicV = true;
 		}else teleportTo(teleport);
 		
@@ -171,7 +173,7 @@ public class Body extends PollingScript implements PaintListener{
 
 	public boolean objIsByTile(Tile tile, int object, int dist) {
 		for(GameObject obj : ctx.objects.select().id(object).nearest(tile)){
-			if(obj.getLocation().distanceTo(tile)<dist){
+			if(obj.tile().distanceTo(tile)<dist){
 				return true;
 			}
 		}
@@ -185,30 +187,34 @@ public class Body extends PollingScript implements PaintListener{
 	}
 	   
    }
+   public void sleep(int millis){
+		try {
+			Thread.sleep(Math.max(5, (int) (millis * Random.nextDouble(0.85, 1.5))));
+		} catch (InterruptedException ignored) {
+		}
+	}
    public void walk(Tile[] tile){
-	   if(!walkingTimer.isRunning()){
 		   ctx.movement.newTilePath(tile).traverse();
-		   walkingTimer = new Timer(3800);
-	   }
+		   sleep(2500);
    }
    public void teleportTo(int tele){
 	  
-	   if(ctx.players.local().getAnimation()==-1 && !teleportTimer.isRunning())
-	   if(ctx.widgets.get(1092,tele).isVisible()){
-		   ctx.mouse.move(ctx.widgets.get(1092,tele).getCenterPoint());
+	   if(ctx.players.local().animation()==-1)
+	   if(ctx.widgets.component(1092,tele).visible()){
+		   ctx.mouse.move(ctx.widgets.component(1092,tele).centerPoint());
 				   ctx.mouse.click(true);
-				   ctx.game.sleep(300);
-				   teleportTimer = new Timer(3000);
-		  
+				   sleep(500);
+				 
 	   }else {
-		   ctx.widgets.get(1465,10).interact("Teleport");//select lodestone button
-		   ctx.game.sleep(300);
+		   ctx.widgets.component(1465,10).interact("Teleport");//select lodestone button
 	   }
+	   sleep(1500);
 	   
 	   
    }
  private Font myFont = new Font("Consolas",Font.BOLD,14);
-@Override
+
+ 
 public void repaint(Graphics g) {
 	g.setColor(Color.GREEN);
 	g.setFont(myFont);
