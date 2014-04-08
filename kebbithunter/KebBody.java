@@ -25,46 +25,7 @@ description = "Hunts Kebbits for money, 200k/hr", properties = "topic = 1134247"
 
 public class KebBody extends PollingScript<ClientContext> implements org.powerbot.script.PaintListener{
 
-	public KebBody(){
-		getExecQueue(State.STOP).add(new Runnable() {
-			
-			public void run() {
-				// getController().stop();
-				stop();
-			}
-		});
-		getExecQueue(State.START).add(new Runnable() {
-			
-			public void run() {
-				for(Action g: ctx.combatBar.actions()){
-					if(g.id()==9986){//bear meati
-						dropSlot = g.slot();
-						dropAction = true;
-						System.out.println("Setting to drop via actionbar, slot: " + dropSlot + ": " + dropAction);
-					}
-					if(g.id()==526){//bones
-						burySlot = g.slot();
-						buryAction = true;
-						System.out.println("Setting to bury via actionbar, slot: " + burySlot + ": " + buryAction);
-					}
-				}
-			   gePrice = 1700;
-					   //GeItem.getPrice(10117);//kebbit fur
-			    
-				huntAmount = Random.nextInt(23,26);
-				//runtime = new Timer(0);
-				//secondsA = new Timer(0);
-				//minutesA = new Timer(0);
-				addNode(new hunt(ctx));
-				addNode(new bank(ctx));
-				addNode(new KebAntipattern(ctx));
-				
-				kebbitInvMonitor = Method.inventoryGetCount(10117);//for counting number of kebbit furs
-			}
-			
-		});
-		System.out.println("Done start");
-	}
+
 	public Tile pathToKebbit[] = {
 			 new Tile(2880, 3543, 0), new Tile(2884, 3540, 0), new Tile(2888, 3537, 0), 
 				new Tile(2891, 3533, 0), new Tile(2893, 3528, 0), new Tile(2896, 3524, 0), 
@@ -82,7 +43,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 	
 	
 	public static String state;
-	public double version = 0.10041;
+	public double version = 0.10042;
 	
 	int dropSlot;
 	boolean dropAction = false;
@@ -90,14 +51,9 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 	boolean buryAction = false;
 	
 	public int gePrice;
+	public boolean done = false;
 	public static boolean antiPattern;
 	private Random rand = new Random();
-	private boolean start = false;
-	//public static Timer waitClickMap = new Timer(0);
-	//public static Timer wait = new Timer(0);//General use timer
-	//private Timer runtime;
-	//private Timer secondsA;
-	//private Timer minutesA;
 	private int initialExp;
 	KebMethod Method = new KebMethod(ctx);
 	KebAntipattern anti = new KebAntipattern(ctx);
@@ -113,6 +69,9 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 
 	@Override
 	public void poll() {
+		
+		onStart();
+		
 		if(Method.inventoryGetCount(10117)!=kebbitInvMonitor){
 			kebbitCount++;
 			kebbitInvMonitor = Method.inventoryGetCount(10117);
@@ -145,7 +104,34 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 		
 	}
 	
-	   private void addNode(final KebNode...nodes) {
+	   private void onStart() {
+		   if(!done){
+			for(Action g: ctx.combatBar.actions()){
+				if(g.id()==9986){//bear meati
+					dropSlot = g.slot();
+					dropAction = true;
+					System.out.println("Setting to drop via actionbar, slot: " + dropSlot + ": " + dropAction);
+				}
+				if(g.id()==526){//bones
+					burySlot = g.slot();
+					buryAction = true;
+					System.out.println("Setting to bury via actionbar, slot: " + burySlot + ": " + buryAction);
+				}
+			}
+		   gePrice = 1700;
+				   //GeItem.getPrice(10117);//kebbit fur
+		    
+			huntAmount = Random.nextInt(23,26);
+			addNode(new hunt(ctx));
+			addNode(new bank(ctx));
+			addNode(new KebAntipattern(ctx));
+			
+			kebbitInvMonitor = Method.inventoryGetCount(10117);//for counting number of kebbit furs
+			done = true;
+		   }
+	}
+
+	private void addNode(final KebNode...nodes) {
 		   
 	        for(KebNode node : nodes) {
 	            if(!this.nodeList.contains(node)) {
@@ -462,8 +448,6 @@ private void setMouse(Graphics g) {
 }
 
 	public void repaint(Graphics g) {
-		double runtimeHold;
-		
 		//runtimeHold = runtime.getElapsed();
 		//runtimeHold = 3600000/runtimeHold;
 		String expHr = "";
@@ -521,8 +505,6 @@ private void setMouse(Graphics g) {
 
 	private void calcExpHr() {
 		int current = ctx.skills.experience(25);
-		int diff = current - initialExp;
-		//expGained = diff;
 		
 	}
 

@@ -74,18 +74,14 @@ public class Body extends PollingScript <ClientContext> implements org.powerbot.
 	};
 	private final List<Node> nodeList = Collections.synchronizedList(new ArrayList<Node>());
 	private String state;
+	public boolean done = false;
 	private String countLodestones;
 	
-	public Body(){
-		getExecQueue(State.START).add(new Runnable() {
-			@Override
-			public void run() {
-				   addNode(new walkTo(ctx));
-			}
-		});
-	}
+	
 	@Override
 	public void poll() {
+		
+		onStart();
 		
 		if(ctx.widgets.component(1223,11).component(1).visible()){
 			state = "Closing interface";
@@ -99,7 +95,14 @@ public class Body extends PollingScript <ClientContext> implements org.powerbot.
 		
 	}
 	
-	   private void addNode(final Node...nodes) {
+	   private void onStart() {
+		if(!done){
+			 addNode(new walkTo(ctx));
+			done=true;
+		}
+		
+	}
+	private void addNode(final Node...nodes) {
 		   
 	        for(Node node : nodes) {
 	            if(!this.nodeList.contains(node)) {
