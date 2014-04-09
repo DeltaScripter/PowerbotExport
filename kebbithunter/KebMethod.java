@@ -21,6 +21,38 @@ public class KebMethod extends ClientAccessor{
 	public KebMethod(ClientContext ctx) {
 		super(ctx);
 	}
+	public static String format(final long millis) {
+		final StringBuilder sb = new StringBuilder();
+		final long totalseconds = millis / 1000L;
+		final long totalminutes = totalseconds / 60L;
+		final long totalhours = totalminutes / 60L;
+		final int seconds = (int) totalseconds % 60;
+		final int minutes = (int) totalminutes % 60;
+		final int hours = (int) totalhours % 24;
+		final int days = (int) (totalhours / 24);
+		if (days > 0) {
+		if (days < 10) {
+		sb.append(0);
+		}
+		sb.append(days);
+		sb.append(":");
+		}
+		if (hours < 10) {
+		sb.append(0);
+		}
+		sb.append(hours);
+		sb.append(":");
+		if (minutes < 10) {
+		sb.append(0);
+		}
+		sb.append(minutes);
+		sb.append(":");
+		if (seconds < 10) {
+		sb.append(0);
+		}
+		sb.append(seconds);
+		return sb.toString();
+		}
 	public void sleep(int millis){
 		try {
 			Thread.sleep(Math.max(5, (int) (millis * Random.nextDouble(0.85, 1.5))));

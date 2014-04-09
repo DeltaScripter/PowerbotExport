@@ -43,7 +43,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 	
 	
 	public static String state;
-	public double version = 0.10042;
+	public double version = 0.10043;
 	
 	int dropSlot;
 	boolean dropAction = false;
@@ -55,6 +55,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 	public static boolean antiPattern;
 	private Random rand = new Random();
 	private int initialExp;
+	public long runTime;
 	KebMethod Method = new KebMethod(ctx);
 	KebAntipattern anti = new KebAntipattern(ctx);
 	public int set = 0;
@@ -71,7 +72,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 	public void poll() {
 		
 		onStart();
-		
+		Method.sleep(500);
 		if(Method.inventoryGetCount(10117)!=kebbitInvMonitor){
 			kebbitCount++;
 			kebbitInvMonitor = Method.inventoryGetCount(10117);
@@ -106,6 +107,8 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 	
 	   private void onStart() {
 		   if(!done){
+		   runTime = System.currentTimeMillis();
+			   
 			for(Action g: ctx.combatBar.actions()){
 				if(g.id()==9986){//bear meati
 					dropSlot = g.slot();
@@ -155,8 +158,12 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 			Tile local = ctx.players.local().tile();
 			if(!Method.inventoryContains(10117)){//kebbit fur
 				hunt = true;
+				System.out.println("Setting hunt to true");
 			}
 			if(bankTile.distanceTo(local)<6){
+				if(!ctx.bank.inViewport())
+					ctx.camera.turnTo(ctx.bank.nearest());
+				else
 				if(ctx.bank.open()){
 					ctx.bank.depositInventory();
 				}else{
@@ -168,7 +175,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 				state = "Walking to bank";
 				if(!ctx.movement.findPath(bankTile.derive(1, 2)).traverse()){
 				ctx.movement.newTilePath(pathToBank).traverse();
-				}//wait = new Timer(Random.nextInt(2300,2600));
+				}
 				Method.sleep(2500);
 			}
 			
@@ -189,9 +196,6 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 		
 		@Override
 		public void execute() {
-			
-		
-			
 			
 		
 			calcAntiPattern();
@@ -223,6 +227,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 			backPackItems = Method.inventoryGetCount(10117);
 			if(backPackItems >= huntAmount){
 				hunt = false;
+				System.out.println("Setting hunt to false");
 			}
 			
 			if (new Tile(2871,3481,0).distanceTo(ctx.players.local().tile())>25){//kebbit area
@@ -234,7 +239,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 				}
 			}else
 			if(ctx.varpbits.varpbit(1218)==0){
-				state = "Initialize the hunt.";
+				state = "Initialize the hunt";
 				set = 0;//reset the variable
 				catchKebbit(new Tile(2873,3488,0),66473,"Inspect");//initial hole
 			}
@@ -365,33 +370,21 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 					return g.tile().distanceTo(snowTile)<2&& g.id()==id;
 				}
 		         });
-			while (ctx.players.local().animation()!=-1){
-				state = "Inspecting snow pile";
-				Method.sleep(Random.nextInt(1000,1200));
-			}
-				for(GameObject pile: findPile){
-					if(pile.tile().distanceTo(local)<9){
-						if(pile.valid()&&pile.inViewport()){
-						if(!ctx.players.local().inMotion()&&pile.interact(action)){
-							Method.sleep(Random.nextInt(200,300));
-						}else {
-							System.out.println("Turning camera, catching kebbit");
-							ctx.camera.turnTo(pile.tile());
-						}
-						}else {
-							System.out.println("Turning camera, catching kebbit");
-							ctx.camera.turnTo(pile.tile());
-						}
-					}else{
-					   ctx.movement.step(pile.tile());
-					   Method.sleep(Random.nextInt(2200,2500));
+		
+				for (GameObject pile : findPile) {
+					if (pile.tile().distanceTo(local) < 10 &&pile.inViewport()) {
+						if (!ctx.players.local().inMotion()
+								&&ctx.players.local().animation() == -1)
+						if (pile.inViewport()&& pile.interact(action)) {
+						
+						} else
+							ctx.camera.turnTo(pile.tile().derive(1, 3));
+
+					} else if(!ctx.players.local().inMotion()){
+						ctx.movement.step(pile.tile().derive(1, 3));
 					}
 				}
-				while (ctx.players.local().animation()!=-1){
-					state = "Inspecting snow pile";
-					Method.sleep(Random.nextInt(2000,2200));
-				}
-				Method.sleep(Random.nextInt(1000,1300));
+				
 		}
 
 		private void checkRock(final Tile rockTile, final int id) {
@@ -404,25 +397,22 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 				}
 		         });
 			
-			for(GameObject rock: findRock){
-				if(rock.tile().distanceTo(local)<15){
-					if(rock.valid()&&rock.inViewport()){
-					if(!ctx.players.local().inMotion()&&rock.interact("Inspect")){
-						//Method.sleep(Random.nextInt(2500,4500));
-					}else {
+			for (GameObject rock : findRock) {
+				if (rock.tile().distanceTo(local) < 10 || rock.inViewport()) {
+					
+					if(!ctx.players.local().inMotion()
+							&&ctx.players.local().animation()==-1)
+					if (rock.inViewport()&&rock.interact("Inspect")) {
+							System.out.println("Clicking on rock: " + ctx.players.local().animation());
+					} else{
+						System.out.println("Turning camera rock");
 						ctx.camera.turnTo(rock.tile().derive(1, 3));
 					}
-					}else ctx.camera.turnTo(rock.tile());
-				}else{
-					ctx.movement.step(rock.tile().derive(1,4));
-					Method.sleep(Random.nextInt(2000,2300));
-				    }
+				} else {
+					ctx.movement.step(rock.tile().derive(1, 4));
+				}
 			}
-			while (ctx.players.local().animation()!=-1){
-				state = "Inspecting rock";
-				Method.sleep(Random.nextInt(1500,2400));
-			}
-			Method.sleep(Random.nextInt(1500,1600));
+			
 		}
 		   
 	   }
@@ -477,7 +467,8 @@ private void setMouse(Graphics g) {
 		g.drawString("State: "+state, 20, 130);
 		g.setFont(myFont);
 		g.setColor(Color.CYAN);
-		//g.drawString("Runtime: " +hours+":"+minHold +":" + secHold, 20, 150);
+		long time = runTime - System.currentTimeMillis();
+		g.drawString("Runtime: " + Method.format(time), 20, 150);
 		g.drawString("Current pattern: " +set, 20, 170);
 		g.drawString("Gathered kebbit fur: " +kebbitCount, 20, 190);
 		String moneyNum = ""+(kebbitCount * gePrice);
