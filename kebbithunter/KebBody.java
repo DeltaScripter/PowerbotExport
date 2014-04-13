@@ -3,10 +3,15 @@ package kebbithunter;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.powerbot.script.Filter;
 import org.powerbot.script.PollingScript;
@@ -43,7 +48,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 	
 	
 	public static String state;
-	public double version = 0.10043;
+	public double version = 0.10044;
 	
 	int dropSlot;
 	boolean dropAction = false;
@@ -424,10 +429,16 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 			}
 			return false;
 		}
-	   
+		private Image getImage(String url) {
+			
+				return this.downloadImage(url);
+			
+		}
 private Font myFont = new Font("Consolas",Font.BOLD,15);
 private Font myStateFont = new Font("Arial Black",Font.BOLD,14);
-//private final Image paint = getImage("http://img546.imageshack.us/img546/8859/i52e.png");
+
+private  Image paint = getImage("http://i1223.photobucket.com/albums/dd508/thriller645/Paint_Kebbit_Hunter2take5_zps67818849.png");
+
 private int mouseX;
 private int mouseY;
 
@@ -438,39 +449,35 @@ private void setMouse(Graphics g) {
 }
 
 	public void repaint(Graphics g) {
-		//runtimeHold = runtime.getElapsed();
-		//runtimeHold = 3600000/runtimeHold;
+		
 		String expHr = "";
 		if(expHr.length()>3)
 		expHr = expHr.substring(0, expHr.length() - 3);
 		
+	   g.drawImage(paint, 0,0,null);
 		
 		mouseX = (int) ctx.mouse.getLocation().getX();
 		mouseY = (int) ctx.mouse.getLocation().getY();
 		setMouse(g);
-		//int seconds = (int)(runtime.getElapsed()/1000);
-		//int minutes = (int)(seconds/60);
-		//int hours = (int)(minutes/60);
-		//int secHold = (int)(secondsA.getElapsed()/1000);
-	   // int minHold = (int)(minutesA.getElapsed()/60000);
-		
-		//if(secHold>=60)
-		//	secondsA = new Timer(0);
-		//if(minHold>=60)
-		//	minutesA = new Timer(0);
-		
-		
 		g.setFont(myStateFont);
-		g.setColor(Color.magenta);
-		g.drawString("Current Version: " +version, 8,18);
-		g.setColor(Color.green);
-		g.drawString("State: "+state, 20, 130);
+		//g.setColor(Color.magenta);
+		//g.drawString("Current Version: " +version, 8,18);
+		//g.setColor(Color.green);
+		//g.drawString("State: "+state, 20, 130);
 		g.setFont(myFont);
-		g.setColor(Color.CYAN);
+		//g.setColor(Color.CYAN);
 		long time = runTime - System.currentTimeMillis();
-		g.drawString("Runtime: " + Method.format(time), 20, 150);
-		g.drawString("Current pattern: " +set, 20, 170);
-		g.drawString("Gathered kebbit fur: " +kebbitCount, 20, 190);
+		
+		g.setColor(Color.black);
+		g.drawString("" +version, 127,218);
+		g.drawString(""+state, 63,39);
+		//g.drawString("Runtime: " + Method.format(time), 20, 150);
+		//g.drawString("Current pattern: " +set, 20, 170);
+		//g.drawString("Gathered kebbit fur: " +kebbitCount, 20, 190);
+		g.drawString("Runtime: " + Method.format(time), 85,55);
+		g.drawString("" +set, 148,72);
+		g.drawString(""+kebbitCount, 105, 87);
+		
 		String moneyNum = ""+(kebbitCount * gePrice);
 		String moneyO = null;
 		if(moneyNum.length()==4){
@@ -486,10 +493,11 @@ private void setMouse(Graphics g) {
 			DecimalFormat formatter = new DecimalFormat("#,###,###");
 			moneyO = formatter.format((kebbitCount * gePrice));
 		}
-		
-		g.drawString("Money gained: " +moneyO + " GP", 20, 210);
+	
+		g.drawString("" + moneyO + "GP" ,117,105);
+		//g.drawString("Money gained: " +moneyO + " GP", 20, 210);
 		g.setColor(Color.BLUE);
-		g.drawString((dropAction|| buryAction) ? "Using action bar " : "Not using action bar" , 20, 230);
+		//g.drawString((dropAction|| buryAction) ? "Using action bar " : "Not using action bar" , 20, 230);
 		
 		
 	}
