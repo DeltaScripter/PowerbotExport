@@ -1,14 +1,14 @@
-/*package quests;
+package quests;
 
 import java.awt.Point;
 
-import org.powerbot.script.methods.ClientContext;
-import org.powerbot.script.util.Random;
-import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.GameObject;
-import org.powerbot.script.wrappers.Npc;
-import org.powerbot.script.wrappers.Player;
+
+import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.GameObject;
+import org.powerbot.script.rt6.Npc;
+import org.powerbot.script.rt6.Player;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -115,8 +115,7 @@ public class StolenHearts extends Node{
 		 new Tile(3125, 3249, 0), new Tile(3125, 3245, 0), new Tile(3129, 3245, 0), 
 			new Tile(3129, 3248, 0) });
  
-	public Timer timer1 = new Timer(0);
-	public Timer wait = new Timer(0);//waiting for teleport
+ 
 	public int bankItems[]  ={25129,25127};
 	public int bankItemAmount[]  ={1,1};
 	public Vars Vars = new Vars();
@@ -126,13 +125,13 @@ public class StolenHearts extends Node{
 	boolean q = true;
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
-		if(ctx.camera.getPitch()<70)
-			ctx.camera.setPitch(90);
+		if(ctx.camera.pitch()<70)
+			ctx.camera.pitch(90);
 		
-		while(ctx.widgets.get(669,17).isVisible()){
+		while(ctx.widgets.component(669,17).visible()){
 			System.out.println("Closing hint dialogue");
-			ctx.widgets.get(669,19).click();
-			ctx.game.sleep(2000);
+			ctx.widgets.component(669,19).click();
+			Method.sleep(2000);
 		}
 		if(q){
 			TaskListing.taskRemove.clear();
@@ -278,33 +277,31 @@ public class StolenHearts extends Node{
 	}
 
 	private void cs12() {
-		if(Method.objIsNotNull(75870) && Method.getObject(75870).getLocation().distanceTo(ctx.players.local().getLocation())<10||
-				Method.objIsNotNull(75871) && Method.getObject(75871).getLocation().distanceTo(ctx.players.local().getLocation())<10){
-				if(ctx.widgets.get(1191,0).isVisible() || ctx.widgets.get(1184,0).isVisible()){
+		if(Method.objIsNotNull(75870) && Method.getObject(75870).tile().distanceTo(ctx.players.local().tile())<10||
+				Method.objIsNotNull(75871) && Method.getObject(75871).tile().distanceTo(ctx.players.local().tile())<10){
+				if(ctx.widgets.component(1191,0).visible() || ctx.widgets.component(1184,0).visible()){
 					System.out.println("Closing dialogue");
 					Method.pressContinue();
 				}
 				if(Method.inventoryContains(25129)){//orb item
 					
-					if(!ctx.widgets.get(1189,2).isVisible())//The screen that appearrs after getting the puzzle completely
+					if(!ctx.widgets.component(1189,2).visible())//The screen that appearrs after getting the puzzle completely
 				Method.interactO(76708, "Place", "Display");
-					else ctx.widgets.get(1189,3).click();
+					else ctx.widgets.component(1189,3).click();
 			}else//Gather the key
-			if(ctx.widgets.get(1351,29).isVisible()){
+			if(ctx.widgets.component(1351,29).visible()){
 				System.out.println("Here");
-				if(ctx.widgets.get(1351,0).isVisible()){
+				if(ctx.widgets.component(1351,0).visible()){
 					Method.state("Finishing the puzzle");
-					dragMouse(ctx.widgets.get(1351,26).getCenterPoint(),ctx.widgets.get(1351,0).getCenterPoint());
+					dragMouse(ctx.widgets.component(1351,26).centerPoint(),ctx.widgets.component(1351,0).centerPoint());
 				}else if((ctx.varpbits.varpbit(2450)>>14 &0x1) ==1){
 					if((ctx.varpbits.varpbit(2450)>>18 &0x1) ==1){
-						if(!timer1.isRunning() ){
 							Method.state("Weighing weights");
-							ctx.widgets.get(1351,84).click();
-							timer1 = new Timer(6000);
-						}
-					}else dragMouse(ctx.widgets.get(1351,12).getCenterPoint(),ctx.widgets.get(1351,20).getCenterPoint());
+							ctx.widgets.component(1351,84).click();
+						
+					}else dragMouse(ctx.widgets.component(1351,12).centerPoint(),ctx.widgets.component(1351,20).centerPoint());
 					
-				}else dragMouse(ctx.widgets.get(1351,6).getCenterPoint(),ctx.widgets.get(1351,26).getCenterPoint());
+				}else dragMouse(ctx.widgets.component(1351,6).centerPoint(),ctx.widgets.component(1351,26).centerPoint());
 			
 			} else {
 				System.out.println("Here7");
@@ -336,35 +333,32 @@ public class StolenHearts extends Node{
 			if((ctx.varpbits.varpbit(2145)>>28 &0x7) == 4){
 				//if(Camera.getPitch()<60)
 				//	Camera.setPitch(70);
-				if (!Method.isChatting("People"))// obj.getLocation().distanceTo(ctx.players.local().getLocation())>5&&
-					if (new Tile(3285, 3164, 2).distanceTo(local.getLocation()) < 17&& ctx.game.floor() == 2
-								&& new Tile(3270, 3168, 2).distanceTo(local.getLocation())>9) {
-						if (new Tile(3291, 3150, 2).distanceTo(local.getLocation()) < 6) {
-							if (!timer1.isRunning()) {
+				if (!Method.isChatting("People"))// obj.tile().distanceTo(ctx.players.local().tile())>5&&
+					if (new Tile(3285, 3164, 2).distanceTo(local.tile()) < 17&& ctx.game.floor() == 2
+								&& new Tile(3270, 3168, 2).distanceTo(local.tile())>9) {
+						if (new Tile(3291, 3150, 2).distanceTo(local.tile()) < 6) {
+							
 								Method.interactO(75920, "Break", "Window");
-								timer1 = new Timer(4000);
-							}
+								
 						} else Method.clickOnMap(new Tile(3291, 3150, 2));
 					}else
-				if(new Tile(3282,3164,1).distanceTo(local.getLocation())<5 && ctx.game.floor()==1){
+				if(new Tile(3282,3164,1).distanceTo(local.tile())<5 && ctx.game.floor()==1){
 					Method.interactO(75919, "Climb","Object");
 				}else
-			if(new Tile(3268,3172,2).distanceTo(local.getLocation())<15 && ctx.game.floor()==2){
-				if(new Tile(3272,3166,2).distanceTo(local.getLocation())<4){
+			if(new Tile(3268,3172,2).distanceTo(local.tile())<15 && ctx.game.floor()==2){
+				if(new Tile(3272,3166,2).distanceTo(local.tile())<4){
 					if((ctx.varpbits.varpbit(2449) &0xF) !=8){//this settings occurs after Osan hooks rope.
 						while(ctx.varpbits.varpbit(1113)==5){
 							Method.isChatting("Ozan");
 						}
-						if(!timer1.isRunning()){
 						Method.interactO(75914, "Leave it", "Rope");
-						timer1 = new Timer(3000);
-						}
+						Method.sleep(3000);
 					}else
 					if(!ctx.objects.select().id(75917).nearest().first().isEmpty()){
 						Method.state("Moving/moved");
 						for(GameObject rope : ctx.objects.select().id(75917).nearest().first()){
 						//	ctx.camera.setYaw(50);
-							ctx.mouse.move(rope.getLocation().getMatrix(ctx).getPoint(Random.nextDouble() * 0.6D - 4.2D,+0.60D,-1060));
+							ctx.mouse.move(rope.tile().matrix(ctx).point(Random.nextDouble() * 0.6D - 4.2D,+0.60D,-1060));
 							ctx.mouse.click(true);
 						
 						}
@@ -375,50 +369,50 @@ public class StolenHearts extends Node{
 					Method.clickOnMap(new Tile(3272,3166,2));
 				}
 			}else
-			if(new Tile(3270,3174,1).distanceTo(local.getLocation())<5 && ctx.game.floor()==1){
+			if(new Tile(3270,3174,1).distanceTo(local.tile())<5 && ctx.game.floor()==1){
 				Method.interactO(75913, "Climb","Object");
 			}else
-			if(new Tile(3271,3184,1).distanceTo(local.getLocation())<3 && ctx.game.floor()==1){
+			if(new Tile(3271,3184,1).distanceTo(local.tile())<3 && ctx.game.floor()==1){
 				Method.interactO(75911, "Bounce","Object");
 			}else
-			if(new Tile(3272,3187,1).distanceTo(local.getLocation())<5 && ctx.game.floor()==1){
+			if(new Tile(3272,3187,1).distanceTo(local.tile())<5 && ctx.game.floor()==1){
 				Method.interactO(75910, "Jump","Object");
 			}else
-			if(new Tile(3277,3187,1).distanceTo(local.getLocation())<5 && ctx.game.floor()==1){
+			if(new Tile(3277,3187,1).distanceTo(local.tile())<5 && ctx.game.floor()==1){
 				Method.interactO(75909, "Swing","Object");
 			}else
-			if(new Tile(3277,3190,2).distanceTo(local.getLocation())<5 && ctx.game.floor()==2){
+			if(new Tile(3277,3190,2).distanceTo(local.tile())<5 && ctx.game.floor()==2){
 				Method.interactO(75908, "Climb","Object");
 			}else
-			if(new Tile(3287,3191,3).distanceTo(local.getLocation())<5 && ctx.game.floor()==3){
+			if(new Tile(3287,3191,3).distanceTo(local.tile())<5 && ctx.game.floor()==3){
 			
 				Method.interactO(75906, "Jump","Object");
 			}else
-			if(new Tile(3289,3188,2).distanceTo(local.getLocation())<5 && ctx.game.floor()==2){
+			if(new Tile(3289,3188,2).distanceTo(local.tile())<5 && ctx.game.floor()==2){
 				Method.interactO(75905, "Climb","Object");
 			}else for(GameObject obj : ctx.objects.select().id(76369).nearest().first()){//finds and assigns the object
-				if(obj.getLocation().distanceTo(local.getLocation())<6 &&ctx.players.local().getLocation().floor()==2){
+				if(obj.tile().distanceTo(local.tile())<6 &&ctx.players.local().tile().floor()==2){
 						//^if distance to is less than 6 and if player is on plane 2
 						Method.interactO(75572, "Cross","Object");
 					}else break;
 			}
-			if(new Tile(3303,3186,1).distanceTo(local.getLocation())<5 && ctx.game.floor()==1){
+			if(new Tile(3303,3186,1).distanceTo(local.tile())<5 && ctx.game.floor()==1){
 				Method.interactO(75903, "Climb","Object");
 			}else
-			if(new Tile(3316,3175,1).distanceTo(local.getLocation())<15 && ctx.game.floor()==1){
-				if(new Tile(3313,3185,1).distanceTo(local.getLocation())<3){
+			if(new Tile(3316,3175,1).distanceTo(local.tile())<15 && ctx.game.floor()==1){
+				if(new Tile(3313,3185,1).distanceTo(local.tile())<3){
 				Method.interactO(75902, "Walk across","Object");
 				}else Method.clickOnMap(new Tile(3313,3185,1));
 			}else
-			if(new Tile(3317,3184,2).distanceTo(local.getLocation())<6 && ctx.game.floor()==2){
+			if(new Tile(3317,3184,2).distanceTo(local.tile())<6 && ctx.game.floor()==2){
 				Method.interactO(75901, "Slide","Object");
 			}else
-			if(new Tile(3321,3191,2).distanceTo(local.getLocation())<5 && ctx.game.floor()==2){//Top floor init.
+			if(new Tile(3321,3191,2).distanceTo(local.tile())<5 && ctx.game.floor()==2){//Top floor init.
 				Method.interactO(75900, "Walk across","Object");
 			}else
-			if(new Tile(3322,3195,1).distanceTo(local.getLocation())<5 && ctx.game.floor()==1){
+			if(new Tile(3322,3195,1).distanceTo(local.tile())<5 && ctx.game.floor()==1){
 				Method.interactO(75898, "Climb","Object");
-			}else if(new Tile(3323,3191,0).distanceTo(local.getLocation())<8){
+			}else if(new Tile(3323,3191,0).distanceTo(local.tile())<8){
 			Method.interactO(76279, "Climb","Stairs");
 			}else if(ctx.game.floor()==0)
 				Method.clickOnMap(new Tile(3319,3193,0));
@@ -428,8 +422,8 @@ public class StolenHearts extends Node{
 				Method.speakTo(15862, "Ozan");
 				Method.speakTo(15859, "Ozan");
 			}
-		}else if(new Tile(3296,3180,0).distanceTo(local.getLocation())<15 || Vars.DYNAMICV3){//Get ozan to follow us
-			if(new Tile(3295,3181,0).distanceTo(local.getLocation())<5||Vars.DYNAMICV3){
+		}else if(new Tile(3296,3180,0).distanceTo(local.tile())<15 || Vars.DYNAMICV3){//Get ozan to follow us
+			if(new Tile(3295,3181,0).distanceTo(local.tile())<5||Vars.DYNAMICV3){
 				Vars.DYNAMICV2 = true;
 				if(!Method.findOption(opt)){
 				if(!Method.isChatting("Ozan")){
@@ -439,7 +433,7 @@ public class StolenHearts extends Node{
 			}else Method.clickOnMap(new Tile(3295,3181,0));
 		}else if(Vars.DYNAMICV2){
 			Method.walking(pathToAlkharid, "Walking to Ozan", false);
-		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV2 = true;
 		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 		
@@ -449,7 +443,7 @@ public class StolenHearts extends Node{
 		final String opt[] = {"Yes"};
 		Player local = ctx.players.local();
 		if((ctx.varpbits.varpbit(2449)>>23 & 0x3) ==3){//When Ozan is following us.(From alkharid)
-			if(new Tile(3291, 3165, 0).distanceTo(local.getLocation())<8){
+			if(new Tile(3291, 3165, 0).distanceTo(local.tile())<8){
 					if(!Method.isChatting("Guard")){
 						Vars.DYNAMICV3 = true;
 						Method.speakTo(15900, "Guard");
@@ -457,16 +451,16 @@ public class StolenHearts extends Node{
 				
 			}else if(Vars.DYNAMICV2){
 				Method.walking(pathToAlkharid, "Walking to Alkharid",false);
-			}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10){
+			}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10){
 				Vars.DYNAMICV2 = true;
-			}else if(ctx.widgets.get(1184).isValid()){
+			}else if(ctx.widgets.component(1184,1).valid()){
 				Method.isChatting("Ozan");
 			}else {
 				Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 				Method.sleep(1400);
 			}
-		}else if(new Tile(3296,3180,0).distanceTo(local.getLocation())<15){
-			if(new Tile(3295,3181,0).distanceTo(local.getLocation())<5){
+		}else if(new Tile(3296,3180,0).distanceTo(local.tile())<15){
+			if(new Tile(3295,3181,0).distanceTo(local.tile())<5){
 				Vars.DYNAMICV2 = true;
 				if(!Method.findOption(opt)){
 				if(!Method.isChatting("Ozan")){
@@ -476,7 +470,7 @@ public class StolenHearts extends Node{
 			}else Method.clickOnMap(new Tile(3295,3181,0));
 		}else if(Vars.DYNAMICV2){
 			Method.walking(pathToAlkharid, "Walking to Ozan", false);
-		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV2 = true;
 		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 		
@@ -486,18 +480,15 @@ public class StolenHearts extends Node{
 	private void cs9() {
 		
 		if((ctx.varpbits.varpbit(2449)>>23 & 0x3) ==3){//Ozan begins to follow us again(when it becomes this setting)
-			if(new Tile(3291, 3165, 0).distanceTo(ctx.players.local().getLocation())<8){
+			if(new Tile(3291, 3165, 0).distanceTo(ctx.players.local().tile())<8){
 				System.out.println("but.. we're in range ..");
 				Method.state("Within range");//We never actually get within range due to a setting change
 			}else if(Vars.DYNAMICV2){
 				Method.walking(pathToAlkharid, "Walking to Alkharid",false);
-			}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().getLocation())<10){
+			}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().tile())<10){
 				Vars.DYNAMICV2 = true;
-			}else if(!wait.isRunning()){
-					teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
-			}else {
-				Method.pressContinue();
-			}
+			}else teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
+			
 				
 			
 		}else {
@@ -509,12 +500,12 @@ public class StolenHearts extends Node{
 	public void teleportTo(int loc, String teleName) {
 		
 		
-		if(ctx.widgets.get(1092).isValid() && ctx.widgets.get(1092,0).isVisible() && !ctx.widgets.get(1184).isValid()){
-			ctx.mouse.move(ctx.widgets.get(1092).getComponent(loc).getCenterPoint());
-			ctx.widgets.get(1092).getComponent(loc).click(true);
-			wait = new Timer(8000);
-		}else if(ctx.players.local().getAnimation()==-1)
-			ctx.widgets.get(1465,10).interact("Teleport");
+		if(ctx.widgets.component(1092,1).valid() && ctx.widgets.component(1092,0).visible() && !ctx.widgets.component(1184,1).valid()){
+			ctx.mouse.move(ctx.widgets.component(1092,1).component(loc).centerPoint());
+			ctx.widgets.component(1092,1).component(loc).click(true);
+			Method.sleep(2000);
+		}else if(ctx.players.local().animation()==-1)
+			ctx.widgets.component(1465,10).interact("Teleport");
 		}
 	
 	private void cs8() {
@@ -534,7 +525,7 @@ public class StolenHearts extends Node{
 		Player local = ctx.players.local();
 		
 		if(Method.npcIsNotNull(15858)){
-			if(new Tile(3128,3203,0).distanceTo(local.getLocation())<8){
+			if(new Tile(3128,3203,0).distanceTo(local.tile())<8){
 				if(!Method.findOption(opt)){
 					if(!Method.isChatting("Ozan")){
 						Method.speakTo(15858, "Ozan");
@@ -543,7 +534,7 @@ public class StolenHearts extends Node{
 			}else if(Vars.DYNAMICV){
 				if(!Method.isChatting("People"))
 				Method.walking(pathToShoreFL, "Walking to the shore", false);
-			}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.getLocation())<10||TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10){
+			}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.tile())<10||TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10){
 				Vars.DYNAMICV = true;
 			}else if(Method.DraynorLodeIsActive()){
 				Method.teleportTo(TeleportType.DRAYNOR.getTeleport(),TeleportType.DRAYNOR.getName());
@@ -553,7 +544,7 @@ public class StolenHearts extends Node{
 			if(Method.npcIsNotNull(15897) || Method.npcIsNotNull(15899) || Method.npcIsNotNull(15898)){
 				try{
 				for(int i =0;i<= drs.length;){
-				if(Method.getInteractingNPC()!=null&&ctx.players.local().isInCombat()){//if fighting
+				if(Method.getInteractingNPC()!=null&&ctx.players.local().inCombat()){//if fighting
 					Method.fightNPC(drs[i]);
 				}else if(Method.npcIsNotNull(drs[i])){//one of the npcs
 						Method.npcInteract(drs[i], "Attack");
@@ -566,7 +557,7 @@ public class StolenHearts extends Node{
 		}else if(Vars.DYNAMICV){
 			if(!Method.isChatting("People"))
 			Method.walking(pathToShoreFL, "Walking to the shore", false);
-		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.getLocation())<10||TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.tile())<10||TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else if(Method.DraynorLodeIsActive()){
 			Method.teleportTo(TeleportType.DRAYNOR.getTeleport(),TeleportType.DRAYNOR.getName());
@@ -584,7 +575,7 @@ public class StolenHearts extends Node{
 		}else if(Vars.DYNAMICV){
 			if(!Method.isChatting("People"))
 			Method.walking(pathToShoreFL, "Walking to the shore", false);
-		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.getLocation())<10||TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.tile())<10||TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else if(Method.DraynorLodeIsActive()){
 			Method.teleportTo(TeleportType.DRAYNOR.getTeleport(),TeleportType.DRAYNOR.getName());
@@ -596,25 +587,25 @@ public class StolenHearts extends Node{
 		Player local = ctx.players.local();
 		
 		if((ctx.varpbits.varpbit(2449)>>22 &0x7) ==7){//Ozan is following us setting
-			if( new Tile(3127, 3201, 0).distanceTo(local.getLocation())<2){
+			if( new Tile(3127, 3201, 0).distanceTo(local.tile())<2){
 			Method.state("Ozan is now following us.");
 			}else if(Vars.DYNAMICV){
-				if(new Tile(3127,3247,0).distanceTo(local.getLocation())<15){
+				if(new Tile(3127,3247,0).distanceTo(local.tile())<15){
 					if(!ctx.objects.select().id(3434).nearest().first().isEmpty()){
 						for(GameObject jailDoor : ctx.objects.select().id(3434).nearest().first()){
-							if(JailDoor.contains(jailDoor.getLocation())){
+							if(JailDoor.contains(jailDoor.tile())){
 								Method.interactO(3434, "Open", "Door");
 							}else Method.walking(pathToShore, "Walking to the shore",false);
 						}
 					}else Method.walking(pathToShore, "Walking to the shore",false);
 					
 				}else Method.walking(pathToShore, "Walking to the shore",false);
-			}else if(new Tile(3127,3245,0).distanceTo(local.getLocation())<10){
+			}else if(new Tile(3127,3245,0).distanceTo(local.tile())<10){
 				Vars.DYNAMICV = true;
 			}
-		}else if(new Tile(3126,3245,0).distanceTo(local.getLocation())<7){
+		}else if(new Tile(3126,3245,0).distanceTo(local.tile())<7){
 				for(GameObject jailDoor : ctx.objects.select().id(3434).nearest().first()){
-					if(JailDoor.contains(jailDoor.getLocation())){
+					if(JailDoor.contains(jailDoor.tile())){
 						Method.interactO(3434, "Open", "Door");
 					}
 				}
@@ -624,7 +615,7 @@ public class StolenHearts extends Node{
 				}
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToJailHouse, "Walking to the Jailhouse", false);
-		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.getLocation())<10 || TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.tile())<10 || TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else if(Method.DraynorLodeIsActive()){
 			Method.teleportTo(TeleportType.DRAYNOR.getTeleport(),TeleportType.DRAYNOR.getName());
@@ -637,10 +628,10 @@ public class StolenHearts extends Node{
 		Player local = ctx.players.local();
 		final String opt[] = {"How about some sort","We'll find them","I'll lock","What will you","Yes"};
 		
-		if (new Tile(3125, 3245, 0).distanceTo(local.getLocation()) < 15) {
+		if (new Tile(3125, 3245, 0).distanceTo(local.tile()) < 15) {
 			if(Method.npcIsNotNull(15864)){
 				
-			if ((Method.getNPC(15864).getLocation().distanceTo(local.getLocation())<5)) {
+			if ((Method.getNPC(15864).tile().distanceTo(local.tile())<5)) {
 				if(!Method.findOption(opt)){
 					if(!Method.isChatting("People")){
 						Method.speakTo(15864, "Khnum");
@@ -649,12 +640,12 @@ public class StolenHearts extends Node{
 			} else if(Method.objIsByTile(new Tile(3128,3247,0), 3434, 5)){
 				if(Method.getToTile(new Tile(3128,3247,0)))
 				Method.interactO(3434, "Open", "Metal Door");
-			}else Method.clickOnMap(Method.getNPC(15864).getLocation());
+			}else Method.clickOnMap(Method.getNPC(15864).tile());
 				}
 			
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToHQ, "Walking to Khnum's HQ", false);
-		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.getLocation())<10 || TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.tile())<10 || TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else if(Method.DraynorLodeIsActive()){
 			Method.teleportTo(TeleportType.DRAYNOR.getTeleport(),TeleportType.DRAYNOR.getName());
@@ -677,16 +668,16 @@ public class StolenHearts extends Node{
 			if(!Method.isChatting("Ozan")){
 			if(!ctx.objects.select().id(75896).nearest().first().isEmpty()){
 				for(GameObject door : ctx.objects.select().id(75896).nearest().first()){
-				if(door.getLocation().distanceTo(local.getLocation())<7){
+				if(door.tile().distanceTo(local.tile())<7){
 			Method.interactO(75896, "Open", "Metal Door");
 				}else {
 					Method.state("Walking to the HQ");
-					Method.clickOnMap(door.getLocation());
+					Method.clickOnMap(door.tile());
 				}
 			}
 			}
 			}
-		}else if(new Tile(3094,3277,0).distanceTo(local.getLocation())<8){//Below will start the trailing scene
+		}else if(new Tile(3094,3277,0).distanceTo(local.tile())<8){//Below will start the trailing scene
 			if(!Method.findOption(opt)){
 				if(!Method.isChatting("Ozan")){
 					Method.speakTo(15856, "Ozan");
@@ -704,25 +695,25 @@ public class StolenHearts extends Node{
 		if((ctx.varpbits.varpbit(2449)>>21 & 0xF) ==15){//The setting change when we enter the trailing scene
 			if(!Method.isChatting("Ozan")){
 			if(!ctx.npcs.select().id(15869).nearest().first().isEmpty()){
-				//Method.state("Distance differential:"+(NPCs.getNearest(15869).getLocation().getMapPoint().x - (Players.local().getLocation().getMapPoint().x)));
+				//Method.state("Distance differential:"+(NPCs.getNearest(15869).tile().getMapPoint().x - (Players.local().tile().getMapPoint().x)));
 				for(Npc k : ctx.npcs.select().id(15869).nearest().first()){
 					
-				if (k.getLocation().distanceTo(local.getLocation()) > 8) {
+				if (k.tile().distanceTo(local.tile()) > 8) {
 						Method.state("Following..");
-						Method.clickOnMap(k.getLocation());
+						Method.clickOnMap(k.tile());
 					} else {
 						Method.state("Easing off..");
-						int differ = ctx.players.local().getLocation().getMatrix(ctx).getMapPoint().x - k.getLocation().getMatrix(ctx).getMapPoint().x;
+						int differ = ctx.players.local().tile().matrix(ctx).mapPoint().x - k.tile().matrix(ctx).mapPoint().x;
 						System.out.println("Differ: "+ differ);
 						if(differ < 0 ){
-							ctx.mouse.click(ctx.players.local().getLocation().getMatrix(ctx).getMapPoint().x  + differ, ctx.players.local().getLocation().getMatrix(ctx).getMapPoint().y,true);
-						}else ctx.mouse.click(ctx.players.local().getLocation().getMatrix(ctx).getMapPoint().x, ctx.players.local().getLocation().getMatrix(ctx).getMapPoint().y - differ,true);
+							ctx.mouse.click(ctx.players.local().tile().matrix(ctx).mapPoint().x  + differ, ctx.players.local().tile().matrix(ctx).mapPoint().y,true);
+						}else ctx.mouse.click(ctx.players.local().tile().matrix(ctx).mapPoint().x, ctx.players.local().tile().matrix(ctx).mapPoint().y - differ,true);
 						
 					}
 				}
 			}
 			}
-		}else if(new Tile(3094,3277,0).distanceTo(local.getLocation())<8){//Below will start the trailing scene
+		}else if(new Tile(3094,3277,0).distanceTo(local.tile())<8){//Below will start the trailing scene
 			if(!Method.findOption(opt)){
 				if(!Method.isChatting("Ozan")){
 					Method.speakTo(15856, "Ozan");
@@ -740,26 +731,22 @@ public class StolenHearts extends Node{
 		
 		if(!ctx.npcs.select().id(15863).nearest().first().isEmpty()){
 			for(Npc Khunm : ctx.npcs.select().id(15863).nearest().first()){
-			if(Khunm.getLocation().distanceTo(local.getLocation())<7){
+			if(Khunm.tile().distanceTo(local.tile())<7){
 				if(!Method.findOption(opt2)){
 					if(!Method.isChatting("Khnum")){
 						Method.speakTo(15863, "Khnum");
 					}
 				}
-			}else Method.clickOnMap(Khunm.getLocation());
+			}else Method.clickOnMap(Khunm.tile());
 			}
-		}else if(new Tile(3093,3274,0).distanceTo(local.getLocation())<7){//Below enters Khunm's base
+		}else if(new Tile(3093,3274,0).distanceTo(local.tile())<7){//Below enters Khunm's base
 			if(!ctx.objects.select().id(1239).nearest().first().isEmpty()){
 				for (GameObject thugDoor : ctx.objects.select().id(1239).nearest().first()) {
-					if (!ThugDoor.contains(thugDoor.getLocation())) {
-						while (timer1.isRunning()
-								&& !Method.isChatting("Bouncer")) {
-							Method.sleep(30);
-						}
+					if (!ThugDoor.contains(thugDoor.tile())) {
+							
 						if (!Method.findOption(opt)) {
 							if (!Method.isChatting("Bouncer")) {
 								Method.interactO(75852, "Open", "Trapdoor");
-								timer1 = new Timer(6000);
 							}
 						}
 					}else Method.interactO(1239, "Open", "Door");
@@ -776,18 +763,18 @@ public class StolenHearts extends Node{
 		final String opt[] ={"find the","Talk about finding the HQ","No, I'm ready."};
 		if(!ctx.objects.select().id(52289).nearest().first().isEmpty()){//If the player is downstairs(Khnum's base)
 				for(GameObject ladder : ctx.objects.select().id(75851).nearest().first()){
-				if(ladder.getLocation().distanceTo(local.getLocation())<7){
-					Method.interactO(ladder.getId(), "Climb", "Ladder");
-				}else Method.clickOnMap(ladder.getLocation());
+				if(ladder.tile().distanceTo(local.tile())<7){
+					Method.interactO(ladder.id(), "Climb", "Ladder");
+				}else Method.clickOnMap(ladder.tile());
 				}
 			
 		}else
-		if(new Tile(3093, 3273, 0).distanceTo(local.getLocation())<8){
+		if(new Tile(3093, 3273, 0).distanceTo(local.tile())<8){
 			Method.skipPics();
 			if(!Method.startQuestOpen())
 			if(!ctx.objects.select().id(1239).nearest().first().isEmpty()){
 				for(GameObject thugDoor : ctx.objects.select().id(1239).nearest().first()){
-					if(!ThugDoor.contains(thugDoor.getLocation())){
+					if(!ThugDoor.contains(thugDoor.tile())){
 						if (!Method.findOption(opt)) {
 							if (!Method.isChatting("Ozan")) {
 								Method.speakTo(15856, "Ozan");
@@ -798,7 +785,7 @@ public class StolenHearts extends Node{
 			}
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToOzanDraynor, "Walking to Ozan", false);
-		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.getLocation())<10 || TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.tile())<10 || TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else if(Method.DraynorLodeIsActive()){
 			Method.teleportTo(TeleportType.DRAYNOR.getTeleport(),TeleportType.DRAYNOR.getName());
@@ -813,4 +800,3 @@ public class StolenHearts extends Node{
 
 
 }
-*/

@@ -1,9 +1,11 @@
-/*package quests;
+package quests;
 
 
-import org.powerbot.script.rs3.ClientContext;
-import org.powerbot.script.rs3.Player;
-import org.powerbot.script.rs3.Tile;
+
+
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Player;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -160,10 +162,10 @@ public class VampyreSlayer extends Node{
 					if(Method.npcIsNotNull(9357) || Method.npcIsNotNull(9356)){//vampyres
 						Vars.DYNAMICV = false;
 						 
-						if(Method.npcIsNotNull(9357)&&Method.getNPC(9357).getLocation().distanceTo(local.getLocation())<5||
-								 Method.npcIsNotNull(9356)&& Method.getNPC(9356).getLocation().distanceTo(local.getLocation())<5){
+						if(Method.npcIsNotNull(9357)&&Method.getNPC(9357).tile().distanceTo(local.tile())<5||
+								 Method.npcIsNotNull(9356)&& Method.getNPC(9356).tile().distanceTo(local.tile())<5){
 							if(!Method.isChatting("Self"))
-							if(Method.getInteractingNPC()!=null && ctx.players.local().isInCombat()){
+							if(Method.getInteractingNPC()!=null && ctx.players.local().inCombat()){
 								Method.fightNPC(9357);
 								Method.fightNPC(9356);
 							}else {
@@ -174,27 +176,27 @@ public class VampyreSlayer extends Node{
 							}
 						}else {
 							if(Method.npcIsNotNull(9357))
-							Method.clickOnMap(Method.getNPC(9357).getLocation());
+							Method.clickOnMap(Method.getNPC(9357).tile());
 							if(Method.npcIsNotNull(9356))
-							Method.clickOnMap(Method.getNPC(9356).getLocation());
+							Method.clickOnMap(Method.getNPC(9356).tile());
 						}
 					}else 
-					if(new Tile(3079,9785,0).distanceTo(local.getLocation())<5){
-						if(!local.isInMotion())
+					if(new Tile(3079,9785,0).distanceTo(local.tile())<5){
+						if(!local.inMotion())
 						Method.interactO(158, "Open", "Coffin");
 					}else Method.clickOnMap(new Tile(3079,9785,0));
 				}else
-				if(Method.objIsNotNull(47512) && !ManorDoorToStairs.contains(Method.getObject(47512).getLocation())&&ManorArea.contains(local.getLocation())||!Method.objIsNotNull(47512) && ManorArea.contains(local.getLocation())){
-					if(new Tile(3117,3356,0).distanceTo(local.getLocation())<4){
+				if(Method.objIsNotNull(47512) && !ManorDoorToStairs.contains(Method.getObject(47512).tile())&&ManorArea.contains(local.tile())||!Method.objIsNotNull(47512) && ManorArea.contains(local.tile())){
+					if(new Tile(3117,3356,0).distanceTo(local.tile())<4){
 						Method.interactO(47643, "Walk-down", "Stairs");
 					}else Method.clickOnMap( new Tile(3117,3356,0));
 				}else
-				if(ManorArea.contains(local.getLocation())){
-					if(new Tile(3112,3360,0).distanceTo(local.getLocation())<4){
+				if(ManorArea.contains(local.tile())){
+					if(new Tile(3112,3360,0).distanceTo(local.tile())<4){
 						Method.interactO(47512, "Open", "Door");
 ;					}else Method.clickOnMap(new Tile(3112,3360,0));
 				}else
-				if(new Tile(3109,3352,0).distanceTo(local.getLocation())<5){
+				if(new Tile(3109,3352,0).distanceTo(local.tile())<5){
 					
 					while(Method.isChatting("Self")){
 						Method.skipPics();
@@ -204,7 +206,7 @@ public class VampyreSlayer extends Node{
 					
 				}else if(Vars.DYNAMICV){
 					Method.walking(pathToMansion, "Walking to Draynor mansion", false);
-				}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.getLocation())<10 || TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10){
+				}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.tile())<10 || TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10){
 					Vars.DYNAMICV = true;
 				}else if(Method.DraynorLodeIsActive()){
 					Method.teleportTo(TeleportType.DRAYNOR.getTeleport(),TeleportType.DRAYNOR.getName());
@@ -224,10 +226,10 @@ public class VampyreSlayer extends Node{
 		//SceneObject door = SceneEntities.getNearest(24376);
 		final String opt[] = {"I've lost","Are you"};
 		
-		if(new Tile(3215,3395,0).distanceTo(local.getLocation())<4 || (Method.npcIsNotNull(756)&& Method.getNPC(756).getLocation().distanceTo(local.getLocation())<6)){
+		if(new Tile(3215,3395,0).distanceTo(local.tile())<4 || (Method.npcIsNotNull(756)&& Method.getNPC(756).tile().distanceTo(local.tile())<6)){
 		
 				if(Method.npcIsNotNull(756))
-				if(Method.getNPC(756).getLocation().distanceTo(local.getLocation())<5){
+				if(Method.getNPC(756).tile().distanceTo(local.tile())<5){
 					Method.skipPics();
 					Vars.DYNAMICV = false;
 					if(!Method.findOption(opt))
@@ -235,13 +237,13 @@ public class VampyreSlayer extends Node{
 							Method.speakTo(756, "Mogan");
 						}
 					
-				}else if(!BarBottomDoor.contains(Method.getObject(24376).getLocation())||!Method.objIsNotNull(24376)){
-					Method.clickOnMap(Method.getNPC(756).getLocation());
+				}else if(!BarBottomDoor.contains(Method.getObject(24376).tile())||!Method.objIsNotNull(24376)){
+					Method.clickOnMap(Method.getNPC(756).tile());
 				}else Method.interactO(24376, "Open", "Door");
 			
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToHallow, "Walking to Dr.Hallow", false);
-		}else if(TeleportLode.VARROCK.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.VARROCK.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.VARROCK.getTeleport(),TeleportType.VARROCK.getName());
 		
@@ -251,9 +253,9 @@ public class VampyreSlayer extends Node{
 		Player local = ctx.players.local();
 		final String opt[] = {"Yes","terrible"};
 		//SceneObject door = SceneEntities.getNearest(1239);
-		if(new Tile(3098,3271,0).distanceTo(local.getLocation())<2||new Tile(3100,3269,0).distanceTo(local.getLocation())<4){
+		if(new Tile(3098,3271,0).distanceTo(local.tile())<2||new Tile(3100,3269,0).distanceTo(local.tile())<4){
 			if(Method.objIsNotNull(1239) && !MorganDoor.contains(Method.getObject(1239))||!Method.objIsNotNull(1239)){
-				if(new Tile(3099,3268,0).distanceTo(local.getLocation())<4){
+				if(new Tile(3099,3268,0).distanceTo(local.tile())<4){
 				if(!Method.startQuestOpen())
 				if(!Method.findOption(opt))
 				if(!Method.isChatting("Morgan")){
@@ -264,7 +266,7 @@ public class VampyreSlayer extends Node{
 			}else Method.interactO(1239, "Open", "Door");
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToMorgan, "Walking to Morgan", false);
-		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.getLocation())<10 || TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.tile())<10 || TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else if(Method.DraynorLodeIsActive()){
 			Method.teleportTo(TeleportType.DRAYNOR.getTeleport(),TeleportType.DRAYNOR.getName());
@@ -279,4 +281,3 @@ public class VampyreSlayer extends Node{
 
 
 }
-*/

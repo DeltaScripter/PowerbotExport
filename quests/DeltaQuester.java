@@ -36,7 +36,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 	public static boolean GEFeature = false;
 	public boolean useBank;
 	public static boolean ranOnce = false;
-	public static boolean checkedBank = true;//was false
+	public static boolean checkedBank = false;//was false
 	public boolean GEWO = false;
 	public static boolean FOOD_FEATURE = false;
 	public static int number;
@@ -135,14 +135,14 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 				   addNode(new RestlessG(ctx));
 				   addNode(new DeathPlateau(ctx));
 				// addNode(new ImpCatcher(ctx));
-				// addNode(new StolenHearts(ctx));
+				   addNode(new StolenHearts(ctx));
 				   addNode(new WolfWhistle(ctx));
 				   addNode(new DemonSlayer(ctx));
 				   addNode(new LetThemEatPie(ctx));
 				   addNode(new PiratesTreasure(ctx));
 				   addNode(new SweptAway(ctx));
 				   addNode(new DruidicRitual(ctx));
-				// addNode(new VampyreSlayer(ctx));
+				   addNode(new VampyreSlayer(ctx));
 				// addNode(new ElementalWorkshop1(ctx));
 				// addNode(new MineIsYours(ctx));
 				// addNode(new GoblinDiplomacy(ctx));
@@ -320,13 +320,14 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
 						"Cook's Assistant","Death Plateau","Demon Slayer","Druidic Ritual",
-						"Ernest The Chicken","Let Them Eat Pie","Pirate's Treasure","Swept Away","The Restless Ghost",
-						"Wolf Whistle"
-						
+						"Ernest The Chicken","Let Them Eat Pie","Pirate's Treasure","Swept Away",
+						"The Restless Ghost","Wolf Whistle","Vampyre Slayer"
+						//stolen heats..
 						/*"Dragon Slayer",,
 						,"Gunnar's Ground","Goblin Diplomacy",
-						"Imp Catcher","Plague City","Monk's Friend","Stolen Hearts","Swept Away",
-						"The Knight's Sword","The Restless Ghost","Tower of Life","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"*/
+						"Imp Catcher","Plague City","Monk's Friend",
+						"The Knight's Sword","The Restless Ghost","Tower of Life","What's Mine Is Yours",
+						,*/
 				};
 				
 				@Override

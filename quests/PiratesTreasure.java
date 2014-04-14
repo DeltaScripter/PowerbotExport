@@ -367,8 +367,8 @@ public class PiratesTreasure extends Node{
 			   Vars.boughtWine = true;
 		   }else if(new Tile(2926,3146,0).distanceTo(local.tile())<8){//Store location
 			   //Buys the wine
-			   if(ctx.widgets.component(1265,1).valid()){
-					ctx.widgets.component(1265,20).component(1).interact("Buy 1");
+			   if(ctx.widgets.component(1265,25).valid()){
+					ctx.widgets.component(1265,25).component(1).interact("Buy 1");
 					Method.sleep(2000);
 				}else Method.npcInteract(568, "Trade");
 			   

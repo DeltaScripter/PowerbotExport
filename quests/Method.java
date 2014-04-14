@@ -186,18 +186,19 @@ public class Method extends ClientAccessor{
 	}
 	   
 	public boolean isChatting(final String p) {
-		int[] widgets = {1184,1191,1187};
 		
-		for(int w : widgets){
-			if(ctx.widgets.component(w,1).valid() && ctx.widgets.component(w,11).visible()){
-				state("Speaking to: " + p);
-				//SpeakTo//timer = new //timer(5000);
-				pressContinue();
-				sleep(1300);
-				return true;
-			}
+		if(ctx.widgets.component(1184, 1).valid()||
+				ctx.widgets.component(1191, 1).valid()||
+				ctx.widgets.component(1187, 1).valid()||
+				ctx.widgets.component(1188, 1).valid()||
+				ctx.widgets.component(1189, 1).valid()||
+				ctx.widgets.component(1186, 1).valid()){
+			state("Speaking to: " + p);
+			pressContinue();
+			sleep(300);
+			return true;
 		}
-		////ctx.environment.sleep(1200,1300);
+		System.out.println("Returning false");
 		return false;
 	}
 	public boolean isFaladorLodeAct(){
@@ -755,18 +756,15 @@ public class Method extends ClientAccessor{
 	
 	public void pressContinue(){
 		 int widgetID[] = {1191,1184,1187};
-		 if(ctx.widgets.component(1186,3).visible()){
-			 ctx.widgets.component(1186,3).click();
-			 //ctx.environment.sleep(1200);
-		 }else if(ctx.widgets.component(1189,4).visible()){
-			 ctx.widgets.component(1189,4).click();
-			 //ctx.environment.sleep(1200);
+		 if(ctx.widgets.component(1186,10).visible()){
+			 ctx.widgets.component(1186,10).click();
+		 }else if(ctx.widgets.component(1189,10).visible()){
+			 ctx.widgets.component(1189,10).click();
 		 }
 		for(int both : widgetID){
 		    if(ctx.widgets.component(both,14).valid()&&
 		    		ctx.widgets.component(both,14).visible()){
 		    	ctx.widgets.component(both, 14).click();
-		    	//ctx.environment.sleep(500);
 		    }
 		}
 	}
