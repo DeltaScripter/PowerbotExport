@@ -1,5 +1,6 @@
 package features;
 
+import org.powerbot.script.Random;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Component;
@@ -10,8 +11,7 @@ import quests.Method;
 
 public class GrandExchange extends ClientAccessor{
 
-	//Timer wait = new Timer(0);
-	
+
 	public GrandExchange(ClientContext ctx) {
 		super(ctx);
 	}
@@ -73,7 +73,12 @@ public class GrandExchange extends ClientAccessor{
 		price = price.replaceAll(",", "");
 		return Integer.parseInt(price);
 	}
-
+	public void sleep(int millis){
+		try {
+			Thread.sleep(Math.max(5, (int) (millis * Random.nextDouble(0.85, 1.5))));
+		} catch (InterruptedException ignored) {
+		}
+	}
 	private void setQuantity(int itemAmount) {
 		String amount = ""+itemAmount;
 		DeltaQuester.state = "setting quantity";
@@ -84,7 +89,7 @@ public class GrandExchange extends ClientAccessor{
 				sendText(amount);
 			}else {
 				ctx.widgets.component(105,131).click();//empty the search box (try again)
-				//ctx.game.sleep(1200);
+				sleep(1200);
 			}
 		
 		}else ctx.widgets.component(105,131).click();//search quantity button
@@ -93,12 +98,9 @@ public class GrandExchange extends ClientAccessor{
 	}
 
 	private void sendText(String amount) {
-		//if(!wait.isRunning()){
-			//ctx.keyboard.sleep(1500);
+			sleep(1500);
 			ctx.keyboard.send(amount);
-		//	wait = new Timer(2000);
-		//}
-		
+		    sleep(1000);
 	}
 
 	private int quantity() {
@@ -140,12 +142,13 @@ public class GrandExchange extends ClientAccessor{
 				sendText(name);
 			}else {
 				ctx.widgets.component(105,11).click();//reset search box
-				//ctx.environment.sleep(1200);
+				sleep(1200);
 			}
 		}else {
 			System.out.println("Opening the textbox");
+			sleep(1000);
 			ctx.widgets.component(105,11).click();//open the textbox
-			//ctx.keyboard.sleep(800);
+			sleep(800);
 		}
 		
 	}

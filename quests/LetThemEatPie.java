@@ -1,8 +1,9 @@
-/*package quests;
+package quests;
 
-import org.powerbot.script.methods.ClientContext;
-import org.powerbot.script.wrappers.Player;
+
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Player;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -249,11 +250,11 @@ boolean q = true;
 			if(!Method.isChatting("Roloe the Stout")){
 				Method.speakTo(15081, "Roloe the Stout");
 			}
-		}else if(new Tile(2887,3443,0).distanceTo(local.getLocation())<8){
+		}else if(new Tile(2887,3443,0).distanceTo(local.tile())<8){
 			Method.interactO(7104, "Climb", "Stairs");
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToOven, "Walking to the Antagonist", false);
-		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 		
@@ -268,7 +269,7 @@ boolean q = true;
 			Vars.DYNAMICV = false;
 			Method.combineItems(23077, 23076);
 		}else
-		if(new Tile(2881, 3425, 0).distanceTo(local.getLocation())<8){
+		if(new Tile(2881, 3425, 0).distanceTo(local.tile())<8){
 			Vars.DYNAMICV = false;
 			if((ctx.varpbits.varpbit(2674)&0x3F)==30){
 				if(!Method.isChatting("Pierre")){
@@ -278,7 +279,7 @@ boolean q = true;
 			Method.npcInteract(15086, "Pick");
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToPierre, "Walking to Pierre", false);
-		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 		
@@ -288,11 +289,11 @@ boolean q = true;
 	private void cs4() {
 		Player local = ctx.players.local();
 		
-		if( new Tile(2894, 3442, 0).distanceTo(local.getLocation())<6){
+		if( new Tile(2894, 3442, 0).distanceTo(local.tile())<6){
 			Method.interactO(67060,"Cook", "Oven");
 		}else if(Vars.DYNAMICV2){
 			Method.walking(pathToOven, "Walking to an oven", false);
-		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV2 = true;
 		}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 		
@@ -309,11 +310,11 @@ boolean q = true;
 			Vars.DYNAMICV2 = false;
 			hasStinkyPotato = true;
 		}else
-		if( new Tile(2868, 3477, 0).distanceTo(local.getLocation())<8){
+		if( new Tile(2868, 3477, 0).distanceTo(local.tile())<8){
 			Method.useItemOn(1942, 66474, "Hole");
 		}else if(Vars.DYNAMICV2){
 			Method.walking(pathToPotatoHole, "Walking to the kebbit area", false);
-		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV2 = true;
 		}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 		
@@ -334,7 +335,7 @@ boolean q = true;
 			hasStinkyCrayfish = true;
 		}else if(Vars.DYNAMICV2){
 			Method.walking(pathToAnimals, "Walking to animal pen", false);
-		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV2 = true;
 		}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 		
@@ -351,19 +352,19 @@ boolean q = true;
 			hasMFlour = true;
 		}else
 		if((ctx.varpbits.varpbit(2674)>>11&0x1)==1){
-			if(new Tile(2890,3428,0).distanceTo(local.getLocation())<8 && ctx.game.floor()==0){
-				if(new Tile(2892,3425,0).distanceTo(local.getLocation())<4){
+			if(new Tile(2890,3428,0).distanceTo(local.tile())<8 && ctx.game.floor()==0){
+				if(new Tile(2892,3425,0).distanceTo(local.tile())<4){
 					Method.interactO(67770, "Take", "Flour bin");
 				}else Method.clickOnMap(new Tile(2892,3425,0));
 			}else if(ctx.game.floor()==1){
 				Method.interactO(66638, "Climb", "Stairs");
 			}else if(Vars.DYNAMICV){
 				Method.walking(pathToMill, "Walking to the water mill", false);
-			}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.getLocation())<10){
+			}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.tile())<10){
 				Vars.DYNAMICV = true;
 			}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 			
-		}else if(new Tile(2892,3426,1).distanceTo(local.getLocation())<8 && ctx.game.floor()==1){
+		}else if(new Tile(2892,3426,1).distanceTo(local.tile())<8 && ctx.game.floor()==1){
 			if((ctx.varpbits.varpbit(2674)>>10&0x1)==1){
 				Method.interactO(67775, "Operate", "Controls");
 			}else{
@@ -371,11 +372,11 @@ boolean q = true;
 			if(!Method.isChatting("Self"))
 			Method.useItemOn(1947, 67774, "Wheat");
 			}
-		}else if(new Tile(2890,3428,0).distanceTo(local.getLocation())<7){
+		}else if(new Tile(2890,3428,0).distanceTo(local.tile())<7){
 			Method.interactO(66637, "Climb", "Stairs");
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToMill, "Walking to the water mill", false);
-		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 		
@@ -386,22 +387,21 @@ boolean q = true;
 		final String opt[] = {"What do you need me"};
 		Player local = ctx.players.local();
 		
-		if(new Tile(2880, 3443, 0).distanceTo(local.getLocation())<8){
-			Method.skipPics();
+		if(new Tile(2880, 3443, 0).distanceTo(local.tile())<8){
+			//Method.skipPics();
 			if(!Method.startQuestOpen())
 			if(!Method.findOption(opt))Vars.DYNAMICV2 = false;
 				if(!Method.isChatting("Nails Newton")){
 					Method.speakTo(15085, "Nails Newton");
 				}
-		}else if(ctx.game.floor()==1 && new Tile(2893,3442,1).distanceTo(local.getLocation())<10){
+		}else if(ctx.game.floor()==1 && new Tile(2893,3442,1).distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 			Method.interactO(7107, "Climb-down", "Stairs");
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToNail, "Walking to Newton Nail", false);
-		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 		
 	}
 }
-*/

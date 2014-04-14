@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.Action;
 import org.powerbot.script.rt6.Backpack;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
@@ -192,7 +193,7 @@ public class Method extends ClientAccessor{
 				state("Speaking to: " + p);
 				//SpeakTo//timer = new //timer(5000);
 				pressContinue();
-				////ctx.environment.sleep(900,1300);
+				sleep(1300);
 				return true;
 			}
 		}
@@ -252,10 +253,10 @@ public class Method extends ClientAccessor{
 		
 			for(Npc n: ctx.npcs.select().id(id).nearest().first()){
 				
-				if(closeInterfaces() && n.inViewport()){
+				if(n.inViewport()){
 					state("Attempting to speak to: " + p);
 					n.interact("Talk");
-				//	SpeakTo//timer = new //timer(6500);
+			        sleep(Random.nextInt(2000, 2500));
 				}else {
 					ctx.movement.newTilePath(n.tile()).traverse();
 					ctx.camera.turnTo(n);
@@ -335,7 +336,7 @@ public class Method extends ClientAccessor{
 				t.component().centerPoint())){
 				System.out.println("Hovering");
 				t.hover();
-				//ctx.game.sleep(1200);
+				sleep(1200);
 				String[] menuItems = ctx.menu.items();
 				for(String opt: menuItems){
 					if(!actions.contains(opt)){
@@ -346,8 +347,7 @@ public class Method extends ClientAccessor{
 					if(text.contains(string)){
 						if(t.interact(string)){
 						System.out.println("Using " + string + " with item: " + o);
-						//ctx.game.sleep(2000);
-						// //timer = new //timer(2500);
+						 sleep(Random.nextInt(2000, 2500));
 						}
 					}
 				}
@@ -407,7 +407,7 @@ public class Method extends ClientAccessor{
 			//if(closeInterfaces())
 			if(y.inViewport() && y.interact(string)){
 			state("Interacting: " + string);
-			//ctx.game.sleep(1800);
+			sleep(Random.nextInt(1800,2500));
 			}else {
 				ctx.camera.turnTo(y.tile());
 			}
@@ -444,7 +444,8 @@ public class Method extends ClientAccessor{
 			}
 		for(int index: widgetInterference){
 			
-			if(ctx.widgets.component(index,0).visible()){
+			if(ctx.widgets.component(index,0).valid()&&
+					ctx.widgets.component(index,0).visible()){
 				System.out.println("Closing an interaface");
 				if(index==1186){
 					pressContinue();
@@ -562,18 +563,16 @@ public class Method extends ClientAccessor{
 	}
 	
 	public void walking(Tile[] t, String string, boolean dir){
-/*
+
 		if(closeInterfaces())
-		if(!dir && !SpeakTo//timer.isRunning()){
+		if(!dir ){
 			state(string);
-			
 			ctx.movement.newTilePath(t).randomize(2, 1).traverse();
-			SpeakTo//timer = new //timer(4800);
-			}else if(!SpeakTo//timer.isRunning()){
+			sleep(2000);
+			}else{
 				state(string + ": Reverse");
 				ctx.movement.newTilePath(t).reverse().traverse();
-				SpeakTo//timer = new //timer(3800);
-			}*/
+			    }
 	}
 
 	
@@ -609,49 +608,48 @@ public class Method extends ClientAccessor{
 				clickOnMap(ctx.players.local().tile());
 			}
 		}
-		
+		if(ctx.players.local().animation()==-1)
 		if(ctx.bank.close() && ctx.widgets.component(1092,loc).visible()){//lodestone screen
+			System.out.println("Selecting the teleport");
 			state("Selecting teleport: " + teleName);
-			ctx.mouse.move(ctx.widgets.component(1092,1).component(loc).centerPoint());
-			ctx.widgets.component(1092,1).component(loc).click(true);
-			////timer = new //timer(6000);
+			ctx.mouse.move(ctx.widgets.component(1092,loc).centerPoint());
+			ctx.widgets.component(1092,loc).click(true);
+			sleep(3000);
 		}else {
+			System.out.println("Here now, opening tele");
 			if (!ctx.players.local().inCombat())
 				if (ctx.players.local().animation() == -1){
-					ctx.widgets.component(1465,10).hover();
+					System.out.println("Hovering mouse");
+					ctx.widgets.component(1477,59).component(1).hover();//1477,59,1
 					for(String t: ctx.menu.items()){
 						if(t.contains("Teleport")){
-							ctx.widgets.component(1465,10).click();//select lodestone button
-						//	//timer = new //timer(1000);
+							ctx.widgets.component(1477,59).component(1).click();//select lodestone button
+						    sleep(Random.nextInt(2000, 2600));
 						}
 					}
 				
 				}
 		}		
-		//}
+		
 	}
-	
 	public void basicFightNPC(int npc){
 		Method m = new Method(ctx);
 		if(ctx.combatBar.expanded()){
-			/*
+			
 			if(!m.isInCombat()){
 				System.out.println("Clicking attack on enemy");
 				m.npcInteract(npc, "Attack");
 			}else
-				for(Action ab: ctx.combatBar.getActions()){
-					if(ab..ready() && !combat//timer.isRunning()){
-						//state("Using ability: " + ab);
-						//ab.select();
-						combat//timer = new //timer(700);
-						
+				for(Action ab: ctx.combatBar.actions()){
+					if(ab.ready()){
+						ab.select();
+						sleep(Random.nextInt(900, 1400));
 					}
-				}*/
+				}
+			}else ctx.combatBar.expanded(true);
+				
 			
-		}else {state("Attempting to open");
-			ctx.combatBar.expanded(true);
-			//combat//timer = new //timer(7000);
-		}
+		
 		
 	}
 	
@@ -721,9 +719,9 @@ public class Method extends ClientAccessor{
 		
 	}
 	public boolean playerText(String string) {
-		if (ctx.widgets.component(137,89).valid()) {
+		if (ctx.widgets.component(137,90).valid()) {
 			//state("Checking: " + string);
-			if (ctx.widgets.component(137,89).component(0).text()
+			if (ctx.widgets.component(137,90).component(0).text()
 					.contains(string)) {
 				System.out.println("returning true for player text");
 				return true;
@@ -910,8 +908,10 @@ public class Method extends ClientAccessor{
 	}
 	
 	private void getToBank() {
+		
 		if(bankTile.tile().distanceTo(ctx.players.local().tile())>7){
 			if(Vars.DYNAMICV){
+				System.out.println("YEs1");
 				switch(DeltaQuester.number){
 				case 1:
 					walking(Paths.pathToBank2,"Walking to lummbridge bank", false);
@@ -922,19 +922,23 @@ public class Method extends ClientAccessor{
 				
 				}
 			}else{
+				System.out.println("Yes2");
 				switch(DeltaQuester.number){
 				
 				case 1:
+					System.out.println("Case 1");
 					if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().tile())<10){
 						Vars.DYNAMICV = true;
 					}else teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 					break;
 					
 				case 0:
+					System.out.println("Case 0");
 					if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().tile())<10||
 							TeleportLode.VARROCK.getTile().distanceTo(ctx.players.local().tile())<10){
 						Vars.DYNAMICV = true;
 					}else if(VarrokLodeIsActive()){
+						System.out.println("Attempting to tele");
 						teleportTo(TeleportType.VARROCK.getTeleport(),TeleportType.VARROCK.getName());
 					}else teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 					break;
@@ -1166,12 +1170,16 @@ public class Method extends ClientAccessor{
 		return inventory.size()>=28;
 	}
 	public void checkBank() {
+		
 		//System.out.println("Now deciding bank.."+ DeltaQuester.DeltaQuester.number);
+		System.out.println("Now1");
 		if(!DeltaQuester.bankFound){
+			System.out.println("Now2");
 			System.out.println("Now deciding bank..");
 			decideBank();
 		}else
 		if (bankTile.distanceTo(ctx.players.local().tile()) < 7) {
+			System.out.println("Now3");
 			Vars.DYNAMICV = false;
 			if(ctx.bank.opened()){
 				Vars.bankItems.clear();
@@ -1179,17 +1187,19 @@ public class Method extends ClientAccessor{
 					if(!Vars.bankItems.contains(i.id()))
 						Vars.bankItems.add(i.id());
 				}
+				System.out.println("Finished checking bank");
 				DeltaQuester.checkedBank = true;
 			}else openBank();
 			
 		} else getToBank();
+		
 	}
 	private void openBank() {
 		System.out.println("Attempting to open bank: "+ DeltaQuester.number);
 		switch(DeltaQuester.number){
 		case 0://G.E bank
 			if(getNPC(2718).inViewport()){
-		   npcInteract(2718,"Bank");
+		        npcInteract(2718,"Bank");
 			}else ctx.camera.turnTo(getNPC(2718).tile());
 			break;
 		case 1://Lumbridge outside bank
@@ -1262,8 +1272,11 @@ public class Method extends ClientAccessor{
 		}
 		
 	}
-	public void sleep(int amount){
-		//ctx.environment.sleep(amount);
+	public void sleep(int millis){
+		try {
+			Thread.sleep(Math.max(5, (int) (millis * Random.nextDouble(0.85, 1.5))));
+		} catch (InterruptedException ignored) {
+		}
 	}
 
 

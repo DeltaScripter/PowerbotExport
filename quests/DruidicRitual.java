@@ -1,8 +1,9 @@
-/*package quests;
+package quests;
 
-import org.powerbot.script.methods.ClientContext;
-import org.powerbot.script.wrappers.Player;
+
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Player;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -93,13 +94,13 @@ public class DruidicRitual extends Node{
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else{
 		DeltaQuester.numSteps = 6;
-		if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<10)
+		if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().tile())<10)
 			Method.teleporting = false;
 		
 		if((ctx.varpbits.varpbit(2694) & 0xFF)==136){
 			DeltaQuester.progress=6;
 			Method.state("The Druidic Ritual quest has been completed.");
-			ctx.environment.sleep(2000);
+			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
 		if((ctx.varpbits.varpbit(2694) & 0x7F)==118){
@@ -160,14 +161,14 @@ public class DruidicRitual extends Node{
 		while(ctx.varpbits.varpbit(1113)==5){
 			Method.pressContinue();
 		}
-		if(new Tile(2909,3501,0).distanceTo(local.getLocation())<6){
+		if(new Tile(2909,3501,0).distanceTo(local.tile())<6){
 			if(!Method.findOption(opt))
 				if(!Method.isChatting("Kaqemeex")){
 					Method.speakTo(455,"Kaqemeex");
 				}
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToCircle,"Walking to Kaqemeex",false);
-		}else if(new Tile(2897,3545,0).distanceTo(local.getLocation())<8){
+		}else if(new Tile(2897,3545,0).distanceTo(local.tile())<8){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 		
@@ -176,10 +177,10 @@ public class DruidicRitual extends Node{
 
 	private void cS3() {
 		Player local = ctx.players.local();
-		if(ctx.widgets.get(1189).isValid()){
+		if(ctx.widgets.component(1189,1).valid()){
 			Method.pressContinue();
 		}
-		if(new Tile(2916,3438,0).distanceTo(local.getLocation())<6){
+		if(new Tile(2916,3438,0).distanceTo(local.tile())<6){
 			Method.skipPics();
 			if(!Method.isChatting("Sanfew")){
 				Vars.DYNAMICV=false;
@@ -187,7 +188,7 @@ public class DruidicRitual extends Node{
 			}
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToSanfew,"Walking to Sanfew",false);
-		}else if(new Tile(2897,3545,0).distanceTo(local.getLocation())<8){
+		}else if(new Tile(2897,3545,0).distanceTo(local.tile())<8){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 		
@@ -203,7 +204,7 @@ public class DruidicRitual extends Node{
 			if(Method.inventoryContains(23099)){
 				if(Method.inventoryContains(23097)){
 					
-					if(new Tile(2916,3438,0).distanceTo(local.getLocation())<6){
+					if(new Tile(2916,3438,0).distanceTo(local.tile())<6){
 						if(!Method.findOption(opt))
 							if(!Method.isChatting("Sanfew")){
 								Method.speakTo(454,"Sanfew");
@@ -211,7 +212,7 @@ public class DruidicRitual extends Node{
 						
 					}else if(Vars.DYNAMICV){
 						Method.walking(pathToSanfew,"Walking to Sanfew",false);
-					}else if(new Tile(2897,3545,0).distanceTo(local.getLocation())<8){
+					}else if(new Tile(2897,3545,0).distanceTo(local.tile())<8){
 						Vars.DYNAMICV = true;
 					}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 					
@@ -227,7 +228,7 @@ public class DruidicRitual extends Node{
 	private void gatherWood() {
 		Player local = ctx.players.local();
 		
-		if(new Tile(2912,3383,0).distanceTo(local.getLocation())<10){
+		if(new Tile(2912,3383,0).distanceTo(local.tile())<10){
 			//ctx.camera.setYaw(50);
 			
 			for(int i: wood){
@@ -237,7 +238,7 @@ public class DruidicRitual extends Node{
 				
 			}
 			
-		}else if(new Tile(2912,3383,0).distanceTo(local.getLocation())>20){
+		}else if(new Tile(2912,3383,0).distanceTo(local.tile())>20){
 			gatherFishScales();
 		}else Method.clickOnMap( new Tile(2912,3383,0));
 		
@@ -246,13 +247,13 @@ public class DruidicRitual extends Node{
 	private void gatherFishScales() {
 		Player local = ctx.players.local();
 		
-		if(new Tile(2905,3398,0).distanceTo(local.getLocation())<5){
+		if(new Tile(2905,3398,0).distanceTo(local.tile())<5){
 			if(Method.inventoryContains(23098)){
-				if(ctx.widgets.get(1179).isValid()){
-					ctx.widgets.get(1179,16).click(true);
+				if(ctx.widgets.component(1179,1).valid()){
+					ctx.widgets.component(1179,16).click(true);
 				}else Method.interactInventory(23098, "Gather","Item");
 			}else {
-				if(local.getAnimation()==-1){
+				if(local.animation()==-1){
 					Vars.DYNAMICV = false;
 				Method.interactO(67686, "Bait","Bait");
 				}
@@ -260,7 +261,7 @@ public class DruidicRitual extends Node{
 		}else{
 			if(Vars.DYNAMICV){
 				Method.walking(pathToFishSpot,"Walking to fishing location",false);
-			}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.getLocation())<8){
+			}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.tile())<8){
 				Vars.DYNAMICV = true;
 			}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 		}
@@ -281,7 +282,7 @@ public class DruidicRitual extends Node{
 							Vars.DYNAMICV = false;
 							collectWater();
 						}else{
-							if(ctx.widgets.get(1184).isValid()&& ctx.widgets.get(1184,13).getText().contains("We need to find")){
+							if(ctx.widgets.component(1184,1).valid()&& ctx.widgets.component(1184,13).text().contains("We need to find")){
 								spoke = true;
 							}
 							if(!Method.findOption(opt))
@@ -292,17 +293,17 @@ public class DruidicRitual extends Node{
 						}
 					}else collectWater();
 					
-				}else initTile = local.getLocation();
+				}else initTile = local.tile();
 			
 				
 				
-		}else if(new Tile(2927,3406,0).distanceTo(local.getLocation())<6){
+		}else if(new Tile(2927,3406,0).distanceTo(local.tile())<6){
 			Method.state("Entering cave.");
 			Method.interactO(67043, "Enter","Cave");
 		}else {
 			if(Vars.DYNAMICV){
 			Method.walking(pathToCave ,"Walking to cave with special water",false);
-			}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.getLocation())<8){
+			}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.tile())<8){
 				Vars.DYNAMICV = true;
 			}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 		}
@@ -319,12 +320,12 @@ public class DruidicRitual extends Node{
 		}else{
 		//SceneObject fountain = SceneEntities.getNearest(67045);
 			if(Method.objIsNotNull(67045))
-				if (Method.getObject(67045).getLocation().distanceTo(local.getLocation()) < 3) {
+				if (Method.getObject(67045).tile().distanceTo(local.tile()) < 3) {
 					Method.state("Collecting water.");
 					Method.interactO(67045, "Collect","Substance");
 					
 				} else if(Method.objIsNotNull(67045)){
-					Method.clickOnMap(Method.getObject(67045).getLocation());
+					Method.clickOnMap(Method.getObject(67045).tile());
 				}else Method.state("Obj is null");
 				
 			
@@ -336,14 +337,14 @@ public class DruidicRitual extends Node{
 		Player local = ctx.players.local();
 			
 			Method.skipPics();
-			if(new Tile(2916,3438,0).distanceTo(local.getLocation())<6){//sanfew area
+			if(new Tile(2916,3438,0).distanceTo(local.tile())<6){//sanfew area
 					if(!Method.findOption(opt))
 						if(!Method.isChatting("Sanfew")){
 							Method.speakTo(454,"Sanfew");
 						}
 			}else if(Vars.DYNAMICV){
 				Method.walking(pathToSanfew, "Walking to Sanfew",false);
-			}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.getLocation())<8){
+			}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.tile())<8){
 				Vars.DYNAMICV = true;
 			}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 		
@@ -352,7 +353,7 @@ public class DruidicRitual extends Node{
 	private void cS0() {//Speaks to Kaqemeex and starts the quest
 		 final String opt[] = {"I'm pretty sure","What do you need","Talk about Druidic"};
 		 Player local = ctx.players.local();
-		if(new Tile(2909,3501,0).distanceTo(local.getLocation())<6){//Stonecircle area
+		if(new Tile(2909,3501,0).distanceTo(local.tile())<6){//Stonecircle area
 			if(!Method.startQuestOpen())
 				if(!Method.findOption(opt))
 					if(!Method.isChatting("Kaqemeex")){
@@ -360,7 +361,7 @@ public class DruidicRitual extends Node{
 					}
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToCircle, "Walking to Kaqemeex",false);
-		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.getLocation())<8){
+		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(local.tile())<8){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.BURTHHORPE.getTeleport(),TeleportType.BURTHHORPE.getName());
 		
@@ -370,4 +371,3 @@ public class DruidicRitual extends Node{
 	}
 
 }
-*/

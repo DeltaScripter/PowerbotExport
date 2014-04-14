@@ -47,21 +47,7 @@ public class DeathPlateau extends Node{
 	boolean q = true;
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
-		if(q){
-			TaskListing.taskRemove.clear();
-			TaskListing.taskListData.add("Start the quest");
-			TaskListing.taskListData.add("Speak to the dwarf about secret passageways");
-			TaskListing.taskListData.add("Speak to the dwarf's friend a bit west of the cave");
-			TaskListing.taskListData.add("Speak to the smith about the drawf's boots");
-			TaskListing.taskListData.add("Bring the boots back to the dwarf");
-			TaskListing.taskListData.add("Read the survey she gives us");
-			TaskListing.taskListData.add("Open up the passage way in the cave");
-			TaskListing.taskListData.add("Traverse the cavern");
-			TaskListing.taskListData.add("Defeat the troll");
-			TaskListing.taskListData.add("Finish the quest");
-			TaskListing.updateTasks();
-			q = false;
-		}
+		
 		DeltaQuester.numSteps = 12;//2337 is setting
 		Method.resetTeleporting();
 		while(ctx.varpbits.varpbit(1113)!=0){

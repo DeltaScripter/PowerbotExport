@@ -1,10 +1,9 @@
-/*package quests;
+package quests;
 
-import org.powerbot.script.methods.ClientContext;
-import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.GameObject;
-import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.GameObject;
+import org.powerbot.script.rt6.Player;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -86,7 +85,6 @@ public class PiratesTreasure extends Node{
 	public String itemDString[] = {"White apron","Spade"};//contains the names of the items needing to be purchased.
 	public boolean init = false;
 	
-	private Timer wait = new Timer(0);
 	
 	private Vars Vars = new Vars();
 	private Method Method = new Method(ctx);
@@ -96,22 +94,13 @@ public class PiratesTreasure extends Node{
 	boolean q = true;
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
-		if(q){
-			TaskListing.taskRemove.clear();
-			TaskListing.taskListData.add("Start quest by speaking to the pirate");
-			TaskListing.taskListData.add("Head to Karamja and smuggle some rum in the crates");
-			TaskListing.taskListData.add("Find the treasure chest in Varrock");
-			TaskListing.taskListData.add("Find the buried treasure in Falador and finish quest");
-			
-			TaskListing.updateTasks();
-			q = false;
-		}
+	
 		Method.resetTeleporting();
 		Method.foodSupport();
 		
 	
-		if(ctx.camera.getPitch()<50){
-			ctx.camera.setPitch(90);
+		if(ctx.camera.pitch()<50){
+			ctx.camera.pitch(90);
 		}
 		DeltaQuester.numSteps = 5;
 		if(DeltaQuester.checkedBank)
@@ -137,9 +126,7 @@ public class PiratesTreasure extends Node{
 			if((ctx.varpbits.varpbit(2227) & 0x7) ==4){
 				DeltaQuester.progress = 5;
 				Method.state("The Pirates Treasure quest has been completed.");
-				TaskListing.updateTaskRemove("Start quest by speaking to the pirate","Head to Karamja and smuggle some rum in the crates","Find the treasure chest in Varrock","Find the buried treasure in Falador and finish quest");
-				TaskListing.removeTasks(TaskListing.taskRemove);
-			
+				
 				Method.sleep(2000);
 				DeltaQuester.e = true;
 			}else if(!Vars.r){
@@ -153,15 +140,11 @@ public class PiratesTreasure extends Node{
 			if((ctx.varpbits.varpbit(2227) & 0x3) ==3){
 				DeltaQuester.progress = 4;
 				cs5();//Find the treasure!!
-				TaskListing.updateTaskRemove("Start quest by speaking to the pirate","Head to Karamja and smuggle some rum in the crates","Find the treasure chest in Varrock");
-				TaskListing.removeTasks(TaskListing.taskRemove);
-			
+				
 			}else
 			if((ctx.varpbits.varpbit(2227) & 0x3) ==2){
 				DeltaQuester.progress = 3;
 				cs4();//Find the chest!!
-				TaskListing.updateTaskRemove("Start quest by speaking to the pirate","Head to Karamja and smuggle some rum in the crates");
-				TaskListing.removeTasks(TaskListing.taskRemove);
 			}else
 			if((ctx.varpbits.varpbit(2227) & 0x1) ==1){
 				DeltaQuester.progress = 2;
@@ -183,25 +166,25 @@ public class PiratesTreasure extends Node{
 	
 	private void cs5() {
 		Player local = ctx.players.local();
-		if(ctx.widgets.get(468,15).isVisible()){//After readin ght emap
-			ctx.widgets.get(468,15).click();
+		if(ctx.widgets.component(468,15).visible()){//After readin ght emap
+			ctx.widgets.component(468,15).click();
 		}else
 		if(Method.npcIsNotNull(3914)){
 			if(Method.getInteractingNPC()==null){
 				Method.npcInteract(3914, "Attack");
-			}else if(ctx.players.local().isInCombat()){
+			}else if(ctx.players.local().inCombat()){
 				Method.fightNPC(3914);//farmer
 			}
 		}else{
 		
-		if(new Tile(2999,3383,0).distanceTo(local.getLocation())<4){
-			if(new Tile(2999,3383,0).distanceTo(local.getLocation())<1){
-				if(!local.isInMotion())
+		if(new Tile(2999,3383,0).distanceTo(local.tile())<4){
+			if(new Tile(2999,3383,0).distanceTo(local.tile())<1){
+				if(!local.inMotion())
 				Method.interactInventory(952, "Dig","Spade");
-			}else new Tile(2999,3383,0).getMatrix(ctx).click(true);
+			}else new Tile(2999,3383,0).matrix(ctx).click(true);
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToPatch, "Walking to Falador garden.",false);
-		}else if(TeleportLode.FALADOR.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.FALADOR.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.FALADOR.getTeleport(),TeleportType.FALADOR.getName());//Falador tele
 		
@@ -216,31 +199,31 @@ public class PiratesTreasure extends Node{
 			Vars.DYNAMICV = false;
 			Method.interactInventory(433, "Read","Map");
 		}else{
-				if(Method.objIsNotNull(24376) && !BarUpDoor.contains(Method.getObject(24376).getLocation())&&ctx.game.floor()==1 || 
+				if(Method.objIsNotNull(24376) && !BarUpDoor.contains(Method.getObject(24376).tile())&&ctx.game.floor()==1 || 
 						!Method.objIsNotNull(24376) && ctx.game.floor()==1){
-					if(new Tile(3221,3395,1).distanceTo(local.getLocation())<5){
+					if(new Tile(3221,3395,1).distanceTo(local.tile())<5){
 					Method.interactO(2079, "Open","Chest");
 					}else Method.clickOnMap(new Tile(3221,3395,1));
 				}else
 			if(ctx.game.floor()==1){
 			Method.interactO(24376, "Open","Door");
 		}else {
-			if(new Tile(3226,3394,0).distanceTo(local.getLocation())<30){
+			if(new Tile(3226,3394,0).distanceTo(local.tile())<30){
 			if(Method.objIsNotNull(24376) && !Method.objIsByTile(new Tile(3215,3395,0), 24376, 5) ||
 					!Method.objIsNotNull(24376) && !Method.objIsByTile(new Tile(3215,3395,0), 24376, 5)){
 				
-				if(new Tile(3226,3394,0).distanceTo(local.getLocation())<5){
+				if(new Tile(3226,3394,0).distanceTo(local.tile())<5){
 					Method.interactO(24356, "Climb","Stairs");
 					}else Method.clickOnMap(new Tile(3226,3394,0));
 				
-			}else if (new Tile(3215, 3395, 0).distanceTo(local.getLocation()) < 5) {
+			}else if (new Tile(3215, 3395, 0).distanceTo(local.tile()) < 5) {
 					Method.interactO(24376, "Open", "Door");
 			}else Method.clickOnMap(new Tile(3215, 3395, 0));
 			}else if (Vars.DYNAMICV) {
 
 					Method.walking(pathToHallow,"Walking to the Blue Moon Inn", false);
-				} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation()) < 10 || 
-						TeleportLode.VARROCK.getTile().distanceTo(local.getLocation()) < 10) {
+				} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile()) < 10 || 
+						TeleportLode.VARROCK.getTile().distanceTo(local.tile()) < 10) {
 					Vars.DYNAMICV = true;
 				} else if (Method.VarrokLodeIsActive()) {
 					Method.teleportTo(TeleportType.VARROCK.getTeleport(),TeleportType.VARROCK.getName());
@@ -252,21 +235,21 @@ public class PiratesTreasure extends Node{
 	private void cs3() {
 		//SceneObject door = SceneEntities.getNearest(40108);
 		Player local = ctx.players.local();
-		if (PortSarim.contains(local.getLocation())) {
+		if (PortSarim.contains(local.tile())) {
 			for(GameObject door : ctx.objects.select().id(40108).nearest().first()){
-				if(FoodDoor.contains(door.getLocation()) && door.getLocation().distanceTo(local.getLocation())<8){
+				if(FoodDoor.contains(door.tile()) && door.tile().distanceTo(local.tile())<8){
 					Method.interactO(40108, "Open","Door");
 					break;
 				}else break;
 			}
-			if (new Tile(3052, 3247, 0).distanceTo(local.getLocation()) < 5) {
+			if (new Tile(3052, 3247, 0).distanceTo(local.tile()) < 5) {
 				if(!Method.isChatting("Person")){
 					Vars.DYNAMICV = false;
 					Method.speakTo(375,"Person");
 				}
 			} else Method.clickOnMap(new Tile(3052, 3247, 0));
 		} else {
-			if (DoorByCrateOfWine.contains(local.getLocation())) {
+			if (DoorByCrateOfWine.contains(local.tile())) {
 				Method.interactO(2069, "Open","Door");
 			}
 		}
@@ -282,14 +265,14 @@ public class PiratesTreasure extends Node{
 		if (Method.inventoryContains(431)) {
 			cs3();
 		} else {
-			if (DoorByCrateOfWine.contains(local.getLocation())) {
+			if (DoorByCrateOfWine.contains(local.tile())) {
 				Method.interactO(2071, "Search","Object");
 			} else {
-				if (ctx.game.floor()==0 && new Tile(3017, 3207, 0).distanceTo(local.getLocation()) < 30) {
-					if (new Tile(3017, 3207, 0).distanceTo(local.getLocation()) < 7) {
+				if (ctx.game.floor()==0 && new Tile(3017, 3207, 0).distanceTo(local.tile()) < 30) {
+					if (new Tile(3017, 3207, 0).distanceTo(local.tile()) < 7) {
 						
 						for(GameObject door : ctx.objects.select().id(40108).nearest().first()){
-							if(!FoodDoor.contains(door.getLocation()) || !Method.objIsNotNull(40108)){
+							if(!FoodDoor.contains(door.tile()) || !Method.objIsNotNull(40108)){
 								if(!Method.findOption(opt))
 									if(!Method.isChatting("Person")){
 										Method.interactO(2069, "Open","Door");
@@ -299,7 +282,7 @@ public class PiratesTreasure extends Node{
 						
 					} else Method.clickOnMap(new Tile(3017, 3207, 0));//Walks the player to the food store
 				} else {
-						if (new Tile(2955, 3146, 0).distanceTo(local.getLocation()) < 5) {
+						if (new Tile(2955, 3146, 0).distanceTo(local.tile()) < 5) {
 							if(!Method.findOption(opt))
 								if(!Method.isChatting("Person")){
 									Vars.DYNAMICV = false;
@@ -312,7 +295,7 @@ public class PiratesTreasure extends Node{
 		}
 	}
 	
-	/*Heads to Karamja, takes the job, stores the rum
+	//Heads to Karamja, takes the job, stores the rum
 	private void cs1() throws Exception {
 		final String opt[] = {"Could you","Yes"};
 		Player local = ctx.players.local();
@@ -344,8 +327,8 @@ public class PiratesTreasure extends Node{
 			  if(Vars.hasB){//and has enough bananas at some point
 				  if(Vars.doneTasks){//If finished storing the rum and bananas, speak to Luthas for the last time
 					  
-					  if(new Tile(2937,3152,0).distanceTo(local.getLocation())<8){//by Luthas
-							if(ctx.widgets.get(1184,11).isVisible()){
+					  if(new Tile(2937,3152,0).distanceTo(local.tile())<8){//by Luthas
+							if(ctx.widgets.component(1184,11).visible()){
 								while(Method.npcSays("Well done, here's your")||
 										Method.npcSays("Hello I'm Luthas")){
 									Method.state("Finishing job");
@@ -355,12 +338,12 @@ public class PiratesTreasure extends Node{
 							}else if(!Method.isChatting("Luthas"))
 								Method.speakTo(379, "Luthas");
 								
-						}else if (new Tile(2937,3152,0).distanceTo(local.getLocation())<20){//if on the island
+						}else if (new Tile(2937,3152,0).distanceTo(local.tile())<20){//if on the island
 							Method.clickOnMap(new Tile(2937,3152,0));//Luthas's location
 						}
 					  
 				  }else
-				  if(new Tile(2942,3151,0).distanceTo(local.getLocation())<8){//crate location
+				  if(new Tile(2942,3151,0).distanceTo(local.tile())<8){//crate location
 					  if(Method.inventoryContains(431)){//if still contains the wine
 						  Method.useItemOn(431, 2072, "Use");//use the wine on the crate
 					  }else if(Method.inventoryGetCount(1963)>=13){
@@ -374,23 +357,23 @@ public class PiratesTreasure extends Node{
 			}else
 			if(Method.inventoryGetCount(1963)>13){//contains 8 or more bananas
 				Vars.hasB = true;
-			}else if(new Tile(2917,3160,0).distanceTo(local.getLocation())<14){//banana area
+			}else if(new Tile(2917,3160,0).distanceTo(local.tile())<14){//banana area
 				for(int i: bananaIds){
-					if(!local.isInMotion() && local.getAnimation()==-1)
+					if(!local.inMotion() && local.animation()==-1)
 				Method.interactO(i, "Pick", "Banana tree");
 				}
 			}else Method.clickOnMap(new Tile(2917,3160,0));//Banana area
 		   }else if(Method.inventoryContains(431)){//If inventory contains the wine
 			   Vars.boughtWine = true;
-		   }else if(new Tile(2926,3146,0).distanceTo(local.getLocation())<8){//Store location
+		   }else if(new Tile(2926,3146,0).distanceTo(local.tile())<8){//Store location
 			   //Buys the wine
-			   if(ctx.widgets.get(1265).isValid()){
-					ctx.widgets.get(1265,20).getChild(1).interact("Buy 1");
-					Method.sleep(1500,2000);
+			   if(ctx.widgets.component(1265,1).valid()){
+					ctx.widgets.component(1265,20).component(1).interact("Buy 1");
+					Method.sleep(2000);
 				}else Method.npcInteract(568, "Trade");
 			   
 		   }else Method.clickOnMap(new Tile(2926,3146,0));//store location
-		}else if(new Tile(2937,3152,0).distanceTo(local.getLocation())<8){//by Luthas
+		}else if(new Tile(2937,3152,0).distanceTo(local.tile())<8){//by Luthas
 			if(Method.npcSays("Have you completed your task")){
 				Vars.startJob = true;
 			}else
@@ -399,10 +382,10 @@ public class PiratesTreasure extends Node{
 				if(!Method.isChatting("Luthas")){
 					Method.speakTo(379, "Luthas");
 				}
-		}else if (new Tile(2937,3152,0).distanceTo(local.getLocation())<20){//if on the island
+		}else if (new Tile(2937,3152,0).distanceTo(local.tile())<20){//if on the island
 			Method.clickOnMap(new Tile(2937,3152,0));//Luthas's location
 		}else
-		if(new Tile(3028,3217,0).distanceTo(local.getLocation())<8){//By the boat
+		if(new Tile(3028,3217,0).distanceTo(local.tile())<8){//By the boat
 			
 			if(!Method.findOption(opt))
 				if(!Method.isChatting("Seaman Thresnor")){
@@ -412,11 +395,11 @@ public class PiratesTreasure extends Node{
 		}else if(Vars.DYNAMICV2){
 			Method.clickOnMap(new Tile(3028,3217,0));//by the boat
 		}else if(Vars.DYNAMICV){
-			if (new Tile(3028,3217,0).distanceTo(local.getLocation())<20){
+			if (new Tile(3028,3217,0).distanceTo(local.tile())<20){
 			Method.clickOnMap(new Tile(3028,3217,0));//by the boat
 			}else Method.walking(pathToFrank, "Walking to the boat", false);
-		}else if(TeleportLode.PORTSARIM.getTile().distanceTo(local.getLocation())<10||
-				TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.PORTSARIM.getTile().distanceTo(local.tile())<10||
+				TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else if(Method.isPortSarimLodeAct()){
 			Method.teleportTo(TeleportType.PORTSARIM.getTeleport(),TeleportType.PORTSARIM.getName());
@@ -426,8 +409,8 @@ public class PiratesTreasure extends Node{
 		
 		Player local = ctx.players.local();
 		final String opt[] = {"Ok, I","I'm in search"}; 
-		if(new Tile(3052,3247,0).distanceTo(local.getLocation())<28){
-			if(new Tile(3052,3247,0).distanceTo(local.getLocation())<7){
+		if(new Tile(3052,3247,0).distanceTo(local.tile())<28){
+			if(new Tile(3052,3247,0).distanceTo(local.tile())<7){
 				if(!Method.findOption(opt))
 					if(!Method.isChatting("Pirate")){
 						Vars.DYNAMICV = false;
@@ -437,8 +420,8 @@ public class PiratesTreasure extends Node{
 			}else Method.clickOnMap(new Tile(3052,3247,0));
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToFrank, "Walking to RedBeard Frank.",false);
-		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10 || 
-				TeleportLode.PORTSARIM.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10 || 
+				TeleportLode.PORTSARIM.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else if(Method.isPortSarimLodeAct()){
 			Method.teleportTo(TeleportType.PORTSARIM.getTeleport(),TeleportType.PORTSARIM.getName());
@@ -451,4 +434,3 @@ public class PiratesTreasure extends Node{
 	}
 
 }
-*/

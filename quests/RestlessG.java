@@ -71,6 +71,7 @@ public class RestlessG extends Node{
 	boolean q = true;
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
+		
 		if(q){
 			TaskListing.taskRemove.clear();
 			TaskListing.taskListData.add("Start quest by speaking to the priest");
@@ -91,12 +92,15 @@ public class RestlessG extends Node{
 			Method.determineBank(bankItems);
 		
 			if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2324)&0x7) !=5){
+				
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.varpbits.varpbit(2324)&0x7) !=5){
+	    	
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if((ctx.varpbits.varpbit(2324)&0x7) ==5){
+		
 			DeltaQuester.progress = 6;
 			Method.state("The Restless Ghost quest has been completed.");
 			TaskListing.updateTaskRemove("Start quest by speaking to the priest","Speak to the irrational priest in the swamp","Speak to the ghost in the cemetary","Retrieve the ghost's skull","Place the ghost's skull in his coffin and finish quest");
@@ -134,16 +138,16 @@ public class RestlessG extends Node{
 		if((ctx.varpbits.varpbit(2324)&0x1) ==0){
 			DeltaQuester.progress = 1;
 			cs0();//Start the quest
-		}
+		}else System.out.println("Problem with settings");
 	}
 
 
 	private void cs4() {
 		Method m = new Method(ctx);
 		if(new Tile(3248,3193,0).distanceTo(ctx.players.local().tile())<5){
-			if(!ctx.objects.select().nearest().id(15061).first().isEmpty()){
-				m.useItemOn(553, 15061, "Skull");
-			}else m.interactO(2145, "Open", "Coffin");
+			if(!ctx.objects.select().nearest().id(89483).first().isEmpty()){
+				m.useItemOn(553, 89483, "Skull");
+			}else m.interactO(89480, "Open", "Coffin");
 		}else cs2();//get to the ghost
 		
 	}
@@ -166,7 +170,7 @@ public class RestlessG extends Node{
 		Method m = new Method(ctx);
 		String opt[] = {"Yep."};
 		if(Vars.gAmuEquip){
-			if(new Tile(3248,3193,0).distanceTo(ctx.players.local().tile())<5){
+			if(new Tile(3248,3193,0).distanceTo(ctx.players.local().tile())<6){
 				Vars.DYNAMICV = false;
 				for(Npc n : ctx.npcs.select().nearest().id(457).first()){
 					if(!m.findOption(opt))
@@ -176,7 +180,8 @@ public class RestlessG extends Node{
 						}
 				}
 				if(!ctx.players.local().inMotion()){
-					m.interactO(2145, "Open", "Coffin");
+					System.out.println("Interacting with object");
+					m.interactO(89480, "Open", "Coffin");
 				}
 				
 				
@@ -192,6 +197,7 @@ public class RestlessG extends Node{
 			Vars.gAmuEquip = true;
 			Method.state("Found item in equipment" + Vars.gAmuEquip);
 		}else if(m.inventoryContains(552)){
+			System.out.println("attemptin tinv");
 					m.interactInventory(552, "Wear", "Ghostspeak Amulet");
 		}
 	}

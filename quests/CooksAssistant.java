@@ -1,9 +1,9 @@
-/*package quests;
+package quests;
 
-import org.powerbot.script.methods.ClientContext;
-import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.Player;
+
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Player;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -71,20 +71,12 @@ public final Tile[] pathToCook = new Tile[] {
 	public String itemDString[] = {"Empty pot", "Bucket", "Wheat"};//contains the names of the items needing to be purchased.
 	public Method Method = new Method(ctx);
 	
-	Timer wait = new Timer(0);
 	public Player player = ctx.players.local();
 	public Vars Vars = new Vars();
 	boolean q = true;//only runs once.
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
-		if(q){
-			TaskListing.taskRemove.clear();
-			TaskListing.taskListData.add("Start quest by speaking to the cook");
-			TaskListing.taskListData.add("Gather the special ingredients");
-			TaskListing.taskListData.add("Speak to the cook and finish quest");
-			TaskListing.updateTasks();
-			q = false;
-		}
+	
 		Method.resetTeleporting();
 		DeltaQuester.numSteps = 3;
 		failsafe();
@@ -92,6 +84,7 @@ public final Tile[] pathToCook = new Tile[] {
 			Method.determineBank(bankItems);
 		
 		if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(2492)&0x3) !=2){
+			System.out.println("HERE");
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.varpbits.varpbit(2492)&0x3) !=2){
@@ -105,7 +98,6 @@ public final Tile[] pathToCook = new Tile[] {
 			Method.state("The Cook's Assistant quest has been completed.");
 			TaskListing.updateTaskRemove("Start quest by speaking to the cook","Speak to the cook and finish quest");
 			TaskListing.removeTasks(TaskListing.taskRemove);
-			ctx.environment.sleep(2000);
 			DeltaQuester.e = true;
 		}else
 		if((ctx.varpbits.varpbit(2492)&0x1) ==1){
@@ -135,13 +127,13 @@ public final Tile[] pathToCook = new Tile[] {
 			if (requiredItems[1] == 1) {// If has egg
 				if (requiredItems[2] == 1) {//special flour
 				cs0();//Speak to the cook again
-			}else if(ctx.widgets.get(1188).isValid() && ctx.widgets.get(1188,3).getText().contains("Who are you")){
+			}else if(ctx.widgets.component(1188,1).valid() && ctx.widgets.component(1188,3).text().contains("Who are you")){
 				Vars.DYNAMICV = false;
 				requiredItems[2] = 1;
 			}else if(Method.inventoryContains(15414)){//Flour
 				Vars.DYNAMICV = false;
 				requiredItems[2] = 1;
-			}else if(new Tile(3166,3304,0).distanceTo(player.getLocation())<10 && ctx.game.floor()==0 || sFlour){
+			}else if(new Tile(3166,3304,0).distanceTo(player.tile())<10 && ctx.game.floor()==0 || sFlour){
 				if((ctx.varpbits.varpbit(3193)&0x1) ==1){//Whether or not there is flour already made
 					opHopper = true;
 				}
@@ -151,14 +143,14 @@ public final Tile[] pathToCook = new Tile[] {
 				
 			}else if(Vars.DYNAMICV){
 				Method.walking(pathToMill, "Walking to the mill", false);
-			}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(player.getLocation())<10){
+			}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(player.tile())<10){
 				Vars.DYNAMICV = true;
 			}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 			
 			}else if(Method.inventoryContains(15412) || Method.playerText("You've already given one of these eggs")){//Egg 45208
 			    Vars.DYNAMICV = false;
 				requiredItems[1] = 1;
-			}else if(new Tile(3206,3283, 0).distanceTo(player.getLocation())<7){
+			}else if(new Tile(3206,3283, 0).distanceTo(player.tile())<7){
 
 				if(!Method.objIsByTile(new Tile(3206,3283,0),45208, 4)){//pen door
 					Method.interactG(15412, "Take", "Special Egg");
@@ -166,24 +158,24 @@ public final Tile[] pathToCook = new Tile[] {
 			
 			}else if(Vars.DYNAMICV){
 				Method.walking(pathToSpecialEgg, "Walking to the chicken pen", false);
-			}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(player.getLocation())<10){
+			}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(player.tile())<10){
 				Vars.DYNAMICV = true;
 			}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 		}else if(Method.inventoryContains(15413)){//Milk
 			requiredItems[0] = 1;
-		}else if(ctx.widgets.get(1186).isValid() && ctx.widgets.get(1186,1).getText().contains("You've already")){
+		}else if(ctx.widgets.component(1186,1).valid() && ctx.widgets.component(1186,1).text().contains("You've already")){
 			requiredItems[0] = 1;
 		}else
-		if(new Tile(3261, 3279, 0).distanceTo(player.getLocation())<8){
+		if(new Tile(3261, 3279, 0).distanceTo(player.tile())<8){
 			Vars.DYNAMICV = false;
-			if(!player.isInMotion())
+			if(!player.inMotion())
 			Method.interactO(47721, "Milk", "Prized dairy cow");
 		}else if(Vars.DYNAMICV){
-			if(new Tile(3254,3267,0).distanceTo(player.getLocation())<11 &&Method.objIsByTile(new Tile(3253,3267,0), 45212, 5)){
+			if(new Tile(3254,3267,0).distanceTo(player.tile())<11 &&Method.objIsByTile(new Tile(3253,3267,0), 45212, 5)){
 					Method.interactO(45212, "Open", "Door");
 				
 			}else Method.walking(pathToSpecialCow, "Walking to prized cow", false);
-		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(player.getLocation())<10){
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(player.tile())<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 		
@@ -216,28 +208,26 @@ public final Tile[] pathToCook = new Tile[] {
 				Method.interactO(36796, "Climb-up", "Ladder");
 			}else
 			Method.interactO(36795, "Climb", "Ladder");
-		}else if (Method.npcSays("Really? How marvellous!") && wait.isRunning()){//Below tries to speak to miller about making special flour
+		}else if (Method.npcSays("Really? How marvellous!")){//Below tries to speak to miller about making special flour
 			sFlour = true;
-		}else if(!wait.isRunning()){
+		}else 
 			if(!Method.findOption(opt)){
-			if(ctx.widgets.get(1184).isValid() || ctx.widgets.get(1191).isValid()){//NEEDED
-				wait = new Timer(2500);
+			if(ctx.widgets.component(1184,1).valid() || ctx.widgets.component(1191,1).valid()){//NEEDED
 				int widgets[] = {1184,1191};
 				for(int wid: widgets){
-					if(ctx.widgets.get(wid).isValid())
-						ctx.widgets.get(wid,14).click();
+					if(ctx.widgets.component(wid,1).valid())
+						ctx.widgets.component(wid,14).click();
 					Method.sleep(600);
 					
 				}
 			}else Method.speakTo(3806, "Millie Miller");
 			
 			}
-		}else Method.state("Waiting for timer");
 	}
 	
 	private void cs0() {
 		final String opt[] = {"What's wrong"};
-		if(new Tile(3206, 3211, 0).distanceTo(player.getLocation())<7){
+		if(new Tile(3206, 3211, 0).distanceTo(player.tile())<7){
 			Method.skipPics();
 			if(!Method.startQuestOpen())
 			if(!Method.findOption(opt)){
@@ -247,7 +237,7 @@ public final Tile[] pathToCook = new Tile[] {
 			}
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToCook, "Walking to the cook",false);
-		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(player.getLocation())<10){
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(player.tile())<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo( TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 		
@@ -259,4 +249,3 @@ public final Tile[] pathToCook = new Tile[] {
 
 }
 
-*/

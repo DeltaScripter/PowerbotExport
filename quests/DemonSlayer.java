@@ -1,9 +1,10 @@
-/*package quests;
+package quests;
 
-import org.powerbot.script.methods.ClientContext;
-import org.powerbot.script.wrappers.GameObject;
-import org.powerbot.script.wrappers.Player;
+
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.GameObject;
+import org.powerbot.script.rt6.Player;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -96,7 +97,7 @@ public class DemonSlayer extends Node {
 		if(!inits){
 			if(!Method.VarrokLodeIsActive()){
 				Method.state("Varrok lodestone must be active, skipping quest.");
-				ctx.environment.sleep(2000);
+			
 				DeltaQuester.e  =true;
 			}else inits = true;
 		}else 
@@ -106,7 +107,6 @@ public class DemonSlayer extends Node {
 			updateTaskRemove("Start the quest","Speak to the ghosts downstairs","Complete walking puzzle","Defeat the skeletons","Complete the mind test","Speak to the ghosts and recieve the sword","Inform Grufeld Bach of your success","Defeat the supporters of the demon","Defeat the demon","Complete the quest");
 			TaskListing.removeTasks(TaskListing.taskRemove);
 			
-			ctx.environment.sleep(2000);
 			DeltaQuester.e = true;
 		}else
 		if((ctx.varpbits.varpbit(3518) & 0x7F)==120){
@@ -211,7 +211,7 @@ public class DemonSlayer extends Node {
 			if((ctx.varpbits.varpbit(82)&0x3FF)==1018){
 				if(!Method.isChatting("Cutscene")){//16724
 					
-					if(local.getAppearance().equals(18019)){
+					if(local.appearance().equals(18019)){
 						Method.npcInteract(16724, "Attack");
 					}else if(!Method.isInCombat()){
 						Method.npcInteract(16724, "Attack");
@@ -220,8 +220,8 @@ public class DemonSlayer extends Node {
 				}
 			}else if(silverEquip){
 				if(!Method.npcIsNotNull(16722) || !Method.npcIsNotNull(16723)){//Denath, not the demon
-				Method.clickOnMap(new Tile(init.x()+31,init.getY()-30,0));
-				ctx.game.sleep(5000);
+				Method.clickOnMap(new Tile(init.x()+31,init.y()-30,0));
+				Method.sleep(5000);
 				}
 			}else if(!Method.EquipmentContains(2402)){
 				Method.interactInventory(2402, "Wield", "Silverlight");
@@ -229,12 +229,12 @@ public class DemonSlayer extends Node {
 			
 		}else { 
 			for(GameObject  o : ctx.objects.select().id(71036).nearest().first()){
-			if(o.getLocation().distanceTo(local.getLocation())<20){
-				ctx.environment.sleep(2000);
-				init = ctx.players.local().getLocation();
+			if(o.tile().distanceTo(local.tile())<20){
+				Method.sleep(2000);
+				init = ctx.players.local().tile();
 			}
 		}
-		if(new Tile(3256,3387,0).distanceTo(local.getLocation())<4){
+		if(new Tile(3256,3387,0).distanceTo(local.tile())<4){
 			if(!Method.objIsByTile(new Tile(3255,3388,0), 24381, 3)){
 				Method.interactO(82061, "Climb", "Trapdoor");
 			}else Method.interactO(24381, "Open", "Door");
@@ -249,7 +249,7 @@ public class DemonSlayer extends Node {
 		
 		if(Vars.DYNAMICV){
 			Method.walking(path, s, false);
-		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<5 || TeleportLode.VARROCK.getTile().distanceTo(local.getLocation())<5){
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<5 || TeleportLode.VARROCK.getTile().distanceTo(local.tile())<5){
 			Vars.DYNAMICV = true;
 		}else if(Method.VarrokLodeIsActive()){
 			Method.teleportTo(TeleportType.VARROCK.getTeleport(),TeleportType.VARROCK.getName());//Varrok tele
@@ -261,32 +261,32 @@ public class DemonSlayer extends Node {
 		Player local = ctx.players.local();
 		
 		if(init!=null){
-			  if(new Tile(init.x()+27,init.getY()-20,0).distanceTo(local.getLocation())<8){
+			  if(new Tile(init.x()+27,init.y()-20,0).distanceTo(local.tile())<8){
 				
-				if(local.getAppearance().equals(18019)){
+				if(local.appearance().equals(18019)){
 					Vars.DYNAMICV = false;
 					Method.npcInteract(16723, "Attack");
 				}else Method.fightNPC(16723);
 				
-			}else Method.clickOnMap(new Tile(init.x()+27,init.getY()-20,0));
+			}else Method.clickOnMap(new Tile(init.x()+27,init.y()-20,0));
 		}else
 	{for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
-			if(o.getLocation().distanceTo(local.getLocation())<20){
-				ctx.environment.sleep(2000);
-				init = ctx.players.local().getLocation();
+			if(o.tile().distanceTo(local.tile())<20){
+				Method.sleep(2000);
+				init = ctx.players.local().tile();
 			}
 		}
-		if(new Tile(3258,3483,0).distanceTo(local.getLocation())<8){
+		if(new Tile(3258,3483,0).distanceTo(local.tile())<8){
 			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
-				if(!TrapDoor.contains(door.getLocation())){
+				if(!TrapDoor.contains(door.tile())){
 					Method.interactO(82059, "Climb", "Trapdoor");
 				}else Method.interactO(15536, "Open", "Door");
 			}
 			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
 			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3249,3480,0).distanceTo(local.getLocation())<20){
+		}else if(new Tile(3249,3480,0).distanceTo(local.tile())<20){
 			Method.clickOnMap(new Tile(3257,3483,0));
-			ctx.environment.sleep(1200);
+			Method.sleep(1200);
 		}else delta(pathToTemple, "Walking to the temple");
 	}
 		
@@ -298,30 +298,30 @@ public class DemonSlayer extends Node {
 		 Player local = ctx.players.local();
 		
 		if(init!=null){
-			if(new Tile(init.x()+14,init.getY()-13,0).distanceTo(local.getLocation())<8){
+			if(new Tile(init.x()+14,init.y()-13,0).distanceTo(local.tile())<8){
 				
-				if(local.getAppearance().equals(18019)){
+				if(local.appearance().equals(18019)){
 					Method.npcInteract(16723, "Attack");
 				}else Method.fightNPC(16723);
 				
-			}else Method.clickOnMap(new Tile(init.x()+14,init.getY()-13,0));
+			}else Method.clickOnMap(new Tile(init.x()+14,init.y()-13,0));
 		}else { for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
-			if(o.getLocation().distanceTo(local.getLocation())<20){
-				ctx.environment.sleep(2000);
-				init = ctx.players.local().getLocation();
+			if(o.tile().distanceTo(local.tile())<20){
+				Method.sleep(2000);
+				init = ctx.players.local().tile();
 			}
 		}
-		if(new Tile(3258,3483,0).distanceTo(local.getLocation())<8){
+		if(new Tile(3258,3483,0).distanceTo(local.tile())<8){
 			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
-				if(!TrapDoor.contains(door.getLocation())){
+				if(!TrapDoor.contains(door.tile())){
 					Method.interactO(82059, "Climb", "Trapdoor");
 				}else Method.interactO(15536, "Open", "Door");
 			}
 			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
 			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3249,3480,0).distanceTo(local.getLocation())<20){
+		}else if(new Tile(3249,3480,0).distanceTo(local.tile())<20){
 			Method.clickOnMap(new Tile(3257,3483,0));
-			ctx.environment.sleep(1200);
+			Method.sleep(1200);
 		}else delta(pathToTemple, "Walking to the temple");
 		}
 	}
@@ -332,21 +332,21 @@ public class DemonSlayer extends Node {
 		 Player local = ctx.players.local();
 		
 		if(init!=null){
-			if(new Tile(init.x(),init.getY()-11,0).distanceTo(local.getLocation())<8){
+			if(new Tile(init.x(),init.y()-11,0).distanceTo(local.tile())<8){
 				
-				if(local.getAppearance().equals(18019)){
+				if(local.appearance().equals(18019)){
 					Method.npcInteract(16723, "Attack");
 				}else Method.fightNPC(16723);
 				
-			}else Method.clickOnMap(new Tile(init.x(),init.getY()-11,0));
+			}else Method.clickOnMap(new Tile(init.x(),init.y()-11,0));
 		}else { 
 			for(GameObject  o : ctx.objects.select().id(71036).nearest().first()){
-			if(o.getLocation().distanceTo(local.getLocation())<20){
-				ctx.environment.sleep(2000);
-				init = ctx.players.local().getLocation();
+			if(o.tile().distanceTo(local.tile())<20){
+				Method.sleep(2000);
+				init = ctx.players.local().tile();
 			}
 		}
-		if(new Tile(3256,3387,0).distanceTo(local.getLocation())<8){
+		if(new Tile(3256,3387,0).distanceTo(local.tile())<8){
 			if(!Method.objIsByTile(new Tile(3255,3388,0), 24381, 3)){
 				Method.interactO(82061, "Climb", "Trapdoor");
 			}else Method.interactO(24381, "Open", "Door");
@@ -362,35 +362,35 @@ public class DemonSlayer extends Node {
 		 Player local = ctx.players.local();
 		
 		if(init!=null){
-			if(new Tile(init.x(), init.getY()+19,0).distanceTo(local.getLocation())<8){
+			if(new Tile(init.x(), init.y()+19,0).distanceTo(local.tile())<8){
 				Vars.DYNAMICV = false;
-				if(!local.isInMotion()){
+				if(!local.inMotion()){
 					Method.state("Waiting");
-					ctx.environment.sleep(200,400);
+					Method.sleep(400);
 				}
 				if(!Method.isChatting("Self"))
 				Method.interactO(82189, "Take", "Silverlight");
 			}else {
-				if(!local.isInMotion())
-				Method.clickOnMap(new Tile(init.x(), init.getY()+19,0));
+				if(!local.inMotion())
+				Method.clickOnMap(new Tile(init.x(), init.y()+19,0));
 			}
 		}else { for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
-			if(o.getLocation().distanceTo(local.getLocation())<20){
-				ctx.environment.sleep(2000);
-				init = ctx.players.local().getLocation();
+			if(o.tile().distanceTo(local.tile())<20){
+				Method.sleep(2000);
+				init = ctx.players.local().tile();
 			}
 		}
-		if(new Tile(3258,3483,0).distanceTo(local.getLocation())<8){
+		if(new Tile(3258,3483,0).distanceTo(local.tile())<8){
 			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
-				if(!TrapDoor.contains(door.getLocation())){
+				if(!TrapDoor.contains(door.tile())){
 					Method.interactO(82059, "Climb", "Trapdoor");
 				}else Method.interactO(15536, "Open", "Door");
 			}
 			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
 			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3249,3480,0).distanceTo(local.getLocation())<20){
+		}else if(new Tile(3249,3480,0).distanceTo(local.tile())<20){
 			Method.clickOnMap(new Tile(3257,3483,0));
-			ctx.environment.sleep(1200);
+			Method.sleep(1200);
 		}else cs0();//Get into position
 		}
 		
@@ -403,31 +403,31 @@ public class DemonSlayer extends Node {
 		
 		//SceneObject door = SceneEntities.getNearest(15536);
 		if(init!=null){
-			if(new Tile(init.x()+13,init.getY()+24,0).distanceTo(local.getLocation())<7){
+			if(new Tile(init.x()+13,init.y()+24,0).distanceTo(local.tile())<7){
 				if(!Method.findOption(opt)){
 					if(!Method.isChatting("Spirit of the Mind")){
 						Method.speakTo(16718, "Spirit of the Mind");
 					}
 				}
-			}else Method.clickOnMap(new Tile(init.x()+13,init.getY()+24,0));
+			}else Method.clickOnMap(new Tile(init.x()+13,init.y()+24,0));
 		}else {
 			for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
-			if(o.getLocation().distanceTo(local.getLocation())<20){
-				ctx.environment.sleep(2000);
-				init = ctx.players.local().getLocation();
+			if(o.tile().distanceTo(local.tile())<20){
+				Method.sleep(2000);
+				init = ctx.players.local().tile();
 			}
 		}
-		if(new Tile(3258,3483,0).distanceTo(local.getLocation())<8){
+		if(new Tile(3258,3483,0).distanceTo(local.tile())<8){
 			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
-				if(!TrapDoor.contains(door.getLocation())){
+				if(!TrapDoor.contains(door.tile())){
 					Method.interactO(82059, "Climb", "Trapdoor");
 				}else Method.interactO(15536, "Open", "Door");
 			}
 			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
 			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3249,3480,0).distanceTo(local.getLocation())<20){
+		}else if(new Tile(3249,3480,0).distanceTo(local.tile())<20){
 			Method.clickOnMap(new Tile(3257,3483,0));
-			ctx.environment.sleep(1200);
+			Method.sleep(1200);
 		}else cs0();//Get into position
 	}
 		
@@ -444,37 +444,38 @@ public class DemonSlayer extends Node {
 			if(!Method.isInCombat()){
 				Method.npcInteract(16721, "Attack");
 			}else Method.fightNPC(16721);
-		}else if(ctx.widgets.get(1184).isValid() && ctx.widgets.get(1184).getComponent(13).getText().contains("There are") || local.isInCombat()){
+		}else if(ctx.widgets.component(1184,1).valid() && ctx.widgets.component(1184,1).component(13).text().contains("There are")
+				|| local.inCombat()){
 			Method.pressContinue();
 			spokeToBody = true;
 		}else
-		if(new Tile(init.x()-12, init.getY()+23,0).distanceTo(local.getLocation())<6){
+		if(new Tile(init.x()-12, init.y()+23,0).distanceTo(local.tile())<6){
 			if(!Method.findOption(t)){
 				if(!Method.isChatting("Spirit of Body")){
 					Method.speakTo(16717, "Spirit of Body");
 				}
 			}
 		}else {
-			if(!local.isInMotion())
-			Method.clickOnMap(new Tile(init.x()-12, init.getY()+23,0));
+			if(!local.inMotion())
+			Method.clickOnMap(new Tile(init.x()-12, init.y()+23,0));
 		}
 		}else { for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
-			if(o.getLocation().distanceTo(local.getLocation())<20){
-				ctx.environment.sleep(2000);
-				init = ctx.players.local().getLocation();
+			if(o.tile().distanceTo(local.tile())<20){
+				Method.sleep(2000);
+				init = ctx.players.local().tile();
 			}
 		}
-		if(new Tile(3258,3483,0).distanceTo(local.getLocation())<8){
+		if(new Tile(3258,3483,0).distanceTo(local.tile())<8){
 			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
-				if(!TrapDoor.contains(door.getLocation())){
+				if(!TrapDoor.contains(door.tile())){
 					Method.interactO(82059, "Climb", "Trapdoor");
 				}else Method.interactO(15536, "Open", "Door");
 			}
 			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
 			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3249,3480,0).distanceTo(local.getLocation())<20){
+		}else if(new Tile(3249,3480,0).distanceTo(local.tile())<20){
 			Method.clickOnMap(new Tile(3257,3483,0));
-			ctx.environment.sleep(1200);
+			Method.sleep(1200);
 		}else cs0();//Get into position
 		}
 	}
@@ -488,15 +489,16 @@ public class DemonSlayer extends Node {
 		if(init!=null){
 			
 			if(spokeToFaith){
-				if(ctx.camera.getPitch()<40)
-				ctx.camera.setPitch(80);
-				ctx.camera.setAngle(40);
-			 if(local.getAnimation()==2311){
+				if(ctx.camera.pitch()<70){
+				ctx.camera.pitch(80);
+				}
+				ctx.camera.angle(40);
+			 if(local.animation()==2311){
 					for(int i = 0; i<=tileArray.length;){
 						Method.state("Restarting");
 						tileArray[i]=0;
 						i++;
-						ctx.environment.sleep(500);
+						Method.sleep(500);
 					}
 				}else
 				if(tileArray[0]==1){
@@ -533,39 +535,36 @@ public class DemonSlayer extends Node {
 					}else moveToTile(0,36,1);
 				}else moveToTile(0,35,0);
 				
-			}else if(ctx.widgets.get(1184).isValid() && ctx.widgets.get(1184).getComponent(9).getText().contains("Step out into the")){
+			}else if(ctx.widgets.component(1184,1).valid() && ctx.widgets.component(1184,9).text().contains("Step out into the")){
 				Method.pressContinue();
 				spokeToFaith = true;
 			}else
-			if(new Tile(init.x(), init.getY()+33,0).distanceTo(local.getLocation())<9){
+			if(new Tile(init.x(), init.y()+33,0).distanceTo(local.tile())<9){
 				if(!Method.findOption(opt)){
 					if(!Method.isChatting("Spirit of Faith")){
 						Method.speakTo(16719, "Spirit of Faith");
 					}
 				}
 			}else {
-				if(!ctx.players.local().isInMotion()){
-					Method.clickOnMap(new Tile(init.x(), init.getY()+33,0));
-						ctx.environment.sleep(1200,1300);
+				if(!ctx.players.local().inMotion()){
+					Method.clickOnMap(new Tile(init.x(), init.y()+33,0));
+						Method.sleep(1300);
 				}
 			}
-		}else {for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
-			if(o.getLocation().distanceTo(local.getLocation())<20){
-				ctx.environment.sleep(2000);
-				init = ctx.players.local().getLocation();
+		}else {
+			for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
+			if(o.tile().distanceTo(local.tile())<20){
+				Method.sleep(2000);
+				init = ctx.players.local().tile();
 			}
 		}
-		if(new Tile(3258,3483,0).distanceTo(local.getLocation())<8){
-			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
-				if(!TrapDoor.contains(door.getLocation())){
-					Method.interactO(82059, "Climb", "Trapdoor");
-				}else Method.interactO(15536, "Open", "Door");
-			}
-			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
+		if(new Tile(3250,3477,0).distanceTo(local.tile())<8){
+		
 			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3249,3480,0).distanceTo(local.getLocation())<20){
-			Method.clickOnMap(new Tile(3257,3483,0));
-			ctx.environment.sleep(1200);
+			
+		}else if(new Tile(3249,3480,0).distanceTo(local.tile())<20){
+			Method.clickOnMap(new Tile(3250,3477,0));
+			Method.sleep(1200);
 		}else cs0();//Get into position
 		}
 		
@@ -575,13 +574,13 @@ public class DemonSlayer extends Node {
 	private void moveToTile(int x, int y, int p) {
 		 Player local = ctx.players.local();
 		 
-		if(new Tile(init.x()+x,init.getY()+y,0).distanceTo(local.getLocation())==0){
+		if(new Tile(init.x()+x,init.y()+y,0).distanceTo(local.tile())==0){
 			tileArray[p]=1;
 		}else {
 			Method.state("Attempting faith traversal");
-			ctx.camera.getAngleTo(87);
-			new Tile(init.x()+x,init.getY()+y,0).getMatrix(ctx).click();
-			ctx.environment.sleep(1500,1600);
+			ctx.camera.angleTo(87);
+			new Tile(init.x()+x,init.y()+y,0).matrix(ctx).click();
+			Method.sleep(1600);
 		}
 		
 	}
@@ -593,33 +592,33 @@ public class DemonSlayer extends Node {
 		
 		final String opt[] = {"I come seeking"};
 		if(init!=null){
-			if(new Tile(init.x(), init.getY()+19,0).distanceTo(local.getLocation())<8){
+			if(new Tile(init.x(), init.y()+19,0).distanceTo(local.tile())<8){
 				if(!Method.findOption(opt)){
 					if(!Method.isChatting("Spirit of Faith")){
 						Method.speakTo(16719, "Spirit of Faith");
 					}
 				}
 			}else {
-				if(!ctx.players.local().isInMotion())
-					Method.clickOnMap(new Tile(init.x(), init.getY()+19,0));
+				if(!ctx.players.local().inMotion())
+					Method.clickOnMap(new Tile(init.x(), init.y()+19,0));
 			}
 		}else{ for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
-			if(o.getLocation().distanceTo(local.getLocation())<20){
-				ctx.environment.sleep(2000);
-				init = ctx.players.local().getLocation();
+			if(o.tile().distanceTo(local.tile())<20){
+				Method.sleep(2000);
+				init = ctx.players.local().tile();
 			}
 		}
-		if(new Tile(3258,3483,0).distanceTo(local.getLocation())<4){
+		if(new Tile(3258,3483,0).distanceTo(local.tile())<4){
 			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
-				if(!TrapDoor.contains(door.getLocation())){
+				if(!TrapDoor.contains(door.tile())){
 					Method.interactO(82059, "Climb", "Trapdoor");
 				}else Method.interactO(15536, "Open", "Door");
 			}
 			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
 			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3249,3480,0).distanceTo(local.getLocation())<20){
+		}else if(new Tile(3249,3480,0).distanceTo(local.tile())<20){
 			Method.clickOnMap(new Tile(3257,3483,0));
-			ctx.environment.sleep(1200);
+			Method.sleep(1200);
 			} else
 				cs0();// Get into position
 
@@ -629,7 +628,7 @@ public class DemonSlayer extends Node {
 
 	private void cs0() {
 		 Player local = ctx.players.local();
-		if (new Tile(3249, 3479, 0).distanceTo(local.getLocation()) < 7) {
+		if (new Tile(3249, 3479, 0).distanceTo(local.tile()) < 7) {
 			if (!Method.startQuestOpen()) {
 				Vars.DYNAMICV = false;
 				init = null;
@@ -644,4 +643,3 @@ public class DemonSlayer extends Node {
 	  
 	  
   }
-*/

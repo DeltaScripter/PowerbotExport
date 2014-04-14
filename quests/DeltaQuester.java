@@ -4,7 +4,6 @@ package quests;
 import java.awt.*;
 
 import quests.Node;
-import quests.TaskListing.TaskListForm;
 
 import javax.imageio.ImageIO;
 
@@ -21,13 +20,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import org.powerbot.script.PaintListener;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.Script;
 
 
-@org.powerbot.script.Script.Manifest(name = "Delta Quester", 
+@Script.Manifest(name = "Delta Quester", 
 description = "Completes quests! See thread for supported quests")
-public class DeltaQuester extends PollingScript<ClientContext> implements org.powerbot.script.PaintListener{
+public class DeltaQuester extends PollingScript<ClientContext> implements PaintListener{
 
 
 	public static int scriptToStart = 0;
@@ -35,7 +36,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements org.po
 	public static boolean GEFeature = false;
 	public boolean useBank;
 	public static boolean ranOnce = false;
-	public static boolean checkedBank = false;
+	public static boolean checkedBank = true;//was false
 	public boolean GEWO = false;
 	public static boolean FOOD_FEATURE = false;
 	public static int number;
@@ -63,83 +64,17 @@ public class DeltaQuester extends PollingScript<ClientContext> implements org.po
     public Timer time;
     public Timer timeSec;//seconds
     
-    //time
-    private Timer runtime;
-	private Timer secondsA;
-	private Timer minutesA;
     
 	public int minute;
 	public double second;
 	private boolean ready = false;
-   // private JobContainer container = null;
+	public boolean done = false;
+	
 	private final List<Node> nodesList = Collections.synchronizedList(new ArrayList<Node>());
 
 	
    
-	public DeltaQuester() {
-		
-		getExecQueue(State.START).add(new Runnable() {
-			@Override
-			public void run() {
-				//timeSec = new Timer(0);
-				//other time fromDD
-				//runtime = new Timer(0);
-				//secondsA = new Timer(0);
-				//minutesA = new Timer(0);
-				initiateGui();
-				//qList.add("The Restless Ghost");
-				    // addNode(new TheBloodPact(ctx));
-					// addNode(new CooksAssistant(ctx));
-					   addNode(new RestlessG(ctx));
-					   addNode(new DeathPlateau(ctx));
-					// addNode(new ImpCatcher(ctx));
-					// addNode(new StolenHearts(ctx));
-					// addNode(new WolfWhistle(ctx));
-					// addNode(new DemonSlayer(ctx));
-					/// addNode(new LetThemEatPie(ctx));
-					// addNode(new PiratesTreasure(ctx));
-					// addNode(new SweptAway(ctx));
-					// addNode(new DruidicRitual(ctx));
-					// addNode(new VampyreSlayer(ctx));
-					// addNode(new ElementalWorkshop1(ctx));
-					// addNode(new MineIsYours(ctx));
-					// addNode(new GoblinDiplomacy(ctx));
-					// addNode(new GunnarsGround(ctx));
-					// addNode(new LostCity(ctx));
-					// addNode(new BuyersAndCellars(ctx));
-					// addNode(new ClockTower(ctx));
-					// addNode(new MonksFriend(ctx));
-					// addNode(new PlagueCity(ctx));
-					// addNode(new TheKnightsSword(ctx));
-					// addNode(new ErnestTheChicken(ctx));
-					// addNode(new DeathOfChivalry(ctx));
-					// addNode(new TowerOfLife(ctx));
-					 //addNode(new GertrudesCat(ctx));
-					// addNode(new RuneMysteries(ctx));
-					 addNode(new Biohazard(ctx));
-					// addNode(new DragonSlayer(ctx));
-			}
-		});
-		getExecQueue(State.STOP).add(new Runnable() {
-			@Override
-			public void run() {
-				log.info("Now shutting down.");
-				
-				TaskListing.taskRemove.clear();//Clears the task list
-				TaskListing.updateTasks();
-				qList.clear();
-				GEWO = false;
-				GEFeature = false;
-				scriptToStart = 100;
-				Vars.useBank = false;
-				Vars.ranOnce = false;
-				checkedBank = false;
-				Method.depoBank = false;
-				Method.hasFood = true;
-				ready = false;
-			}
-		});
-	}
+	
 	   private void addNode(final Node...nodes) {
 		   
 	        for(Node node : nodes) {
@@ -151,13 +86,13 @@ public class DeltaQuester extends PollingScript<ClientContext> implements org.po
 
 
 	public void poll() {
-		
+		onStart();
 		
 		if(g){
 			log.info("shutting down");
 			TaskListing.taskRemove.clear();//Clears the task list
 			TaskListing.updateTasks();
-			stop();
+			//this.controller().stop();
 		}
 		while(ctx.widgets.component(1223,1).visible()){//Task completed dialogue
 			System.out.println("Closing TASK COMPLETE");
@@ -191,6 +126,44 @@ public class DeltaQuester extends PollingScript<ClientContext> implements org.po
 		}
 	}
 	
+	private void onStart() {
+		if(!done){
+			initiateGui();
+			//qList.add("The Restless Ghost");
+			    // addNode(new TheBloodPact(ctx));
+				   addNode(new CooksAssistant(ctx));
+				   addNode(new RestlessG(ctx));
+				   addNode(new DeathPlateau(ctx));
+				// addNode(new ImpCatcher(ctx));
+				// addNode(new StolenHearts(ctx));
+				   addNode(new WolfWhistle(ctx));
+				   addNode(new DemonSlayer(ctx));
+				   addNode(new LetThemEatPie(ctx));
+				   addNode(new PiratesTreasure(ctx));
+				   addNode(new SweptAway(ctx));
+				   addNode(new DruidicRitual(ctx));
+				// addNode(new VampyreSlayer(ctx));
+				// addNode(new ElementalWorkshop1(ctx));
+				// addNode(new MineIsYours(ctx));
+				// addNode(new GoblinDiplomacy(ctx));
+				// addNode(new GunnarsGround(ctx));
+				// addNode(new LostCity(ctx));
+				// addNode(new BuyersAndCellars(ctx));
+				// addNode(new ClockTower(ctx));
+				// addNode(new MonksFriend(ctx));
+				// addNode(new PlagueCity(ctx));
+				// addNode(new TheKnightsSword(ctx));
+				   addNode(new ErnestTheChicken(ctx));
+				// addNode(new DeathOfChivalry(ctx));
+				// addNode(new TowerOfLife(ctx));
+				 //addNode(new GertrudesCat(ctx));
+				// addNode(new RuneMysteries(ctx));
+				// addNode(new Biohazard(ctx));
+				// addNode(new DragonSlayer(ctx));
+			done = true;
+		}
+		
+	}
 	//public DeltaQuester getInstance(){
 		
 	//	if(instance==null){
@@ -346,10 +319,16 @@ public class DeltaQuester extends PollingScript<ClientContext> implements org.po
 			
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
-						"Cook's Assistant","Death Plateau","Demon Slayer","Dragon Slayer","Druidic Ritual",
-						"Ernest The Chicken","Gunnar's Ground","Goblin Diplomacy",
-						"Imp Catcher","Let Them Eat Pie","Plague City","Monk's Friend","Pirate's Treasure","Stolen Hearts","Swept Away",
-						"The Knight's Sword","The Restless Ghost","Tower of Life","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"
+						"Cook's Assistant","Death Plateau","Demon Slayer","Druidic Ritual",
+						"Ernest The Chicken","Swept Away","The Restless Ghost",
+						"Wolf Whistle"
+						
+						//"Let Them Eat Pie","Pirate's Treasure"
+						
+						/*"Dragon Slayer",,
+						,"Gunnar's Ground","Goblin Diplomacy",
+						"Imp Catcher","Plague City","Monk's Friend","Stolen Hearts","Swept Away",
+						"The Knight's Sword","The Restless Ghost","Tower of Life","What's Mine Is Yours","Wolf Whistle","Vampyre Slayer"*/
 				};
 				
 				@Override
@@ -1364,8 +1343,8 @@ public class DeltaQuester extends PollingScript<ClientContext> implements org.po
 	public void initiateGui() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				TaskListForm taskgui= new TaskListForm();
-				taskgui.setVisible(true);
+				//TaskListForm taskgui= new TaskListForm();
+				//taskgui.setVisible(true);
 				final DeltaQuesterGUI deltagui = new DeltaQuesterGUI();
 				deltagui.setVisible(true);
 				deltagui.setResizable(false);

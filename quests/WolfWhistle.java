@@ -1,9 +1,10 @@
-/*
+
 package quests;
 
-import org.powerbot.script.methods.ClientContext;
-import org.powerbot.script.wrappers.Npc;
+
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -210,9 +211,9 @@ public class WolfWhistle extends Node{
 	}
 
 	private void failsafe() {
-		while(ctx.widgets.get(1370,31).isVisible()){//If the obelisk infusing area is selected.(pop-up screen appears)
+		while(ctx.widgets.component(1370,31).visible()){//If the obelisk infusing area is selected.(pop-up screen appears)
 			Method.state("Closing interface");
-			Method.clickOnMap(ctx.players.local().getLocation());
+			Method.clickOnMap(ctx.players.local().tile());
 		}
 	}
 	private void cs11() {
@@ -220,7 +221,7 @@ public class WolfWhistle extends Node{
 		if(ctx.varpbits.varpbit(1114)==1){
 			Method.isChatting("People");
 		}else
-		if (new Tile(2881,3430,0).distanceTo(ctx.players.local().getLocation())<6) {//Mrs stix region.
+		if (new Tile(2881,3430,0).distanceTo(ctx.players.local().tile())<6) {//Mrs stix region.
 			Vars.DYNAMICV = false;
 			if (!Method.isChatting("Scaletrix")) {
 				if(ctx.varpbits.varpbit(1241)!=1)
@@ -228,8 +229,8 @@ public class WolfWhistle extends Node{
 			}
 		} else if (Vars.DYNAMICV) {
 			Method.walking(pathToMrStix,"Walking to Scaletrix.",false);
-		} else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<6||
-				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().getLocation())<6){
+		} else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().tile())<6||
+				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().tile())<6){
 			Vars.DYNAMICV=true;
 		}else if(Method.TaverlyLodeAct()){
 			Method.teleportTo(TeleportType.TAVERLY.getTeleport(),TeleportType.TAVERLY.getName());
@@ -239,7 +240,7 @@ public class WolfWhistle extends Node{
 	private void cs10() {
 		Method Method = new Method(ctx);
 		final String opt[] = {"I need to ask","I made the giant"};
-		if (new Tile(2932,3446,0).distanceTo(ctx.players.local().getLocation())<6) {
+		if (new Tile(2932,3446,0).distanceTo(ctx.players.local().tile())<6) {
 			Vars.DYNAMICV = false;
 			if(!Method.findOption(opt))
 				if (!Method.isChatting("Pikkupstix")) {
@@ -248,8 +249,8 @@ public class WolfWhistle extends Node{
 			
 		} else if(Vars.DYNAMICV){
 			Method.walking(pathToMrStix,"Walking to Pikkupstix",false);
-		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<6||
-				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().getLocation())<6){
+		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().tile())<6||
+				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().tile())<6){
 			Vars.DYNAMICV=true;
 		}else if(Method.TaverlyLodeAct()){
 			Method.teleportTo(TeleportType.TAVERLY.getTeleport(),TeleportType.TAVERLY.getName());
@@ -260,10 +261,10 @@ public class WolfWhistle extends Node{
 	private void cs9() {
 		Method Method = new Method(ctx);
 		
-		if (new Tile(2932,3446,0).distanceTo(ctx.players.local().getLocation())<6) {
+		if (new Tile(2932,3446,0).distanceTo(ctx.players.local().tile())<6) {
 				Method.state("Seraching for item in inventory");
-				if(ctx.widgets.get(1184,0).isVisible()){
-					Method.clickOnMap(ctx.players.local().getLocation());
+				if(ctx.widgets.component(1184,0).visible()){
+					Method.clickOnMap(ctx.players.local().tile());
 				}
 				if(Method.inventoryContains(RAREITEMS_ID)){
 					if(ctx.backpack.itemSelected()){
@@ -274,8 +275,8 @@ public class WolfWhistle extends Node{
 			
 		} else if(Vars.DYNAMICV){
 			Method.walking(pathToMrStix,"Walking to Pikkupstix.",false);
-		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<6||
-				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().getLocation())<6){
+		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().tile())<6||
+				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().tile())<6){
 			Vars.DYNAMICV=true;
 		}else if(Method.TaverlyLodeAct()){
 			Method.teleportTo(TeleportType.TAVERLY.getTeleport(),TeleportType.TAVERLY.getName());
@@ -287,23 +288,22 @@ public class WolfWhistle extends Node{
 	private void cs8() {
 		Method Method = new Method(ctx);
 		final String opt[] = {"I need to ask"};
-		if (new Tile(2932,3446,0).distanceTo(ctx.players.local().getLocation())<6) {//stix region.
+		if (new Tile(2932,3446,0).distanceTo(ctx.players.local().tile())<6) {//stix region.
 				Vars.DYNAMICV = false;
 				for(Npc stix : ctx.npcs.select().id(6988).nearest().first()){
-					if(stix.getAnimation()!=15924){
+					if(stix.animation()!=15924){
 						if(!Method.findOption(opt))
 							if (!Method.isChatting("Pikkupstix")) {
 								Method.state("Temp-sleep");
 								Method.sleep(4000);
 								Method.speakTo(6988, "Pikkupstix");
-								break;
 							}
 					}
 				}
 		} else if(Vars.DYNAMICV){
 			Method.walking(pathToMrStix,"Walking to Pikkupstix",false);
-		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<6||
-				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().getLocation())<6){
+		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().tile())<6||
+				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().tile())<6){
 			Vars.DYNAMICV=true;
 		}else if(Method.TaverlyLodeAct()){
 			Method.teleportTo(TeleportType.TAVERLY.getTeleport(),TeleportType.TAVERLY.getName());
@@ -313,7 +313,7 @@ public class WolfWhistle extends Node{
 	private void cs7() {
 		final String opt[] = {"I need to ask"};
 		
-		if (new Tile(2932,3446,0).distanceTo(ctx.players.local().getLocation())<6) {//stix region.
+		if (new Tile(2932,3446,0).distanceTo(ctx.players.local().tile())<6) {//stix region.
 			
 			Vars.DYNAMICV = false;
 			if(!Method.findOption(opt))
@@ -323,8 +323,8 @@ public class WolfWhistle extends Node{
 			
 		} else if(Vars.DYNAMICV){
 			Method.walking(pathToMrStix,"Walking to Pikkupstix",false);
-		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<6||
-				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().getLocation())<6){
+		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().tile())<6||
+				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().tile())<6){
 			Vars.DYNAMICV=true;
 		}else if(Method.TaverlyLodeAct()){
 			Method.teleportTo(TeleportType.TAVERLY.getTeleport(),TeleportType.TAVERLY.getName());
@@ -334,7 +334,7 @@ public class WolfWhistle extends Node{
 
 	private void cs6() {
 		Method Method = new Method(ctx);
-		if (bonesArea.contains(ctx.players.local().getLocation())) {
+		if (bonesArea.contains(ctx.players.local().tile())) {
 			Vars.DYNAMICV = false;
 			Method.interactO(DEADBODY_ID, "Search","Body");
 		} else {
@@ -344,14 +344,14 @@ public class WolfWhistle extends Node{
 				
 				Method.walking(pathToBonesFPS,"Walking to bones location.",false);
 			} else {
-				if (new Tile(2931,3434,0).distanceTo(ctx.players.local().getLocation())<6) {
+				if (new Tile(2931,3434,0).distanceTo(ctx.players.local().tile())<6) {
 					Vars.hasBeenPT = true;
 				} else if(Vars.DYNAMICV){
 					Method.state("Walking to bones location");
 					//Method.walkToLocation(new Tile(2852, 3477, 0));
 					Method.walking(pathToBonesFTA,"Walking to bones location.",false);
-				}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<6||
-						TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().getLocation())<6){
+				}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().tile())<6||
+						TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().tile())<6){
 					Vars.DYNAMICV=true;
 				}else if(Method.TaverlyLodeAct()){
 					Method.teleportTo(TeleportType.TAVERLY.getTeleport(),TeleportType.TAVERLY.getName());
@@ -365,7 +365,7 @@ public class WolfWhistle extends Node{
 		Method Method = new Method(ctx);
 		final String opt[] = {"hare meat."};
 		
-		if (new Tile(2931,3434,0).distanceTo(ctx.players.local().getLocation())<6) {
+		if (new Tile(2931,3434,0).distanceTo(ctx.players.local().tile())<6) {
 			Vars.hasBeenInMS1 = false;
 			Vars.DYNAMICV = false;
 			if(!Method.findOption(opt))
@@ -385,7 +385,7 @@ public class WolfWhistle extends Node{
 				}
 				//Method.walking(pathToPetShopFMS,"Walking to the pet shop.",false);
 			} else {
-				if (new Tile(2929,3447,0).distanceTo(ctx.players.local().getLocation())<6  && ctx.game.floor()==0) {
+				if (new Tile(2929,3447,0).distanceTo(ctx.players.local().tile())<6  && ctx.game.floor()==0) {
 					Vars.hasBeenInMS1 = true;
 				} else {
 					if (ctx.game.floor()==1) {
@@ -394,8 +394,8 @@ public class WolfWhistle extends Node{
 						Method.state("Walking to pet shop");
 						//Method.walkToLocation(new Tile(2931, 3433, 0));
 						Method.walking(pathToPetFT,"Walking to the pet shop.",false);
-					}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<6||
-							TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().getLocation())<6){
+					}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().tile())<6||
+							TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().tile())<6){
 						Vars.DYNAMICV=true;
 					}else if(Method.TaverlyLodeAct()){
 						Method.teleportTo(TeleportType.TAVERLY.getTeleport(),TeleportType.TAVERLY.getName());
@@ -411,12 +411,12 @@ public class WolfWhistle extends Node{
 		if (ctx.game.floor()==1) {
 				Method.interactO(CLUTTEREDDRAWERS_ID, "Search","Drawer");
 		} else {
-			if (new Tile(2928,3448,0).distanceTo(ctx.players.local().getLocation())<5) {
+			if (new Tile(2928,3448,0).distanceTo(ctx.players.local().tile())<5) {
 				Method.interactO(STIXSTAIRSBOTTOM_ID, "Climb","Climbing device");
 			} else if(Vars.DYNAMICV){
 				Method.walking(pathToMrStix,"Walking to Pikkupstix",false);
-			}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<6||
-					TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().getLocation())<6){
+			}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().tile())<6||
+					TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().tile())<6){
 				Vars.DYNAMICV=true;
 			}else if(Method.TaverlyLodeAct()){
 				Method.teleportTo(TeleportType.TAVERLY.getTeleport(),TeleportType.TAVERLY.getName());
@@ -429,11 +429,11 @@ public class WolfWhistle extends Node{
 		Method Method = new Method(ctx);
 		final String opt[] = {"has been kidnapped"};
 		
-		if (new Tile(2932,3446,0).distanceTo(ctx.players.local().getLocation())<6) {//stix region.
+		if (new Tile(2932,3446,0).distanceTo(ctx.players.local().tile())<6) {//stix region.
 			Vars.DYNAMICV = false;
 			if(!Method.findOption(opt))
-			if(ctx.widgets.get(1243).isValid()){
-				ctx.widgets.get(1243,50).click(true);
+			if(ctx.widgets.component(1243,1).valid()){
+				ctx.widgets.component(1243,50).click(true);
 			}else
 			if (!Method.isChatting("Pikkupstix")) {
 				Method.speakTo(6988, "Pikkupstix");
@@ -442,8 +442,8 @@ public class WolfWhistle extends Node{
 			
 		} else if(Vars.DYNAMICV){
 			Method.walking(pathToMrStix,"Walking to Pikkupstix",false);
-		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<6||
-				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().getLocation())<6){
+		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().tile())<6||
+				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().tile())<6){
 			Vars.DYNAMICV=true;
 		}else if(Method.TaverlyLodeAct()){
 			Method.teleportTo(TeleportType.TAVERLY.getTeleport(),TeleportType.TAVERLY.getName());
@@ -452,15 +452,15 @@ public class WolfWhistle extends Node{
 
 	private void cs2() {
 
-		if (new Tile(2881,3430,0).distanceTo(ctx.players.local().getLocation())<6) {//Mrs stix region.
+		if (new Tile(2881,3430,0).distanceTo(ctx.players.local().tile())<6) {//Mrs stix region.
 				Vars.DYNAMICV = false;
 					if (!Method.isChatting("Scaletrix")) {
 						Method.speakTo(15055, "Scaletrix");
 					}
 		} else if (Vars.DYNAMICV) {
 			Method.walking(pathToMrStix,"Walking to Scaletrix.",false);
-		} else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<6||
-				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().getLocation())<6){
+		} else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().tile())<6||
+				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().tile())<6){
 			Vars.DYNAMICV=true;
 		}else if(Method.TaverlyLodeAct()){
 			Method.teleportTo(TeleportType.TAVERLY.getTeleport(),TeleportType.TAVERLY.getName());
@@ -471,7 +471,7 @@ public class WolfWhistle extends Node{
 	private void cs1() {//start the quest
 		Method Method = new Method(ctx);
 		 final String opt[] = {"Do you have"};
-		if (new Tile(2932,3446,0).distanceTo(ctx.players.local().getLocation())<7) {//stix region.
+		if (new Tile(2932,3446,0).distanceTo(ctx.players.local().tile())<7) {//stix region.
 			
 			if (!Method.startQuestOpen())
 				if (!Method.findOption(opt))
@@ -483,8 +483,8 @@ public class WolfWhistle extends Node{
 			Method.state("Walking to Pikkupstix");
 			//Method.walkToLocation(new Tile(2929, 3449, 0));
 			Method.walking(pathToMrStix,"Walking to Pikkupstix",false);
-		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().getLocation())<6||
-				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().getLocation())<6){
+		}else if(TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().tile())<6||
+				TeleportLode.TAVERLY.getTile().distanceTo(ctx.players.local().tile())<6){
 			Vars.DYNAMICV=true;
 		}else if(Method.TaverlyLodeAct()){
 			Method.teleportTo(TeleportType.TAVERLY.getTeleport(),TeleportType.TAVERLY.getName());
@@ -495,4 +495,4 @@ public class WolfWhistle extends Node{
 	public boolean activate() {
 		return (DeltaQuester.scriptToStart == 2);
 	}
-}*/
+}
