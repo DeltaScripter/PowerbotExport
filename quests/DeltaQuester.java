@@ -27,7 +27,7 @@ import org.powerbot.script.Script;
 
 
 @Script.Manifest(name = "Delta Quester", 
-description = "Completes quests! See thread for supported quests")
+description = "Completes quests! See thread for supported quests",properties = "topic = 777386")
 public class DeltaQuester extends PollingScript<ClientContext> implements PaintListener{
 
 
@@ -320,10 +320,8 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
 						"Cook's Assistant","Death Plateau","Demon Slayer","Druidic Ritual",
-						"Ernest The Chicken","Swept Away","The Restless Ghost",
+						"Ernest The Chicken","Let Them Eat Pie","Pirate's Treasure","Swept Away","The Restless Ghost",
 						"Wolf Whistle"
-						
-						//"Let Them Eat Pie","Pirate's Treasure"
 						
 						/*"Dragon Slayer",,
 						,"Gunnar's Ground","Goblin Diplomacy",
