@@ -1,8 +1,8 @@
 package chocopowder;
 
+import org.powerbot.script.rt6.ClientContext;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.MethodProvider;
+
 
 /**
 * Created For Educational Purposes, please do not use maliciously.
@@ -12,11 +12,11 @@ import org.powerbot.script.methods.MethodProvider;
 * To change this template use File | Settings | File Templates.
 */
 
-    public abstract class ChocoNode extends MethodProvider {
+    public abstract class ChocoNode extends ClientContext {
 
-    protected MethodContext ctx;
+    protected ClientContext ctx;
 
-    public ChocoNode(MethodContext ctx) {
+    public ChocoNode(ClientContext ctx) {
         super(ctx);
         this.ctx = ctx;
     }
