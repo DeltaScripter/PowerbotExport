@@ -20,7 +20,7 @@ import chocopowder.ChocoData.choco;
 
 
 @Script.Manifest(name = "DeltaChocolate", 
-description = "Grinds chocolate bars into powder and banks", properties = "topic = 1127240")
+description = "Grinds chocolate bars into powder and banks, 250-300k/hour", properties = "topic = 1127240")
 
 public class ChocoBody extends PollingScript<ClientContext> implements PaintListener{
 
@@ -40,6 +40,10 @@ public class ChocoBody extends PollingScript<ClientContext> implements PaintList
 	public void poll() {
 		sleep(400);
 		
+		while(ctx.widgets.component(105,87).component(1).visible()){//if GE is open
+			state = "Closing interface";
+			ctx.widgets.component(105,87).component(1).click();
+		}
 		onStart();
 		calcAntiPattern();
 		for(ChocoNode node: nodeList){
@@ -76,10 +80,9 @@ public class ChocoBody extends PollingScript<ClientContext> implements PaintList
 		}
 	public void interactInventory(final int i, final String string, final String o) {
 		ArrayList<String> actions = new ArrayList<String>();
-		for(Item t : ctx.backpack.select().id(i).first()){
+		for(Item t : ctx.backpack.select().id(i).shuffle().first()){
 			if(ctx.hud.open(Window.BACKPACK) && ctx.widgets.component(1473,7).contains(
 				t.component().centerPoint())){
-				System.out.println("Hovering");
 				t.hover();
 				sleep(1200);
 				String[] menuItems = ctx.menu.items();
@@ -91,7 +94,6 @@ public class ChocoBody extends PollingScript<ClientContext> implements PaintList
 				for(String text: actions){
 					if(text.contains(string)){
 						if(t.interact(string)){
-						System.out.println("Using " + string + " with item: " + o);
 						sleep(Random.nextInt(140, 200));
 						}
 					}
@@ -198,7 +200,6 @@ public class ChocoBody extends PollingScript<ClientContext> implements PaintList
 			while(inventoryContains(choco.CHOCOLATEPOWDER.getID())){
 				for(Item i : ctx.bank.select()){
 					if(i.id()==1973){
-					System.out.println("Count with id of " + i.id());
 					bankAmount= i.stackSize();
 					}
 				}

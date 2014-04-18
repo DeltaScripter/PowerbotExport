@@ -5,7 +5,7 @@ public class ChocoData {
 	
 	public enum choco{
 		
-		CHOCOLATEBAR(1973), CHOCOLATEPOWDER(1975);
+		CHOCOLATEBAR(1973), CHOCOLATEPOWDER(1975),PIEDISH(2313);
 		
 		int id;
 		choco(int id){

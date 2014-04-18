@@ -1,4 +1,4 @@
-package chocopowder;
+package piedishmaker;
 
 import java.util.ArrayList;
 
@@ -14,11 +14,11 @@ import org.powerbot.script.rt6.Npc;
 
 
 
-public class ChocoMethod extends ClientAccessor{
+public class PieDishMethod extends ClientAccessor{
 
 	
 	
-	public ChocoMethod(ClientContext ctx) {
+	public PieDishMethod(ClientContext ctx) {
 		super(ctx);
 	}
 	public static String format(final long millis) {
@@ -225,6 +225,7 @@ public class ChocoMethod extends ClientAccessor{
 			}
 			public void interactO(final int id, final String string, final String o) {
 				for(GameObject y: ctx.objects.select().id(id).nearest().first()){
+					PieDishBody.state = o;
 							if (y.inViewport()) {
 								y.interact(string);
 							} else ctx.camera.turnTo(y.tile().derive(1,7));
@@ -254,7 +255,6 @@ public class ChocoMethod extends ClientAccessor{
 				
 				return false;
 			}
-			
 	public void interactInventory(final int id, final String string, final String o) {
 		for(Item t : ctx.backpack.select().id(id).first()){
 			if(ctx.hud.open(Window.BACKPACK) && ctx.widgets.component(1473,7).contains(
@@ -277,6 +277,7 @@ public class ChocoMethod extends ClientAccessor{
 	public void teleportTo(int loc, String teleName) {
 		while(ctx.bank.open())
 			ctx.bank.close();
+		PieDishBody.state = "Teleporting to: " + teleName;
 		/*if(!timer.isRunning()){
 		if(ctx.widgets.get(1092,loc).opened()){//lodestone screen
 			ctx.mouse.move(ctx.widgets.get(1092).getComponent(loc).getCenterPoint());
