@@ -29,7 +29,7 @@ public class KebAntipattern extends KebNode{
 	public void execute() {
 		Point f = ctx.mouse.getLocation();
 		
-		int number = Random.nextInt(Random.nextInt(1,40), Random.nextInt(1, 40));
+		int number = Random.nextInt(Random.nextInt(1,30), Random.nextInt(1, 30));
 		//System.out.println(number);
 		Item i;
 		String st = "Performing antipattern technique";
@@ -143,7 +143,7 @@ public class KebAntipattern extends KebNode{
 				
 		case 13:
 			KebBody.state = st;
-		   
+		   System.out.println("Antipattern, not filled");
 				KebBody.antiPattern = false;
 				break;
 				
@@ -197,6 +197,7 @@ public class KebAntipattern extends KebNode{
 			if(ctx.hud.open(Window.SKILLS)){
 				m.sleep(Random.nextInt(1000, 4000));
 			}
+			KebBody.antiPattern = false;
 			break;
 			
 		case 20:

@@ -48,7 +48,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 	
 	
 	public static String state;
-	public double version = 0.10044;
+	public double version = 0.10045;
 	
 	int dropSlot;
 	boolean dropAction = false;
@@ -83,23 +83,23 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 			kebbitInvMonitor = Method.inventoryGetCount(10117);
 		}
 		while(ctx.widgets.component(669,1).visible()){//tut stuff
-			state = "Closing interface";
+			state = "Closing interface #1";
 			ctx.widgets.component(669,1).click();
 		}
-		while(ctx.widgets.component(1477,54).visible()){
-			state = "Closing interface";
-			ctx.widgets.component(1477,54).component(2).click();
-		}
+		//while(ctx.widgets.component(1477,54).visible()){
+		//	state = "Closing interface #2";
+		//	ctx.widgets.component(1477,54).component(2).click();
+		//}
 		while(ctx.widgets.component(1223,11).visible()){//task complete
-			state = "Closing interface";
+			state = "Closing interface #3";
 			ctx.widgets.component(1223,11).click();//close button
 		}
 		while(ctx.widgets.component(1401,31).visible()){//become a member!
-			state = "Closing interface";
+			state = "Closing interface #4";
 			ctx.widgets.component(1401,31).click();
 		}
 		while(ctx.widgets.component(1186,0).visible()){//after collecting limit of 10 chronicles..
-			state = "Closing interface";
+			state = "Closing interface #5";
 			ctx.movement.step(ctx.players.local().tile());
 		}
 		for(KebNode node: nodeList){
@@ -179,7 +179,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 					ctx.players.local().tile().distanceTo(ctx.movement.destination())<6){
 				state = "Walking to bank";
 				if(!ctx.movement.findPath(bankTile.derive(1, 2)).traverse()){
-				ctx.movement.newTilePath(pathToBank).traverse();
+				ctx.movement.newTilePath(pathToBank).randomize(1, 2).traverse();
 				}
 				Method.sleep(2500);
 			}
@@ -240,7 +240,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 				if(!ctx.players.local().inMotion() ||
 						ctx.players.local().tile().distanceTo(ctx.movement.destination())<6){
 				state = "Walking back to kebbit area";
-				ctx.movement.newTilePath(pathToKebbit).traverse();//goes to kebbit area
+				ctx.movement.newTilePath(pathToKebbit).randomize(1, 2).traverse();//goes to kebbit area
 				}
 			}else
 			if(ctx.varpbits.varpbit(1218)==0){
@@ -422,7 +422,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 		   
 	   }
 	   private boolean calcAntiPattern() {
-			int number = rand.nextInt(0,29);
+			int number = rand.nextInt(0,23);
 			if(number == 1){
 				antiPattern = true;
 				return true;

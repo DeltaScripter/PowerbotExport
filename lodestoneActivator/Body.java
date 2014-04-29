@@ -82,7 +82,14 @@ public class Body extends PollingScript <ClientContext> implements org.powerbot.
 	public void poll() {
 		
 		onStart();
-		
+		if(ctx.bank.opened()){
+			ctx.bank.close();
+		}else
+		if(ctx.widgets.component(669,1).visible()){
+			state = "Closing interface, tutorial";
+			ctx.widgets.component(669,1).click();
+			
+		}else
 		if(ctx.widgets.component(1223,11).component(1).visible()){
 			state = "Closing interface";
 			ctx.widgets.component(1223,11).component(1).click();
