@@ -48,7 +48,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 	
 	
 	public static String state;
-	public double version = 0.10045;
+	public double version = 0.10046;
 	
 	int dropSlot;
 	boolean dropAction = false;
