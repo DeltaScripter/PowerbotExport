@@ -30,7 +30,7 @@ public class DemonSlayer extends Node {
 			new Tile(3223, 3457, 0), new Tile(3227, 3461, 0),
 			new Tile(3231, 3464, 0), new Tile(3236, 3466, 0),
 			new Tile(3241, 3466, 0), new Tile(3245, 3469, 0),
-			new Tile(3248, 3473, 0), new Tile(3249, 3479, 0) };
+			new Tile(3248, 3473, 0)};
 	
 	final Tile[] pathToTemple = new Tile[] { 
 			new Tile(3212, 3373, 0), new Tile(3211, 3378, 0), new Tile(3211, 3383, 0), 

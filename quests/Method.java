@@ -621,10 +621,10 @@ public class Method extends ClientAccessor{
 			if (!ctx.players.local().inCombat())
 				if (ctx.players.local().animation() == -1){
 					System.out.println("Hovering mouse");
-					ctx.widgets.component(1477,59).component(1).hover();//1477,59,1
+					ctx.widgets.component(1477,60).component(1).hover();//1477,59,1
 					for(String t: ctx.menu.items()){
 						if(t.contains("Teleport")){
-							ctx.widgets.component(1477,59).component(1).click();//select lodestone button
+							ctx.widgets.component(1477,60).component(1).click();//select lodestone button
 						    sleep(Random.nextInt(2000, 2600));
 						}
 					}

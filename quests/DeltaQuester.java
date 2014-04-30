@@ -1368,9 +1368,9 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
     
     public  void repaint(Graphics g) {
 		g.drawImage(paint, +5, -15, null);
-		//mouseX = (int) ctx.mouse.getLocation().x();
-		//mouseY = (int) ctx.mouse.getLocation().getY();
-		//setMouse(g);
+		mouseX = (int) ctx.mouse.getLocation().getX();
+		mouseY = (int) ctx.mouse.getLocation().getY();
+          setMouse(g);
 		/*
 		int seconds = (int)(runtime.getElapsed()/1000);
 		int minutes = (int)(seconds/60);
@@ -1401,6 +1401,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 		//g.drawString("Runtime: " +hours+":"+minHold +":" + secHold, 68,57);
 		g.drawString("Food Support: " + FOOD_FEATURE, 18, 430);
 		g.drawString("useBank: " + Vars.useBank, 18, 450);
+		if(FOOD_FEATURE)
 		g.drawString("Health: " + (int)health+ "%", 18, 470);
 		//g.drawString("ranOnce: " + Vars.ranOnce,20, 332);
 		//g.drawString("e: " + e, 20, 354);
@@ -1410,7 +1411,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 	
 	}
 
-	private void setMouse(Graphics2D g) {
+	private void setMouse(Graphics g) {
 		g.setColor(Color.MAGENTA);
 		g.drawLine(mouseX, mouseY - 800, mouseX, mouseY + 800);
 		g.drawLine(mouseX - 800, mouseY, mouseX + 800, mouseY);

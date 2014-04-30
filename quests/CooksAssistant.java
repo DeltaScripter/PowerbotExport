@@ -76,7 +76,7 @@ public final Tile[] pathToCook = new Tile[] {
 	boolean q = true;//only runs once.
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
-	
+	  System.out.println("Then I'll let the darkness cover me..");
 		Method.resetTeleporting();
 		DeltaQuester.numSteps = 3;
 		failsafe();
