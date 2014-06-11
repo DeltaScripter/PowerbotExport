@@ -60,27 +60,27 @@ public class PieDishBody extends PollingScript<ClientContext> implements PaintLi
 		Method.sleep(200);
 	
 		while(ctx.widgets.component(105,87).component(1).visible()){//if GE is open
-			state = "Closing interface";
+			state = "Closing interface: Grand Exchange";
 			ctx.widgets.component(105,87).component(1).click();
 		}
 		while(ctx.widgets.component(669,1).visible()){//tut stuff
-			state = "Closing interface";
+			state = "Closing interface: Tutorial";
 			ctx.widgets.component(669,1).click();
 		}
-		while(ctx.widgets.component(1477,54).visible()){
-			state = "Closing interface";
-			ctx.widgets.component(1477,54).component(2).click();
-		}
+		//while(ctx.widgets.component(1477,54).visible()){
+		//	state = "Closing interface: Generic 1477";
+			//ctx.widgets.component(1477,54).component(2).click();
+		//}
 		while(ctx.widgets.component(1223,11).visible()){//task complete
-			state = "Closing interface";
+			state = "Closing interface: Task complete";
 			ctx.widgets.component(1223,11).click();//close button
 		}
 		while(ctx.widgets.component(1401,31).visible()){//become a member!
-			state = "Closing interface";
+			state = "Closing interface: Become a member";
 			ctx.widgets.component(1401,31).click();
 		}
 		while(ctx.widgets.component(1186,0).visible()){//after collecting limit of 10 chronicles..
-			state = "Closing interface";
+			state = "Closing interface: Generic 1186";
 			ctx.movement.step(ctx.players.local().tile());
 		}
 		for(PieDishNode node: nodeList){
