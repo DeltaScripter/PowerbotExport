@@ -27,7 +27,7 @@ import org.powerbot.script.Script;
 
 
 @Script.Manifest(name = "Delta Quester", 
-description = "Completes quests! See thread for supported quests",properties = "topic = 777386")
+description = "Completes quests! See thread for supported quests",properties = "topic = 777386, visible = false")
 public class DeltaQuester extends PollingScript<ClientContext> implements PaintListener{
 
 
@@ -90,8 +90,6 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 		
 		if(g){
 			log.info("shutting down");
-			TaskListing.taskRemove.clear();//Clears the task list
-			TaskListing.updateTasks();
 			//this.controller().stop();
 		}
 		while(ctx.widgets.component(1223,1).visible()){//Task completed dialogue
@@ -110,7 +108,6 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 				progress = 0;
 				numSteps = 0;
 			 //Resets variables then reinitiates the queue
-				TaskListing.taskRemove.clear();//Clears the task list
 				Method.onlyItemsGE = false;
 				log.info("Finished quest: " + qList.get(0));
 			    DeltaQuester.qList.remove(0);

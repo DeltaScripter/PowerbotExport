@@ -73,13 +73,6 @@ public class RestlessG extends Node{
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		
 		if(q){
-			TaskListing.taskRemove.clear();
-			TaskListing.taskListData.add("Start quest by speaking to the priest");
-			TaskListing.taskListData.add("Speak to the irrational priest in the swamp");
-			TaskListing.taskListData.add("Speak to the ghost in the cemetary");
-			TaskListing.taskListData.add("Retrieve the ghost's skull");
-			TaskListing.taskListData.add("Place the ghost's skull in his coffin and finish quest");
-			TaskListing.updateTasks();
 			q = false;
 		}
 		Method.resetTeleporting();
@@ -103,8 +96,6 @@ public class RestlessG extends Node{
 		
 			DeltaQuester.progress = 6;
 			Method.state("The Restless Ghost quest has been completed.");
-			TaskListing.updateTaskRemove("Start quest by speaking to the priest","Speak to the irrational priest in the swamp","Speak to the ghost in the cemetary","Retrieve the ghost's skull","Place the ghost's skull in his coffin and finish quest");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 			Method.sleep(2000);
 			DeltaQuester.e = true;
@@ -112,28 +103,20 @@ public class RestlessG extends Node{
 		if((ctx.varpbits.varpbit(2324)&0x7) ==4){
 			DeltaQuester.progress = 5;
 			cs4();//go back to the ghost and place the skull in his grave
-			TaskListing.updateTaskRemove("Start quest by speaking to the priest","Speak to the irrational priest in the swamp","Speak to the ghost in the cemetary","Retrieve the ghost's skull");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
 		if((ctx.varpbits.varpbit(2324)&0x3) ==3){
 			DeltaQuester.progress = 4;
 			cs3();//Take the skull from the rock
-			TaskListing.updateTaskRemove("Start quest by speaking to the priest","Speak to the irrational priest in the swamp","Speak to the ghost in the cemetary");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
 		if((ctx.varpbits.varpbit(2324)&0x3) ==2){
 			DeltaQuester.progress = 3;
 			cs2();//Speak to the ghost
-			TaskListing.updateTaskRemove("Start quest by speaking to the priest","Speak to the irrational priest in the swamp");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2324)&0x1) ==1){
 			DeltaQuester.progress =2;
 			cs1();//Speak to the crazy priest in the swamp.
-			TaskListing.updateTaskRemove("Start quest by speaking to the priest");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2324)&0x1) ==0){
 			DeltaQuester.progress = 1;

@@ -66,13 +66,6 @@ public class DruidicRitual extends Node{
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		if(q){
-			TaskListing.taskRemove.clear();
-			TaskListing.taskListData.add("Start quest by speaking to Sanfew");
-			TaskListing.taskListData.add("Speak to Sanfew");
-			TaskListing.taskListData.add("Gather special water, wandering wyrm wood and fish scales and make potion");
-			TaskListing.taskListData.add("Speak to Sanfew again.");
-			TaskListing.taskListData.add("Speak to Kaqemeex and finish quest");
-			TaskListing.updateTasks();
 			q = false;
 		}
 		
@@ -107,46 +100,21 @@ public class DruidicRitual extends Node{
 			DeltaQuester.progress=5;
 			cS4();//Speaks to Kaqemeex at the stone circle, finishing the quest, "Speak to Sanfew again."
 			
-			if(!TaskListing.taskRemove.contains("Start quest by speaking to Sanfew"))
-				TaskListing.taskRemove.add("Start quest by speaking to Sanfew");
-			if(!TaskListing.taskRemove.contains("Speak to Sanfew"))
-				TaskListing.taskRemove.add("Speak to Sanfew");
-			if(!TaskListing.taskRemove.contains("Gather special water, wandering wyrm wood and fish scales and make potion"))
-				TaskListing.taskRemove.add("Gather special water, wandering wyrm wood and fish scales and make potion");
-			if(!TaskListing.taskRemove.contains("Speak to Sanfew again."))
-				TaskListing.taskRemove.add("Speak to Sanfew again.");
-			    TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2694) & 0x7F)==116){
 			DeltaQuester.progress=4;
 			cS3();//Speaks to Sanfew again.., "Gather special water, wandering wyrm wood and fish scales"
 			
-			if(!TaskListing.taskRemove.contains("Start quest by speaking to Sanfew"))
-				TaskListing.taskRemove.add("Start quest by speaking to Sanfew");
-			if(!TaskListing.taskRemove.contains("Speak to Sanfew"))
-				TaskListing.taskRemove.add("Speak to Sanfew");
-			if(!TaskListing.taskRemove.contains("Gather special water, wandering wyrm wood and fish scales and make potion"))
-				TaskListing.taskRemove.add("Gather special water, wandering wyrm wood and fish scales and make potion");
-			
-			    TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2694) & 0x7)==4){
 			DeltaQuester.progress=3;
 			cS2();//Gathers items & makes another item, "Speak to Sanfew"
-			if(!TaskListing.taskRemove.contains("Start quest by speaking to Sanfew"))
-				TaskListing.taskRemove.add("Start quest by speaking to Sanfew");
-			if(!TaskListing.taskRemove.contains("Speak to Sanfew"))
-				TaskListing.taskRemove.add("Speak to Sanfew");
 			
-			    TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2694) & 0x3)==2){
 			DeltaQuester.progress=2;
 			cS1();//Speaks to Sanfew
-			if(!TaskListing.taskRemove.contains("Start quest by speaking to Sanfew"))
-				TaskListing.taskRemove.add("Start quest by speaking to Sanfew");
-			    TaskListing.removeTasks(TaskListing.taskRemove);
-			    
+		
 		}else if((ctx.varpbits.varpbit(2694) & 0x1)==0){
 			DeltaQuester.progress=1;
 			cS0();//Speaks to Kaqemeex and starts the quest

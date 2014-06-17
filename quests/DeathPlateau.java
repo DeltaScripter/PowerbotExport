@@ -69,8 +69,6 @@ public class DeathPlateau extends Node{
 		if((ctx.varpbits.varpbit(2337) & 0x1FF) ==449){
 			DeltaQuester.progress=12;
 			Method.state("The Death Plateau quest has been completed");
-			TaskListing.updateTaskRemove("Start the quest","Speak to the dwarf about secret passageways","Speak to the dwarf's friend a bit west of the cave","Speak to the smith about the drawf's boots","Bring the boots back to the dwarf","Read the survey she gives us","Open up the passage way in the cave","Traverse the cavern","Defeat the troll","Finish the quest");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 			//ctx.environment.sleep(2000);
 			DeltaQuester.e = true;
@@ -78,8 +76,6 @@ public class DeathPlateau extends Node{
 		if((ctx.varpbits.varpbit(2337) & 0x1FF) ==444){
 			DeltaQuester.progress=11;
 			cs0();//Finish the quest.
-			TaskListing.updateTaskRemove("Start the quest","Speak to the dwarf about secret passageways","Speak to the dwarf's friend a bit west of the cave","Speak to the smith about the drawf's boots","Bring the boots back to the dwarf","Read the survey she gives us","Open up the passage way in the cave","Traverse the cavern","Defeat the troll");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
 		if((ctx.varpbits.varpbit(2337) & 0x1FF) ==439){
@@ -89,55 +85,39 @@ public class DeathPlateau extends Node{
 		if((ctx.varpbits.varpbit(2337) & 0x1FF) ==434){
 			DeltaQuester.progress=9;
 			cs6();//Speak with the troll for a moment
-			TaskListing.updateTaskRemove("Start the quest","Speak to the dwarf about secret passageways","Speak to the dwarf's friend a bit west of the cave","Speak to the smith about the drawf's boots","Bring the boots back to the dwarf","Read the survey she gives us","Open up the passage way in the cave","Traverse the cavern");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
 		if((ctx.varpbits.varpbit(2337) & 0x1FF) ==429){
 			DeltaQuester.progress=8;
 			cs5();//Find safe passage through the cavern
-			TaskListing.updateTaskRemove("Start the quest","Speak to the dwarf about secret passageways","Speak to the dwarf's friend a bit west of the cave","Speak to the smith about the drawf's boots","Bring the boots back to the dwarf","Read the survey she gives us","Open up the passage way in the cave");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
 		if((ctx.varpbits.varpbit(2337) & 0xFF) ==168){
 			DeltaQuester.progress=7;
 			cs1();//Must mine the wall near dwarf # 1
-			TaskListing.updateTaskRemove("Start the quest","Speak to the dwarf about secret passageways","Speak to the dwarf's friend a bit west of the cave","Speak to the smith about the drawf's boots","Bring the boots back to the dwarf","Read the survey she gives us");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
 		if((ctx.varpbits.varpbit(2337) & 0x3F) ==35){
 			DeltaQuester.progress=6;
 			cs4();//Simply read the survey.
-			TaskListing.updateTaskRemove("Start the quest","Speak to the dwarf about secret passageways","Speak to the dwarf's friend a bit west of the cave","Speak to the smith about the drawf's boots","Bring the boots back to the dwarf");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
 		if((ctx.varpbits.varpbit(2337) & 0x1F) ==30){
 			DeltaQuester.progress=5;
 			cs2();//We must give the boots back to the other dwarf.
-			TaskListing.updateTaskRemove("Start the quest","Speak to the dwarf about secret passageways","Speak to the dwarf's friend a bit west of the cave","Speak to the smith about the drawf's boots");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
 		if((ctx.varpbits.varpbit(2337) & 0xF) ==15){
 			DeltaQuester.progress=4;
 			cs3();//Must speak to the smith.
-			TaskListing.updateTaskRemove("Start the quest","Speak to the dwarf about secret passageways","Speak to the dwarf's friend a bit west of the cave");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2337) & 0xF) ==10){
 			DeltaQuester.progress=3;
 			cs2();//Must speak with dwarf wife.
-			TaskListing.updateTaskRemove("Start the quest","Speak to the dwarf about secret passageways");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2337) & 0x7) ==5){
 			DeltaQuester.progress=2;
 			cs1();//WE must speak to the dwarf; first time.
-			TaskListing.updateTaskRemove("Start the quest");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2337) & 0x1) ==0){
 			DeltaQuester.progress=1;

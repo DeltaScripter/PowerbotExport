@@ -150,8 +150,6 @@ public class PiratesTreasure extends Node{
 				DeltaQuester.progress = 2;
 				try {
 					cs1();//Heads to karamja and finishes the job(gets the wine stored)
-					TaskListing.updateTaskRemove("Start quest by speaking to the pirate");
-					TaskListing.removeTasks(TaskListing.taskRemove);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

@@ -86,12 +86,6 @@ public class VampyreSlayer extends Node{
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		if(q){
-			TaskListing.taskRemove.clear();
-			TaskListing.taskListData.add("Start quest by speaking to Morgan in Draynor");
-			TaskListing.taskListData.add("Speak to vampyre slayer in Varrock and get supplies");
-			TaskListing.taskListData.add("Kill the vampyre in Draynor mansion");
-			TaskListing.taskListData.add("Finish the quest by speaking to Morgan in Draynor");
-			TaskListing.updateTasks();
 			q = false;
 		}
 		Method.foodSupport();
@@ -115,8 +109,6 @@ public class VampyreSlayer extends Node{
 		if((ctx.varpbits.varpbit(2170)&0x7)==7){
 			DeltaQuester.progress = 6;
 			Method.state("The Vampire Slayer quest has been completed.");
-			TaskListing.updateTaskRemove("Start quest by speaking to Morgan in Draynor","Speak to vampyre slayer in Varrock and get supplies","Kill the vampyre in Draynor mansion","Finish the quest by speaking to Morgan in Draynor");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 			Method.sleep(2000);
 			DeltaQuester.e = true;
@@ -124,15 +116,11 @@ public class VampyreSlayer extends Node{
 		if((ctx.varpbits.varpbit(2170)>>3&0x1)==1){
 			DeltaQuester.progress = 5;
 			cs0();//finish quest
-			TaskListing.updateTaskRemove("Start quest by speaking to Morgan in Draynor","Speak to vampyre slayer in Varrock and get supplies","Kill the vampyre in Draynor mansion");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
 		if((ctx.varpbits.varpbit(2170)&0x1F)==6){
 			DeltaQuester.progress = 4;
 			cs2();//Kill the vampyre
-			TaskListing.updateTaskRemove("Start quest by speaking to Morgan in Draynor","Speak to vampyre slayer in Varrock and get supplies");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
 		if((ctx.varpbits.varpbit(2170)&0x3)==2){
@@ -142,8 +130,6 @@ public class VampyreSlayer extends Node{
 		if((ctx.varpbits.varpbit(2170)&0x1)==1){
 			DeltaQuester.progress = 2;
 			cs1();//Speak to the vampyre slayer and get supplies
-			TaskListing.updateTaskRemove("Start quest by speaking to Morgan in Draynor");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else {
 			DeltaQuester.progress = 1;
 			cs0();//Start the quest by speaking to Morgan

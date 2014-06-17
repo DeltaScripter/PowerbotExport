@@ -134,18 +134,6 @@ public class StolenHearts extends Node{
 			Method.sleep(2000);
 		}
 		if(q){
-			TaskListing.taskRemove.clear();
-			TaskListing.taskListData.add("Start quest");
-			TaskListing.taskListData.add("Take Khnums examination");
-			TaskListing.taskListData.add("Report to Ozan");
-			TaskListing.taskListData.add("Follow Khnum");
-			TaskListing.taskListData.add("Talk to Khnum in his hide-out");
-			TaskListing.taskListData.add("Attempt to rescue prince at shore");
-			TaskListing.taskListData.add("Speak to gaurds in Alkharid");
-			TaskListing.taskListData.add("Find way into palace");
-			TaskListing.taskListData.add("Complete puzzle and steal the key");
-			TaskListing.taskListData.add("Finish the quest");
-			TaskListing.updateTasks();
 			q = false;
 		}
 		
@@ -164,8 +152,6 @@ public class StolenHearts extends Node{
 		if((ctx.varpbits.varpbit(2449)&0x7F)==105){
 			DeltaQuester.progress = 16;
 			Method.state("The Stolen Hearts quest has been completed.");
-			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan","Follow Khnum","Talk to Khnum in his hide-out","Attempt to rescue prince at shore","Speak to gaurds in Alkharid","Find way into palace","Complete puzzle and steal the key","Finish the quest");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
@@ -176,21 +162,15 @@ public class StolenHearts extends Node{
 		if((ctx.varpbits.varpbit(2449)&0x7F)==90||(ctx.varpbits.varpbit(2449)&0x7F)==95){
 			DeltaQuester.progress = 14;
 			cs13();//Finish the cut scene conversation with Emir's death
-			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan","Follow Khnum","Talk to Khnum in his hide-out","Attempt to rescue prince at shore","Speak to gaurds in Alkharid","Find way into palace","Complete puzzle and steal the key");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x7F)==85 ||(ctx.varpbits.varpbit(2449)&0xFF)==213){
 			DeltaQuester.progress = 13;
 			
 			cs12();//Solve the puzzle and place the key in the display
-			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan","Follow Khnum","Talk to Khnum in his hide-out","Attempt to rescue prince at shore","Speak to gaurds in Alkharid","Find way into palace");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x7F)==70||(ctx.varpbits.varpbit(2449)&0x7F)==72||(ctx.varpbits.varpbit(2449)&0x7F)==75||(ctx.varpbits.varpbit(2449)&0x7F)==80){
 			DeltaQuester.progress = 12;
 			cs11();//Get's the player into the puzzle room + completes the conversation at that window ledge
-			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan","Follow Khnum","Talk to Khnum in his hide-out","Attempt to rescue prince at shore","Speak to gaurds in Alkharid");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x7F)==65){
 			DeltaQuester.progress = 11;
@@ -203,8 +183,6 @@ public class StolenHearts extends Node{
 		if((ctx.varpbits.varpbit(2449)&0x3F)==55){
 			DeltaQuester.progress = 9;
 			cs8();//Grabs the scroll after the fight in both situations(if you don't pick it up right away after the fight.)
-			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan","Follow Khnum","Talk to Khnum in his hide-out","Attempt to rescue prince at shore");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x3F)==50){
 			DeltaQuester.progress = 8;
@@ -218,8 +196,6 @@ public class StolenHearts extends Node{
 		if((ctx.varpbits.varpbit(2449)&0x3F)==45){
 			DeltaQuester.progress = 7;
 			cs5();//Get ozan to the shore
-			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan","Follow Khnum","Talk to Khnum in his hide-out");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2449)>>5&0x1)==1||(ctx.varpbits.varpbit(2449)>>5&0x3F)==53||(ctx.varpbits.varpbit(2449)>>5&0x3F)==45||(ctx.varpbits.varpbit(2449)>>5&0x3F)==13||(ctx.varpbits.varpbit(2449)>>5&0x3F)==5||(ctx.varpbits.varpbit(2449)>>5&0x3F)==1){
 			DeltaQuester.progress = 6;
@@ -228,25 +204,18 @@ public class StolenHearts extends Node{
 		if((ctx.varpbits.varpbit(2449)&0x1F)==30){
 			DeltaQuester.progress = 5;
 			cs3();//Complete the initial conversation with Khnum and friends
-			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan","Follow Khnum");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x1F)==25||(ctx.varpbits.varpbit(2449)>>21 & 0xF) ==15){
 			DeltaQuester.progress = 4;
 			cs2();//Complete the trailing Khnum scene
-			TaskListing.updateTaskRemove("Start quest","Take Khnums examination","Report to Ozan");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x1F)==20){
 			DeltaQuester.progress = 3;
 			cs0();//Report to Ozan about finding Khnum's HQ
-			TaskListing.updateTaskRemove("Start quest","Take Khnums examination");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x7)==5 ||(ctx.varpbits.varpbit(2449)&0xF)==10||(ctx.varpbits.varpbit(2449)&0xF)==15){
 			DeltaQuester.progress = 2;
 			cs1();//Speak to Khnum in his base and take his entry examination.
-			TaskListing.updateTaskRemove("Start quest");
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x1)==0){
 			DeltaQuester.progress = 1;

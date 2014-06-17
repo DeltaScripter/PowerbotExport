@@ -143,15 +143,6 @@ public class SweptAway extends Node {
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		if(q){
-			TaskListing.taskRemove.clear();
-			TaskListing.taskListData.add("Start quest by speaking to Maggie in Draynor");
-			TaskListing.taskListData.add("Speak to Aggie and solve her sweeping puzzle");
-			TaskListing.taskListData.add("Speak to Hetty about the broom situation");
-			TaskListing.taskListData.add("Solve Hetty's crate puzzle");
-			TaskListing.taskListData.add("Speak to Betty about her wand");
-			TaskListing.taskListData.add("Solve the animal puzzle and bring Betty her wand");
-			TaskListing.taskListData.add("Speak to Maggie and finish quest");
-			TaskListing.updateTasks();
 			q = false;
 		}
 		Method.resetTeleporting();
@@ -171,8 +162,6 @@ public class SweptAway extends Node {
 		if((ctx.varpbits.varpbit(2198) & 0x1F) ==18){
 			DeltaQuester.progress = 10;
 			Method.state("The Swept Away quest has been completed.");
-			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation","Solve Hetty's crate puzzle","Speak to Betty about her wand","Solve the animal puzzle and bring Betty her wand","Speak to Maggie and finish quest");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 			Method.sleep(2000);
 			DeltaQuester.e = true;
@@ -181,24 +170,18 @@ public class SweptAway extends Node {
 			System.out.println("Here");
 			DeltaQuester.progress = 9;
 			cs1();//Speak to Maggie for the last time.
-			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation","Solve Hetty's crate puzzle","Speak to Betty about her wand","Solve the animal puzzle and bring Betty her wand");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
 		if((ctx.varpbits.varpbit(2198)>>23 & 0x1) ==1||(ctx.varpbits.varpbit(2198)>>24 & 0x1) ==1||(ctx.varpbits.varpbit(2198)>>25 & 0x1) ==1){
 			System.out.println("Here2");
 			DeltaQuester.progress = 8;
 			cs6();//Bring Betty her wand after completing the puzzle
-			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation","Solve Hetty's crate puzzle","Speak to Betty about her wand");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
 		if((ctx.varpbits.varpbit(2198)>>8 & 0x7) ==6){
 			System.out.println("Here3");
 			DeltaQuester.progress = 7;
 			cs5();//Speak to Betty about the wand
-			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation","Solve Hetty's crate puzzle");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
 		if((ctx.varpbits.varpbit(2198)>>8 & 0x7) ==4||(ctx.varpbits.varpbit(2198)>>8 & 0x1) ==1){
@@ -224,23 +207,17 @@ public class SweptAway extends Node {
 			System.out.println("Here7");
 			DeltaQuester.progress = 4;
 			cs4();//Solve the crate puzzle Hetty needed us to do.
-			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle","Speak to Hetty about the broom situation");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		
 		}else
 		if((ctx.varpbits.varpbit(2198)>>11 & 0x1) ==1){
 			System.out.println("Here8");
 			DeltaQuester.progress = 3;
 			cs3();//Speak to Hetty about the broom situation
-			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor","Speak to Aggie and solve her sweeping puzzle");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2198)&0x1F) == 20){
 			System.out.println("Here9");
 			DeltaQuester.progress = 2;
 			cs2();//Speak to Aggie and solve her puzzle with the brooms
-			TaskListing.updateTaskRemove("Start quest by speaking to Maggie in Draynor");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2198)&0xFF) == 0||(ctx.varpbits.varpbit(2198)&0xFF) == 5||(ctx.varpbits.varpbit(2198)&0xFF) == 10){
 			System.out.println("Here10");

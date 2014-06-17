@@ -103,20 +103,6 @@ boolean q = true;
 		DeltaQuester.numSteps =13;
 		Method.foodSupport();
 		if(q){
-			TaskListing.taskRemove.clear();
-			TaskListing.taskListData.add("Start quest by speaking to Newton Nails");
-			TaskListing.taskListData.add("Speak to nails again to gather instructions");
-			TaskListing.taskListData.add("Make the maggot-flour and speak to Newton Nails again");
-			TaskListing.taskListData.add("Make the manky crayfish");
-			TaskListing.taskListData.add("Gather and combine the potato with the dish");
-			TaskListing.taskListData.add("Cook the uncooked pie");
-			TaskListing.taskListData.add("Speak to Newton Nails about the cooked pie");
-			TaskListing.taskListData.add("Pickpocket Pierre");
-			TaskListing.taskListData.add("Feed pie to man");
-			TaskListing.taskListData.add("Take seal and show it to Newton Nails");
-			TaskListing.taskListData.add("Speak to Pierre about a letter");
-			TaskListing.taskListData.add("Speak to Newton Nails and finish quest");
-			TaskListing.updateTasks();
 			q = false;
 		}
 		
@@ -145,71 +131,51 @@ boolean q = true;
 		if((ctx.varpbits.varpbit(2674)&0x3F)==30){
 			DeltaQuester.progress = 11;
 			cs5();//Speak to Pierre with the letter
-			updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again","Make the manky crayfish","Gather and combine the potato with the dish","Cook the uncooked pie","Speak to Newton Nails about the cooked pie","Pickpocket Pierre","Feed pie to man","Take seal and show it to Newton Nails");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
 		if((ctx.varpbits.varpbit(2674)&0x3F)==25){
 			DeltaQuester.progress = 10;
 			cs6();//Take the seal and show it to Nails
-			updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again","Make the manky crayfish","Gather and combine the potato with the dish","Cook the uncooked pie","Speak to Newton Nails about the cooked pie","Pickpocket Pierre","Feed pie to man");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
 		if((ctx.varpbits.varpbit(2674)&0x3F)==20){
 			DeltaQuester.progress = 9;
 			cs6();//Feed the man the pie
-			updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again","Make the manky crayfish","Gather and combine the potato with the dish","Cook the uncooked pie","Speak to Newton Nails about the cooked pie","Pickpocket Pierre");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
 		if((ctx.varpbits.varpbit(2674)&0xF)==15){
 			DeltaQuester.progress = 8;
 		    cs5();//Pickpocket Pierre
-		    updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again","Make the manky crayfish","Gather and combine the potato with the dish","Cook the uncooked pie","Speak to Newton Nails about the cooked pie");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
 		if((ctx.varpbits.varpbit(2674)&0xF)==13){
 			DeltaQuester.progress = 7;
 		    cs0();//Speak to Nails about the cooked pie, "Cook the uncooked pie"
-		    updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again","Make the manky crayfish","Gather and combine the potato with the dish","Cook the uncooked pie");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
 		if((ctx.varpbits.varpbit(2674)&0xF)==12){
 			DeltaQuester.progress = 6;
 		    cs4();//Cook the uncooked pie
-		    updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again","Make the manky crayfish","Gather and combine the potato with the dish");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
 		if((ctx.varpbits.varpbit(2674)&0xF)==10){
 			DeltaQuester.progress = 5;
 		    cs3();//Gather and combine the potato with the dish
-		    updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again","Make the manky crayfish");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else
 		if((ctx.varpbits.varpbit(2674)&0xF)==9){
 			DeltaQuester.progress = 4;
 		    cs2();//Mkae the stinky crayfish
-		    updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions","Make the maggot-flour and speak to Newton Nails again");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 			
 		}else
 		if((ctx.varpbits.varpbit(2674)&0x7)==6){
 			DeltaQuester.progress = 3;
 		    cs1();//Make the maggotry flour and speak to Nails again
-		    updateTaskRemove("Start quest by speaking to Newton Nails","Speak to nails again to gather instructions");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else if((ctx.varpbits.varpbit(2674)&0x7)==5){
 			DeltaQuester.progress = 2;
 			cs0();//Speak to Nails again to gather instructions
-			updateTaskRemove("Start quest by speaking to Newton Nails");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		}else if((ctx.varpbits.varpbit(2674)&0x7)==0){
 			DeltaQuester.progress = 1;
@@ -218,14 +184,7 @@ boolean q = true;
 		}
 		
 	}
-	private void updateTaskRemove(String... tasks) {
-		for(String t: tasks){
-			if(!TaskListing.taskRemove.contains(t)){
-				TaskListing.taskRemove.add(t);
-			}
-		}
-		
-	}
+
 
 
 	private void cs6() {

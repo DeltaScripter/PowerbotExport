@@ -46,14 +46,6 @@ public class ErnestTheChicken extends Node{
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		if(q){
-			TaskListing.taskRemove.clear();
-			TaskListing.taskListData.add("Start quest");
-			TaskListing.taskListData.add("Speak to the scientist");
-			TaskListing.taskListData.add("Gather the rubber tube");
-			TaskListing.taskListData.add("Gather the pressure gauge");
-			TaskListing.taskListData.add("Gather the oil");
-			TaskListing.taskListData.add("Finish quest");
-			TaskListing.updateTasks();
 			q = false;
 		}
 		Method.resetTeleporting();
@@ -70,8 +62,6 @@ public class ErnestTheChicken extends Node{
 		if ((ctx.varpbits.varpbit(2183) & 0x3) == 3) {
 			DeltaQuester.progress = 4;
 			Method.state("The Ernest The Chicken quest has been completed.");
-			TaskListing.updateTaskRemove("Start quest","Speak to the scientist","Gather the pressure gauge","Gather the rubber tube","Gather the oil","Finish quest");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		} else 
@@ -82,8 +72,6 @@ public class ErnestTheChicken extends Node{
 		} else if ((ctx.varpbits.varpbit(2183) & 0x1) == 1) {
 			DeltaQuester.progress = 2;
 			cs2();//speak to the scientist
-			TaskListing.updateTaskRemove("Start quest");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			
 		} else if ((ctx.varpbits.varpbit(2183) & 0x1) == 0) {
 			DeltaQuester.progress = 1;
@@ -101,14 +89,11 @@ public class ErnestTheChicken extends Node{
 			if (Method.inventoryContains(271)) {//pressure Gauge.
 				if (Method.inventoryContains(276)){
 					if(Method.inventoryContains(277)){
-						System.out.println("finish");
 						finishQuest();
 					}else{
-						System.out.println("oil");
 						gatherOilCan();
 					}
 				}else{
-					System.out.println("tube");
 					gatherRubberTube();
 				}
 			} else
@@ -165,7 +150,6 @@ public class ErnestTheChicken extends Node{
 			solvePuzzle();
 		}else{
 		if(new Tile(3095,3359,0).matrix(ctx).reachable()){
-			System.out.println("attempting to climb downstairs");
 		Method.interactO(133, "Climb","Object");
 		}else{
 		if(new Tile(3098,3360,0).matrix(ctx).reachable()){//outside the secret room that leads to basement..
@@ -459,7 +443,6 @@ public class ErnestTheChicken extends Node{
 								//if(!timer.isRunning())//below grabs the poison off the table
 								for(GroundItem poison: ctx.groundItems.select().name("Poison").nearest().first()){//the poison
 									if (poison.inViewport()) {
-										//System.out.println("...yeah: " +poison.tile().matrix(ctx).getInteractPoint().x());
 										ctx.mouse.move(poison.tile().matrix(ctx).point(.457D, .368D, -400));
 										ctx.mouse.click(true);
 										//timer = new Timer(2000);

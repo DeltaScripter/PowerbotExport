@@ -96,15 +96,11 @@ public final Tile[] pathToCook = new Tile[] {
 		if((ctx.varpbits.varpbit(2492)&0x3) ==2){
 			DeltaQuester.progress = 3;
 			Method.state("The Cook's Assistant quest has been completed.");
-			TaskListing.updateTaskRemove("Start quest by speaking to the cook","Speak to the cook and finish quest");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			DeltaQuester.e = true;
 		}else
 		if((ctx.varpbits.varpbit(2492)&0x1) ==1){
 			DeltaQuester.progress = 2;
 			cs1();//Gather/make the items and finish the quest
-			TaskListing.updateTaskRemove("Start quest by speaking to the cook");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2492)&0x1) ==0){
 			DeltaQuester.progress = 1;
