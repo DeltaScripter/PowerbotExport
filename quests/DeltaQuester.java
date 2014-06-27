@@ -28,7 +28,7 @@ import org.powerbot.script.Script;
 
 
 @Script.Manifest(name = "Delta Quester", 
-description = "Completes quests! See thread for supported quests",properties = "topic = 777386, hidden = false")
+description = "Completes quests! See thread for supported quests",properties = "topic = 777386")
 public class DeltaQuester extends PollingScript<ClientContext> implements PaintListener{
 
 
