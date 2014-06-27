@@ -4,6 +4,7 @@ package quests;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
+import org.powerbot.script.rt6.Interactive;
 import org.powerbot.script.rt6.Player;
 
 import quests.Vars.TeleportLode;
@@ -30,7 +31,7 @@ public class DemonSlayer extends Node {
 			new Tile(3223, 3457, 0), new Tile(3227, 3461, 0),
 			new Tile(3231, 3464, 0), new Tile(3236, 3466, 0),
 			new Tile(3241, 3466, 0), new Tile(3245, 3469, 0),
-			new Tile(3248, 3473, 0)};
+			new Tile(3248, 3473, 0), new Tile(3250,3478,0)};
 	
 	final Tile[] pathToTemple = new Tile[] { 
 			new Tile(3212, 3373, 0), new Tile(3211, 3378, 0), new Tile(3211, 3383, 0), 
@@ -66,6 +67,16 @@ public class DemonSlayer extends Node {
 
 	
 	public void execute() {
+		
+		
+		/*For interacting with the bounds of an object, accurate clicking
+		final int[] bounds = {76, 376, -440, -60, -156, 108};
+		final GameObject gobj = ctx.objects.select().id(24381).each(Interactive.doSetBounds(bounds)).select(Interactive.areInViewport()).nearest().poll();
+		if(gobj.interact("Open","Door")){
+			System.out.println("Interacting with door");
+		}*/
+		
+		
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		if(q){
 			q = false;
@@ -76,9 +87,9 @@ public class DemonSlayer extends Node {
 		
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
-			if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(3518) & 0x7F)!=121){
-			Method.checkBank();
-		}else
+			//if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(3518) & 0x7F)!=121){
+			//Method.checkBank();
+		//}else
 	    if(Vars.useBank && (ctx.varpbits.varpbit(3518) & 0x7F)!=121){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
@@ -193,10 +204,8 @@ public class DemonSlayer extends Node {
 				init = ctx.players.local().tile();
 			}
 		}
-		if(new Tile(3256,3387,0).distanceTo(local.tile())<4){
-			if(!Method.objIsByTile(new Tile(3255,3388,0), 24381, 3)){
+		if(new Tile(3256,3387,0).distanceTo(local.tile())<7){
 				Method.interactO(82061, "Climb", "Trapdoor");
-			}else Method.interactO(24381, "Open", "Door");
 			
 		}else delta(pathToTemple, "Walking to the temple");
 	}
@@ -205,7 +214,6 @@ public class DemonSlayer extends Node {
 
 	public void delta(Tile[] path, String s) {
 		Player local = ctx.players.local();
-		
 		if(Vars.DYNAMICV){
 			Method.walking(path, s, false);
 		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<5 || TeleportLode.VARROCK.getTile().distanceTo(local.tile())<5){
@@ -306,11 +314,8 @@ public class DemonSlayer extends Node {
 			}
 		}
 		if(new Tile(3256,3387,0).distanceTo(local.tile())<8){
-			if(!Method.objIsByTile(new Tile(3255,3388,0), 24381, 3)){
 				Method.interactO(82061, "Climb", "Trapdoor");
-			}else Method.interactO(24381, "Open", "Door");
 			
-				
 		}else delta(pathToTemple, "Walking to the temple");
 	}
 		
@@ -347,8 +352,8 @@ public class DemonSlayer extends Node {
 			}
 			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
 			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3249,3480,0).distanceTo(local.tile())<20){
-			Method.clickOnMap(new Tile(3257,3483,0));
+		}else if(new Tile(3250,3478,0).distanceTo(local.tile())<20){
+			Method.clickOnMap(new Tile(3250,3478,0));
 			Method.sleep(1200);
 		}else cs0();//Get into position
 		}
@@ -384,8 +389,8 @@ public class DemonSlayer extends Node {
 			}
 			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
 			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3249,3480,0).distanceTo(local.tile())<20){
-			Method.clickOnMap(new Tile(3257,3483,0));
+		}else if(new Tile(3250,3478,0).distanceTo(local.tile())<20){
+			Method.clickOnMap(new Tile(3250,3478,0));
 			Method.sleep(1200);
 		}else cs0();//Get into position
 	}
@@ -432,8 +437,8 @@ public class DemonSlayer extends Node {
 			}
 			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
 			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3249,3480,0).distanceTo(local.tile())<20){
-			Method.clickOnMap(new Tile(3257,3483,0));
+		}else if(new Tile(3250,3478,0).distanceTo(local.tile())<20){
+			Method.clickOnMap(new Tile(3250,3478,0));
 			Method.sleep(1200);
 		}else cs0();//Get into position
 		}
@@ -567,7 +572,7 @@ public class DemonSlayer extends Node {
 				init = ctx.players.local().tile();
 			}
 		}
-		if(new Tile(3258,3483,0).distanceTo(local.tile())<4){
+		if(new Tile(3250,3478,0).distanceTo(local.tile())<4){
 			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
 				if(!TrapDoor.contains(door.tile())){
 					Method.interactO(82059, "Climb", "Trapdoor");
@@ -575,8 +580,8 @@ public class DemonSlayer extends Node {
 			}
 			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
 			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3249,3480,0).distanceTo(local.tile())<20){
-			Method.clickOnMap(new Tile(3257,3483,0));
+		}else if(new Tile(3250,3478,0).distanceTo(local.tile())<20){
+			Method.clickOnMap(new Tile(3250,3478,0));
 			Method.sleep(1200);
 			} else
 				cs0();// Get into position

@@ -18,6 +18,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import org.powerbot.script.PaintListener;
@@ -27,7 +28,7 @@ import org.powerbot.script.Script;
 
 
 @Script.Manifest(name = "Delta Quester", 
-description = "Completes quests! See thread for supported quests",properties = "topic = 777386, visible = false")
+description = "Completes quests! See thread for supported quests",properties = "topic = 777386, hidden = false")
 public class DeltaQuester extends PollingScript<ClientContext> implements PaintListener{
 
 
@@ -1358,13 +1359,14 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 		}
 	}
 	private final Font font1 = new Font("Serif", 0, 15);
-   // private final Image img1 = getImage("http://i1223.photobucket.com/albums/dd508/thriller645/newPaint_zps9e1ed368.png");
-	private final Image paint = getImage("http://img841.imageshack.us/img841/5984/kg3.png");
-	
+   // private final Image paint = getImage("http://i.imgur.com/IBSYZA1.png");
+	//private final Image paint = getImage("http://img841.imageshack.us/img841/5984/kg3.png");
+	BufferedImage paint = downloadImage("http://i.imgur.com/IBSYZA1.png");
 	
     
     public  void repaint(Graphics g) {
-		g.drawImage(paint, +5, -15, null);
+    	
+		g.drawImage(paint, -19, -15, null);
 		mouseX = (int) ctx.mouse.getLocation().getX();
 		mouseY = (int) ctx.mouse.getLocation().getY();
           setMouse(g);
@@ -1379,27 +1381,28 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 			secondsA = new Timer(0);
 		if(minHold>=60)
 			minutesA = new Timer(0);*/
-		
+		int xAlin = 25;
 		
 		g.setColor(Color.DARK_GRAY);
-		g.drawRect(20,334, 185, 7);
+		g.drawRect(28,325, 185, 7);
 		g.setColor(Color.green);
 		if(numSteps!=0)
-		g.fillRect(20,335, progress*185/numSteps, 7);
+		g.fillRect(28,326, progress*185/numSteps, 7);
 		g.setFont(font1);
-		g.setColor(Color.pink);
-		g.drawString("State: " + state, 18, 106);
+		g.setColor(Color.green);
+		g.drawString("State: " + state, 260, 590);
 		if(!qList.isEmpty())
-		g.drawString("Quest: "+ qList.get(0).toString(), 18, 370);
+		g.drawString("Quest: "+ qList.get(0).toString(), xAlin, 410);
+		//g.drawString("useBank: " + Vars.useBank, xAlin, 410);
 		if(qList.size()>=2)
-		g.drawString("Next quest: " + qList.get(1).toString(), 18, 390);
-		g.drawString("" + (int)((double)progress/numSteps*100) +"%", 215, 340);
-		g.drawString("GEFeature: " + GEWO, 18, 410);
+		g.drawString("Next quest: " + qList.get(1).toString(), xAlin, 430);
+		g.drawString("" + (int)((double)progress/numSteps*100) +"%", 218, 313);
+		g.drawString("GEFeature: " + GEWO, xAlin, 370);
 		//g.drawString("Runtime: " +hours+":"+minHold +":" + secHold, 68,57);
-		g.drawString("Food Support: " + FOOD_FEATURE, 18, 430);
-		g.drawString("useBank: " + Vars.useBank, 18, 450);
-		if(FOOD_FEATURE)
-		g.drawString("Health: " + (int)health+ "%", 18, 470);
+		g.drawString("Food Support: " + FOOD_FEATURE, xAlin, 390);
+		
+		//if(FOOD_FEATURE)
+		//g.drawString("Health: " + (int)health+ "%", 18, 470);
 		//g.drawString("ranOnce: " + Vars.ranOnce,20, 332);
 		//g.drawString("e: " + e, 20, 354);
 		

@@ -14,6 +14,7 @@ import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.GroundItem;
+import org.powerbot.script.rt6.Interactive;
 import org.powerbot.script.rt6.Hud.Window;
 import org.powerbot.script.rt6.Item;
 import org.powerbot.script.rt6.ItemQuery;
@@ -72,7 +73,7 @@ public class Method extends ClientAccessor{
 		////timer waitClick = new //timer(0);
 		public boolean goBank =true;
 		public void fightNPC(int id) {
-			if(ctx.combatBar.expanded()){
+			
 				
 				if(getInteractingNPC()==null){//if not in combat
 					for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
@@ -104,7 +105,6 @@ public class Method extends ClientAccessor{
 			}	
 				
 				
-			}else state("Please open the action bar to continue");
 			
 		}
 	public void useGE(String[] name, int[] itemID, int[] itemPrice, int[] itemAmount){
@@ -292,6 +292,7 @@ public class Method extends ClientAccessor{
 		// if(!//timer.isRunning()){
 		for(Item t : ctx.backpack.select().name(name).first()){
 			//System.out.println(ctx.widgets.component(1477,122).component(0).boundingRect().getCenterY());
+			skipPics();
 			if(ctx.hud.open(Window.BACKPACK) && ctx.widgets.component(1473,7).contains(
 				t.component().centerPoint())){
 				System.out.println("Hovering");
@@ -562,14 +563,29 @@ public class Method extends ClientAccessor{
 		}
 		return false;
 	}
-	
+	public void interactSpecialObject(int[] bound, int ID, String interact){
+		final int[] bounds = bound;
+		final GameObject gobj = ctx.objects.select().id(ID).each(Interactive.doSetBounds(bounds)).select(Interactive.areInViewport()).nearest().poll();
+		if(!gobj.interact(interact,"")){
+			ctx.camera.turnTo(gobj);
+		}
+		
+	}
+	public void interactSpecialGroundItem(int[] bound, int ID, String interact){
+		final int[] bounds = bound;
+		final GroundItem gobj = ctx.groundItems.select().id(ID).each(Interactive.doSetBounds(bounds)).select(Interactive.areInViewport()).nearest().poll();
+		if(!gobj.interact(interact,"")){
+			ctx.camera.turnTo(gobj);
+		}
+		
+	}
 	public void walking(Tile[] t, String string, boolean dir){
 
 		if(closeInterfaces())
 		if(!dir ){
 			state(string);
 			ctx.movement.newTilePath(t).randomize(2, 1).traverse();
-			sleep(2000);
+			sleep(1500);
 			}else{
 				state(string + ": Reverse");
 				ctx.movement.newTilePath(t).reverse().traverse();
@@ -621,10 +637,10 @@ public class Method extends ClientAccessor{
 			if (!ctx.players.local().inCombat())
 				if (ctx.players.local().animation() == -1){
 					System.out.println("Hovering mouse");
-					ctx.widgets.component(1477,60).component(1).hover();//1477,59,1
+					ctx.widgets.component(1477,61).component(1).hover();//1477,59,1
 					for(String t: ctx.menu.items()){
 						if(t.contains("Teleport")){
-							ctx.widgets.component(1477,60).component(1).click();//select lodestone button
+							ctx.widgets.component(1477,61).component(1).click();//select lodestone button
 						    sleep(Random.nextInt(2000, 2600));
 						}
 					}
@@ -720,9 +736,9 @@ public class Method extends ClientAccessor{
 		
 	}
 	public boolean playerText(String string) {
-		if (ctx.widgets.component(137,90).valid()) {
+		if (ctx.widgets.component(137,91).valid()) {
 			//state("Checking: " + string);
-			if (ctx.widgets.component(137,90).component(0).text()
+			if (ctx.widgets.component(137,91).component(0).text()
 					.contains(string)) {
 				System.out.println("returning true for player text");
 				return true;
@@ -1373,9 +1389,8 @@ public class Method extends ClientAccessor{
 			System.out.println("Setting goBank to false");
 			Vars.DYNAMICV3 = false;
 			goBank = false;
-		}else{
-			state("Opening bank");
-			ctx.bank.open();
+		}else if(!ctx.bank.open()){
+			ctx.camera.turnTo(ctx.bank.nearest());
 		}
 	 }else if(Vars.DYNAMICV3){
 			walking(Paths.pathToGE, "Walking to Varrock bank", false);

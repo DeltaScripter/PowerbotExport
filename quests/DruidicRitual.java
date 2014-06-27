@@ -49,11 +49,11 @@ public class DruidicRitual extends Node{
 	public int tele = 0;
 	public int[] wood = {15111,15110,15109,15108};
 
-	public int itemsArray[] = {0,0,0};//contains the states of items needing to be purchased.
-	public int itemDID[] = {307,1755,229};//contains the ids of the items needing to be purchased.
-	public int itemDPrice[] = {1550,2000,800};//contains specific prices to use upon purchasing specific items.
-	public int itemDAmount[] = {1,1,1};
-	public String itemDString[] = {"Fishing rod", "Chisel", "Vial"};//contains the names of the items needing to be purchased.
+	public int itemsArray[] = {0,0};//contains the states of items needing to be purchased.
+	public int itemDID[] = {307,229};//contains the ids of the items needing to be purchased.
+	public int itemDPrice[] = {1550,800};//contains specific prices to use upon purchasing specific items.
+	public int itemDAmount[] = {1,1};
+	public String itemDString[] = {"Fishing rod", "Vial"};//contains the names of the items needing to be purchased.
 	
 	public int bankItems[] = {23096,23099,23097,23098,307,1755,229,23100};
 	public int bankItemAmount[] = {1,1,1,1,1,1,1,1};
@@ -77,9 +77,9 @@ public class DruidicRitual extends Node{
 		
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
-		if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2694) & 0xFF)!=136){
-			Method.checkBank();
-		}else
+		//if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2694) & 0xFF)!=136){
+		//	Method.checkBank();
+		//}else
 		 if(Vars.useBank && (ctx.varpbits.varpbit(2694) & 0xFF)!=136){
 			Method.useBank(bankItems,bankItemAmount);
 			}else 

@@ -159,7 +159,10 @@ public class PiratesTreasure extends Node{
 				cs0();//Speak to the pirate and begin the quest
 			}
 			}
-		
+		if(ctx.widgets.widget(1186).component(3).visible()){
+			Method.state("Closing crate dialogue");
+			ctx.widgets.widget(1186).component(3).click();
+		}
 	}
 	
 	private void cs5() {

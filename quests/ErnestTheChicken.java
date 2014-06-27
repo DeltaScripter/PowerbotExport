@@ -3,7 +3,9 @@ package quests;
 
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.GroundItem;
+import org.powerbot.script.rt6.Interactive;
 import org.powerbot.script.rt6.Player;
 
 
@@ -56,9 +58,9 @@ public class ErnestTheChicken extends Node{
 		if(DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2183) & 0x3) != 3)
 			Method.determineBank(bankItems);
 		
-		if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2183) & 0x3) != 3){
-			Method.checkBank();
-		}else
+		//if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2183) & 0x3) != 3){
+		//	Method.checkBank();
+		//}else
 		if ((ctx.varpbits.varpbit(2183) & 0x3) == 3) {
 			DeltaQuester.progress = 4;
 			Method.state("The Ernest The Chicken quest has been completed.");
@@ -91,13 +93,17 @@ public class ErnestTheChicken extends Node{
 					if(Method.inventoryContains(277)){
 						finishQuest();
 					}else{
+						System.out.println("oil");
 						gatherOilCan();
 					}
 				}else{
+					System.out.println("rubber");
 					gatherRubberTube();
 				}
-			} else
+			} else{
+				System.out.println("p gauge");
 				gatherPressureGauge();
+				}
 		}else if(Method.DraynorLodeIsActive()){
 			if(TeleportLode.DRAYNOR.getTile().distanceTo(local.tile())<10){
 				Vars.DYNAMICV = true;
@@ -311,11 +317,13 @@ public class ErnestTheChicken extends Node{
 	}
 
 	private void gatherRubberTube() {
+		
 		Tile local = ctx.players.local().tile();
 		if(new Tile(3107,3366,0).matrix(ctx).reachable()){
-					Method.state("Grabbing our tube.");
-					Method.interactG(276, "Take", "Tube");
-
+					Method.state("Grabbing our tube");
+					//Method.interactG(276, "Take", "Tube");
+                    int bounds[] = {-64, 64, -480, -328, -64, 64};
+                    Method.interactSpecialGroundItem(bounds, 276, "Take");
 			
 		}else{//if you can't reach room with the tube.
 		
@@ -328,6 +336,7 @@ public class ErnestTheChicken extends Node{
 		
 		if (new Tile(3103, 3362, 0).matrix(ctx).reachable()) {//if you can reach the second room to destination..
 			if (new Tile(3103, 3362, 0).distanceTo(local) < 6) {//dist check..
+				
 				Method.interactO(47512, "Open", "Doors");
 			} else
 				ctx.movement.findPath(new Tile(3103, 3362, 0)).traverse();//walk a bit closer..
@@ -400,8 +409,8 @@ public class ErnestTheChicken extends Node{
 						} else if (new Tile(3123, 3363, 0).matrix(ctx).reachable()) {
 							if (new Tile(3123, 3363, 0).distanceTo(local.tile()) < 5) {
 								Method.interactO(47445, "Open", "Door");
-								ctx.movement.findPath(new Tile(3123, 3363, 0)).traverse();
-							}
+								
+							}else ctx.movement.findPath(new Tile(3123, 3363, 0)).traverse();
 						} else if (new Tile(3118, 3358, 0).matrix(ctx).reachable()) {//checks if can outside spade room.
 							if (new Tile(3118, 3358, 0).distanceTo(local.tile()) < 6) {//checks distance to door.
 								Method.interactO(47512, "Open", "Door");
@@ -491,19 +500,21 @@ public class ErnestTheChicken extends Node{
 					if (Method.inventoryContains(272) || Method.inventoryContains(274)){//274 being the poison fish food.
 						itemsArray[0] = 1;
 					}else{//RETREIVES FISH FOOD.
-					if ( !Method.objIsByTile(new Tile(3112, 3363, 1),47512,3)&&
-							!Method.objIsByTile(new Tile(3111,3358, 1),47512,3)&&  ctx.game.floor()==1) {
+					if ( new Tile(3108,3358,1).matrix(ctx).reachable()) {
 						if (new Tile(3109, 3357, 1).distanceTo(local.tile()) < 4) {
-							Method.interactG(272, "Take", "Item");
+						    int[] bounds = {-64, 64, -672, -444, -64, 64};
+							Method.interactSpecialGroundItem(bounds, 272, "Take");
+							//Method.interactG(272, "Take", "Item");
 						} else {
 							Method.state("Walking to fish food");
 							ctx.movement.findPath(new Tile(3109, 3357, 1)).traverse();
 						}
 					} else if (new Tile(3112, 3358, 1).matrix(ctx).reachable() && ctx.game.floor()==1) {// second room to fish food.
 						if (new Tile(3112, 3358, 1).distanceTo(local.tile()) < 3) {
-							Method.interactO(47512, "Open", "Door");
+							//Open fish food door
+							 int[] bounds = {-372, -196, -760, 40, -176, 232};
+							Method.interactSpecialObject(bounds, 47512, "Open");
 						}else {
-							Method.state("Hello2");
 							ctx.movement.findPath(new Tile(3112, 3358, 1)).traverse();
 						}
 						
@@ -511,7 +522,6 @@ public class ErnestTheChicken extends Node{
 					if (new Tile(3112,3363,1).distanceTo(local.tile())<4){
 						Method.interactO(47512, "Open", "Door");
 					}else {
-						Method.state("Hello1");
 						ctx.movement.findPath(new Tile(3112,3363,1)).traverse();
 					}
 				} else if (new Tile(3105, 3362, 2).matrix(ctx).reachable()&& ctx.game.floor()==2) {// 3rd floor by ladder.
@@ -526,7 +536,6 @@ public class ErnestTheChicken extends Node{
 					if (new Tile(3109, 3361, 0).distanceTo(local.tile()) < 4) {// near staircase.
 						Method.interactO(47364, "Climb","Stairs");
 					} else {
-						Method.state("Hello");
 						ctx.movement.findPath(new Tile(3109, 3361, 0)).traverse();
 					}
 				} else {
@@ -540,16 +549,6 @@ public class ErnestTheChicken extends Node{
 				}
 		}
 
-
-	private boolean pathToFish() {
-		final Tile[] locations = {new Tile(3112,3363,1), new Tile(3111,3358,1)};
-		for(Tile tile : locations){
-			if(!Method.objIsByTile(tile, 47512, 3)){
-				return true;
-			}
-		}
-	return false;
-}
 
 
 
@@ -577,7 +576,9 @@ public class ErnestTheChicken extends Node{
 		}else
 	    if(new Tile (3108,3352,0).distanceTo(local.tile())<5){//outside mansion
 	    	Method.skipPics();
-	    	if(!Method.isChatting("Self"))
+	    	if(ctx.widgets.widget(1191).component(11).visible()){
+	    		ctx.widgets.widget(1191).component(11).click();
+	    	}else
 			Method.interactO(47421, "Open","Mansion door");
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToVeronica, "Walking to the mansion", false);

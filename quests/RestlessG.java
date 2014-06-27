@@ -37,7 +37,7 @@ public class RestlessG extends Node{
 			new Tile(3244, 3194, 0), new Tile(3243, 3194, 0), new Tile(3243, 3189, 0), 
 			new Tile(3241, 3184, 0), new Tile(3238, 3180, 0), new Tile(3239, 3175, 0), 
 			new Tile(3239, 3170, 0), new Tile(3238, 3165, 0), new Tile(3237, 3160, 0), 
-			new Tile(3236, 3155, 0), new Tile(3235, 3152, 0), new Tile(3234, 3147, 0) };
+			new Tile(3236, 3155, 0), new Tile(3235, 3152, 0), new Tile(3234, 3147, 0), new Tile(3235,3149,0) };
 
 	public final Tile[] pathToLonePriest = new Tile[] { 
 			new Tile(3208,3234,0),new Tile(3213,3233,0), new Tile(3219,3225,0),
@@ -84,9 +84,9 @@ public class RestlessG extends Node{
 		if(DeltaQuester.checkedBank &&(ctx.varpbits.varpbit(2324)&0x7) !=5)
 			Method.determineBank(bankItems);
 		
-			if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2324)&0x7) !=5){
+		if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2324)&0x7) !=5){
 				
-			Method.checkBank();
+		Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.varpbits.varpbit(2324)&0x7) !=5){
 	    	
@@ -137,7 +137,7 @@ public class RestlessG extends Node{
 
 	private void cs3() {//Take the skull from the rock
 		Method m = new Method(ctx);
-		if(new Tile(3236,3147,0).distanceTo(ctx.players.local().tile())<7){
+		if(new Tile(3236,3147,0).distanceTo(ctx.players.local().tile())<5){
 			Vars.DYNAMICV = false;
 			Vars.DYNAMICV2 = true;
 			m.interactO(47713, "Search", "Rock");
@@ -216,6 +216,9 @@ public class RestlessG extends Node{
 			if(!Method.isChatting("Aereck")){
 				Method.speakTo(456, "Aereck");
 			}
+		}else if(!new Tile(3241,3209,0).matrix(ctx).reachable()&&
+				new Tile(3241,3209,0).distanceTo(ctx.players.local().tile())<6){
+			Method.interactO(36999,"Open", "Door");
 		}else if(Vars.DYNAMICV){
 			Method.walking(to_Fath_PathFL, "Walking to Aereck", false);
 		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().tile())<10){

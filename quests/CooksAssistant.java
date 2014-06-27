@@ -76,7 +76,6 @@ public final Tile[] pathToCook = new Tile[] {
 	boolean q = true;//only runs once.
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
-	  System.out.println("Then I'll let the darkness cover me..");
 		Method.resetTeleporting();
 		DeltaQuester.numSteps = 3;
 		failsafe();
@@ -84,7 +83,6 @@ public final Tile[] pathToCook = new Tile[] {
 			Method.determineBank(bankItems);
 		
 		if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(2492)&0x3) !=2){
-			System.out.println("HERE");
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.varpbits.varpbit(2492)&0x3) !=2){
@@ -129,7 +127,7 @@ public final Tile[] pathToCook = new Tile[] {
 			}else if(Method.inventoryContains(15414)){//Flour
 				Vars.DYNAMICV = false;
 				requiredItems[2] = 1;
-			}else if(new Tile(3166,3304,0).distanceTo(player.tile())<10 && ctx.game.floor()==0 || sFlour){
+			}else if(new Tile(3166,3304,0).distanceTo(player.tile())<8 && ctx.game.floor()==0 || sFlour){
 				if((ctx.varpbits.varpbit(3193)&0x1) ==1){//Whether or not there is flour already made
 					opHopper = true;
 				}
