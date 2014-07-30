@@ -188,7 +188,7 @@ public class Method extends ClientAccessor{
 	public boolean isChatting(final String p) {
 		
 		if(ctx.widgets.component(1184, 1).valid()||
-				ctx.widgets.component(1191, 1).valid()||
+				ctx.widgets.component(1191, 7).valid()||
 				ctx.widgets.component(1187, 1).valid()||
 				ctx.widgets.component(1188, 1).valid()||
 				ctx.widgets.component(1189, 1).valid()||
@@ -234,8 +234,8 @@ public class Method extends ClientAccessor{
 		for (String t:text) {
 			////ctx.environment.sleep(20,50);
 			for (int i :Vars.OPTIONVALUE) {
-				if (ctx.widgets.component(1188,1).valid()&&ctx.widgets.component(1188, i).text().contains(t)) {
-					state("Attempting to click option");
+				if (ctx.widgets.component(1188,1).visible()&&ctx.widgets.component(1188, i).text().contains(t)) {
+					state("Attempting to click option in this area");
 					ctx.mouse.click(ctx.widgets.component(1188, i).centerPoint().x+10,ctx.widgets.component(1188, i).centerPoint().y+3 , true);
 					return true; 
 				}
@@ -293,7 +293,7 @@ public class Method extends ClientAccessor{
 		for(Item t : ctx.backpack.select().name(name).first()){
 			//System.out.println(ctx.widgets.component(1477,122).component(0).boundingRect().getCenterY());
 			skipPics();
-			if(ctx.hud.open(Window.BACKPACK) && ctx.widgets.component(1473,7).contains(
+			if(ctx.hud.open(Window.BACKPACK) && ctx.widgets.component(1473,31).contains(
 				t.component().centerPoint())){
 				System.out.println("Hovering");
 				t.hover();
@@ -315,16 +315,18 @@ public class Method extends ClientAccessor{
 				}
 				 
 			}else
-			if(ctx.widgets.component(1473,7).boundingRect().getCenterY()>
+			if(ctx.widgets.component(1473,31).boundingRect().getCenterY()>//was 7
 			t.component().boundingRect().getCenterY()){
 				state("Scrolling through inventory");
-				ctx.mouse.move(ctx.widgets.component(1473, 7).centerPoint());
+				ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
 				ctx.mouse.scroll(false);
 			}else {
 				state("Scrolling through inventory");
-				ctx.mouse.move(ctx.widgets.component(1473, 7).centerPoint());
+				ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
 				ctx.mouse.scroll(true);
 				}
+			System.out.println("center y"+ctx.widgets.component(1473,31).boundingRect().getCenterY());
+			System.out.println("center y object" + t.component().boundingRect().getCenterY());
 			}
 		//}else System.out.println("//timer1 running");
 	}
@@ -334,7 +336,7 @@ public class Method extends ClientAccessor{
 		// if(!//timer.isRunning()){
 		for(Item t : ctx.backpack.select().id(i).first()){
 			//System.out.println(ctx.widgets.component(1477,122).component(0).boundingRect().getCenterY());
-			if(ctx.hud.open(Window.BACKPACK) && ctx.widgets.component(1473,7).contains(
+			if(ctx.hud.open(Window.BACKPACK) && ctx.widgets.component(1473,31).contains(
 				t.component().centerPoint())){
 				System.out.println("Hovering");
 				t.hover();
@@ -355,14 +357,14 @@ public class Method extends ClientAccessor{
 				}
 				 
 			}else
-			if(ctx.widgets.component(1473,7).boundingRect().getCenterY()>
+			if(ctx.widgets.component(1473,31).boundingRect().getCenterY()>
 			t.component().boundingRect().getCenterY()){
 				state("Scrolling through inventory");
-				ctx.mouse.move(ctx.widgets.component(1473, 7).centerPoint());
+				ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
 				ctx.mouse.scroll(false);
 			}else {
 				state("Scrolling through inventory");
-				ctx.mouse.move(ctx.widgets.component(1473, 7).centerPoint());
+				ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
 				ctx.mouse.scroll(true);
 				}
 			}
@@ -622,11 +624,17 @@ public class Method extends ClientAccessor{
 		for(int i: widgetsInterference){
 			if(ctx.widgets.component(i,0).visible()){
 				state("Clicking on map to close dialogue for teleporting");
+				System.out.println("Clicking on map to close dialogue");
 				clickOnMap(ctx.players.local().tile());
 			}
 		}
+		System.out.println("In area");
+		if(ctx.bank.opened()){
+			ctx.bank.close();
+			System.out.println("Bank is open");
+		}else
 		if(ctx.players.local().animation()==-1)
-		if(ctx.bank.close() && ctx.widgets.component(1092,loc).visible()){//lodestone screen
+		if(ctx.widgets.component(1092,loc).visible()){//lodestone screen
 			System.out.println("Selecting the teleport");
 			state("Selecting teleport: " + teleName);
 			ctx.mouse.move(ctx.widgets.component(1092,loc).centerPoint());
@@ -637,10 +645,10 @@ public class Method extends ClientAccessor{
 			if (!ctx.players.local().inCombat())
 				if (ctx.players.local().animation() == -1){
 					System.out.println("Hovering mouse");
-					ctx.widgets.component(1477,61).component(1).hover();//1477,59,1
+					ctx.widgets.component(1477,38).component(1).hover();//1477,59,1
 					for(String t: ctx.menu.items()){
 						if(t.contains("Teleport")){
-							ctx.widgets.component(1477,61).component(1).click();//select lodestone button
+							ctx.widgets.component(1477,38).component(1).click();//select lodestone button
 						    sleep(Random.nextInt(2000, 2600));
 						}
 					}
@@ -736,9 +744,9 @@ public class Method extends ClientAccessor{
 		
 	}
 	public boolean playerText(String string) {
-		if (ctx.widgets.component(137,91).valid()) {
+		if (ctx.widgets.component(137,126).valid()) {
 			//state("Checking: " + string);
-			if (ctx.widgets.component(137,91).component(0).text()
+			if (ctx.widgets.component(137,126).component(0).text()
 					.contains(string)) {
 				System.out.println("returning true for player text");
 				return true;
@@ -771,18 +779,21 @@ public class Method extends ClientAccessor{
 	}
 	
 	public void pressContinue(){
-		 int widgetID[] = {1191,1184,1187};
+		System.out.println("Pressing continue ");
+		
 		 if(ctx.widgets.component(1186,10).visible()){
 			 ctx.widgets.component(1186,10).click();
-		 }else if(ctx.widgets.component(1189,10).visible()){
+		 }
+		 if(ctx.widgets.component(1189,10).visible()){
 			 ctx.widgets.component(1189,10).click();
 		 }
-		for(int both : widgetID){
-		    if(ctx.widgets.component(both,14).valid()&&
-		    		ctx.widgets.component(both,14).visible()){
-		    	ctx.widgets.component(both, 14).click();
-		    }
-		}
+		 if(ctx.widgets.widget(1184).component(11).visible()){
+			 ctx.widgets.widget(1184).component(11).click();
+		 }
+		 if (ctx.widgets.widget(1191).component(7).visible()){
+			 ctx.widgets.widget(1191).component(7).click();
+		 }
+		
 	}
 	public void determineBank(int[] items){
 		int invspace= 28;
@@ -988,10 +999,11 @@ public class Method extends ClientAccessor{
 		state("Combining items");
 		Backpack inv = ctx.backpack;
 		skipPics();
-		if(!isChatting("Self"))
+		if(!isChatting("Self")){
 			if(ctx.backpack.itemSelected()){
 				interactInventory(item2,"Use", "Item 2");
 			}else interactInventory(item1,"Use","Item 1");
+		}else System.out.println("Attempting to close dialogue so we can combine items");
 		/*if(!inv.select().id(item1).first().isEmpty() && !inv.select().id(item2).first().isEmpty()){
 			if(inv.itemSelected() && (inv.getSelectedItem().id()==item1 || inv.getSelectedItem().id()==item2)){
 				interactInventory(item2, "Use", "Item");

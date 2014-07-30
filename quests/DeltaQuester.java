@@ -142,7 +142,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 				   addNode(new DruidicRitual(ctx));
 				   addNode(new VampyreSlayer(ctx));
 				// addNode(new ElementalWorkshop1(ctx));
-				// addNode(new MineIsYours(ctx));
+				  // addNode(new MineIsYours(ctx));
 				// addNode(new GoblinDiplomacy(ctx));
 				// addNode(new GunnarsGround(ctx));
 				// addNode(new LostCity(ctx));

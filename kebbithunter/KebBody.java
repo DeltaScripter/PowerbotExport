@@ -4,14 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.io.IOException;
-import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import org.powerbot.script.Filter;
 import org.powerbot.script.PollingScript;

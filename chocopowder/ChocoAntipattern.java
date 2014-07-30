@@ -48,7 +48,7 @@ public class ChocoAntipattern extends ChocoNode{
 			
 		case 2:
 			ChocoBody.state = st;
-			for(GroundItem g : ctx.groundItems.select()){
+			for(GroundItem g : ctx.groundItems.select().shuffle().first()){
 				if(g.inViewport()){
 					ctx.mouse.move(g.centerPoint());
 				}
@@ -182,7 +182,7 @@ public class ChocoAntipattern extends ChocoNode{
 			break;
 		case 18:
 			ChocoBody.state = st;
-			for(Player g : ctx.players.select().first()){
+			for(Player g : ctx.players.select().shuffle().first()){
 				if(g.inViewport()){
 					ctx.mouse.move(g.centerPoint());
 					if(!ctx.menu.opened())
@@ -202,7 +202,7 @@ public class ChocoAntipattern extends ChocoNode{
 			
 		case 20:
 			ChocoBody.state = st;
-			for(Player g : ctx.players.select().first()){
+			for(Player g : ctx.players.select().shuffle().first()){
 				if(g.inViewport()){
 					ctx.mouse.move(g.centerPoint());
 					m.sleep(Random.nextInt(200, 600));

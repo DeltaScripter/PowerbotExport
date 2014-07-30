@@ -257,19 +257,19 @@ public class KebMethod extends ClientAccessor{
 			}
 	public void interactInventory(final int id, final String string, final String o) {
 		for(Item t : ctx.backpack.select().id(id).first()){
-			if(ctx.hud.open(Window.BACKPACK) && ctx.widgets.component(1473,7).contains(
+			if(ctx.hud.open(Window.BACKPACK) && ctx.widgets.component(1473,31).contains(
 				t.component().centerPoint())){
 				t.hover();
 				t.interact(string);
 				sleep(Random.nextInt(150,500));
 				 
 			}else
-			if(ctx.widgets.component(1473,7).boundingRect().getCenterY()>
+			if(ctx.widgets.component(1473,31).boundingRect().getCenterY()>
 			t.component().boundingRect().getCenterY()){
-				ctx.mouse.move(ctx.widgets.component(1473, 7).centerPoint());
+				ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
 				ctx.mouse.scroll(false);
 			}else {
-				ctx.mouse.move(ctx.widgets.component(1473, 7).centerPoint());
+				ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
 				ctx.mouse.scroll(true);
 				}
 			}
