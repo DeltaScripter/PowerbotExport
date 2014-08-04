@@ -78,38 +78,44 @@ public class ChocoBody extends PollingScript<ClientContext> implements PaintList
 			}
 			return false;
 		}
-	public void interactInventory(final int i, final String string, final String o) {
-		ArrayList<String> actions = new ArrayList<String>();
-		for(Item t : ctx.backpack.select().id(i).shuffle().first()){
-			if(ctx.hud.open(Window.BACKPACK) && ctx.widgets.component(1473,7).contains(
-				t.component().centerPoint())){
-				t.hover();
-				sleep(1200);
-				String[] menuItems = ctx.menu.items();
-				for(String opt: menuItems){
-					if(!actions.contains(opt)){
-						actions.add(opt);
-					}
-				}
-				for(String text: actions){
-					if(text.contains(string)){
-						if(t.interact(string)){
-						sleep(Random.nextInt(140, 200));
+		public void interactInventory(final int i, final String string, final String o) {
+			ArrayList<String> actions = new ArrayList<String>();
+			
+			// if(!//timer.isRunning()){
+			for(Item t : ctx.backpack.select().id(i).first()){
+				//System.out.println(ctx.widgets.component(1477,122).component(0).boundingRect().getCenterY());
+				if(ctx.hud.open(Window.BACKPACK) && ctx.widgets.component(1473,31).contains(
+					t.component().centerPoint())){
+					System.out.println("Hovering");
+					t.hover();
+					sleep(1200);
+					String[] menuItems = ctx.menu.items();
+					for(String opt: menuItems){
+						if(!actions.contains(opt)){
+							actions.add(opt);
 						}
 					}
+					for(String text: actions){
+						if(text.contains(string)){
+							if(t.interact(string)){
+							System.out.println("Using " + string + " with item: " + o);
+							 sleep(Random.nextInt(2000, 2500));
+							}
+						}
+					}
+					 
+				}else
+				if(ctx.widgets.component(1473,31).boundingRect().getCenterY()>
+				t.component().boundingRect().getCenterY()){
+					ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
+					ctx.mouse.scroll(false);
+				}else {
+					ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
+					ctx.mouse.scroll(true);
+					}
 				}
-				 
-			}else
-			if(ctx.widgets.component(1473,7).boundingRect().getCenterY()>
-			t.component().boundingRect().getCenterY()){
-				ctx.mouse.move(ctx.widgets.component(1473, 7).centerPoint());
-				ctx.mouse.scroll(false);
-			}else {
-				ctx.mouse.move(ctx.widgets.component(1473, 7).centerPoint());
-				ctx.mouse.scroll(true);
-				}
-			}
-	}
+			//}else System.out.println("//timer1 running");
+		}
 	   private void addNode(final ChocoNode...nodes) {
 		   
 	        for(ChocoNode node : nodes) {

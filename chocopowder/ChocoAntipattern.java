@@ -40,7 +40,8 @@ public class ChocoAntipattern extends ChocoNode{
 			
 			ChocoBody.state = st;
 			if(m.inventoryContains(1973)){
-				m.interactInventory(1973, "Examine", "Chocolate bar");
+				m.sleep(Random.nextInt(1200, 1967));
+				//m.interactInventory(1973, "Examine", "Chocolate bar");
 			}
 			//ctx.game.sleep(100,400);
 			ChocoBody.antiPattern = false;
