@@ -582,10 +582,11 @@ public class Method extends ClientAccessor{
 		
 	}
 	public void walking(Tile[] t, String string, boolean dir){
-
+			System.out.println("Inside walking method");
 		if(closeInterfaces())
 		if(!dir ){
 			state(string);
+			System.out.println("Inside walking method - walking forward");
 			ctx.movement.newTilePath(t).randomize(2, 1).traverse();
 			sleep(1500);
 			}else{
@@ -599,7 +600,7 @@ public class Method extends ClientAccessor{
 		final int[] widgetsInterference = {1184,1189,1244,105,1191,149,1199,438,1242,1186,1188,1350,149,667};
 		teleporting = true;
 		//if(!//timer.isRunning()){
-			
+			System.out.println("In teleport");
 	   while(ctx.widgets.component(1477,47).component(2).visible()){//The task menu
 			state("Closing task menu");
 			ctx.widgets.component(1477,47).component(2).click(true);//The close button
@@ -936,18 +937,19 @@ public class Method extends ClientAccessor{
 		
 		if(bankTile.tile().distanceTo(ctx.players.local().tile())>7){
 			if(Vars.DYNAMICV){
-				System.out.println("YEs1");
+				System.out.println("Inside getToBank");
 				switch(DeltaQuester.number){
 				case 1:
 					walking(Paths.pathToBank2,"Walking to lummbridge bank", false);
 					break;
 				case 0:
+					System.out.println("getToBank - case 0 walking area");
 					walking(Paths.pathToGE,"Walking to Grand Exchange bank", false);
 					break;
 				
 				}
 			}else{
-				System.out.println("Yes2");
+				System.out.println("getToBank - DYNAMICV is false");
 				switch(DeltaQuester.number){
 				
 				case 1:
@@ -965,7 +967,10 @@ public class Method extends ClientAccessor{
 					}else if(VarrokLodeIsActive()){
 						System.out.println("Attempting to tele");
 						teleportTo(TeleportType.VARROCK.getTeleport(),TeleportType.VARROCK.getName());
-					}else teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
+					}else {
+						System.out.println("Teleporting to lumbridge b/c no varrock lode activated.");
+						teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
+					}
 					break;
 				}
 			}
@@ -1198,9 +1203,7 @@ public class Method extends ClientAccessor{
 	public void checkBank() {
 		
 		//System.out.println("Now deciding bank.."+ DeltaQuester.DeltaQuester.number);
-		System.out.println("Now1");
 		if(!DeltaQuester.bankFound){
-			System.out.println("Now2");
 			System.out.println("Now deciding bank..");
 			decideBank();
 		}else
