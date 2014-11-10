@@ -91,7 +91,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 		
 		if(g){
 			log.info("shutting down");
-			//this.controller().stop();
+			this.ctx.controller().stop();
 		}
 		while(ctx.widgets.component(1223,1).visible()){//Task completed dialogue
 			System.out.println("Closing TASK COMPLETE");
@@ -295,7 +295,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 			
 		}else if(ready && qList.isEmpty()){
 			Method.state("There are no quests in queue; shutting down.");
-			stop();
+			this.ctx.controller().stop();
 		}
 		
 	}

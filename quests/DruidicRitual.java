@@ -80,9 +80,9 @@ public class DruidicRitual extends Node{
 		//if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2694) & 0xFF)!=136){
 		//	Method.checkBank();
 		//}else
-		 if(Vars.useBank && (ctx.varpbits.varpbit(2694) & 0xFF)!=136){
-			Method.useBank(bankItems,bankItemAmount);
-			}else 
+		// if(Vars.useBank && (ctx.varpbits.varpbit(2694) & 0xFF)!=136){
+			//Method.useBank(bankItems,bankItemAmount);
+			//}else 
 		if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2694) & 0xFF)!=136) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else{
