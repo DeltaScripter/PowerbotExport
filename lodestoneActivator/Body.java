@@ -211,17 +211,16 @@ public class Body extends PollingScript <ClientContext> implements org.powerbot.
 	  
 	   if(ctx.players.local().animation()==-1)
 	   if(ctx.widgets.component(1092,tele).visible()){
-		   ctx.mouse.move(ctx.widgets.component(1092,tele).centerPoint());
-				   ctx.mouse.click(true);
-				   sleep(500);
+		   ctx.widgets.component(1092,tele).interact("");
 				 
 	   }else {
-		   ctx.widgets.component(1465,10).interact("Teleport");//select lodestone button
+		   ctx.widgets.component(1465,52).interact("");//select lodestone button
 	   }
 	   sleep(1500);
 	   
 	   
    }
+   
  private Font myFont = new Font("Consolas",Font.BOLD,14);
 
  
