@@ -60,9 +60,9 @@ public class DeathPlateau extends Node{
 		if(DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2337) & 0x1FF) !=449)
 			Method.determineBank(bankItems);
 		
-		if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2337) & 0x1FF) !=449){
-			Method.checkBank();
-		}else
+		//if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2337) & 0x1FF) !=449){
+		//	Method.checkBank();
+		//}else
 	    if(Vars.useBank && (ctx.varpbits.varpbit(2337) & 0x1FF) !=449){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
@@ -277,6 +277,7 @@ public class DeathPlateau extends Node{
 		final String opt[]  ={"Fine!","Well I'm not moving","I've been sent"};
 		if(Method.npcIsNotNull(15095)){//Dwarf
 			if((ctx.varpbits.varpbit(2337) & 0xFF) ==168){//Once you need to mine the wall
+				ctx.camera.turnTo(Method.getObject(67562).tile());//turn camera towards 'wall to be broken'
 				Method.interactO(67562, "Mine","Rock");
 			}else if(!Method.findOption(opt))//Speak to the dwarf before mining
 					if(!Method.isChatting("Dwarf")){

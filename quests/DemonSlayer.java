@@ -76,6 +76,11 @@ public class DemonSlayer extends Node {
 			System.out.println("Interacting with door");
 		}*/
 		
+		//the interface when we read grufeld's scroll <need to be closed for teleporting later
+		while(ctx.widgets.widget(468).component(13).visible()){
+			Method.state("Closing the scroll interface");
+			ctx.widgets.widget(468).component(13).click();//the close button
+		}
 		
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		if(q){
@@ -97,7 +102,7 @@ public class DemonSlayer extends Node {
 			if(!Method.VarrokLodeIsActive()){
 				Method.state("Varrok lodestone must be active, skipping quest.");
 			
-				DeltaQuester.e  =true;
+				DeltaQuester.e = true;
 			}else inits = true;
 		}else 
 		if((ctx.varpbits.varpbit(3518) & 0x7F)==121){
@@ -131,7 +136,7 @@ public class DemonSlayer extends Node {
 		}else
 		if((ctx.varpbits.varpbit(3518) & 0x7F)==118){
 			DeltaQuester.progress=9;
-			cs0();//Inform Bach you have the silverlight sword
+			cs0();//Read scroll where Bach used to be... 
 		
 		}else
 		if((ctx.varpbits.varpbit(3518) & 0x7F)==117){
@@ -173,7 +178,7 @@ public class DemonSlayer extends Node {
 		}
 		
 	}
-	private void cs9() {
+	private void cs9() {//Enter area and fight Delrith the demon
 		Player local = ctx.players.local();
 		//SceneObject door = SceneEntities.getNearest(24381);
 		if(init!=null){
@@ -190,7 +195,7 @@ public class DemonSlayer extends Node {
 				}
 			}else if(silverEquip){
 				if(!Method.npcIsNotNull(16722) || !Method.npcIsNotNull(16723)){//Denath, not the demon
-				Method.clickOnMap(new Tile(init.x()+31,init.y()-30,0));
+				Method.clickOnMap(new Tile(init.x()-31,init.y()+30,0));
 				Method.sleep(5000);
 				}
 			}else if(!Method.EquipmentContains(2402)){
@@ -198,16 +203,7 @@ public class DemonSlayer extends Node {
 			}else silverEquip = true;
 			
 		}else { 
-			for(GameObject  o : ctx.objects.select().id(71036).nearest().first()){
-			if(o.tile().distanceTo(local.tile())<20){
-				Method.sleep(2000);
-				init = ctx.players.local().tile();
-			}
-		}
-		if(new Tile(3256,3387,0).distanceTo(local.tile())<7){
-				Method.interactO(82061, "Climb", "Trapdoor");
-			
-		}else delta(pathToTemple, "Walking to the temple");
+			cs6();//Get back into cave
 	}
 		
 	}
@@ -223,19 +219,18 @@ public class DemonSlayer extends Node {
 		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());//Lumbridge tele
 	}
 
-	private void cs8() {
-		//SceneObject door = SceneEntities.getNearest(24381);
+	private void cs8() {//Go to last area to fight enemies in that cave
 		Player local = ctx.players.local();
 		
 		if(init!=null){
-			  if(new Tile(init.x()+27,init.y()-20,0).distanceTo(local.tile())<8){
+			  if(new Tile(init.x()-27,init.y()+20,0).distanceTo(local.tile())<8){
 				
 				if(local.appearance().equals(18019)){
 					Vars.DYNAMICV = false;
 					Method.npcInteract(16723, "Attack");
 				}else Method.fightNPC(16723);
 				
-			}else Method.clickOnMap(new Tile(init.x()+27,init.y()-20,0));
+			}else Method.clickOnMap(new Tile(init.x()-27,init.y()+20,0));
 		}else
 	{for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
 			if(o.tile().distanceTo(local.tile())<20){
@@ -243,76 +238,61 @@ public class DemonSlayer extends Node {
 				init = ctx.players.local().tile();
 			}
 		}
-		if(new Tile(3258,3483,0).distanceTo(local.tile())<8){
-			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
-				if(!TrapDoor.contains(door.tile())){
-					Method.interactO(82059, "Climb", "Trapdoor");
-				}else Method.interactO(15536, "Open", "Door");
-			}
-			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
-			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3249,3480,0).distanceTo(local.tile())<20){
-			Method.clickOnMap(new Tile(3257,3483,0));
-			Method.sleep(1200);
-		}else delta(pathToTemple, "Walking to the temple");
+		cs6();//get back into cave if out(cave w/enemies)
 	}
 		
 	}
 
 
-	private void cs7() {
+	private void cs7() {//fights the second wave of enemies in cave
 	//	SceneObject door = SceneEntities.getNearest(24381);
 		 Player local = ctx.players.local();
 		
 		if(init!=null){
-			if(new Tile(init.x()+14,init.y()-13,0).distanceTo(local.tile())<8){
+			if(new Tile(init.x()-14,init.y()+13,0).distanceTo(local.tile())<8){
 				
 				if(local.appearance().equals(18019)){
 					Method.npcInteract(16723, "Attack");
 				}else Method.fightNPC(16723);
 				
-			}else Method.clickOnMap(new Tile(init.x()+14,init.y()-13,0));
-		}else { for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
+			}else Method.clickOnMap(new Tile(init.x()-14,init.y()+13,0));
+		}else { 
+			
+			for(GameObject  o : ctx.objects.select().id(74990).nearest().first()){
 			if(o.tile().distanceTo(local.tile())<20){
 				Method.sleep(2000);
 				init = ctx.players.local().tile();
-			}
-		}
-		if(new Tile(3258,3483,0).distanceTo(local.tile())<8){
-			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
-				if(!TrapDoor.contains(door.tile())){
-					Method.interactO(82059, "Climb", "Trapdoor");
-				}else Method.interactO(15536, "Open", "Door");
-			}
-			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
-			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3249,3480,0).distanceTo(local.tile())<20){
-			Method.clickOnMap(new Tile(3257,3483,0));
-			Method.sleep(1200);
-		}else delta(pathToTemple, "Walking to the temple");
+		              	}
+		                     }
+		       cs6();//get back into cave with enemies
+		
+		
 		}
 	}
 
 
-	private void cs6() {
+	private void cs6() {//Fights the first wave of enemies in cave
 		//SceneObject door = SceneEntities.getNearest(24381);
 		 Player local = ctx.players.local();
 		
 		if(init!=null){
-			if(new Tile(init.x(),init.y()-11,0).distanceTo(local.tile())<8){
+			//System.out.println("The init tile is: "+ init);
+			if(new Tile(init.x(),init.y()+11,0).distanceTo(local.tile())<8){
 				
 				if(local.appearance().equals(18019)){
 					Method.npcInteract(16723, "Attack");
 				}else Method.fightNPC(16723);
 				
-			}else Method.clickOnMap(new Tile(init.x(),init.y()-11,0));
-		}else { 
-			for(GameObject  o : ctx.objects.select().id(71036).nearest().first()){
-			if(o.tile().distanceTo(local.tile())<20){
-				Method.sleep(2000);
-				init = ctx.players.local().tile();
+			}else {
+				System.out.println("Clicking on map : "+new Tile(init.x(),init.y()+11,0));
+				Method.clickOnMap(new Tile(init.x(),init.y()+11,0));
 			}
-		}
+		}else { 
+			if(Method.objIsNotNull(71039)){
+				Method.sleep(3000);
+				init = ctx.players.local().tile();
+			
+			}
 		if(new Tile(3256,3387,0).distanceTo(local.tile())<8){
 				Method.interactO(82061, "Climb", "Trapdoor");
 			
@@ -361,8 +341,8 @@ public class DemonSlayer extends Node {
 	}
 
 
-	private void cs4() {
-		final String opt[] = {"Yes", "I seek", "A sword that", "A powerful demon","Delrith.","Bach"};
+	private void cs4() {//Take spirit of mind test in first cave
+		final String opt[] = {"Yes", "I seek", "A sword that", "A powerful demon","Delrith.","Gideon","Bach"};
 		 Player local = ctx.players.local();
 		
 		//SceneObject door = SceneEntities.getNearest(15536);
@@ -380,18 +360,9 @@ public class DemonSlayer extends Node {
 				Method.sleep(2000);
 				init = ctx.players.local().tile();
 			}
-		}
-		if(new Tile(3258,3483,0).distanceTo(local.tile())<8){
-			for(GameObject  door : ctx.objects.select().id(15536).nearest().first()){
-				if(!TrapDoor.contains(door.tile())){
+		}//Climb down the trapdoor near the position of Grufeld Bach
+		if(new Tile(3250,3478,0).distanceTo(local.tile())<8){//tile by the trapdoor
 					Method.interactO(82059, "Climb", "Trapdoor");
-				}else Method.interactO(15536, "Open", "Door");
-			}
-			if(ctx.objects.select().id(15536).nearest().first().isEmpty())
-			Method.interactO(82059, "Climb", "Trapdoor");
-		}else if(new Tile(3250,3478,0).distanceTo(local.tile())<20){
-			Method.clickOnMap(new Tile(3250,3478,0));
-			Method.sleep(1200);
 		}else cs0();//Get into position
 	}
 		
@@ -453,9 +424,7 @@ public class DemonSlayer extends Node {
 		if(init!=null){
 			
 			if(spokeToFaith){
-				if(ctx.camera.pitch()<70){
-				ctx.camera.pitch(80);
-				}
+				
 				ctx.camera.angle(40);
 			 if(local.animation()==2311){
 					for(int i = 0; i<=tileArray.length;){
@@ -590,15 +559,22 @@ public class DemonSlayer extends Node {
 	}
 
 
-	private void cs0() {
+	private void cs0() {//Speak to Grufeld Bach first time and last
 		 Player local = ctx.players.local();
-		if (new Tile(3249, 3479, 0).distanceTo(local.tile()) < 7) {
+		if (new Tile(3250, 3482, 0).distanceTo(local.tile()) < 5) {
+			
+			if((ctx.varpbits.varpbit(3518) & 0x7F)==118){//If you already got the silver light and must read the dropped scroll
+				//the scroll acts like an npc
+				Method.interactO(91692, "Read", "Grufeld's scroll");//the scroll on ground near Bach's old location
+				
+			}else//If first starting the quest
 			if (!Method.startQuestOpen()) {
 				Vars.DYNAMICV = false;
 				init = null;
 				if (!Method.isChatting("Grufeld Bach")) {
 					Vars.DYNAMICV = false;
 					Method.speakTo(16713, "Grufeld Bach");
+					Method.speakTo(19501, "Grufeld Bach");
 				}
 			}
 		} else if(!Method.isChatting("People"))

@@ -321,6 +321,7 @@ public class ErnestTheChicken extends Node{
 		Tile local = ctx.players.local().tile();
 		if(new Tile(3107,3366,0).matrix(ctx).reachable()){
 					Method.state("Grabbing our tube");
+					ctx.camera.turnTo(Method.getObject(47680).tile());//turn to the table the tube is sitting on
 					//Method.interactG(276, "Take", "Tube");
                     int bounds[] = {-64, 64, -480, -328, -64, 64};
                     Method.interactSpecialGroundItem(bounds, 276, "Take");
@@ -540,7 +541,9 @@ public class ErnestTheChicken extends Node{
 					}
 				} else {
 					if (new Tile(3108, 3352, 0).distanceTo(local.tile()) < 5) {
-						Method.interactO(47421, "Open","Door");
+						
+						openMansionDoor();
+					
 					} else if (Vars.DYNAMICV) {
 						Method.walking(pathToVeronica, "Walking to the mansion", false);
 					}else cs2();//Get the player to the mansion
@@ -549,6 +552,20 @@ public class ErnestTheChicken extends Node{
 				}
 		}
 
+
+
+
+
+	private void openMansionDoor() {
+		Method.skipPics();
+    	if(ctx.widgets.widget(1188).component(0).visible()){///want to go in? dialogue
+    		Method.interactO(47421, "Open","Mansion door");
+    	}else
+    	if(!Method.isChatting("Self")){
+		Method.interactO(47421, "Open","Mansion door");
+    	}
+		
+	}
 
 
 
@@ -576,10 +593,13 @@ public class ErnestTheChicken extends Node{
 		}else
 	    if(new Tile (3108,3352,0).distanceTo(local.tile())<5){//outside mansion
 	    	Method.skipPics();
-	    	if(ctx.widgets.widget(1191).component(11).visible()){
-	    		ctx.widgets.widget(1191).component(11).click();
+	    	if(ctx.widgets.widget(1188).component(0).visible()){///want to go in? dialogue
+	    		Method.interactO(47421, "Open","Mansion door");
 	    	}else
+	    	if(!Method.isChatting("Self")){
 			Method.interactO(47421, "Open","Mansion door");
+			
+	    	}
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToVeronica, "Walking to the mansion", false);
 		}else if(TeleportLode.DRAYNOR.getTile().distanceTo(local.tile())<10||
