@@ -195,7 +195,7 @@ public class DemonSlayer extends Node {
 				}
 			}else if(silverEquip){
 				if(!Method.npcIsNotNull(16722) || !Method.npcIsNotNull(16723)){//Denath, not the demon
-				Method.clickOnMap(new Tile(init.x()-31,init.y()+30,0));
+				Method.clickOnMap(new Tile(init.x()-25,init.y()+30,0));
 				Method.sleep(5000);
 				}
 			}else if(!Method.EquipmentContains(2402)){

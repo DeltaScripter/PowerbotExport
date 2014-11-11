@@ -582,11 +582,9 @@ public class Method extends ClientAccessor{
 		
 	}
 	public void walking(Tile[] t, String string, boolean dir){
-			System.out.println("Inside walking method");
 		if(closeInterfaces())
 		if(!dir ){
 			state(string);
-			System.out.println("Inside walking method - walking forward");
 			ctx.movement.newTilePath(t).randomize(2, 1).traverse();
 			sleep(1500);
 			}else{
@@ -625,24 +623,24 @@ public class Method extends ClientAccessor{
 		for(int i: widgetsInterference){
 			if(ctx.widgets.component(i,0).visible()){
 				state("Clicking on map to close dialogue for teleporting");
-				System.out.println("Clicking on map to close dialogue");
+				//System.out.println("Clicking on map to close dialogue");
 				clickOnMap(ctx.players.local().tile());
 			}
 		}
-		System.out.println("In area");
+		//System.out.println("In area");
 		if(ctx.bank.opened()){
 			ctx.bank.close();
-			System.out.println("Bank is open");
+			//System.out.println("Bank is open");
 		}else
 		if(ctx.players.local().animation()==-1)
 		if(ctx.widgets.component(1092,loc).visible()){//lodestone screen
-			System.out.println("Selecting the teleport");
+			//System.out.println("Selecting the teleport");
 			state("Selecting teleport: " + teleName);
 			ctx.mouse.move(ctx.widgets.component(1092,loc).centerPoint());
 			ctx.widgets.component(1092,loc).click(true);
 			sleep(3000);
 		}else {
-			System.out.println("Here now, opening tele");
+			//System.out.println("Here now, opening tele");
 			if (!ctx.players.local().inCombat())
 				if (ctx.players.local().animation() == -1){
 					System.out.println("Hovering mouse");
