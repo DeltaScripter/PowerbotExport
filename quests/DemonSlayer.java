@@ -92,9 +92,9 @@ public class DemonSlayer extends Node {
 		
 		if(DeltaQuester.checkedBank)
 			Method.determineBank(bankItems);
-			//if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(3518) & 0x7F)!=121){
-			//Method.checkBank();
-		//}else
+		if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(3518) & 0x7F)!=121){
+			Method.checkBank();
+		}else
 	    if(Vars.useBank && (ctx.varpbits.varpbit(3518) & 0x7F)!=121){
 			Method.useBank(bankItems, bankItemAmount);
 		}else

@@ -32,22 +32,23 @@ description = "Completes quests! See thread for supported quests",properties = "
 public class DeltaQuester extends PollingScript<ClientContext> implements PaintListener{
 
 
-	public static int scriptToStart = 0;
+	public static int scriptToStart = 0;//an indicator id for the current quest to be completed
 	public static String state = "Welcome, please choose your settings";
-	public static boolean GEFeature = false;
-	public boolean useBank;
+	public static boolean GEFeature = false;//basic boolean indicating user preference for use of G.E feature
+	public boolean useBank;//boolean that gets flipped whenever we need to get something from bank
 	public static boolean ranOnce = false;
-	public static boolean checkedBank = false;//was false
+	public static boolean checkedBank = false;//whether or not to check the G.E bank upon starting quest (in order to know items in bank)
 	public boolean GEWO = false;
-	public static boolean FOOD_FEATURE = false;
+	public static boolean FOOD_FEATURE = false;//basic boolean indicating user preference for use of food feature
 	public static int number;
 	public static boolean bankFound = false;
-	public static boolean e = false;
+	public static boolean e = false;//a boolean that functions in resetting consistent variables for doing quests
 	
 	//for paint
 	public static int progress = 0;
 	public static int numSteps = 0;
 	
+	//other stuff
 	public static int FOOD_ID = 0;
 	public static double health;
 	private static int mouseX = 0;
@@ -98,13 +99,13 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 			state = "Closing task complete dialogue";
 			ctx.widgets.component(1223,11).component(1).click();//close button
 		}
-		if(ready){
+		if(ready){//start performing quest script
 		for(Node node : nodesList) {
             if(node.activate()) {
                 node.execute();
            }
        }
-		 if(e){
+		 if(e){//this boolean gets lfipped off when a quest is completed - in order to reset consistent variables
 			 //Resets progress bar
 				progress = 0;
 				numSteps = 0;
@@ -118,9 +119,9 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 				Vars.useBank = false;
 				Vars.ranOnce = false;
 				
-				e = false;
+				e = false;//turn boolean back off
 		 }
-		updateQuests();
+		updateQuests();//removes quests from queue that have been completed
 		}
 	}
 	
@@ -364,6 +365,10 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 
 		private void startButtonActionPerformed(ActionEvent e) {
 			
+		
+			
+			
+			//add selected quests into a queue
 			for(int index = 0; index <queueListModel.size();){
 				String quest = queueListModel.get(index).toString();
 			if(!qList.contains(quest)){
@@ -371,17 +376,25 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 				qList.add(quest);
 			}else index++;
 			}
+			//setup settings
+			//food feature
 			if(foodSupportCheckBox.isSelected())
 				FOOD_FEATURE = true;
+			//grand exchange features
 			if(GESupportCheckBox.isSelected()){
 				GEWO = true;
 				GEFeature = true;
 			}
+			//for banking initially at the start of quests
+			if(disableBankCheckBox.isSelected()){
+				checkedBank = true;//as in we already 'checked' the bank
+			}
 
-			
+			//set food
 			setFood();
+			//other stuff 
 			this.setVisible(false);
-			ready = true;
+			ready = true;//for starting normal script activity - unpausing the script
 			this.dispose();
 		}
 
@@ -649,6 +662,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 			scrollPane8 = new JScrollPane();
 			GESupportInfoText = new JTextArea();
 			startButton = new JButton();
+			disableBankCheckBox = new JCheckBox();
 
 			//======== this ========
 			setTitle("Delta Quester");
@@ -707,6 +721,11 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 								addQuestActionPerformed(e);
 							}
 						});
+
+						
+						//---- disableBankCheckBox ----
+						disableBankCheckBox.setText("Disable checking bank at beginning?");
+						disableBankCheckBox.setToolTipText("If checked, make sure you have ALL quest items in your inventory");
 
 						//---- removeQuest ----
 						removeQuest.setText("<--");
@@ -996,24 +1015,30 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 				GroupLayout panel1Layout = new GroupLayout(panel1);
 				panel1.setLayout(panel1Layout);
 				panel1Layout.setHorizontalGroup(
-					panel1Layout.createParallelGroup()
-						.addGroup(GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
-							.addContainerGap()
-							.addGroup(panel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-								.addComponent(tabbedPane1, GroupLayout.Alignment.LEADING)
-								.addGroup(panel1Layout.createSequentialGroup()
-									.addGap(0, 0, Short.MAX_VALUE)
-									.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)))
-							.addContainerGap())
-				);
+						panel1Layout.createParallelGroup()
+							.addGroup(GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+								.addGroup(panel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+									.addGroup(panel1Layout.createSequentialGroup()
+										.addContainerGap()
+										.addComponent(tabbedPane1))
+									.addGroup(panel1Layout.createSequentialGroup()
+										.addGap(27, 27, 27)
+										.addComponent(disableBankCheckBox, GroupLayout.PREFERRED_SIZE, 343, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)))
+								.addContainerGap())
+					);
 				panel1Layout.setVerticalGroup(
-					panel1Layout.createParallelGroup()
-						.addGroup(GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(tabbedPane1)
-							.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-							.addComponent(startButton))
-				);
+						panel1Layout.createParallelGroup()
+							.addGroup(GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(tabbedPane1, GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(panel1Layout.createParallelGroup()
+									.addComponent(startButton)
+									.addComponent(disableBankCheckBox))
+								.addContainerGap())
+					);
 			}
 			contentPane.add(panel1);
 			panel1.setBounds(-5, 2, 582, 405);
@@ -1059,6 +1084,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 		private JScrollPane scrollPane8;
 		private JTextArea GESupportInfoText;
 		private JButton startButton;
+		private JCheckBox disableBankCheckBox;
 		// JFormDesigner - End of variables declaration  //GEN-END:variables
 		 private class MyListRenderer extends DefaultListCellRenderer  
 		    {  
