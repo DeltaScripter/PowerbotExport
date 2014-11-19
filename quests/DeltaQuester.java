@@ -133,7 +133,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 				   addNode(new CooksAssistant(ctx));
 				   addNode(new RestlessG(ctx));
 				   addNode(new DeathPlateau(ctx));
-				// addNode(new ImpCatcher(ctx));
+				   addNode(new ImpCatcher(ctx));
 				   addNode(new StolenHearts(ctx));
 				   addNode(new WolfWhistle(ctx));
 				   addNode(new DemonSlayer(ctx));
@@ -319,13 +319,12 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
 						"Cook's Assistant","Death Plateau","Demon Slayer","Druidic Ritual",
-						"Ernest The Chicken","Let Them Eat Pie","Pirate's Treasure","Swept Away",
+						"Ernest The Chicken","Imp Catcher","Let Them Eat Pie","Pirate's Treasure","Swept Away",
 						"The Restless Ghost","Wolf Whistle","Vampyre Slayer"
-						//stolen heats..
+						//stolen hearts..
 						/*"Dragon Slayer",,
-						,"Gunnar's Ground","Goblin Diplomacy",
-						"Imp Catcher","Plague City","Monk's Friend",
-						"The Knight's Sword","The Restless Ghost","Tower of Life","What's Mine Is Yours",
+						,"Gunnar's Ground","Goblin Diplomacy","Plague City","Monk's Friend",
+						"The Knight's Sword","Tower of Life","What's Mine Is Yours",
 						,*/
 				};
 				

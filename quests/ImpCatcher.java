@@ -1,8 +1,8 @@
-/*package quests;
+package quests;
 
-import org.powerbot.script.methods.ClientContext;
-import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Player;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -17,6 +17,7 @@ public class ImpCatcher extends Node {
 	}
 
 	public final static Tile[] pathToWizard = new Tile[] { 
+		new Tile(3233,3221,0),new Tile(3222,3241,0),
 		new Tile(3203,3237,0), new Tile(3205,3246,0),new Tile(3218,3249),
 		new Tile(3217,3259,0), new Tile(3214,3271,0),new Tile(3203,3277,0),
 		new Tile(3196,3279,0),new Tile(3184,3284,0), new Tile(3174,3287,0),
@@ -41,13 +42,7 @@ public class ImpCatcher extends Node {
 	public void execute() {
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		DeltaQuester.numSteps = 3;
-		if(q){
-			TaskListing.taskRemove.clear();
-			TaskListing.taskListData.add("Start quest by speaking to the wizard");
-			TaskListing.taskListData.add("Finish quest by giving the beads");
-			TaskListing.updateTasks();
-			q = false;
-		}
+	
 		if(DeltaQuester.checkedBank)
 		Method.determineBank(bankItems);
 		if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2669)&0x3)!=2){
@@ -62,39 +57,29 @@ public class ImpCatcher extends Node {
 		if((ctx.varpbits.varpbit(2669)&0x3)==2){
 			DeltaQuester.progress = 3;
 			DeltaQuester.state = "The Imp Catcher quest has been completed.";
-			TaskListing.updateTaskRemove("Start quest by speaking to the wizard","Finish quest by giving the beads");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
 		if((ctx.varpbits.varpbit(2669)&0x1)==1){
 			DeltaQuester.progress = 2;
 			cS1();//Finish the quest by giving beads
-			TaskListing.updateTaskRemove("Start quest by speaking to the wizard");
-			TaskListing.removeTasks(TaskListing.taskRemove);
 		}else
 		if((ctx.varpbits.varpbit(2669)&0x1)==0){
 			DeltaQuester.progress = 1;
 			cS1();//Start the quest
 		}
 	}
-	private void updateTaskRemove(String... tasks) {
-		for(String t: tasks){
-			if(!TaskListing.taskRemove.contains(t)){
-				TaskListing.taskRemove.add(t);
-			}
-		}
-	}
+	
 	private void cS1() {
 		final String opt[]  ={"I've got","Can I help"};
 		Player local = ctx.players.local();
 		
 		if(ctx.game.floor()==1){
-			if(new Tile(3107,3147,1).distanceTo(local.getLocation())<5){
+			if(new Tile(3107,3147,1).distanceTo(local.tile())<5){
 				Method.skipPics();
 				if(Method.npcIsNotNull(16187)){
 					
-					if(Method.getNPC(16187).getAnimation()==-1)
+					if(Method.getNPC(16187).animation()==-1)
 						  if(!Method.startQuestOpen())
 						   if(!Method.findOption(opt))
 						     if(!Method.isChatting("Wizard")){
@@ -102,12 +87,12 @@ public class ImpCatcher extends Node {
 						}
 				}
 			}else Method.findPath(new Tile(3107,3147,1), "Walking to the wizard");
-		}else if(new Tile(3103,3159,0).distanceTo(local.getLocation())<5){
+		}else if(new Tile(3103,3159,0).distanceTo(local.tile())<5){
 			Method.interactO(79770, "Ascend","Portal");
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToWizard, "Walking to the Wizards Tower",false);
-		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<5||
-				TeleportLode.DRAYNOR.getTile().distanceTo(local.getLocation())<5){
+		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<5||
+				TeleportLode.DRAYNOR.getTile().distanceTo(local.tile())<5){
 			Vars.DYNAMICV = true;
 		}else if(Method.DraynorLodeIsActive()){
 			Method.teleportTo(TeleportType.DRAYNOR.getTeleport(),TeleportType.DRAYNOR.getName());
@@ -121,4 +106,3 @@ public class ImpCatcher extends Node {
 	}
 	
 }
-*/
