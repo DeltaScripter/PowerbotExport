@@ -323,7 +323,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 				String[] values = {
 						"Cook's Assistant","Death Plateau","Demon Slayer","Druidic Ritual",
 						"Ernest The Chicken","Imp Catcher","Let Them Eat Pie","Pirate's Treasure",
-						"Swept Away","The Restless Ghost","What's Mine Is Yours",
+						"Stolen Hearts","Swept Away","The Restless Ghost","What's Mine Is Yours",
 						"Wolf Whistle","Vampyre Slayer"
 						
 						/*"Dragon Slayer",,

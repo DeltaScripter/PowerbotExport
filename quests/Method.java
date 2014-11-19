@@ -743,9 +743,9 @@ public class Method extends ClientAccessor{
 		
 	}
 	public boolean playerText(String string) {
-		if (ctx.widgets.component(137,130).valid()) {
+		if (ctx.widgets.component(137,131).valid()) {
 			//state("Checking: " + string);
-			if (ctx.widgets.component(137,130).component(0).text()
+			if (ctx.widgets.component(137,131).component(0).text()
 					.contains(string)) {
 				System.out.println("returning true for player text");
 				return true;
