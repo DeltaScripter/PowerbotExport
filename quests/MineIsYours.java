@@ -137,7 +137,7 @@ public class MineIsYours extends Node{
 		if(!init){
 			if(ctx.skills.level(Skills.SMITHING)<5){
 				Method.state("Smithing level of 5 is required, skipping quest");
-				Method.sleep(2000);
+				Method.sleep(4000);
 				DeltaQuester.e  = true;
 			}else init = true;
 		}else
@@ -149,82 +149,98 @@ public class MineIsYours extends Node{
 			DeltaQuester.e  = true;
 		}else
 		if((ctx.varpbits.varpbit(2231)>>17& 0x1) ==1 ||((ctx.varpbits.varpbit(2231)&0x3F) ==50)){
+			System.out.println("cs1 last step");
 			DeltaQuester.progress = 16;
 			cs1();//Speak to Doric for the last time
 		
 		}else
 		if((ctx.varpbits.varpbit(2231)>>14& 0x7) ==7){
+			System.out.println("cs11 fifteenth step");
 			DeltaQuester.progress = 15;
 			cs11();//Mine the rocks in basement
 		
 		}else
 		if(((ctx.varpbits.varpbit(2231)&0x3F) ==45)){
+			System.out.println("cs10 fourteenth step");
 			DeltaQuester.progress = 14;
 			cs10();//Make the ornamental armour
 		
 		}else
 		if(((ctx.varpbits.varpbit(2231)&0x3F) ==40)){
+			System.out.println("cs1 thirteenth step");
 			DeltaQuester.progress = 13;
 			cs1();//Speak to Doric again.
 		
 		}else
 		if(((ctx.varpbits.varpbit(2231)&0x1F) ==30)||(ctx.varpbits.varpbit(2231)&0x3F) ==35){
+			System.out.println("cs1 twelveth step");
 			DeltaQuester.progress = 12;
 			cs1();//Resolve the family conflict
 		
 		}else
 		if(((ctx.varpbits.varpbit(2231)&0x1F) ==20)||(ctx.varpbits.varpbit(2231)&0x1F) ==25){
+			System.out.println("cs9 eleventh step");
 			DeltaQuester.progress = 11;
 			cs9();//Speak to the squire
 		
 		}else
 		if(((ctx.varpbits.varpbit(2231)&0x1F) ==19)){
+			System.out.println("cs7 tenth step");
 			DeltaQuester.progress = 10;
 			cs7();//Give aksel the report we just recieved.\
 		
 		}else
 		if(((ctx.varpbits.varpbit(2231)&0x1F) ==18)){
+			System.out.println("cs8 ninth step");
 			DeltaQuester.progress = 9;
 			cs8();//Get report from Sten in the workshop
 		
 		}else
 		if(((ctx.varpbits.varpbit(2231)&0xF) ==15)){
+			System.out.println("cs7 eighth step");
 			DeltaQuester.progress = 8;
 			cs7();//Speak to Aksel in the workshop
 		
 		}else
 		if(((ctx.varpbits.varpbit(2231)&0xF) ==10)){
+			System.out.println("cs1 seventh step");
 			DeltaQuester.progress = 7;
 			cs1();//Make some weapons at Dorics house.
 		
 		}else
 		if((ctx.varpbits.varpbit(2231)>>9 & 0x1F) ==31){
+			System.out.println("cs1 sixth step");
 			DeltaQuester.progress = 6;
 			cs1();//Speak to Doric again
 		
 		}else
 		if((ctx.varpbits.varpbit(2231)>>10 & 0x1) ==1){
+			System.out.println("cs5 fifth step");
 			DeltaQuester.progress = 5;
 			cs5();//Gather more copper ore at the rimmington mine
 		
 		}else
 		if((ctx.varpbits.varpbit(2231)>>11 & 0x1) ==1){
+			System.out.println("cs4 fourth step");
 			DeltaQuester.progress = 4;
 			cs4();//Gather the high-quality copper ore(Varrok western mine)
 		
 		}else
 		if((ctx.varpbits.varpbit(2231)>>9 &0x1)==1){
+			System.out.println("cs3 third step");
 			DeltaQuester.progress = 3;
 			cs3();//Gather the high-quality tin ore(Varrok eastern mine)
 		}else
 		if((ctx.varpbits.varpbit(2231)&0x7)==6){
+			System.out.println("cs2 second step");
 			DeltaQuester.progress = 2;
 			cs2();//Gather the high-quality copper ore(Faldor dwarven mine)
 		}else
 		if((ctx.varpbits.varpbit(2231)&0x7)==0 || (ctx.varpbits.varpbit(2231)&0x7)==1||
 				(ctx.varpbits.varpbit(2231)&0x7)==4||(ctx.varpbits.varpbit(2231)&0x7)==5){
+			System.out.println("cs1 first step");
 			DeltaQuester.progress = 1;
-		cs1();//Start the quest
+		    cs1();//Start the quest
 		}
 		
 	}
@@ -259,7 +275,7 @@ public class MineIsYours extends Node{
 						}
 					}
 				}else if(Method.inventoryContains(25329)){//High-quality bronze bar
-					if(ctx.widgets.widget(1370).valid()){
+					if(ctx.widgets.component(1370,0).visible()){
 						 if(ctx.widgets.component(1370,56).text().contains("Shop")){
 							 Method.state("Starting smith");
 							 startSmithBtn.click(true);
@@ -267,7 +283,7 @@ public class MineIsYours extends Node{
 				} else Method.interactO(78040, "Smith", "Anvil");
 			}else getMoreBars();
 			}else if(!ctx.backpack.select().id(25329).first().isEmpty()){//High-quality bronze bar
-				if(ctx.widgets.widget(1370).valid()){
+				if(ctx.widgets.component(1370,0).visible()){
 					 if(ctx.widgets.component(1370,56).text().contains("chainbody")){
 						 Method.state("Starting smith");
 						 startSmithBtn.click(true);
@@ -276,7 +292,7 @@ public class MineIsYours extends Node{
 		}else getMoreBars();
 		}else
 		if(!ctx.backpack.select().id(25329).first().isEmpty()){//High-quality bronze bar
-			if(ctx.widgets.widget(1370).valid()){
+			if(ctx.widgets.component(1370,0).visible()){
 					 if(ctx.widgets.component(1370,56).text().contains("platebody")){
 						 Method.state("Starting smith");
 						 startSmithBtn.click(true);
@@ -344,7 +360,7 @@ public class MineIsYours extends Node{
 				}else Method.clickOnMap(Method.getNPC(69).tile());
 			}
 		}else
-		if(new Tile(3058, 3336, 0).distanceTo(local.tile())<7){
+		if(new Tile(3058, 3336, 0).distanceTo(local.tile())<5){
 			Method.interactO(29386, "Climb", "Stairs");
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToWorkshopbasement, "Walking to the basement door", false);
@@ -387,8 +403,8 @@ public class MineIsYours extends Node{
 	}
 
 
-	private void cs6() {
-	
+	private void cs6() {//make the weapons
+	   System.out.println("Doing cs6 - making weapons");
 		Component dagger = ctx.widgets.component(1371,2);
 		Component sword = ctx.widgets.component(1371,6);
 		Player local = ctx.players.local();
@@ -399,19 +415,27 @@ public class MineIsYours extends Node{
 		}
 		
 		if(Method.inventoryContains(25329)){//High-quality bronze bar
-			if(ctx.widgets.widget(1370).valid()){
+			if(ctx.widgets.component(1370,0).visible()){//the weapon smith screen after clicking an anvil
+				
 			 if(!Method.inventoryContains(25330)){//If you don't have a dagger yet
+				 //make the dagger
 				 if(ctx.widgets.component(1370,56).text().contains("dagger")){
 					 Method.state("Starting smith");
 					 startSmithBtn.click(true);
 				 }else dagger.click(true);
+				 
 			 }else if(!Method.inventoryContains(25331)){//If you don't have a sword yet
+				 //make the sword
 				 if(ctx.widgets.component(1370,56).text().contains("sword")){
 					 Method.state("Starting smith");
 					 startSmithBtn.click(true);
 				 }else sword.click(true);
+				 
 			 }
-			}else Method.interactO(78040, "Smith", "Anvil");
+			}else {
+				System.out.println("Trying to click on anvil");
+				Method.interactO(78040, "Smith", "Anvil");
+			}
 		}else
 		if(Method.inventoryContains(25328) || Method.inventoryContains(25327)){//High-quality tin and copper ore
 			if(ctx.widgets.component(1370,12).visible()){
@@ -421,6 +445,7 @@ public class MineIsYours extends Node{
 				Method.interactO(78111, "Smelt", "Furance");
 		}else
 		if(Method.inventoryContains(25324)){
+			System.out.println("Trying to take ore out of bag");
 		Method.interactInventory(25324, "Withdraw", "Ore bag");
 		}
 		
@@ -552,7 +577,7 @@ public class MineIsYours extends Node{
 	}
 
 
-	private void cs1() {
+	private void cs1() {//Speak to Doric and start quest
 		final String[] opt = {"Yes","I'd love to","What did you need me to","Don't worry,"};
 		final String[] opt2 = {"what his favourite toy was","tell Doric where you've been staying","Boric about your past","Boric why you sent him to","thought when Doric sent you away",
 				"thought when Boric was born","why you wanted to stay","what you want Boric's future",
@@ -561,9 +586,10 @@ public class MineIsYours extends Node{
 		while(ctx.widgets.component(1186,0).visible() ||ctx.widgets.component(1189,0).visible()){
 			Method.pressContinue();
 		}
-		while(ctx.varpbits.varpbit(1113)!=0){
-			if(ctx.widgets.widget(1186).valid()){
-				Method.pressContinue();
+		while(ctx.varpbits.varpbit(1113)!=0){// A cutscene is going/on
+			//for some odd reason putting 'Method.pressContinue' caused problems during testing
+			if(ctx.widgets.component(1186,0).visible()){//it's the dialogue that appears during family talking session
+				ctx.widgets.component(1186,7).click();//the continue button
 			}else
 			if (!Method.findOption(opt2)) {
 				if (!Method.isChatting("Cutscene")) {

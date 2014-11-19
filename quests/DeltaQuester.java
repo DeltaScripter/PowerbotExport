@@ -128,8 +128,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 	private void onStart() {
 		if(!done){
 			initiateGui();
-			//qList.add("The Restless Ghost");
-			    // addNode(new TheBloodPact(ctx));
+			
 				   addNode(new CooksAssistant(ctx));
 				   addNode(new RestlessG(ctx));
 				   addNode(new DeathPlateau(ctx));
@@ -142,23 +141,27 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 				   addNode(new SweptAway(ctx));
 				   addNode(new DruidicRitual(ctx));
 				   addNode(new VampyreSlayer(ctx));
-				// addNode(new ElementalWorkshop1(ctx));
-				  // addNode(new MineIsYours(ctx));
-				// addNode(new GoblinDiplomacy(ctx));
-				// addNode(new GunnarsGround(ctx));
-				// addNode(new LostCity(ctx));
-				// addNode(new BuyersAndCellars(ctx));
-				// addNode(new ClockTower(ctx));
-				// addNode(new MonksFriend(ctx));
-				// addNode(new PlagueCity(ctx));
-				// addNode(new TheKnightsSword(ctx));
 				   addNode(new ErnestTheChicken(ctx));
-				// addNode(new DeathOfChivalry(ctx));
-				// addNode(new TowerOfLife(ctx));
-				 //addNode(new GertrudesCat(ctx));
-				// addNode(new RuneMysteries(ctx));
-				// addNode(new Biohazard(ctx));
-				// addNode(new DragonSlayer(ctx));
+				   addNode(new MineIsYours(ctx));
+				   //addNode(new TheBloodPact(ctx));
+				   //addNode(new DragonSlayer(ctx));
+				   //addNode(new GoblinDiplomacy(ctx));
+				   //addNode(new GunnarsGround(ctx));
+				   //addNode(new TheKnightsSword(ctx));
+				   //addNode(new DeathOfChivalry(ctx));
+				   //addNode(new RuneMysteries(ctx));
+				   
+				         /*--MEMBER QUESTS--*/
+				   //addNode(new ElementalWorkshop1(ctx)); --- MEMBERS
+				   //addNode(new LostCity(ctx)); --- MEMBERS
+				   //addNode(new BuyersAndCellars(ctx)); --- MEMBERS
+				   //addNode(new ClockTower(ctx)); --- MEMBERS
+				   //addNode(new MonksFriend(ctx)); --- MEMBERS
+				   //addNode(new PlagueCity(ctx)); --- MEMBERS
+				   //addNode(new TowerOfLife(ctx)); --- MEMBERS
+				   //addNode(new GertrudesCat(ctx)); --- MEMBERS
+				   //addNode(new Biohazard(ctx)); --- MEMBERS
+				
 			done = true;
 		}
 		
@@ -319,12 +322,13 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
 						"Cook's Assistant","Death Plateau","Demon Slayer","Druidic Ritual",
-						"Ernest The Chicken","Imp Catcher","Let Them Eat Pie","Pirate's Treasure","Swept Away",
-						"The Restless Ghost","Wolf Whistle","Vampyre Slayer"
-						//stolen hearts..
+						"Ernest The Chicken","Imp Catcher","Let Them Eat Pie","Pirate's Treasure",
+						"Swept Away","The Restless Ghost","What's Mine Is Yours",
+						"Wolf Whistle","Vampyre Slayer"
+						
 						/*"Dragon Slayer",,
 						,"Gunnar's Ground","Goblin Diplomacy","Plague City","Monk's Friend",
-						"The Knight's Sword","Tower of Life","What's Mine Is Yours",
+						"The Knight's Sword","Tower of Life",
 						,*/
 				};
 				

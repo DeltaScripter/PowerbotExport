@@ -188,17 +188,17 @@ public class Method extends ClientAccessor{
 	public boolean isChatting(final String p) {
 		
 		if(ctx.widgets.component(1184, 1).valid()||
-				ctx.widgets.component(1191, 7).valid()||
-				ctx.widgets.component(1187, 1).valid()||
-				ctx.widgets.component(1188, 1).valid()||
-				ctx.widgets.component(1189, 1).valid()||
-				ctx.widgets.component(1186, 1).valid()){
+				ctx.widgets.component(1191, 7).visible()||
+				ctx.widgets.component(1187, 1).visible()||
+				ctx.widgets.component(1188, 1).visible()||
+				ctx.widgets.component(1189, 1).visible()||
+				ctx.widgets.component(1186, 1).visible()){
 			state("Speaking to: " + p);
 			pressContinue();
 			sleep(300);
 			return true;
 		}
-		System.out.println("Returning false");
+		//System.out.println("Returning false");
 		return false;
 	}
 	public boolean isFaladorLodeAct(){
@@ -778,10 +778,12 @@ public class Method extends ClientAccessor{
 	}
 	
 	public void pressContinue(){
-		System.out.println("Pressing continue ");
+		System.out.println("Pressing continue - from Method");
 		
 		 if(ctx.widgets.component(1186,10).visible()){
-			 ctx.widgets.component(1186,10).click();
+			 ctx.widgets.component(1186,10).click();//continue button
+			 ctx.widgets.component(1186,7).click();// the continue button (another one)
+			 sleep(Random.nextInt(2000, 2400));//the delayedment is necessary for What's Mine Is Yours quest (beginning of it)
 		 }
 		 if(ctx.widgets.component(1189,10).visible()){
 			 ctx.widgets.component(1189,10).click();
@@ -791,6 +793,9 @@ public class Method extends ClientAccessor{
 		 }
 		 if (ctx.widgets.widget(1191).component(7).visible()){
 			 ctx.widgets.widget(1191).component(7).click();
+		 }
+		 if (ctx.widgets.widget(1187).component(7).visible()){//a adialogue that appears in Stolen Hearts
+			 ctx.widgets.widget(1187).component(7).click();
 		 }
 		
 	}

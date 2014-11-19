@@ -133,9 +133,7 @@ public class StolenHearts extends Node{
 			ctx.widgets.component(669,19).click();
 			Method.sleep(2000);
 		}
-		if(q){
-			q = false;
-		}
+	
 		
 		DeltaQuester.numSteps  =16;
 		Method.resetTeleporting();
@@ -156,35 +154,42 @@ public class StolenHearts extends Node{
 			DeltaQuester.e = true;
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x7F)==100){
+			System.out.println("cs14 last step");
 			DeltaQuester.progress = 15;
 			cs14();//
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x7F)==90||(ctx.varpbits.varpbit(2449)&0x7F)==95){
+			System.out.println("cs13 fourteenth step");
 			DeltaQuester.progress = 14;
 			cs13();//Finish the cut scene conversation with Emir's death
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x7F)==85 ||(ctx.varpbits.varpbit(2449)&0xFF)==213){
+			System.out.println("cs12 thirteenth step");
 			DeltaQuester.progress = 13;
-			
 			cs12();//Solve the puzzle and place the key in the display
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x7F)==70||(ctx.varpbits.varpbit(2449)&0x7F)==72||(ctx.varpbits.varpbit(2449)&0x7F)==75||(ctx.varpbits.varpbit(2449)&0x7F)==80){
+			System.out.println("cs11 twelveth step");
 			DeltaQuester.progress = 12;
 			cs11();//Get's the player into the puzzle room + completes the conversation at that window ledge
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x7F)==65){
+			System.out.println("cs10 eleventh step");
 			DeltaQuester.progress = 11;
 			cs10();//Speak to the guards at Aklharid palace with Ozan
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x3F)==60){
+			System.out.println("cs9 tenth step");
 			DeltaQuester.progress = 10;
 			cs9();//Make Ozan follow us to Alkharid initially
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x3F)==55){
+			System.out.println("cs8 ninth step");
 			DeltaQuester.progress = 9;
 			cs8();//Grabs the scroll after the fight in both situations(if you don't pick it up right away after the fight.)
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x3F)==50){
+			System.out.println("cs7 eighth step");
 			DeltaQuester.progress = 8;
 			cs7();//Finish the conversations and defeat the three enemies at the shore
 		}else
@@ -194,30 +199,37 @@ public class StolenHearts extends Node{
 			cs6();//Complete the initial cutscene at the shore
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x3F)==45){
+			System.out.println("cs5 seventh step");
 			DeltaQuester.progress = 7;
 			cs5();//Get ozan to the shore
 		}else
 		if((ctx.varpbits.varpbit(2449)>>5&0x1)==1||(ctx.varpbits.varpbit(2449)>>5&0x3F)==53||(ctx.varpbits.varpbit(2449)>>5&0x3F)==45||(ctx.varpbits.varpbit(2449)>>5&0x3F)==13||(ctx.varpbits.varpbit(2449)>>5&0x3F)==5||(ctx.varpbits.varpbit(2449)>>5&0x3F)==1){
+			System.out.println("cs4 sixth step");
 			DeltaQuester.progress = 6;
 			cs4();//Complete the conversation with Khnum and friends
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x1F)==30){
+			System.out.println("cs3 fifth step");
 			DeltaQuester.progress = 5;
 			cs3();//Complete the initial conversation with Khnum and friends
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x1F)==25||(ctx.varpbits.varpbit(2449)>>21 & 0xF) ==15){
+			System.out.println("cs2 fourth step");
 			DeltaQuester.progress = 4;
 			cs2();//Complete the trailing Khnum scene
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x1F)==20){
+			System.out.println("cs0 third step");
 			DeltaQuester.progress = 3;
 			cs0();//Report to Ozan about finding Khnum's HQ
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x7)==5 ||(ctx.varpbits.varpbit(2449)&0xF)==10||(ctx.varpbits.varpbit(2449)&0xF)==15){
+			System.out.println("cs1 second step");
 			DeltaQuester.progress = 2;
 			cs1();//Speak to Khnum in his base and take his entry examination.
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x1)==0){
+			System.out.println("cs0 first step");
 			DeltaQuester.progress = 1;
 			cs0();//Start the quest
 		}else System.out.println("Lost");
@@ -290,7 +302,7 @@ public class StolenHearts extends Node{
 		ctx.mouse.drag(endLocation, true);
 		Method.sleep(1800);
 	}
-	private void cs11() {
+	private void cs11() {//Perform the amazing parkour course on the roofs of buildings in Alkharid
 		final String opt[] ={"Yes"};
 		Player local = ctx.players.local();
 		
@@ -408,7 +420,7 @@ public class StolenHearts extends Node{
 		
 	}
 
-	private void cs10() {
+	private void cs10() {//Speak to the guard in Alkharid
 		final String opt[] = {"Yes"};
 		Player local = ctx.players.local();
 		if((ctx.varpbits.varpbit(2449)>>23 & 0x3) ==3){//When Ozan is following us.(From alkharid)
@@ -446,7 +458,7 @@ public class StolenHearts extends Node{
 		
 	}
 
-	private void cs9() {
+	private void cs9() {//gets our player in the alkarid castle area from the shore
 		
 		if((ctx.varpbits.varpbit(2449)>>23 & 0x3) ==3){//Ozan begins to follow us again(when it becomes this setting)
 			if(new Tile(3291, 3165, 0).distanceTo(ctx.players.local().tile())<8){
@@ -468,13 +480,18 @@ public class StolenHearts extends Node{
 
 	public void teleportTo(int loc, String teleName) {
 		
-		
-		if(ctx.widgets.component(1092,1).valid() && ctx.widgets.component(1092,0).visible() && !ctx.widgets.component(1184,1).valid()){
-			ctx.mouse.move(ctx.widgets.component(1092,1).component(loc).centerPoint());
-			ctx.widgets.component(1092,1).component(loc).click(true);
+		System.out.println("Trying to teleport");
+	if(!Method.isChatting("Ozan"))//to click through Ozan's extra teleporting dialogue
+		if(!ctx.widgets.component(1184,1).valid()&&//for when Ozan's extra dialogue pops up during teleporting..
+				ctx.widgets.component(1092,1).valid()&&//the widget for teleport selection
+				   ctx.widgets.component(1092,0).visible()){
+			//click the lummbridge teleport
+			ctx.mouse.move(ctx.widgets.component(1092,loc).centerPoint());
+			ctx.widgets.component(1092,loc).click(true);
 			Method.sleep(2000);
-		}else if(ctx.players.local().animation()==-1)
-			ctx.widgets.component(1465,10).interact("Teleport");
+			
+		}else if(ctx.players.local().idle())
+			ctx.widgets.component(1477,38).component(1).interact("Teleport");//teleport screen widget (by mini map)
 		}
 	
 	private void cs8() {
@@ -554,15 +571,20 @@ public class StolenHearts extends Node{
 
 	private void cs5() {
 		Player local = ctx.players.local();
+		System.out.println("DYNAMICV is currently: "+Vars.DYNAMICV);
+		
 		
 		if((ctx.varpbits.varpbit(2449)>>22 &0x7) ==7){//Ozan is following us setting
+			System.out.println("Ozan is now following us.");
+			
 			if( new Tile(3127, 3201, 0).distanceTo(local.tile())<2){
-			Method.state("Ozan is now following us.");
+			//will never reach - beach cutscene starts
 			}else if(Vars.DYNAMICV){
 				if(new Tile(3127,3247,0).distanceTo(local.tile())<15){
 					if(!ctx.objects.select().id(3434).nearest().first().isEmpty()){
 						for(GameObject jailDoor : ctx.objects.select().id(3434).nearest().first()){
 							if(JailDoor.contains(jailDoor.tile())){
+								ctx.mouse.scroll(true);
 								Method.interactO(3434, "Open", "Door");
 							}else Method.walking(pathToShore, "Walking to the shore",false);
 						}
@@ -578,9 +600,9 @@ public class StolenHearts extends Node{
 						Method.interactO(3434, "Open", "Door");
 					}
 				}
-				
 				if(!Method.isChatting("Ozan")){
 					Method.speakTo(15857, "Ozan");
+					Method.speakTo(15862, "Ozan");//id of the Ozan following us
 				}
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToJailHouse, "Walking to the Jailhouse", false);
@@ -663,14 +685,14 @@ public class StolenHearts extends Node{
 		final String opt[] = {"Yes"};
 		if((ctx.varpbits.varpbit(2449)>>21 & 0xF) ==15){//The setting change when we enter the trailing scene
 			if(!Method.isChatting("Ozan")){
-			if(!ctx.npcs.select().id(15869).nearest().first().isEmpty()){
+			if(!ctx.npcs.select().id(15869).nearest().first().isEmpty()){//khnum
 				//Method.state("Distance differential:"+(NPCs.getNearest(15869).tile().getMapPoint().x - (Players.local().tile().getMapPoint().x)));
-				for(Npc k : ctx.npcs.select().id(15869).nearest().first()){
+				for(Npc k : ctx.npcs.select().id(15869).nearest().first()){//khnums following ID
 					
-				if (k.tile().distanceTo(local.tile()) > 8) {
+				if (k.tile().distanceTo(local.tile()) > 7) {
 						Method.state("Following..");
 						Method.clickOnMap(k.tile());
-					} else {
+					} else {//if we are too close to knum - back up a bit
 						Method.state("Easing off..");
 						int differ = ctx.players.local().tile().matrix(ctx).mapPoint().x - k.tile().matrix(ctx).mapPoint().x;
 						System.out.println("Differ: "+ differ);
@@ -694,11 +716,11 @@ public class StolenHearts extends Node{
 
 	private void cs1() {//Speak to Khnum in his hide-out, become a member of skulls, speak to Ozan again afterwards
 		Player local = ctx.players.local();
-		final String opt[] = {"Let me in or I'll poke your"};
+		final String opt[] = {"I'll be back soon","Let me in or I'll poke your"};
 		final String opt2[] = {"Take their","Fake their","Kick them in the","What jobs are","Tell me what","Crystal"};
 		
-		
-		if(!ctx.npcs.select().id(15863).nearest().first().isEmpty()){
+		//if inside the gang's base
+		if(!ctx.npcs.select().id(15863).nearest().first().isEmpty()){//The ID of Knuhm - gang leader in basement
 			for(Npc Khunm : ctx.npcs.select().id(15863).nearest().first()){
 			if(Khunm.tile().distanceTo(local.tile())<7){
 				if(!Method.findOption(opt2)){
@@ -709,18 +731,13 @@ public class StolenHearts extends Node{
 			}else Method.clickOnMap(Khunm.tile());
 			}
 		}else if(new Tile(3093,3274,0).distanceTo(local.tile())<7){//Below enters Khunm's base
-			if(!ctx.objects.select().id(1239).nearest().first().isEmpty()){
-				for (GameObject thugDoor : ctx.objects.select().id(1239).nearest().first()) {
-					if (!ThugDoor.contains(thugDoor.tile())) {
 							
 						if (!Method.findOption(opt)) {
 							if (!Method.isChatting("Bouncer")) {
 								Method.interactO(75852, "Open", "Trapdoor");
 							}
 						}
-					}else Method.interactO(1239, "Open", "Door");
-				}
-			}
+			
 			
 		}else cs0();//Get the player to the location by the criminals base
 		
