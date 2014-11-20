@@ -1,30 +1,50 @@
 package quests;
 
 
-import java.awt.*;
-
-import quests.Node;
-
-import javax.imageio.ImageIO;
-
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-
-import javax.swing.*;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.AbstractListModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.LayoutStyle;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.PollingScript;
-import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.Script;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
 
 
 @Script.Manifest(name = "Delta Quester", 
@@ -72,6 +92,8 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 	private boolean ready = false;
 	public boolean done = false;
 	
+	
+	
 	private final List<Node> nodesList = Collections.synchronizedList(new ArrayList<Node>());
 
 	
@@ -87,7 +109,12 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 	    }
 
 
+Method ghg = new Method(ctx);
+
 	public void poll() {
+		
+	
+		
 		onStart();
 		
 		if(g){
@@ -125,6 +152,8 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 		}
 	}
 	
+	
+
 	private void onStart() {
 		if(!done){
 			initiateGui();
@@ -143,10 +172,11 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 				   addNode(new VampyreSlayer(ctx));
 				   addNode(new ErnestTheChicken(ctx));
 				   addNode(new MineIsYours(ctx));
+				   addNode(new GunnarsGround(ctx));
 				   //addNode(new TheBloodPact(ctx));
 				   //addNode(new DragonSlayer(ctx));
 				   //addNode(new GoblinDiplomacy(ctx));
-				   //addNode(new GunnarsGround(ctx));
+				  
 				   //addNode(new TheKnightsSword(ctx));
 				   //addNode(new DeathOfChivalry(ctx));
 				   //addNode(new RuneMysteries(ctx));
@@ -322,12 +352,12 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
 						"Cook's Assistant","Death Plateau","Demon Slayer","Druidic Ritual",
-						"Ernest The Chicken","Imp Catcher","Let Them Eat Pie","Pirate's Treasure",
+						"Ernest The Chicken","Gunnar's Ground","Imp Catcher","Let Them Eat Pie","Pirate's Treasure",
 						"Stolen Hearts","Swept Away","The Restless Ghost","What's Mine Is Yours",
 						"Wolf Whistle","Vampyre Slayer"
 						
 						/*"Dragon Slayer",,
-						,"Gunnar's Ground","Goblin Diplomacy","Plague City","Monk's Friend",
+						,,"Goblin Diplomacy","Plague City","Monk's Friend",
 						"The Knight's Sword","Tower of Life",
 						,*/
 				};

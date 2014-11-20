@@ -1,8 +1,8 @@
-/*package quests;
+package quests;
 
-import org.powerbot.script.methods.ClientContext;
-import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Player;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -146,7 +146,7 @@ public class GunnarsGround extends Node{
 	private void cs5() {//Finish the quest
 		final String opt[] = {"I'll consider"};
 		Player local = ctx.players.local();
-		if(new Tile(3080,3416,0).distanceTo(local.getLocation())<8){
+		if(new Tile(3080,3416,0).distanceTo(local.tile())<8){
 			Method.skipPics();
 			if(!Method.findOption(opt))
 			if(!Method.isChatting("Couple")){Vars.DYNAMICV = false;
@@ -160,16 +160,16 @@ public class GunnarsGround extends Node{
 
 	private void cs4() {//Speak to the father, Gunthor
 		Player local = ctx.players.local();
-		final String opt[] = {"Please wait a moment","You're barbarians","Your daughter seeks permission","I need to speak with you"};
+		final String opt[] = {"Good","Please wait a moment","You're barbarians","Your daughter seeks permission","I need to speak with you"};
 		//SceneObject door = SceneEntities.getNearest(11621);
-		if(new Tile(3077, 3442, 0).distanceTo(local.getLocation())<6){
+		if(new Tile(3077, 3442, 0).distanceTo(local.tile())<6){
 			Method.skipPics();
 			if(!Method.findOption(opt))
 			if(!Method.isChatting("Gunthor")){Vars.DYNAMICV2 = false;Vars.DYNAMICV = false;
 				Method.speakTo(2876, "Gunthor");
 			}
 		}else if(Vars.DYNAMICV2){
-			if(new Tile(3079,3438,0).distanceTo(local.getLocation())<6 && Method.objIsByTile(new Tile(3079,3438,0), 11621, 6)){
+			if(new Tile(3079,3438,0).distanceTo(local.tile())<6 && Method.objIsByTile(new Tile(3079,3438,0), 11621, 6)){
 				Method.interactO(11621, "Open", "Door");
 			}else Method.walking(pathToGunthor, "Walking to Gunthor", false);
 			
@@ -186,7 +186,7 @@ public class GunnarsGround extends Node{
 				Method.sleep(50);
 			}
 		}else
-		if(new Tile(3080,3416,0).distanceTo(local.getLocation())<8){
+		if(new Tile(3080,3416,0).distanceTo(local.tile())<8){
 			Method.skipPics();
 			if(!Method.findOption(opt))
 			if(!Method.isChatting("Gudran")){Vars.DYNAMICV2 = true;Vars.DYNAMICV = false;
@@ -209,10 +209,10 @@ public class GunnarsGround extends Node{
 		Player local = ctx.players.local();
 		final String opt[]  ={"Just a plain, gold","Yes, he did","This splendid love","I was hoping you would trade me","I'm here about a"};
 		if((ctx.varpbits.varpbit(2111)>>7 &0x7) == 4){
-			if(new Tile(3108, 3499, 0).distanceTo(local.getLocation()) < 8){Vars.DYNAMICV3 = true;}
+			if(new Tile(3108, 3499, 0).distanceTo(local.tile()) < 8){Vars.DYNAMICV3 = true;}
 			cs0();
 		}else
-		if (new Tile(3108, 3499, 0).distanceTo(local.getLocation()) < 8) {
+		if (new Tile(3108, 3499, 0).distanceTo(local.tile()) < 8) {
 			if(!Method.findOption(opt)){Vars.DYNAMICV = false;Vars.DYNAMICV2=false;Vars.DYNAMICV3 = true;
 			if(!Method.isChatting("Jeffery")){
 				Method.speakTo(637, "Jeffery");
@@ -222,7 +222,7 @@ public class GunnarsGround extends Node{
 			Method.walking(pathToJeffery, "Walking to Jeffery", false);
 		} else if (Vars.DYNAMICV) {
 			Method.walking(pathToJeffery, "Walking to Jeffery", false);
-		} else if (TeleportLode.VARROCK.getTile().distanceTo(local.getLocation()) < 10) {
+		} else if (TeleportLode.VARROCK.getTile().distanceTo(local.tile()) < 10) {
 			Vars.DYNAMICV = true;
 		} else Method.teleportTo(TeleportType.VARROCK.getTeleport(),TeleportType.VARROCK.getName());
 	  }
@@ -230,11 +230,11 @@ public class GunnarsGround extends Node{
 	private void cs0() {
 		Player local = ctx.players.local();
 		final String opt[] = {"Swept to war","Threw the ball","Threat","Stock","Longsword","Stray","Cucumber","More words","I'm sure that's not","What are we going to do","No, she liked the ring","Very well","Of course","It's come out perfectly","That sounds simple","What do you want me to","There must be something","Get to the point","Angina","Yes","ever learn to fly"};
-		if(new Tile(3107,3501,0).distanceTo(local.getLocation())<10){
+		if(new Tile(3107,3501,0).distanceTo(local.tile())<10){
 			Vars.DYNAMICV3 = true;
 		}
-		if(new Tile(3096, 3422, 0).distanceTo(local.getLocation())<9){//Dororan location
-			if(new Tile(3096, 3422, 0).distanceTo(local.getLocation())<8){
+		if(new Tile(3096, 3422, 0).distanceTo(local.tile())<9){//Dororan location
+			if(new Tile(3096, 3422, 0).distanceTo(local.tile())<8){
 				Method.skipPics();
 			if(!Method.startQuestOpen())
 				if(!Method.findOption(opt)){Vars.DYNAMICV = false; 
@@ -251,7 +251,7 @@ public class GunnarsGround extends Node{
 			Method.walking(pathToJeffery, "Walking back to Dororan", true);
 		}else if(Vars.DYNAMICV){
 			Method.walking(pathToDororan, "Walking to Dororan", false);
-		}else if(TeleportLode.VARROCK.getTile().distanceTo(local.getLocation())<10){
+		}else if(TeleportLode.VARROCK.getTile().distanceTo(local.tile())<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.VARROCK.getTeleport(),TeleportType.VARROCK.getName());
 		
@@ -262,4 +262,3 @@ public class GunnarsGround extends Node{
 	}
 	
 }
-*/

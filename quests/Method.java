@@ -4,7 +4,9 @@ package quests;
 import features.GrandExchange;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
@@ -21,6 +23,8 @@ import org.powerbot.script.rt6.ItemQuery;
 import org.powerbot.script.rt6.MobileIdNameQuery;
 import org.powerbot.script.rt6.Npc;
 import org.powerbot.script.rt6.Player;
+
+
 
 
 
@@ -56,9 +60,77 @@ public class Method extends ClientAccessor{
 		GrandExchange Ge = new GrandExchange(ctx);
 		public static boolean onlyItemsGE = false;
 		
-	
-	
-	
+	//uses the node map to walk to a location
+		public void walkTo(ArrayList<Tile> tile , String pathName) {
+		    state(pathName);
+			
+			while(tile.get(tile.size()-1).distanceTo(ctx.players.local().tile())>15){
+				//System.out.println("Size up here is: " + tile.size());
+				//System.out.println("0 is: "+ tile.get(0) +" our dist form it : "+tile.get(0).distanceTo(ctx.players.local().tile()));
+			if(tile.get(0).distanceTo(ctx.players.local().tile())<15){
+				tile.remove(0);
+				System.out.println("Removing checkpoint, new size is: " + tile.size());
+			}else{
+				//System.out.println("Trying to walk towards : " + tile.get(0));
+			try{
+				if(!ctx.movement.findPath(nodeWalk(tile.get(0))).traverse()){
+					//System.out.println("using click on map");
+				clickOnMap(nodeWalk(tile.get(0)));
+				}//else System.out.println("Using find path");
+			}catch(Exception e){System.out.println("Node path returning null");}
+			}
+			  //this is for breaking the loop
+			   if(!ctx.hud.opened(Window.BACKPACK)){
+			  	 break;
+			  }
+			}
+			
+		}
+		
+	//the below method is not called by quest-scripts, they use the above one instead
+		public Tile nodeWalk(Tile dest){
+			 ArrayList distances = new ArrayList();//distances of all nodes from destination tile
+			 
+			 ArrayList usableNodes = new ArrayList();//stores the actual
+			 ArrayList distUsableNodes = new ArrayList();//distances of nodes on map
+			 
+			 //List for calc closest node on map
+			 List<Double> calcList = new ArrayList();
+			 
+			 
+			 //grab distances of nodes from destination
+			 for(Tile dist: NodeTiles.nodes){
+				double distance =  dest.distanceTo(dist);
+				distances.add(distance);
+				//System.out.println("Tile nearest is: " + dist+" distance of: "+ distance);
+			 }
+			//Grab the nodes that are visible on our map
+			for(int i = 0; i<NodeTiles.nodes.length; i++){
+				
+				if(NodeTiles.nodes[i].matrix(ctx).onMap()){
+				     usableNodes.add(NodeTiles.nodes[i]);
+				     distUsableNodes.add(distances.get(i));
+				}
+			}
+			//find out which node is closer to our destination tile
+			calcList.addAll(distUsableNodes);
+			Collections.sort(calcList);
+			//Collections.reverse(calcList);
+			
+			for(int h  = 0; h<usableNodes.size();h++){
+				Tile potentialNode = (Tile) usableNodes.get(h);
+				Double distToMatch = (Double)distUsableNodes.get(h);
+				
+				if(distToMatch==calcList.get(0)){
+					usableNodes.clear();
+					distUsableNodes.clear();
+					calcList.clear();
+					//System.out.println("WE FOUND ARE FIRST NODE! : "+ potentialNode);
+					return potentialNode.derive(2, 4);
+				}
+			}
+			return null;
+		}
 		public Npc getInteractingNPC()
 	    {
 	        final MobileIdNameQuery<Npc> npcs = ctx.npcs.select();

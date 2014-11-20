@@ -584,7 +584,10 @@ public class StolenHearts extends Node{
 					if(!ctx.objects.select().id(3434).nearest().first().isEmpty()){
 						for(GameObject jailDoor : ctx.objects.select().id(3434).nearest().first()){
 							if(JailDoor.contains(jailDoor.tile())){
-								ctx.mouse.scroll(true);
+								/*Our camera zooms WAY in during a cutscene
+								 * making the door it needs to open off screen, we must zoom out by scrolling*/
+								ctx.mouse.move(300,279);//the center of screen
+								ctx.mouse.scroll(true);//true = scrolling out
 								Method.interactO(3434, "Open", "Door");
 							}else Method.walking(pathToShore, "Walking to the shore",false);
 						}
