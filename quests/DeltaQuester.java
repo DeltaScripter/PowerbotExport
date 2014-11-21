@@ -173,8 +173,9 @@ Method ghg = new Method(ctx);
 				   addNode(new ErnestTheChicken(ctx));
 				   addNode(new MineIsYours(ctx));
 				   addNode(new GunnarsGround(ctx));
+				   addNode(new DragonSlayer(ctx));
 				   //addNode(new TheBloodPact(ctx));
-				   //addNode(new DragonSlayer(ctx));
+				   
 				   //addNode(new GoblinDiplomacy(ctx));
 				  
 				   //addNode(new TheKnightsSword(ctx));
@@ -351,7 +352,7 @@ Method ghg = new Method(ctx);
 			
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
-						"Cook's Assistant","Death Plateau","Demon Slayer","Druidic Ritual",
+						"Cook's Assistant","Death Plateau","Demon Slayer","Dragon Slayer","Druidic Ritual",
 						"Ernest The Chicken","Gunnar's Ground","Imp Catcher","Let Them Eat Pie","Pirate's Treasure",
 						"Stolen Hearts","Swept Away","The Restless Ghost","What's Mine Is Yours",
 						"Wolf Whistle","Vampyre Slayer"
