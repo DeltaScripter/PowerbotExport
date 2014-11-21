@@ -34,8 +34,11 @@ public class GrandExchange extends ClientAccessor{
 	public void createBuyItem(String name, int itemAmount, int itemPrice) {
 	
 		if(ctx.widgets.component(105,149).visible()){//buy screen
-		
-			if(itemName().equals(name)){
+			
+		 sleep(Random.nextInt(2000, 2500));
+			
+		  if(itemName().equals(name)){
+				System.out.println("item name is now in the screen");
 				if(quantity()==(itemAmount)){
 					if(price()==itemPrice){
 						Component buy = ctx.widgets.component(105, 166);
@@ -49,7 +52,12 @@ public class GrandExchange extends ClientAccessor{
 			}else typeItem(name);
 			
 			
-		}else ctx.widgets.component(105,19).click();//click the slot buy button
+		}else {
+			System.out.println("Interacting w/buy button on initial screen");
+			ctx.mouse.move(ctx.widgets.component(105, 19).centerPoint());
+			sleep(Random.nextInt(1500, 2000));
+			ctx.widgets.component(105,19).interact("");//click the slot buy button
+		}
 		
 	}
 
@@ -108,7 +116,7 @@ public class GrandExchange extends ClientAccessor{
 	}
 
 	private void typeItem(String name) {
-		DeltaQuester.state = "Inside typing item";
+		DeltaQuester.state = "Typing item";
 		Component[] spot = null;
 		Component results = ctx.widgets.component(389, 4);
 		Method Method = new Method(ctx);
@@ -146,9 +154,9 @@ public class GrandExchange extends ClientAccessor{
 			}
 		}else {
 			System.out.println("Opening the textbox");
-			sleep(1000);
+			//sleep(1000);
 			ctx.widgets.component(105,11).click();//open the textbox
-			sleep(800);
+			//sleep(800);
 		}
 		
 	}

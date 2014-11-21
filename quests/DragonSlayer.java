@@ -193,8 +193,8 @@ public class DragonSlayer extends Node{
 	
 	
 	public final int bankItems4[] = {1539,960,960,960};//Steel nails and planks
-	public final int bankItems5[] = {1535,1536,1537,1538,1540};//Maps and drag shield
-	public final int bankItemAmount5[] = {1,1,1,1,1};//Maps and drag shield
+	public final int bankItems5[] = {1535,1536,1537,1538,1540,1539,960,960,960};//Maps and drag shield + some nails and planks(in the case of us dying AFTEr sailing the ship)
+	public final int bankItemAmount5[] = {1,1,1,1,1,90,1,1,1};//Maps and drag shield
 	public final int bankItems6[] = {11279};//Elvargs head
 	//Malzar map piece 1535
 	//Lazar's map piece 1537
@@ -241,24 +241,32 @@ public class DragonSlayer extends Node{
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else
 			if((ctx.varpbits.varpbit(2268)&0x1F) == 10){
+				System.out.println("Step 16");
 			DeltaQuester.progress = 16;
 			Method.state("The Dragon Slayer quest has been completed.");
 			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
 		if(init){
+			Vars.useBank = true;//make sure this is here if you want it to actually check the bank after using the G.E
 			init();//Determines what part of the quest the player is on(map pieces), it checks alkharid bank for the map pieces you have
 		}else
 			if((ctx.varpbits.varpbit(2268)&0x1F) == 9){
+				System.out.println("Step 15");
 			DeltaQuester.progress = 15;
 			cs1();//Speak to Oziach
 		}else
 		if((ctx.varpbits.varpbit(2268)&0x3F) == 2||(ctx.varpbits.varpbit(2268)&0x3F) == 3||(ctx.varpbits.varpbit(2268)&0x7) == 6||(ctx.varpbits.varpbit(2268)&0x7) == 7||(ctx.varpbits.varpbit(2268)&0x1F) == 8){
 			if((ctx.varpbits.varpbit(2268)&0x1F) == 8){//changes to this setting upon crash landing on island
+				System.out.println("Step 14");
 				DeltaQuester.progress = 14;
+				if(Vars.useBank){
+					Method.useBank(bankItems5, bankItemAmount5);//the shield and some food and map
+				}else
 				cs12();//fight the dragon
 			}else
 			if((ctx.varpbits.varpbit(2268)&0x7) == 7){//the setting while we're sailing the sea/ being attacked then crashing
+				System.out.println("Step 13");
 				DeltaQuester.progress = 13;
 				cs11();//Set sail for Crandor
 			}else if((ctx.varpbits.varpbit(2269)&0xFFFFF)==0 || (ctx.varpbits.varpbit(2269)&0x7)==4){//grabs the map peices and etc
@@ -270,44 +278,51 @@ public class DragonSlayer extends Node{
 							
 							if((ctx.varpbits.varpbit(2269)>>21&0x1)==1){//After speaking to Ned
 								if((ctx.varpbits.varpbit(2268)&0x7) == 6){//ready to go off and fight dragon
+									System.out.println("Step 12");
 									DeltaQuester.progress = 12;
-									if(Method.goBank){
-										Method.bankItems(bankItems5, bankItemAmount5);//planks & nails, not needed, need to test is it grabs the stuff below
+									if(Vars.useBank){
+										Method.useBank(bankItems5, bankItemAmount5);//the shield and some food and map
 									}else cs10();//equips sheild & speaks to ned
 								}else
 								if((ctx.varpbits.varpbit(2268)&0x3F) == 3){//we need to repair the ship
+									System.out.println("Step 11");
 									DeltaQuester.progress = 11;
 									//to prevent it trying to walk to Port Sarim while at G.E
 									if(ctx.bank.opened()){
 										Vars.DYNAMICV = false;
 									}
 									//grab needed items and head off to port sarim
-									if(Method.goBank){
-										Method.bankItems(bankItems3, bankItemAmount3);//planks & nails
+									if(Vars.useBank){
+										Method.useBank(bankItems3, bankItemAmount3);//planks & nails
 									}else
 									cs9();//Repair the ship
 								}else {//we gotta' buy the ship
+									System.out.println("Step 10");
 									DeltaQuester.progress = 10;
 									System.out.println("HEREER");
 									cs8();//Buy the ship in Port Sarim
 								}
 							}else{
+								System.out.println("Step 9");
 								DeltaQuester.progress = 9;
 							cs7();//Speak to Ned about him being captain
 							}
 						}else
 						if((ctx.varpbits.varpbit(2269)>>23&0x1)==1){//Setting to determine if we spoke to the goblins in the village yet
+							System.out.println("Step 8");
 							DeltaQuester.progress = 8;
 							cs6();//Obtain Wormmap from the goblin in the jail
 						}else{
+							System.out.println("Step 7");
 							DeltaQuester.progress = 7;
 							cs5();//Speak to the goblins in the village
 						}
 					}else{
 						
-					if(Method.goBank){
-						Method.bankItems(bankItems2, bankItemAmount2);//the ingredients for the oracle
+					if(Vars.useBank){
+						Method.useBank(bankItems2, bankItemAmount2);//the ingredients for the oracle
 					}else{
+						System.out.println("Step 6");
 						DeltaQuester.progress = 6;
 					    cs4();//Obtains Lazar's map piece(from oracle)
 					}
@@ -316,9 +331,10 @@ public class DragonSlayer extends Node{
 					if(DeltaQuester.checkedBank)
 						Method.determineBank(bankItems);
 				
-			    if(Method.goBank&&!new Tile(2936,9656,0).matrix(ctx).reachable()){//tile is the final area where you get the map piece
-					Method.bankItems(bankItems, bankItemAmount1);//grabs the maze key
+			    if(Vars.useBank&&!new Tile(2936,9656,0).matrix(ctx).reachable()){//tile is the final area where you get the map piece
+			    	Method.useBank(bankItems, bankItemAmount1);//grabs the maze key
 				}else{
+					System.out.println("Step 5");
 					DeltaQuester.progress = 5;
 					cs3();//Obtains Malzar's map piece
 				}
@@ -327,17 +343,19 @@ public class DragonSlayer extends Node{
 			
 				}
 		}else{
+			System.out.println("Step 3");
 			DeltaQuester.progress = 3;
 			//Method.useBank = true;//Resets variable so we can use the bank again
 		     cs0();//Speak to the Guildmaster and gather more information
 		    }
 		}else
 		if((ctx.varpbits.varpbit(2268)&0x3F) == 1){
+		System.out.println("Step 2");
 		DeltaQuester.progress = 2;
-		System.out.println("Now onto cs1");
 		cs1();//Speak to Oziach about obtaining a Rune platebody
 		}else
 		if((ctx.varpbits.varpbit(2268)&0x3F) == 0){
+			System.out.println("Step 1");
 		DeltaQuester.progress = 1;
 		cs0();//Begin the quest by speaking to the Guildmaster in Varrok
 		}
@@ -345,6 +363,7 @@ public class DragonSlayer extends Node{
 	}
 
 	private void cs12() {//Fight the dragon
+		final String opt[] = {"Yes, let's"};//safety procaution, actual conversation occurs in cs11
 		Method.skipPics();
 		
 		if(!hasShieldEquip)
@@ -354,10 +373,14 @@ public class DragonSlayer extends Node{
 			Method.interactInventory(1540, "Wear", "Dragon Shield");
 		}
 		if(hasShieldEquip)
+		if(!Method.findOption(opt))
 		if(!Method.isChatting("People"))
 		if(new Tile(2855,9636,0).matrix(ctx).reachable()){//elvarg's room
-			Vars.DYNAMICV = false;
-			if(ctx.players.local().interacting()!=null&&ctx.players.local().inCombat()){
+			Vars.DYNAMICV = false;//to make sure our player in engaged in combat w/elvarg
+			if(ctx.players.local().interacting()!=null&&
+					ctx.players.local().inCombat()&&
+					Method.npcIsNotNull(742)&&
+					Method.getInteractingNPC().id()==742){
 				Method.fightNPC(742);
 			}else Method.npcInteract(742, "Attack");//fight the dragon elvargs
 		}else
@@ -369,15 +392,15 @@ public class DragonSlayer extends Node{
 		if(new Tile(2835,3258,0).distanceTo(ctx.players.local().tile())<4){
 			Method.interactO(25154, "Enter", "Hole");
 		}else
-		if(new Tile(2855,3239,0).matrix(ctx).reachable()){
+		if(new Tile(2855,3239,0).matrix(ctx).reachable()){//some tile on the island
 			ctx.movement.findPath(new Tile(2835,3258,0)).traverse();//top of mountain
-		}else if(Method.goBank){
-			Method.bankItems(bankItems3, bankItemAmount3);//planks & nails
+		}else if(Vars.useBank){
+			Method.useBank(bankItems3, bankItemAmount3);//planks & nails
 		}else if((ctx.varpbits.varpbit(2269)>>8&0x7)==7){
 			cs11();//Set sail again
 		}else{
-			cs9();
-		}//else cs9();//Repair the ship
+			cs9();//repair the ship
+		}
 		
 	}
 
@@ -387,6 +410,9 @@ public class DragonSlayer extends Node{
 			Method.skipPics();
 			Method.isChatting("Cutscene");
 		}
+		
+		System.out.println("Inside cs11");
+		
 		//combine the map pieces to make a whole one if you haven't already
 		if( Method.inventoryContains(1535)){//the mappieces
 			Method.combineItems(1535, 1536);
@@ -499,7 +525,7 @@ public class DragonSlayer extends Node{
 		final String opt[] = {"Alright then, ","I suppose I could pay you","I believe you've got a"};
 		
 		 if(!Method.teleporting&& Method.inventoryContains(1536)){
-			 Method.goBank = true;
+			 Vars.useBank = true;
 				hasWormMap = true;
 			}else
 		if(new Tile(3012,3189,0).matrix(ctx).reachable() &&new Tile(3012,3189,0).distanceTo(ctx.players.local().tile())<5){
@@ -628,7 +654,10 @@ public class DragonSlayer extends Node{
 				}
 				init = false;
 				System.out.println("Finished initializing");
-			}else ctx.bank.open();
+			}else {
+				System.out.println("Attempting to open bank");
+				ctx.bank.open();
+			}
 		}else if(Vars.DYNAMICV3){
 			Method.walking(Paths.pathToGE, "Walking to Lummbridge bank", false);
 		}else if(TeleportLode.VARROCK.getTile().distanceTo(ctx.players.local().tile())<10){
@@ -649,7 +678,7 @@ public class DragonSlayer extends Node{
 			hasMalzarMap = true;
 		}else if(new Tile(2936,9656,0).matrix(ctx).reachable()&& ctx.game.floor()==0){
 			Vars.DYNAMICV = false;
-			Method.goBank = true;//use bank for later
+			Vars.useBank = true;//use bank for later
 			Method.skipPics();
 			Method.interactO(2603, "Open", "Chest");
 			Method.interactO(2604, "Search", "Chest");

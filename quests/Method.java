@@ -147,7 +147,7 @@ public class Method extends ClientAccessor{
 		public void fightNPC(int id) {
 			
 				
-				if(getInteractingNPC()==null){//if not in combat
+			if(getInteractingNPC()==null){//if not in combat
 					for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
 						if(enemy.tile().distanceTo(ctx.players.local().tile())<7){
 							npcInteract(enemy.id(),"Attack");
@@ -225,6 +225,8 @@ public class Method extends ClientAccessor{
 				ctx.bank.close();
 			}else npcInteract(2241, "Exchange");
 		} else getToExchange();
+		
+		
 	}
 
 	public int inventoryStackSize(int ID) {
@@ -925,14 +927,16 @@ public class Method extends ClientAccessor{
 	public void useBank(int[] items, int[] amount) {
 		final int destroyableItems[] = {19775,27156,26480,25131};
 		boolean donesearch = false;
-		
+		state("Using the bank...");
+		//if inventory is not open, open it.
 		if(!ctx.hud.opened(Window.BACKPACK))
 			ctx.hud.open(Window.BACKPACK);
 		
-		int freespace = 28 - items.length;
-		bankTile =new Tile(3180, 3482, 0);
-		int foodspace = freespace - 5;
-		System.out.println("bankTile: "+ bankTile + "DeltaQuester.number is : " + DeltaQuester.number);
+		int freespace = 28 - items.length;//the freespace we have left over from the slots taken up by the items we need
+		bankTile =new Tile(3180, 3482, 0);//the tile for our bank(G.E)
+		int foodspace = freespace - 5;//how much food we are allowed to have taken out into inventory w/o causing problems during quest
+		
+		//make sure we're close to bank at G.E
 		if (bankTile.distanceTo(ctx.players.local().tile()) < 8) {
 			
 			//Destroy unbankable items!
@@ -951,63 +955,86 @@ public class Method extends ClientAccessor{
 					}else interactInventory(destroyItemID,"Destroy","Item");
 				}
 			}
-			
+			//Do the bank stuff below, once the bank is open
 			if (ctx.bank.opened()) {
 				
 				
 				//Determines depositing inventory.
 					if(!depoBank){
-						state("Attempting to deposit inventory");
+						state("Deposit inventory initially");
 						ctx.bank.depositInventory();
 						//ctx.environment.sleep(2000);
 						if(ctx.backpack.isEmpty())
 						depoBank = true;
-					}else{
+					}else{//after emptying our inventory we want to fill it w/stuff we need
 					
+				//below is just something to setup caching the items inside the bank
 				ItemQuery<Item> bankstuff;
 				bankstuff = null;
 				bankstuff = ctx.bank.select();
 				
-				cacheBank();
+				cacheBank();//stores ALL items in bank into an array in 'Vars' called 'bankItems' for use during questing
+				
+				//if we have enough room for food, we take some into our inventory.
 				if(DeltaQuester.FOOD_FEATURE&&
-						Vars.bankItems.contains(DeltaQuester.FOOD_ID) && inventoryGetCount(DeltaQuester.FOOD_ID)<foodspace){
-					System.out.println("amount of food space: " + foodspace+" # of food in inv: "+inventoryGetCount(DeltaQuester.FOOD_ID));
-						state("Taking out food");
+						Vars.bankItems.contains(DeltaQuester.FOOD_ID) &&
+						inventoryGetCount(DeltaQuester.FOOD_ID)<foodspace){//needs to be 'less than', or else it'll keep taking out food
+					
+					    System.out.println("Taking " + foodspace + " of " + DeltaQuester.FOOD_ID + " out of the bank");
+					    state("Taking out food...");
 						ctx.bank.withdraw(DeltaQuester.FOOD_ID, foodspace);
-						//ctx.environment.sleep(1400);
-				}else{
-				for(int checks = 0; checks<items.length;){
-					state("Searching through bank..."  + checks);
-				for(Item i: bankstuff){
+				}else{//once the food is handled we move onto grabbing our items out of the bank
+				 state("Taking out our items...");
+				 while(bankHasAtleastOneOfItems(items, amount)){
+					 state("Found some items in bank, taking them out..");
+					for(Item i: bankstuff){
 				
 					for(int pos = 0; pos<items.length;){
 						if(i.id()==items[pos]){
 							state("Withdrawing: "+ items[pos]);
 							ctx.bank.withdraw(items[pos], amount[pos]);
 							
-							//if(!timer.isRunning()){
 								pos++;
-								//timer = new timer(1700);
-							//}
 						}else {
 							pos++;
-							//timer = new //timer(1200);
 						}
 					}
-				}
-				checks++;
-				}
+				   }
+				 }
 				ctx.bank.close();
 				System.out.println("Turning bank off: " + donesearch);
 				Vars.useBank = false;
 					}
 					  }
-			} else openBank();
+			} else {
+				openBank();
+				ctx.bank.open();
+			}
 			
 			
 		} else getToBank();
 	}
 	
+	private boolean bankHasAtleastOneOfItems(int[] items, int[] amount) {
+		ItemQuery<Item> bankstuff;
+		bankstuff = null;
+		bankstuff = ctx.bank.select();
+		
+		for(Item item: bankstuff){
+			for(int i = 0;i<items.length;i++){
+				if(ctx.bank.contains(item)&&item.id()==items[i] && !inventoryContains(items[i])||//if bank has item and inventory doesn't have it AT ALL
+						ctx.bank.contains(item)&&item.id()==items[i] && inventoryGetCount(items[i])<amount[i]){//if bank has item and inventory has it but not enough of it
+					System.out.println("Returning true for bank having atleast one item");
+					return true;
+				}
+			}
+			
+		}
+		System.out.println("Returning FALSE for bank having atleast one item");
+		
+		return false;
+	}
+
 	private void getToBank() {
 		
 		if(bankTile.tile().distanceTo(ctx.players.local().tile())>7){
@@ -1155,8 +1182,9 @@ public class Method extends ClientAccessor{
 	}
 
 	public void clickOnMap(Tile t) {
-		
+		try{
 		ctx.movement.step(ctx.movement.closestOnMap(t));
+		}catch(Exception e){e.printStackTrace();}
 		/*
 		Tile winner = null;
 		 
@@ -1276,7 +1304,7 @@ public class Method extends ClientAccessor{
 		return inventory.size()>=28;
 	}
 	public void checkBank() {
-		
+		System.out.println("Checking the bank initially - NOT 'useBank");
 		//System.out.println("Now deciding bank.."+ DeltaQuester.DeltaQuester.number);
 		if(!DeltaQuester.bankFound){
 			System.out.println("Now deciding bank..");
@@ -1370,7 +1398,7 @@ public class Method extends ClientAccessor{
 		Vars.bankItems.clear();
 		for(Item i: ctx.bank.select()){
 			if(!Vars.bankItems.contains(i.id())){
-				System.out.println("Adding: " + i.id());
+				//System.out.println("Adding: " + i.id());
 				Vars.bankItems.add(i.id());
 			}
 		}
