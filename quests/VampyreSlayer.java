@@ -71,11 +71,11 @@ public class VampyreSlayer extends Node{
 	
 	public boolean hasEquip  =false;
 	
-	public int itemsArray[] = {0,0};//contains the states of items needing to be purchased.
-	public int itemDID[] = {1550,1917};//contains the ids of the items needing to be purchased.
-	public int itemDAmount[] = {1,3};
-	public int itemDPrice[] = {1200,1500};//contains specific prices to use upon purchasing specific items.
-	public String itemDString[] = {"Garlic","Beer"};//contains the names of the items needing to be purchased.
+	public int itemsArray[] = {0};//contains the states of items needing to be purchased.
+	public int itemDID[] = {1550};//contains the ids of the items needing to be purchased.
+	public int itemDAmount[] = {1};
+	public int itemDPrice[] = {1200};//contains specific prices to use upon purchasing specific items.
+	public String itemDString[] = {"Garlic"};//contains the names of the items needing to be purchased.
 	
 	public int bankItems[] ={1550,15417,1549,1917,1917,1917,1918};
 	public int bankItemAmount[] = {1,1,1,1,1,1};
@@ -99,14 +99,15 @@ public class VampyreSlayer extends Node{
 			Method.checkBank();
 		}else
 	    if(Vars.useBank && (ctx.varpbits.varpbit(2170)&0x7)!=7){
+	    	System.out.println("step 9");
 			Method.useBank(bankItems, bankItemAmount);
 		}else if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2170)&0x7)!=7) {
+			System.out.println("step 8");
 			Method.onlyItemsGE = true;
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
-		}else if(!DeltaQuester.exchangeBank){//should be if  false
-			Method.exchangeBank(1918,1917,3);
 		}else
 		if((ctx.varpbits.varpbit(2170)&0x7)==7){
+			System.out.println("step 6");
 			DeltaQuester.progress = 6;
 			Method.state("The Vampire Slayer quest has been completed.");
 		
@@ -114,23 +115,28 @@ public class VampyreSlayer extends Node{
 			DeltaQuester.e = true;
 		}else	
 		if((ctx.varpbits.varpbit(2170)>>3&0x1)==1){
+			System.out.println("step 5");
 			DeltaQuester.progress = 5;
 			cs0();//finish quest
 		
 		}else
 		if((ctx.varpbits.varpbit(2170)&0x1F)==6){
+			System.out.println("step 4");
 			DeltaQuester.progress = 4;
 			cs2();//Kill the vampyre
 		
 		}else
-		if((ctx.varpbits.varpbit(2170)&0x3)==2){
+		if((ctx.varpbits.varpbit(2170)&0x3)==2 || (ctx.varpbits.varpbit(2170)&0x1FF)==130){//130
+			System.out.println("step 3");
 			DeltaQuester.progress = 3;
 			cs1();//Speak to the vampyre slayer (buy beer?)
 		}else
 		if((ctx.varpbits.varpbit(2170)&0x1)==1){
+			System.out.println("step 2");
 			DeltaQuester.progress = 2;
 			cs1();//Speak to the vampyre slayer and get supplies
 		}else {
+			System.out.println("step 1");
 			DeltaQuester.progress = 1;
 			cs0();//Start the quest by speaking to Morgan
 		}
@@ -205,22 +211,40 @@ public class VampyreSlayer extends Node{
 		}else cs1();
 		
 	}
-
-	private void cs1() {
+	boolean hasBeer = false;
+	private int BEERID = 1917;
+	private int BARTENDER = 733;
+	private void cs1() {//speak to Dr.HAllow  - the drunk doctor
 		Player local = ctx.players.local();
-	//	NPC dr = NPCs.getNearest(756);
-		//SceneObject door = SceneEntities.getNearest(24376);
-		final String opt[] = {"I've lost","Are you"};
+		final String opt[] = {"A glass of your finest","I've lost","Are you"};
 		
-		if(new Tile(3215,3395,0).distanceTo(local.tile())<4 || (Method.npcIsNotNull(756)&& Method.getNPC(756).tile().distanceTo(local.tile())<6)){
 		
-				if(Method.npcIsNotNull(756))
+		
+		if(new Tile(3215,3395,0).distanceTo(local.tile())<4 || 
+				(Method.npcIsNotNull(756)&& Method.getNPC(756).tile().distanceTo(local.tile())<6)){
+		
+			
+			if((ctx.varpbits.varpbit(2170)&0x3)==2 && hasBeer==false){//if it is time to buy morgan some beer
+				
+				if(Method.inventoryGetCount(BEERID)>=3){
+					hasBeer = true;
+				}else {//buy the beer from bartender
+					if(new Tile(3224,3397).distanceTo(ctx.players.local().tile())<5){//loc by bartender
+					   if(!Method.findOption(opt))
+						if(!Method.isChatting("Bartender")){
+							Method.npcInteract(BARTENDER, "");
+						}
+					}else Method.clickOnMap(new Tile(3224,3397));//loc by the bartender
+				}
+				
+			}else
+				if(Method.npcIsNotNull(756))//dr hallow
 				if(Method.getNPC(756).tile().distanceTo(local.tile())<5){
 					Method.skipPics();
 					Vars.DYNAMICV = false;
 					if(!Method.findOption(opt))
-						if(!Method.isChatting("Morgan")){
-							Method.speakTo(756, "Mogan");
+						if(!Method.isChatting("Dr.Hallow")){
+							Method.speakTo(756, "Dr.Hallow");
 						}
 					
 				}else if(!BarBottomDoor.contains(Method.getObject(24376).tile())||!Method.objIsNotNull(24376)){

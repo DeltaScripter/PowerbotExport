@@ -178,19 +178,26 @@ public class DemonSlayer extends Node {
 		}
 		
 	}
+	private int BACH = 19505;//Bach's ID when in combat
 	private void cs9() {//Enter area and fight Delrith the demon
 		Player local = ctx.players.local();
 		//SceneObject door = SceneEntities.getNearest(24381);
 		if(init!=null){
 			if(!Method.isChatting("People"))
-			if((ctx.varpbits.varpbit(82)&0x3FF)==1018){
+			if((ctx.varpbits.varpbit(82)&0x3FF)==1018){//once silver light is equip
 				if(!Method.isChatting("Cutscene")){//16724
+					
+					if(Method.npcIsNotNull(BACH))
+					if(Method.getNPC(BACH).tile().distanceTo(ctx.players.local().tile())<5){//for staying close to Bach
+						//during the fight
 					
 					if(local.appearance().equals(18019)){
 						Method.npcInteract(16724, "Attack");
 					}else if(!Method.isInCombat()){
 						Method.npcInteract(16724, "Attack");
 					}else Method.fightNPC(16724);
+					
+					}else Method.clickOnMap(Method.getNPC(BACH).tile());
 					
 				}
 			}else if(silverEquip){

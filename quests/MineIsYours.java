@@ -599,7 +599,9 @@ public class MineIsYours extends Node{
 		}
 			
 		if (new Tile(2958, 3439, 0).distanceTo(local.tile()) < 7) {//Doric's House
+			
 			if((ctx.varpbits.varpbit(2231)&0xF) ==10){
+				
 				Vars.DYNAMICV = false;
 				if(Method.inventoryContains(25330) && Method.inventoryContains(25331)){
 						if(!Method.isChatting("Doric")){
@@ -607,14 +609,19 @@ public class MineIsYours extends Node{
 						}
 					
 				}else cs6();
-			}else
-			if(!Method.startQuestOpen()){Vars.DYNAMICV = false;
-			if(!Method.findOption(opt)){
-				Method.skipPics();
-				if(!Method.isChatting("Doric")){
-					Method.speakTo(Doric, "Doric");
+				
+			}else//this is the part where we start the quest initially
+			if(!Method.startQuestOpen()){
+				Vars.DYNAMICV = false;
+				if(!Method.findOption(opt)){
+					Method.skipPics();
+					if(ctx.widgets.component(1186,0).visible()){//might be the dialogue that appears that states it s a voiced quest
+						ctx.widgets.component(1186,7).click();//the continue button
+					}else
+					if(!Method.isChatting("Doric")){
+						Method.speakTo(Doric, "Doric");
+					}
 				}
-			}
 			}
 		}else if(Method.objIsNotNull(72884)){//Checks if you're in the basement
 			Method.interactO(78088, "Climb", "Stairs");

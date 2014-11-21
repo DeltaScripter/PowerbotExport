@@ -118,7 +118,7 @@ Method ghg = new Method(ctx);
 		onStart();
 		
 		if(g){
-			log.info("shutting down");
+			log.info("shutting down..");
 			this.ctx.controller().stop();
 		}
 		while(ctx.widgets.component(1223,1).visible()){//Task completed dialogue
@@ -632,7 +632,7 @@ Method ghg = new Method(ctx);
 					requirementsList.setText(requirementsList.getText() + quest + ":\nThere are no requirements for this quest\n\n");
 					index++;
 				}else if(quest == "Vampyre Slayer"){
-					requirementsList.setText(requirementsList.getText() + quest + ":\n-Garilic x 1(optional)\n-Beer x 3\nVarrock lodestone must be activated\nAbility to defeat a level 37 Vampyre\n\n");
+					requirementsList.setText(requirementsList.getText() + quest + ":\n-Garilic x 1(optional)\n-Beer x 3(will buy during quest)\nVarrock lodestone must be activated\nAbility to defeat a level 37 Vampyre\n\n");
 					index++;
 				}else if(quest == "Monk's Friend"){
 					requirementsList.setText(requirementsList.getText() + quest + ":\n-Jug of water x 1\n-Logs x 1\nArdougne lodestone activated\nYou will come into contact with two level 30 thieves\n\n");

@@ -155,7 +155,6 @@ public class GunnarsGround extends Node{
 		}else if(Vars.DYNAMICV2){
 			Method.walking(pathToGudran, "Walking to Gudran", false);
 		}else cs0();
-		
 	}
 
 	private void cs4() {//Speak to the father, Gunthor
@@ -163,7 +162,9 @@ public class GunnarsGround extends Node{
 		final String opt[] = {"Good","Please wait a moment","You're barbarians","Your daughter seeks permission","I need to speak with you"};
 		//SceneObject door = SceneEntities.getNearest(11621);
 		if(new Tile(3077, 3442, 0).distanceTo(local.tile())<6){
+			
 			Method.skipPics();
+			if(!Method.widgetOpenCloseIt(1370,30))//returns false if the fire widget is not open(it causes problems)
 			if(!Method.findOption(opt))
 			if(!Method.isChatting("Gunthor")){Vars.DYNAMICV2 = false;Vars.DYNAMICV = false;
 				Method.speakTo(2876, "Gunthor");
@@ -177,8 +178,8 @@ public class GunnarsGround extends Node{
 		
 	}
 
-	private void cs3() {
-		final String opt[] = {"Now's your chance to find out","Why would he do that","Don't be silly","Why's that","They're just starting","What should we do now","So, you want me to","A secret admirer","The ring isn't from me","Yes"};
+	private void cs3() {//Speak to Gudran
+		final String opt[] = {"Goodbye then","Now's your chance to find out","Why would he do that","Don't be silly","Why's that","They're just starting","What should we do now","So, you want me to","A secret admirer","The ring isn't from me","Yes"};
 		Player local = ctx.players.local();
 		if(ctx.varpbits.varpbit(1114)==1){
 			if(!Method.findOption(opt))
@@ -198,14 +199,14 @@ public class GunnarsGround extends Node{
 		
 	}
 
-	private void cs2() {
+	private void cs2() {//engrave aring
 		if(!ctx.bank.opened()){
 		Method.interactInventory(19770, "Engrave", "Ring");
 		}else ctx.bank.close();
 		
 	}
 
-	private void cs1() {
+	private void cs1() {//speak to the friend named jefferey
 		Player local = ctx.players.local();
 		final String opt[]  ={"Just a plain, gold","Yes, he did","This splendid love","I was hoping you would trade me","I'm here about a"};
 		if((ctx.varpbits.varpbit(2111)>>7 &0x7) == 4){
@@ -227,7 +228,7 @@ public class GunnarsGround extends Node{
 		} else Method.teleportTo(TeleportType.VARROCK.getTeleport(),TeleportType.VARROCK.getName());
 	  }
 
-	private void cs0() {
+	private void cs0() {//soeak to doroan the dwarf
 		Player local = ctx.players.local();
 		final String opt[] = {"Swept to war","Threw the ball","Threat","Stock","Longsword","Stray","Cucumber","More words","I'm sure that's not","What are we going to do","No, she liked the ring","Very well","Of course","It's come out perfectly","That sounds simple","What do you want me to","There must be something","Get to the point","Angina","Yes","ever learn to fly"};
 		if(new Tile(3107,3501,0).distanceTo(local.tile())<10){

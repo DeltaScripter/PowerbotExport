@@ -1492,6 +1492,14 @@ public class Method extends ClientAccessor{
 	//public static Tile toTile(int hash){
 		//return new Tile(Structure.TILE.getX(hash),Structure.TILE.getY(hash),Structure.TILE.getZ(hash));
 	//}
+
+	public boolean widgetOpenCloseIt(int parent, int child) {
+		if(ctx.widgets.component(parent, child).visible()){
+			state("Closing interupting interface..");
+			ctx.widgets.component(parent, child).interact("");
+		}
+		return false;
+	}
 	
 	/*
 	public void walkToLocation(Tile end) {
