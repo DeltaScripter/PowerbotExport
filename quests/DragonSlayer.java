@@ -5,6 +5,7 @@ import org.powerbot.script.Tile;
 
 
 import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Hud.Window;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -193,6 +194,7 @@ public class DragonSlayer extends Node{
 	
 	public final int bankItems4[] = {1539,960,960,960};//Steel nails and planks
 	public final int bankItems5[] = {1535,1536,1537,1538,1540};//Maps and drag shield
+	public final int bankItemAmount5[] = {1,1,1,1,1};//Maps and drag shield
 	public final int bankItems6[] = {11279};//Elvargs head
 	//Malzar map piece 1535
 	//Lazar's map piece 1537
@@ -221,6 +223,17 @@ public class DragonSlayer extends Node{
 		Method.resetTeleporting();
 		Method.foodSupport();
 		
+		//fully created map has an ID of 1538
+		
+		//combine map pices if you have all three
+			if(ctx.hud.opened(Window.BACKPACK)&&
+					Method.inventoryContains(1536)&&
+					Method.inventoryContains(1537)&&
+					Method.inventoryContains(1535)){//one of the map pieces
+				Method.state("Combining map pieces");
+				Method.combineItems(1536, 1537);//combine w/other map piece
+			}else
+		
 		if(!DeltaQuester.checkedBank){//gets all the items in bank(stores it in an array)
 			Method.checkBank();
 		}else
@@ -241,14 +254,14 @@ public class DragonSlayer extends Node{
 			cs1();//Speak to Oziach
 		}else
 		if((ctx.varpbits.varpbit(2268)&0x3F) == 2||(ctx.varpbits.varpbit(2268)&0x3F) == 3||(ctx.varpbits.varpbit(2268)&0x7) == 6||(ctx.varpbits.varpbit(2268)&0x7) == 7||(ctx.varpbits.varpbit(2268)&0x1F) == 8){
-			if((ctx.varpbits.varpbit(2268)&0x1F) == 8){
+			if((ctx.varpbits.varpbit(2268)&0x1F) == 8){//changes to this setting upon crash landing on island
 				DeltaQuester.progress = 14;
-				cs12();
+				cs12();//fight the dragon
 			}else
-			if((ctx.varpbits.varpbit(2268)&0x7) == 7){
+			if((ctx.varpbits.varpbit(2268)&0x7) == 7){//the setting while we're sailing the sea/ being attacked then crashing
 				DeltaQuester.progress = 13;
 				cs11();//Set sail for Crandor
-			}else if((ctx.varpbits.varpbit(2269)&0xFFFFF)==0 || (ctx.varpbits.varpbit(2269)&0x7)==4){
+			}else if((ctx.varpbits.varpbit(2269)&0xFFFFF)==0 || (ctx.varpbits.varpbit(2269)&0x7)==4){//grabs the map peices and etc
 			//if((ctx.varpbits.varpbit(3077)&0x1F)==16){//did we get the dragon shield from the duke yet?
 				
 				if(hasMalzarMap){
@@ -256,20 +269,26 @@ public class DragonSlayer extends Node{
 						if(hasWormMap){
 							
 							if((ctx.varpbits.varpbit(2269)>>21&0x1)==1){//After speaking to Ned
-								if((ctx.varpbits.varpbit(2268)&0x7) == 6){
+								if((ctx.varpbits.varpbit(2268)&0x7) == 6){//ready to go off and fight dragon
 									DeltaQuester.progress = 12;
 									if(Method.goBank){
-										Method.bankItems(bankItems3, bankItemAmount3);//planks & nails, not needed, need to test is it grabs the stuff below
+										Method.bankItems(bankItems5, bankItemAmount5);//planks & nails, not needed, need to test is it grabs the stuff below
 									}else cs10();//equips sheild & speaks to ned
 								}else
-								if((ctx.varpbits.varpbit(2268)&0x3F) == 3){
+								if((ctx.varpbits.varpbit(2268)&0x3F) == 3){//we need to repair the ship
 									DeltaQuester.progress = 11;
+									//to prevent it trying to walk to Port Sarim while at G.E
+									if(ctx.bank.opened()){
+										Vars.DYNAMICV = false;
+									}
+									//grab needed items and head off to port sarim
 									if(Method.goBank){
 										Method.bankItems(bankItems3, bankItemAmount3);//planks & nails
 									}else
 									cs9();//Repair the ship
-								}else {
+								}else {//we gotta' buy the ship
 									DeltaQuester.progress = 10;
+									System.out.println("HEREER");
 									cs8();//Buy the ship in Port Sarim
 								}
 							}else{
@@ -325,7 +344,7 @@ public class DragonSlayer extends Node{
 		
 	}
 
-	private void cs12() {//742 Elvarg ID
+	private void cs12() {//Fight the dragon
 		Method.skipPics();
 		
 		if(!hasShieldEquip)
@@ -340,7 +359,7 @@ public class DragonSlayer extends Node{
 			Vars.DYNAMICV = false;
 			if(ctx.players.local().interacting()!=null&&ctx.players.local().inCombat()){
 				Method.fightNPC(742);
-			}else Method.npcInteract(742, "Attack");
+			}else Method.npcInteract(742, "Attack");//fight the dragon elvargs
 		}else
 		if(new Tile(2845,9636,0).distanceTo(ctx.players.local().tile())<4){
 			Method.interactO(25161, "Climb", "Rocks");
@@ -362,15 +381,16 @@ public class DragonSlayer extends Node{
 		
 	}
 
-	private void cs11() {
+	private void cs11() {//get on the ship and set sail for the island, ship will crash
 		final String opt[] = {"Yes, let's"};
 		while(ctx.varpbits.varpbit(1114)==1){
+			Method.skipPics();
 			Method.isChatting("Cutscene");
 		}
-		
-		if( Method.inventoryContains(1535)){
+		//combine the map pieces to make a whole one if you haven't already
+		if( Method.inventoryContains(1535)){//the mappieces
 			Method.combineItems(1535, 1536);
-		}else if(hasShieldEquip){
+		}else if(hasShieldEquip){//got the shield equipped?
 			if(new Tile(3047,3208,0).matrix(ctx).reachable()&& ctx.game.floor()==0){
 				Method.interactO(272, "Climb-up", "Ladder");
 			}else
@@ -391,18 +411,13 @@ public class DragonSlayer extends Node{
 		
 	}
 
-	private void cs10() {
+	private void cs10() {//prepare the character then speak to Ned
 		if( (!Method.inventoryContains(1540)&&!Method.inventoryContains(1538))){
 			Method.useBank = true;
 		}
 		while(Method.inventoryGetCount(1540)==1){
 			Method.interactInventory(1540, "Wear", "Dragon Shield");
 		}
-		//if(Method.useBank){g
-		//	Method.useBank(bankItems5, 22, 1, 90);
-		//}else if(bank.opened()){
-		///	Bank.close();
-		//}else
 		if( Method.inventoryContains(1535)){
 			Method.combineItems(1535, 1536);
 		}else if(hasShieldEquip){
