@@ -18,7 +18,7 @@ import org.powerbot.script.rt6.ClientContext;
 
 
 @Script.Manifest(name = "Delta Bow Strings", 
-description = "Spins flax into bowstrings in Lummbridge, antipattern included!", properties = "topic = 0")
+description = "Spins flax into bowstrings in Lummbridge, antipattern included!", properties = "topic = 1230497")
 
 public class MainBody extends PollingScript<ClientContext> implements PaintListener{
 
