@@ -73,10 +73,17 @@ public class Method extends ClientAccessor{
 			}else{
 				//System.out.println("Trying to walk towards : " + tile.get(0));
 			try{
+				if(nodeWalk(tile.get(0)).matrix(ctx).reachable()){//if we can reach the tile..
+					clickOnMap(nodeWalk(tile.get(0)));//then walk towards it
+				}
+				
+				
+				/*
 				if(!ctx.movement.findPath(nodeWalk(tile.get(0))).traverse()){
 					//System.out.println("using click on map");
 				clickOnMap(nodeWalk(tile.get(0)));
 				}//else System.out.println("Using find path");
+				*/
 			}catch(Exception e){System.out.println("Node path returning null");}
 			}
 			  //this is for breaking the loop
@@ -228,7 +235,12 @@ public class Method extends ClientAccessor{
 		
 		
 	}
-
+	public boolean getToNearByTile(Tile tile) {
+		if(tile.distanceTo(ctx.players.local().tile())<4){
+			return true;
+		}else clickOnMap(tile);
+		return false;
+	}
 	public int inventoryStackSize(int ID) {
 		if(ctx.hud.open(Window.BACKPACK)){
 		
@@ -261,12 +273,12 @@ public class Method extends ClientAccessor{
 	   
 	public boolean isChatting(final String p) {
 		
-		if(ctx.widgets.component(1184, 1).valid()||
-				ctx.widgets.component(1191, 7).visible()||
-				ctx.widgets.component(1187, 1).visible()||
-				ctx.widgets.component(1188, 1).visible()||
-				ctx.widgets.component(1189, 1).visible()||
-				ctx.widgets.component(1186, 1).visible()){
+		if(ctx.widgets.widget(1184).valid()||
+				ctx.widgets.widget(1191).valid()||
+				ctx.widgets.widget(1187).valid()||
+				ctx.widgets.widget(1188).valid()||
+				ctx.widgets.widget(1189).valid()||
+				ctx.widgets.widget(1186).valid()){
 			state("Speaking to: " + p);
 			pressContinue();
 			sleep(300);
@@ -852,23 +864,29 @@ public class Method extends ClientAccessor{
 	}
 	
 	public void pressContinue(){
-		System.out.println("Pressing continue - from Method");
 		
-		 if(ctx.widgets.component(1186,10).visible()){
+		
+		 if(ctx.widgets.component(1186,10).visible()||
+				 ctx.widgets.component(1186,7).visible()){
+			 System.out.println("Pressing continue 1186 - from Method");
 			 ctx.widgets.component(1186,10).click();//continue button
 			 ctx.widgets.component(1186,7).click();// the continue button (another one)
 			 sleep(Random.nextInt(2000, 2400));//the delayedment is necessary for What's Mine Is Yours quest (beginning of it)
 		 }
 		 if(ctx.widgets.component(1189,10).visible()){
+			 System.out.println("Pressing continue 1189- from Method");
 			 ctx.widgets.component(1189,10).click();
 		 }
 		 if(ctx.widgets.widget(1184).component(11).visible()){
+			 System.out.println("Pressing continue 1184- from Method");
 			 ctx.widgets.widget(1184).component(11).click();
 		 }
 		 if (ctx.widgets.widget(1191).component(7).visible()){
+			 System.out.println("Pressing continue 1191- from Method");
 			 ctx.widgets.widget(1191).component(7).click();
 		 }
 		 if (ctx.widgets.widget(1187).component(7).visible()){//a adialogue that appears in Stolen Hearts
+			 System.out.println("Pressing continue 1187- from Method");
 			 ctx.widgets.widget(1187).component(7).click();
 		 }
 		
@@ -903,21 +921,24 @@ public class Method extends ClientAccessor{
 				foodspace = invspace - 3;
 				
 				 if(invspace<itemsNeeded){
+					 System.out.println("DetermineBank setting useBank to true, out of inventory space");
 					Vars.useBank = true;
 					Vars.ranOnce = true;
 				}else {
+					 System.out.println("DetermineBank, we have sufficient inventory space");
 					Vars.useBank = false;
 					Vars.ranOnce = true;
 				}
 				 for(int bankitem: items){
 						if(Vars.bankItems.contains(bankitem)){
-							System.out.println("Found item!");
+							System.out.println("DetermineBank, Found item!");
 							Vars.useBank = true;
 							Vars.ranOnce = true;
-						}else System.out.println("can't find item in bank" + bankitem);
+						}else System.out.println("DetermineBank, can't find item in bank" + bankitem);
 					}
 				 if(DeltaQuester.FOOD_FEATURE){
 						if(inventoryGetCount(DeltaQuester.FOOD_ID)<=foodspace && Vars.bankItems.contains(DeltaQuester.FOOD_ID)){
+							 System.out.println("DetermineBank, setting useBank to true - we need more food");
 							Vars.useBank = true;
 							Vars.ranOnce = true;
 						}
@@ -962,12 +983,13 @@ public class Method extends ClientAccessor{
 				//Determines depositing inventory.
 					if(!depoBank){
 						state("Deposit inventory initially");
+						System.out.println("Inside dpeositing inventory");
 						ctx.bank.depositInventory();
 						//ctx.environment.sleep(2000);
 						if(ctx.backpack.isEmpty())
 						depoBank = true;
 					}else{//after emptying our inventory we want to fill it w/stuff we need
-					
+					System.out.println("Finished w/depositing inventory");
 				//below is just something to setup caching the items inside the bank
 				ItemQuery<Item> bankstuff;
 				bankstuff = null;
@@ -1429,7 +1451,7 @@ public class Method extends ClientAccessor{
 			ctx.camera.pitch(60);
 		}
 		
-	}
+	}/*
 	public void bankItems(int[] bankItems, int[] amountOfItem) {
 		ArrayList<Integer> itemsInBank= new ArrayList<Integer>();
 		ArrayList<Integer> invSize= new ArrayList<Integer>();
@@ -1516,7 +1538,7 @@ public class Method extends ClientAccessor{
 			Vars.DYNAMICV3 = true;
 		}else teleportTo(TeleportType.VARROCK.getTeleport(),"Varrock");
 		
-	}
+	}*/
 	//public static Tile toTile(int hash){
 		//return new Tile(Structure.TILE.getX(hash),Structure.TILE.getY(hash),Structure.TILE.getZ(hash));
 	//}
@@ -1527,6 +1549,14 @@ public class Method extends ClientAccessor{
 			ctx.widgets.component(parent, child).interact("");
 		}
 		return false;
+	}
+
+	public boolean dialogueClosed(int parent, int closebutton) {
+		if(ctx.widgets.component(parent, closebutton).visible()){
+			ctx.widgets.component(parent, closebutton).interact("");
+			return false;
+		}
+		return true;
 	}
 	
 	/*

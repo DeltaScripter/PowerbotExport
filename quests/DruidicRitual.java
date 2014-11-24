@@ -208,6 +208,8 @@ public class DruidicRitual extends Node{
 			
 		}else if(new Tile(2912,3383,0).distanceTo(local.tile())>20){
 			gatherFishScales();
+		}else if(ctx.widgets.component(1179, 29).visible()){
+			ctx.widgets.component(1179, 29).click();
 		}else Method.clickOnMap( new Tile(2912,3383,0));
 		
 	}

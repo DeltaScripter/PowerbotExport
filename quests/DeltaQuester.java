@@ -43,7 +43,6 @@ import javax.swing.Timer;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.Script;
-import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
 
 
@@ -55,7 +54,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 	public static int scriptToStart = 0;//an indicator id for the current quest to be completed
 	public static String state = "Welcome, please choose your settings";
 	public static boolean GEFeature = false;//basic boolean indicating user preference for use of G.E feature
-	public boolean useBank;//boolean that gets flipped whenever we need to get something from bank
+	public boolean useBank = true;//boolean that gets flipped whenever we need to get something from bank
 	public static boolean ranOnce = false;
 	public static boolean checkedBank = false;//whether or not to check the G.E bank upon starting quest (in order to know items in bank)
 	public boolean GEWO = false;
@@ -109,7 +108,6 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 	    }
 
 
-Method ghg = new Method(ctx);
 
 	public void poll() {
 		
@@ -174,16 +172,17 @@ Method ghg = new Method(ctx);
 				   addNode(new MineIsYours(ctx));
 				   addNode(new GunnarsGround(ctx));
 				   addNode(new DragonSlayer(ctx));
-				   //addNode(new TheBloodPact(ctx));
-				   
+				   addNode(new ElementalWorkshop1(ctx));
+				  //addNode(new TheBloodPact(ctx));
+				   //addNode(new TheKnightsSword(ctx));
 				   //addNode(new GoblinDiplomacy(ctx));
 				  
-				   //addNode(new TheKnightsSword(ctx));
+				   //
 				   //addNode(new DeathOfChivalry(ctx));
 				   //addNode(new RuneMysteries(ctx));
 				   
 				         /*--MEMBER QUESTS--*/
-				   //addNode(new ElementalWorkshop1(ctx)); --- MEMBERS
+				 
 				   //addNode(new LostCity(ctx)); --- MEMBERS
 				   //addNode(new BuyersAndCellars(ctx)); --- MEMBERS
 				   //addNode(new ClockTower(ctx)); --- MEMBERS
@@ -353,7 +352,8 @@ Method ghg = new Method(ctx);
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
 						"Cook's Assistant","Death Plateau","Demon Slayer","Dragon Slayer","Druidic Ritual",
-						"Ernest The Chicken","Gunnar's Ground","Imp Catcher","Let Them Eat Pie","Pirate's Treasure",
+						"Elemental Workshop 1","Ernest The Chicken","Gunnar's Ground","Imp Catcher","Let Them Eat Pie",
+						"Pirate's Treasure",
 						"Stolen Hearts","Swept Away","The Restless Ghost","What's Mine Is Yours",
 						"Wolf Whistle","Vampyre Slayer"
 						
@@ -466,6 +466,14 @@ Method ghg = new Method(ctx);
 				String quest = queueListModel.get(index).toString();
 				System.out.println(queueListModel.get(index).toString());
 				
+				
+				if(quest == "Elemental Workshop 1"){
+					rewardExpModel.addElement("Crafting XP: 5000");
+					rewardExpModel.addElement("Smiting XP: 5000");
+					rewardItemModel.addElement("Treasure Hunter Key X 2");
+					rewardItemModel.addElement("Ability to make elemental shields");
+					index++;
+				}
 				if(quest == "The Knight's Sword"){
 					rewardExpModel.addElement("Smithing XP: 12,725");
 					index++;
@@ -586,6 +594,10 @@ Method ghg = new Method(ctx);
 			for(int index = 0; index < queueListModel.size();){
 				String quest = queueListModel.get(index).toString();
 				
+				if(quest == "Elemental Workshop 1"){
+					requirementsList.setText(requirementsList.getText() + quest + ":\n-Thread X 1\n-Soft leather X 1\nCoal X 4\n\n");
+					index++;
+				}else
 				if(quest == "Ernest The Chicken"){
 					requirementsList.setText(requirementsList.getText() + quest + ":\n-Empty inventory preferably\n\n");
 					index++;
