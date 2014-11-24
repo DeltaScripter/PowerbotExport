@@ -229,6 +229,7 @@ public class DeathPlateau extends Node{
 		
 		if(new Tile(2919,3574,0).distanceTo(ctx.players.local().tile())<6){
 			Vars.DYNAMICV = false;
+			System.out.println("we r here");
 			if(!Method.findOption(opt))
 				if(!Method.isChatting("Smith")){
 					Method.speakTo(1082, "Smith");

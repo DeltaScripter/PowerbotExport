@@ -351,8 +351,8 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 			
 			questList.setModel(new AbstractListModel<String>() {
 				String[] values = {
-						"Cook's Assistant","Death Plateau","Demon Slayer","Dragon Slayer","Druidic Ritual",
-						"Elemental Workshop 1","Ernest The Chicken","Gunnar's Ground","Imp Catcher","Let Them Eat Pie",
+						"Cook's Assistant","Death Plateau","Demon Slayer","Dragon Slayer","Druidic Ritual"
+						,"Ernest The Chicken","Gunnar's Ground","Imp Catcher","Let Them Eat Pie",
 						"Pirate's Treasure",
 						"Stolen Hearts","Swept Away","The Restless Ghost","What's Mine Is Yours",
 						"Wolf Whistle","Vampyre Slayer"

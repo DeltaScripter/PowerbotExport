@@ -55,6 +55,9 @@ public class ElementalWorkshop1 extends Node{
 
 
 	public void execute() {
+		Method.webWalk(new Tile(3235,3223,0));
+		
+		/*
 		Method.foodSupport();
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		DeltaQuester.numSteps = 10;
@@ -87,7 +90,7 @@ public class ElementalWorkshop1 extends Node{
 			Method.interactInventory(2886, "Cut", "Book");//Cuts the book to find key
 			}
 		}else cs0();//Search the book shelf and read the book
-		
+		*/
 	}
 
 

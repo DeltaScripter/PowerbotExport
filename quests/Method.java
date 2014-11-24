@@ -60,6 +60,65 @@ public class Method extends ClientAccessor{
 		GrandExchange Ge = new GrandExchange(ctx);
 		public static boolean onlyItemsGE = false;
 		
+		ArrayList<Tile> path = new ArrayList<Tile>();//path that is created
+		
+		public void webWalk(Tile dest){
+			
+			ArrayList<Tile> openList = new ArrayList<Tile>();//nodes to check
+			ArrayList<Tile> closedList = new ArrayList<Tile>();//nodes to ignore
+			
+			ArrayList<Tile> adjacentNodes = new ArrayList<Tile>();//adjacent nodes to main point
+			ArrayList<Double> adjacentNodesH = new ArrayList<Double>();//adjacent node distance to end (H)
+			ArrayList<Double> adjacentNodesG = new ArrayList<Double>();//adjacent node cost (G)
+			
+			if(!path.contains(ctx.players.local().tile()))
+			path.add(ctx.players.local().tile());
+			
+			for(Tile t: NodeTiles.nodes){//add all potential nodes to the open list
+				if(!openList.contains(t)){
+					openList.add(t);
+				}
+			}
+			for(Tile g: openList){//calc adjacent nodes
+				if(path.get(path.size()-1).distanceTo(g)<20){//if it is indeed an adjacent node
+					adjacentNodes.add(g);
+				}
+			}
+			//System.out.println("Adjacent node count: " + adjacentNodes.size());
+			for(Tile adj: adjacentNodes){//calculate the H value of all adjacent tiles
+				double dist = adj.distanceTo(dest);
+				adjacentNodesH.add(dist);
+			}
+			for(Tile adj: adjacentNodes){
+				double cost = path.get(0).distanceTo(adj);
+				adjacentNodesG.add(cost);
+			}
+			double nextNodeHValue=2000000;
+			Tile TileToAdd = new Tile(0,0,0);
+			for(int i = 0; i< adjacentNodes.size(); i++){
+				double h = adjacentNodesH.get(i);
+				double g = adjacentNodesG.get(i);
+				double f = h+g;
+				if(f<nextNodeHValue){
+					nextNodeHValue = f;
+					TileToAdd = adjacentNodes.get(i);
+				}
+				//System.out.println("Tile: " + adjacentNodes.get(i) + " has heuristic of " + adjacentNodesH.get(i) + " ::::: and cost of : "+adjacentNodesG.get(i)+" ::: F is " + f);
+				
+			}
+			//System.out.println("Recommended tile is " + TileToAdd);
+			if(!path.contains(TileToAdd))
+			path.add(TileToAdd);
+			
+			
+			System.out.println("_______________________------------------------path size" + path.size());
+			for(Tile t:path){
+				System.out.println("Path: " + t);
+			}
+			
+			
+		}
+		
 	//uses the node map to walk to a location
 		public void walkTo(ArrayList<Tile> tile , String pathName) {
 		    state(pathName);
@@ -274,11 +333,11 @@ public class Method extends ClientAccessor{
 	public boolean isChatting(final String p) {
 		
 		if(ctx.widgets.widget(1184).valid()||
-				ctx.widgets.widget(1191).valid()||
-				ctx.widgets.widget(1187).valid()||
-				ctx.widgets.widget(1188).valid()||
-				ctx.widgets.widget(1189).valid()||
-				ctx.widgets.widget(1186).valid()){
+				ctx.widgets.component(1191,0).visible()||
+				ctx.widgets.component(1187,0).visible()||
+				ctx.widgets.component(1188,0).visible()||
+				ctx.widgets.component(1189,0).visible()||
+				ctx.widgets.component(1186,0).visible()){
 			state("Speaking to: " + p);
 			pressContinue();
 			sleep(300);
@@ -314,7 +373,7 @@ public class Method extends ClientAccessor{
 	}
 	public  boolean findOption(String[] text) {
 		Vars Vars = new Vars();
-		if(!ctx.widgets.component(1188,1).valid()){
+		if(!ctx.widgets.component(1188,1).visible()){
 			return false;
 		}
 		for (String t:text) {
@@ -336,20 +395,19 @@ public class Method extends ClientAccessor{
 	
 	@SuppressWarnings("deprecation")
 	public void speakTo(final int id, final String p) {
-		//if(!SpeakTo//timer.isRunning()){
-		
+		System.out.println("Moving camera fffto npc");
 			for(Npc n: ctx.npcs.select().id(id).nearest().first()){
-				
+				System.out.println("Movretring camera to npc");
 				if(n.inViewport()){
 					state("Attempting to speak to: " + p);
 					n.interact("Talk");
 			        sleep(Random.nextInt(2000, 2500));
 				}else {
+					System.out.println("Moving camera to npc");
 					ctx.movement.newTilePath(n.tile()).traverse();
 					ctx.camera.turnTo(n);
 				}
 		}
-	//}
 	}
 	public void foodSupport() {
 		resetTeleporting();
