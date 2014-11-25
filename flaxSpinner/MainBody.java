@@ -47,7 +47,7 @@ public class MainBody extends PollingScript<ClientContext> implements PaintListe
 		
 		while(ctx.widgets.component(1188, 1).visible()){
 			state = "Closing dialogue..";
-			ctx.players.local().tile().derive(2, 5).matrix(ctx).click();
+			ctx.players.local().tile().matrix(ctx).click();
 		}
 		
 		calcAntiPattern();
@@ -64,7 +64,7 @@ public class MainBody extends PollingScript<ClientContext> implements PaintListe
 		}
 	}
 	   private boolean calcAntiPattern() {
-				int number = rand.nextInt(0,19);
+				int number = rand.nextInt(0,15);
 				if(number == 1){
 					antiPattern = true;
 					return true;

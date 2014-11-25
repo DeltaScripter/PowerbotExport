@@ -40,7 +40,7 @@ public class FlaxStuff extends FlaxNode{
 	
 		if(ctx.varpbits.varpbit(1176)!=0){
 			m.state("Spinning flax...");
-			m.sleep(Random.nextInt(200, Random.nextInt(1200, 3000)));
+			m.sleep(Random.nextInt(200, Random.nextInt(100, 500)));
 		}else
 		if(ctx.bank.opened()){
 			m.state("Closing the bank");
@@ -57,8 +57,14 @@ public class FlaxStuff extends FlaxNode{
 		}else//Get to the spinning machine..
 		if(m.tileDisctanceToPlayer(SPINNERTILE)<6 && ctx.game.floor()==1){
 			m.state("Clicking on spinner");
-			if(!ctx.players.local().inMotion())
-			m.interactO(SPINNER, "", "Spinner");//open up the spinning interface
+			if(m.objIsNotNull(SPINNER)&&
+					m.getObject(SPINNER).tile().distanceTo(ctx.players.local().tile())>6){
+				ctx.movement.step(SPINNERTILE);
+				m.sleep(Random.nextInt(1200, 1800));
+			}else
+			if(!ctx.players.local().inMotion()){
+				m.interactO(SPINNER, "", "Spinner");//open up the spinning interface
+			}
 		}else if (SPINNERTILE.matrix(ctx).reachable() && ctx.game.floor()==1){
 			m.state("Walking towards spinner");
 			ctx.movement.step(SPINNERTILE);
