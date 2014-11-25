@@ -19,7 +19,7 @@ import org.powerbot.script.rt6.TileMatrix;
 
 
 @Script.Manifest(name = "Delta Toad Collector", 
-description = "Gathers toads at the swamp in Tree Gnome Stronghold and banks them", properties = "topic = 1230952")
+description = "Gathers toads at the swamp in Tree Gnome Stronghold and banks", properties = "topic = 1230952")
 
 public class MainBody extends PollingScript<ClientContext> implements PaintListener{
 
