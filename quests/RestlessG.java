@@ -201,16 +201,10 @@ public class RestlessG extends Node{
 				Method.interactO(45539, "Open", "Door");
 			}else ctx.movement.newTilePath(new Tile(3206,3149,0)).traverse();
 		}else if(Vars.DYNAMICV){
-			//below makes use of our node map to walk
 			if(new Tile(3206, 3153, 0).distanceTo(ctx.players.local().tile())<20){//outside chruch
 				Method.clickOnMap(new Tile(3206, 3153, 0));//by father aereck
-			}else{//below uses the node walk map
-				ArrayList<Tile> dest = new ArrayList<Tile>();
-				dest.add(new Tile(3207,3152,0));//final
-				Method.walkTo(dest,"Walking to swamp priest");//outside the church - b/c of door
-			}
-			
-			//Method.walking(pathToLonePriest, "Walking to the swamp priest", false);
+				
+			}else Method.walking(pathToLonePriest, "Walking to the swamp priest", false);
 		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().tile())<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
@@ -231,16 +225,11 @@ public class RestlessG extends Node{
 				new Tile(3241,3209,0).distanceTo(ctx.players.local().tile())<6){
 			Method.interactO(36999,"Open", "Door");
 		}else if(Vars.DYNAMICV){
-			//below uses our node map to walk
+			
 			if(new Tile(3246,3205).distanceTo(ctx.players.local().tile())<20){
 				Method.clickOnMap(new Tile(3247,3206));//by father aereck
-			}else{
-				ArrayList<Tile> dest = new ArrayList<Tile>();
-				dest.add(new Tile(3239,3210));//final
-				Method.walkTo(dest,"Walking to Aereck");//outside the church - b/c of door
-			}
+			}else Method.walking(to_Fath_PathFL, "Walking to Aereck", false);
 			
-			//Method.walking(to_Fath_PathFL, "Walking to Aereck", false);
 		}else if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().tile())<10){
 			Vars.DYNAMICV = true;
 		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());

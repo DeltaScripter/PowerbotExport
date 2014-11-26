@@ -1,9 +1,13 @@
-/*package quests;
+package quests;
 
+import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Hud.Window;
 import org.powerbot.script.rt6.Player;
 
+
+import org.powerbot.script.rt6.Skills;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -56,7 +60,7 @@ public class BuyersAndCellars extends Node {
 		 * 2086-indication if distracted(crazy father)
 		 * 2085-steps for quest
 		 * 1297-More possibilities for starting quest and ending quest.
-		 
+		 */
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		Method.resetTeleporting();
 		DeltaQuester.numSteps =9;
@@ -76,7 +80,7 @@ public class BuyersAndCellars extends Node {
 			if ((ctx.varpbits.varpbit(2085) & 0x7FF) == 1930) {
 			DeltaQuester.progress=9;
 			Method.state("The Buyers and Cellars quest has been completed.");
-			//ctx.environment.sleep(2000);
+			//Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else if ((ctx.varpbits.varpbit(2085) & 0x7FF) == 1605) {
 			cS7();
@@ -111,13 +115,13 @@ public class BuyersAndCellars extends Node {
 		Player local = ctx.players.local();
 		if (Method.objIsNotNull(52289)) {
 			//SceneObject pole = SceneEntities.getNearest(52424);
-			if (Method.objIsNotNull(52424) && Method.getObject(52424).getLocation().distanceTo(local.getLocation()) < 8) {
-				if(ctx.widgets.get(1186).isValid()){
+			if (Method.objIsNotNull(52424) && Method.getObject(52424).tile().distanceTo(local.tile()) < 8) {
+				if(ctx.widgets.component(1186,0).visible()){
 					Method.pressContinue();
 				}
 				if(!Method.isChatting("Head-thief")){
 					Vars.DYNAMICV = false;
-					if(ctx.hud.isOpen(Window.BACKPACK)){//If the inventory is open
+					if(ctx.hud.opened(Window.BACKPACK)){//If the inventory is open
 					if (ctx.backpack.itemSelected()) {
 						Method.npcInteract(11273, "Use");
 					} else Method.interactInventory(18648, "Use","Trophy");
@@ -125,14 +129,14 @@ public class BuyersAndCellars extends Node {
 				}
 			} else if(Method.objIsNotNull(52424)){
 				Method.state("Moving closer.");
-			    Method.clickOnMap(Method.getObject(52424).getLocation());
+			    Method.clickOnMap(Method.getObject(52424).tile());
 			}
 		} else if (Vars.DYNAMICV) {
-			if (new Tile(3221, 3269, 0).distanceTo(local.getLocation()) < 3) {
+			if (new Tile(3221, 3269, 0).distanceTo(local.tile()) < 3) {
 				Method.interactO(52309, "Enter","Trap door");
 			} else
 			Method.walking(pathToCellar, "Walking to the Cellar",false);
-		} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10) {
+		} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10) {
 			Vars.DYNAMICV = true;
 		} else
 			Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
@@ -150,13 +154,13 @@ public class BuyersAndCellars extends Node {
 		final String opt[] = {"Fire","Nice"};
 		Player local = ctx.players.local();
 	//	SceneObject door = SceneEntities.getNearest(45539);
-		if (new Tile(3207, 3153, 0).distanceTo(local.getLocation()) < 7) {
+		if (new Tile(3207, 3153, 0).distanceTo(local.tile()) < 7) {
 			if (fireValid()) {
-				if (Method.objIsNotNull(45539) && !FatherDoor.contains(Method.getObject(45539).getLocation()) || !Method.objIsNotNull(45539)) {
+				if (Method.objIsNotNull(45539) && !FatherDoor.contains(Method.getObject(45539).tile()) || !Method.objIsNotNull(45539)) {
 					if (ctx.varpbits.varpbit(2086) == 1) {
 						Method.npcInteract(458, "Pick");
 					} else {
-						while(ctx.widgets.get(1186).isValid()){
+						while(ctx.widgets.component(1186,0).visible()){
 							Method.pressContinue();
 						}
 						if(!Method.findOption(opt)){Vars.DYNAMICV = false;
@@ -169,11 +173,11 @@ public class BuyersAndCellars extends Node {
 					Method.interactO(45539, "Open","Door");
 			} else {
 				Method.state("Attempting to start fire");
-				if (local.getLocation().equals(new Tile(3211, 3150, 0))) {//location to light fire
-					if (local.getAnimation() == -1){
+				if (local.tile().equals(new Tile(3211, 3150, 0))) {//location to light fire
+					if (local.animation() == -1){
 						if(Method.inventoryContains(1511)){
 						Method.interactInventory(1511, "Light","Logs");
-						}else if(Method.gItemIsNotNull(1511)&&Method.getGroundItem(1511).isOnScreen()){
+						}else if(Method.gItemIsNotNull(1511)&&Method.getGroundItem(1511).inViewport()){
 							Method.interactG(1511, "Light", "Log");
 						} else{
 							Vars.DYNAMICV = false;
@@ -182,9 +186,9 @@ public class BuyersAndCellars extends Node {
 						}
 					}
 				} else {
-					if (new Tile(3211, 3150, 0).getMatrix(ctx).isOnScreen()) {
-						new Tile(3211, 3150, 0).getMatrix(ctx).click(true);
-						ctx.environment.sleep(300, 600); 
+					if (new Tile(3211, 3150, 0).matrix(ctx).inViewport()) {
+						new Tile(3211, 3150, 0).matrix(ctx).click(true);
+						Method.sleep(Random.nextInt(300, 600)); 
 					} else
 						ctx.camera.turnTo(new Tile(3211, 3150, 0));
 
@@ -192,7 +196,7 @@ public class BuyersAndCellars extends Node {
 			}
 		} else if (Vars.DYNAMICV) {
 			Method.walking(pathToFather, "Walking to priest",false);
-		} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10) {
+		} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10) {
 			Vars.DYNAMICV = true;
 		} else
 			Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
@@ -202,7 +206,7 @@ public class BuyersAndCellars extends Node {
 	private boolean fireValid() {
 		//SceneObject fire = SceneEntities.getNearest(70755);
 		if (Method.objIsNotNull(70755)) {
-			if (Method.getObject(70755).isOnScreen()) {
+			if (Method.getObject(70755).inViewport()) {
 				return true;
 			}
 		}
@@ -212,8 +216,8 @@ public class BuyersAndCellars extends Node {
 	private void cS3() {//Speaks to the old priest initially
 		Player local = ctx.players.local();
 		//SceneObject door = SceneEntities.getNearest(45539);
-		if (new Tile(3207, 3153, 0).distanceTo(local.getLocation()) < 8) {//45539 is a door
-			if (Method.objIsNotNull(45539) && !FatherDoor.contains(Method.getObject(45539).getLocation()) ||!Method.objIsNotNull(45539)) {
+		if (new Tile(3207, 3153, 0).distanceTo(local.tile()) < 8) {//45539 is a door
+			if (Method.objIsNotNull(45539) && !FatherDoor.contains(Method.getObject(45539).tile()) ||!Method.objIsNotNull(45539)) {
 				final String opt[] ={"Bye","look at it?","Nice"};
 				if(!Method.findOption(opt)){
 					Vars.DYNAMICV = false;
@@ -224,7 +228,7 @@ public class BuyersAndCellars extends Node {
 			} else Method.interactO(45539, "Open","Door");
 		} else if (Vars.DYNAMICV) {
 			Method.walking(pathToFather, "Walking to priest",false);
-		} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10) {
+		} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10) {
 			Vars.DYNAMICV = true;
 		} else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 
@@ -233,7 +237,7 @@ public class BuyersAndCellars extends Node {
 	private void cS2() {//Walks and speaks to the master theif Robin
 		Player local = ctx.players.local();
 		final String opt[] = {"Go ahead."};
-		if (new Tile(3212, 3207, 0).distanceTo(local.getLocation()) < 5) {
+		if (new Tile(3212, 3207, 0).distanceTo(local.tile()) < 5) {
 			
 			if(!Method.findOption(opt)){Vars.DYNAMICV = false;
 				if(!Method.isChatting("Thief Robin")){
@@ -242,7 +246,7 @@ public class BuyersAndCellars extends Node {
 			}
 		} else if (Vars.DYNAMICV) {
 			Method.walking(pathToRobin, "Walking to Thief Robin",false);
-		} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10) {
+		} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10) {
 			Vars.DYNAMICV = true;
 		} else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 
@@ -255,27 +259,27 @@ public class BuyersAndCellars extends Node {
 		if (Method.objIsNotNull(52289)) {//Basement area
 			//NPC dar = NPCs.getNearest(11273);
 			Method.skipPics();
-			if (Method.npcIsNotNull(11273) && Method.getNPC(11273).getLocation().distanceTo(local.getLocation()) < 5) {
+			if (Method.npcIsNotNull(11273) && Method.getNPC(11273).tile().distanceTo(local.tile()) < 5) {
 				if (pickPocket) {
-					if (ctx.skills.getLevel(Skills.THIEVING) >= 5) {
-						if (new Tile(4661, 5903, 0).distanceTo(local.getLocation()) < 2) {
+					if (ctx.skills.level(Skills.THIEVING) >= 5) {
+						if (new Tile(4661, 5903, 0).distanceTo(local.tile()) < 2) {
 							pickPocket = false;
 						} else
-							new Tile(4661, 5903, 0).getMatrix(ctx).click(true);
+							new Tile(4661, 5903, 0).matrix(ctx).click(true);
 					} else Method.interactO(52316, "Pickpocket","Dummy");
 					
-				} else if(ctx.widgets.get(1184).isValid() && ctx.widgets.get(1184,13).getText().contains("Just keep picking that")){
+				} else if(ctx.widgets.component(1184,0).visible() && ctx.widgets.component(1184,13).text().contains("Just keep picking that")){
 					pickPocket = true;
 				}else{
 					if (!Method.startQuestOpen()) {Vars.DYNAMICV = false;
 						if (!Method.findOption(opt)) {
 							if (!Method.isChatting("Head Thief")) {
-								if ((!local.isInMotion())) {
-									if (local.getLocation().equals(new Tile(4664, 5903, 0))) {
-										if(local.getOrientation()!=0){
+								if ((!local.inMotion())) {
+									if (local.tile().equals(new Tile(4664, 5903, 0))) {
+										if(local.orientation()!=0){
 											Method.state("Temp-sleep");
-											ctx.environment.sleep(2000);
-											if(!ctx.widgets.get(1184).isValid())
+											Method.sleep(2000);
+											if(!ctx.widgets.component(1184,0).visible())
 												Method.speakTo(11273, "Head Thief");
 										}
 									} else Method.speakTo(11273, "Head Thief");
@@ -287,13 +291,13 @@ public class BuyersAndCellars extends Node {
 				}
 			} else if(Method.npcIsNotNull(11273)){
 				Method.state("Walking to Head Thief");
-				Method.clickOnMap(Method.getNPC(11273).getLocation());
+				Method.clickOnMap(Method.getNPC(11273).tile());
 			}
 		} else if (Vars.DYNAMICV) {
-			if (new Tile(3221, 3269, 0).distanceTo(local.getLocation()) < 3) {
+			if (new Tile(3221, 3269, 0).distanceTo(local.tile()) < 3) {
 				Method.interactO(52309, "Enter","Trap door");
 			} else Method.walking(pathToCellar, "Walking to Cellar.",false);
-		} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10) {
+		} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10) {
 			Vars.DYNAMICV = true;
 		} else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 	}
@@ -304,17 +308,17 @@ public class BuyersAndCellars extends Node {
 		 Player local = ctx.players.local();
 		//SceneObject check = SceneEntities.getNearest(52289);
 		if (Method.objIsNotNull(52289)) {//basement area
-			if (new Tile(4664, 5902, 0).distanceTo(local.getLocation()) < 5) {//people location
+			if (new Tile(4664, 5902, 0).distanceTo(local.tile()) < 5) {//people location
 				if(!Method.startQuestOpen())
 				if(!Method.findOption(opt))
 					if(!Method.isChatting("Head Thief")){
 						
-						if ((!local.isInMotion())) {
-							if (local.getLocation().equals(new Tile(4664, 5903, 0))) {
-								if(local.getOrientation()!=0){
+						if ((!local.inMotion())) {
+							if (local.tile().equals(new Tile(4664, 5903, 0))) {
+								if(local.orientation()!=0){
 									Method.state("Temp-sleep");
-									ctx.environment.sleep(2000);
-									if(!ctx.widgets.get(1184).isValid())
+									Method.sleep(2000);
+									if(!ctx.widgets.component(1184,0).visible())
 										Method.speakTo(11273, "Head Thief");
 								}
 							} else Method.speakTo(11273, "Head Thief");
@@ -326,10 +330,10 @@ public class BuyersAndCellars extends Node {
 					
 			} else Method.clickOnMap(new Tile(4664, 5902, 0));
 		} else if (Vars.DYNAMICV) {
-			if (new Tile(3221, 3269, 0).distanceTo(local.getLocation()) < 3) {
+			if (new Tile(3221, 3269, 0).distanceTo(local.tile()) < 3) {
 				Method.interactO(52309, "Enter","Trap door");
 			} else Method.walking(pathToCellar,"Walking to Cellar.",false);
-		} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.getLocation())<10) {
+		} else if (TeleportLode.LUMMBRIDGE.getTile().distanceTo(local.tile())<10) {
 			Vars.DYNAMICV = true;
 		} else
 			Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
@@ -340,4 +344,3 @@ public class BuyersAndCellars extends Node {
 	}
 
 }
-*/

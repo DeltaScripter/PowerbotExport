@@ -55,9 +55,7 @@ public class ElementalWorkshop1 extends Node{
 
 
 	public void execute() {
-		Method.webWalk(new Tile(3235,3223,0));
 		
-		/*
 		Method.foodSupport();
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		DeltaQuester.numSteps = 10;
@@ -90,7 +88,7 @@ public class ElementalWorkshop1 extends Node{
 			Method.interactInventory(2886, "Cut", "Book");//Cuts the book to find key
 			}
 		}else cs0();//Search the book shelf and read the book
-		*/
+		
 	}
 
 
@@ -107,8 +105,7 @@ public class ElementalWorkshop1 extends Node{
 							if(ctx.widgets.component(1370,56).text().contains("Elemental shield")){
 								ctx.widgets.component(1370,38).click(true);
 							}else ctx.widgets.component(1371,44).component(2).click(true);
-						}else if(!local.inMotion())
-							Method.interactO(3402, "Smith", "Anvil");
+						}else Method.interactO(3402, "Smith", "Anvil");
 					}else Method.clickOnMap(new Tile(2718,9890,0));
 				}else
 				if(Method.inventoryContains(2892)){
@@ -126,7 +123,7 @@ public class ElementalWorkshop1 extends Node{
 				}else{
 					DeltaQuester.progress = 6;
 				if(Method.objIsNotNull(2892)){//ore
-					if(Method.getObject(2892).tile().distanceTo(local.tile())<4){
+					if(Method.getObject(2892).tile().distanceTo(local.tile())<6){
 						Method.interactG(2892, "Take", "Elemental ore");
 					}else Method.clickOnMap(Method.getObject(2892).tile());
 				}else

@@ -172,7 +172,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 				   addNode(new MineIsYours(ctx));
 				   addNode(new GunnarsGround(ctx));
 				   addNode(new DragonSlayer(ctx));
-				   addNode(new ElementalWorkshop1(ctx));
+				   addNode(new ElementalWorkshop1(ctx));// may have issues
 				  //addNode(new TheBloodPact(ctx));
 				   //addNode(new TheKnightsSword(ctx));
 				   //addNode(new GoblinDiplomacy(ctx));
@@ -184,7 +184,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 				         /*--MEMBER QUESTS--*/
 				 
 				   //addNode(new LostCity(ctx)); --- MEMBERS
-				   //addNode(new BuyersAndCellars(ctx)); --- MEMBERS
+				    //addNode(new BuyersAndCellars(ctx)); --- MEMBERS
 				   //addNode(new ClockTower(ctx)); --- MEMBERS
 				   //addNode(new MonksFriend(ctx)); --- MEMBERS
 				   //addNode(new PlagueCity(ctx)); --- MEMBERS

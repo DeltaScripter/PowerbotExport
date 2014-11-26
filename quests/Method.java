@@ -49,27 +49,46 @@ public class Method extends ClientAccessor{
 		public static boolean useBank =true;
 		public static int bankDecide = 5;
 		
-		//static //timer //timer = new //timer(0);
-		//private //timer interactO = new //timer(0);
-		//static //timer SpeakTo//timer = new //timer(0);
-		//static //timer ability//timer = new //timer(1);
-		//static //timer combat//timer = new //timer(1);
 		public static int slot = 0;
 		public static boolean depoBank = false;
 		private Vars Vars = new Vars();
 		GrandExchange Ge = new GrandExchange(ctx);
 		public static boolean onlyItemsGE = false;
 		
-		ArrayList<Tile> path = new ArrayList<Tile>();//path that is created
+		//public static ArrayList<Tile> path = new ArrayList<Tile>();//path that is created(web walking)
 		
+		/*
 		public void webWalk(Tile dest){
 			
+			boolean doItAgain = true;
 			ArrayList<Tile> openList = new ArrayList<Tile>();//nodes to check
 			ArrayList<Tile> closedList = new ArrayList<Tile>();//nodes to ignore
 			
 			ArrayList<Tile> adjacentNodes = new ArrayList<Tile>();//adjacent nodes to main point
 			ArrayList<Double> adjacentNodesH = new ArrayList<Double>();//adjacent node distance to end (H)
 			ArrayList<Double> adjacentNodesG = new ArrayList<Double>();//adjacent node cost (G)
+			
+	if(path.isEmpty()){
+				
+		while(doItAgain){	
+			doItAgain = false;
+			
+			if(ctx.hud.opened(Window.SKILLS)){
+				System.out.println("Breaking for equipment");
+				break;
+			}
+			if(path.size()>1)
+			System.out.println("Current end node to destination is : " + path.get(path.size()-1).distanceTo(dest));
+			
+			if(path.size()>1 &&
+					path.get(path.size()-1).distanceTo(dest)<20){
+				System.out.println("Breaking b/c end node is less than 20 " + path.get(path.size()-1));
+				break;
+			}else doItAgain = true;
+			
+			
+			System.out.println("Path current size is : " + path.size());
+			
 			
 			if(!path.contains(ctx.players.local().tile()))
 			path.add(ctx.players.local().tile());
@@ -80,7 +99,8 @@ public class Method extends ClientAccessor{
 				}
 			}
 			for(Tile g: openList){//calc adjacent nodes
-				if(path.get(path.size()-1).distanceTo(g)<20){//if it is indeed an adjacent node
+				if(!adjacentNodes.contains(g)&&
+						path.get(path.size()-1).distanceTo(g)<30){//if it is indeed an adjacent node
 					adjacentNodes.add(g);
 				}
 			}
@@ -89,7 +109,7 @@ public class Method extends ClientAccessor{
 				double dist = adj.distanceTo(dest);
 				adjacentNodesH.add(dist);
 			}
-			for(Tile adj: adjacentNodes){
+			for(Tile adj: adjacentNodes){//calc g value
 				double cost = path.get(0).distanceTo(adj);
 				adjacentNodesG.add(cost);
 			}
@@ -99,26 +119,41 @@ public class Method extends ClientAccessor{
 				double h = adjacentNodesH.get(i);
 				double g = adjacentNodesG.get(i);
 				double f = h+g;
+				
+				
+				if(path.size()>1)
+				System.out.println("Using base node of " + path.get(path.size()-1));
+				//System.out.println("Node: " + adjacentNodes.get(i) + " has f value of " + f + " ______--------- " + nextNodeHValue);
 				if(f<nextNodeHValue){
 					nextNodeHValue = f;
 					TileToAdd = adjacentNodes.get(i);
+					System.out.println("Adding node to path : " + adjacentNodes.get(i) + " with f of " + f);
 				}
 				//System.out.println("Tile: " + adjacentNodes.get(i) + " has heuristic of " + adjacentNodesH.get(i) + " ::::: and cost of : "+adjacentNodesG.get(i)+" ::: F is " + f);
 				
 			}
 			//System.out.println("Recommended tile is " + TileToAdd);
-			if(!path.contains(TileToAdd))
+			if(!path.contains(TileToAdd)){
 			path.add(TileToAdd);
+			adjacentNodesH.clear();
+			adjacentNodesG.clear();
+			adjacentNodes.clear();
+			doItAgain = true;
+			}
 			
+			
+		}
 			
 			System.out.println("_______________________------------------------path size" + path.size());
 			for(Tile t:path){
 				System.out.println("Path: " + t);
 			}
 			
-			
-		}
-		
+			}else{
+				System.out.println("THE PATH IS MADE : " + path.size());
+			}
+		}*/
+		/*
 	//uses the node map to walk to a location
 		public void walkTo(ArrayList<Tile> tile , String pathName) {
 		    state(pathName);
@@ -142,7 +177,7 @@ public class Method extends ClientAccessor{
 					//System.out.println("using click on map");
 				clickOnMap(nodeWalk(tile.get(0)));
 				}//else System.out.println("Using find path");
-				*/
+				*//*
 			}catch(Exception e){System.out.println("Node path returning null");}
 			}
 			  //this is for breaking the loop
@@ -151,7 +186,7 @@ public class Method extends ClientAccessor{
 			  }
 			}
 			
-		}
+		}*/
 		
 	//the below method is not called by quest-scripts, they use the above one instead
 		public Tile nodeWalk(Tile dest){
@@ -741,8 +776,7 @@ public class Method extends ClientAccessor{
 	public void teleportTo(int loc, String teleName) {
 		final int[] widgetsInterference = {1184,1189,1244,105,1191,149,1199,438,1242,1186,1188,1350,149,667};
 		teleporting = true;
-		//if(!//timer.isRunning()){
-			System.out.println("In teleport");
+			//System.out.println("In teleport");
 	   while(ctx.widgets.component(1477,47).component(2).visible()){//The task menu
 			state("Closing task menu");
 			ctx.widgets.component(1477,47).component(2).click(true);//The close button
