@@ -33,8 +33,53 @@ public class FlaxMethod extends ClientAccessor	{
 	public boolean getToNearByTile(Tile tile) {
 		if(tile.distanceTo(ctx.players.local().tile())<4){
 			return true;
-		}else ctx.movement.step(tile);
+		}else if(!ctx.movement.step(tile)){
+			clickOnMap(tile);
+		}
 		return false;
+	}
+	
+	public void clickOnMap(Tile t) {
+		try{
+		ctx.movement.step(ctx.movement.closestOnMap(t));
+		}catch(Exception e){e.printStackTrace();}
+		
+		Tile winner = null;
+		 
+		for(Tile tile : getSurroundingTiles()){
+		if(winner == null || tile.distanceTo(t) < winner.distanceTo(t))
+		winner = tile;
+		}
+		ctx.movement.step(winner);
+		
+		sleep(Random.nextInt(300, 700));
+		}
+		
+		public ArrayList<Tile> getSurroundingTiles(){
+		ArrayList<Tile> l = new ArrayList<Tile>();
+		 
+		int xTiles = ctx.widgets.component(1465, 12).scrollWidth()/10;
+		int yTiles = ctx.widgets.component(1465, 12).scrollHeight()/10;
+		int myX = ctx.players.local().tile().x();
+		int myY = ctx.players.local().tile().y();
+		int myPlane = ctx.players.local().tile().floor();
+		 
+		for(int i = 0; i < xTiles; i++)
+		for(int j = 0; j < yTiles; j++){
+		if(new Tile(myX - i, myY - j, myPlane).matrix(ctx).onMap()){
+		l.add(new Tile(myX - i, myY - j, myPlane));
+		}
+		if(new Tile(myX + i, myY - j, myPlane).matrix(ctx).onMap()){
+		l.add(new Tile(myX + i, myY - j, myPlane));
+		}
+		if(new Tile(myX - i, myY + j, myPlane).matrix(ctx).onMap()){
+		l.add(new Tile(myX - i, myY + j, myPlane));
+		}
+		if(new Tile(myX + i, myY + j, myPlane).matrix(ctx).onMap() ){
+		l.add(new Tile(myX + i, myY + j, myPlane));
+		}
+		}
+		return l;
 	}
 	public boolean bankContains(int id) {
 		ArrayList<Integer> bankItems = new ArrayList<Integer>();

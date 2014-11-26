@@ -196,6 +196,7 @@ public class flaxAntipattern extends FlaxNode{
 					m.sleep(Random.nextInt(1200, 1600));
 					ctx.mouse.move(f.x-Random.nextInt(300, 10),f.y+Random.nextInt(0, 170));
 				}
+				break;
 			}
 			MainBody.antiPattern = false;
 			break;
@@ -213,7 +214,7 @@ public class flaxAntipattern extends FlaxNode{
 					ctx.mouse.move(g.centerPoint());
 					m.sleep(Random.nextInt(200, 600));
 					ctx.mouse.move(f.x-Random.nextInt(300, 10),f.y+Random.nextInt(154, 23));
-				}
+				}break;
 			}
 			MainBody.antiPattern = false;
 			break;
@@ -225,7 +226,7 @@ public class flaxAntipattern extends FlaxNode{
 					ctx.mouse.move(rock.centerPoint());
 					m.sleep(Random.nextInt(100, 340));
 					ctx.mouse.move(f.x-Random.nextInt(100, 300),f.y+Random.nextInt(23, 230));
-				}else ctx.camera.turnTo(rock);
+				}else ctx.camera.turnTo(rock);break;
 			}
 			MainBody.antiPattern = false;
 			break;
@@ -247,7 +248,7 @@ public class flaxAntipattern extends FlaxNode{
 					ctx.mouse.move(rock.centerPoint());
 					m.sleep(Random.nextInt(100, 340));
 					ctx.mouse.move(f.x-Random.nextInt(100, 300),f.y+Random.nextInt(23, 230));
-				}else ctx.camera.turnTo(rock);
+				}else ctx.camera.turnTo(rock);break;
 			}
 			MainBody.antiPattern = false;
 			break;
@@ -259,7 +260,7 @@ public class flaxAntipattern extends FlaxNode{
 					ctx.mouse.move(rock.centerPoint());
 					m.sleep(Random.nextInt(100, 340));
 					ctx.mouse.move(f.x-Random.nextInt(100, 300),f.y+Random.nextInt(23, 230));
-				}else ctx.camera.turnTo(rock);
+				}else ctx.camera.turnTo(rock);break;
 			}
 			MainBody.antiPattern = false;
 			break;

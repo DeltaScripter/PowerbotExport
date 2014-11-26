@@ -11,8 +11,8 @@ public class FlaxStuff extends FlaxNode{
 	}
 
 	//Items
-	public static int FLAX = 1779;//wool ID is 1737(for testing purposes)
-	public static int BOWSTRING = 1777;//ball of wool 1759(same as above)
+	public static int FLAX = 1737;//1779;//is for actual flax    //wool ID is 1737(for testing purposes)
+	public static int BOWSTRING = 1759;//1777;//ball of wool 1759(same as above)
 	
 	//Objects
 	public static int STAIRMIDDLE = 33777;
@@ -47,15 +47,15 @@ public class FlaxStuff extends FlaxNode{
 			ctx.bank.close();
 		}else
 		if(ctx.widgets.component(1371, 1).visible()){//the interface 
-			
-			if(ctx.widgets.component(1370, 56).text().contains("Bowstring")){//is the bowstring selected in the options menu?
+			//text to look for is Bowstring
+			if(ctx.widgets.component(1370, 56).text().contains("Ball")){//is the bowstring selected in the options menu?
 				m.state("Selecting 'Spin'");
 				ctx.widgets.component(1370, 38).interact("");//Select 'Spin' to begin spinnign the flax into bowstrings
 				m.sleep(Random.nextInt(2000, 2500));
 			}else ctx.widgets.component(1371, 44).component(6).interact("");//select flax in options menu
 			//ctx.widgets.component(1371, 44).component(1).interact("");
 		}else//Get to the spinning machine..
-		if(m.tileDisctanceToPlayer(SPINNERTILE)<6 && ctx.game.floor()==1){
+		if(m.tileDisctanceToPlayer(SPINNERTILE)<5 && ctx.game.floor()==1){
 			m.state("Clicking on spinner");
 			if(m.objIsNotNull(SPINNER)&&
 					m.getObject(SPINNER).tile().distanceTo(ctx.players.local().tile())>6){
