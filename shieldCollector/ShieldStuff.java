@@ -33,14 +33,13 @@ public class ShieldStuff extends ShieldNode{
 		
 		if(m.getPastDoor(new Tile(3206,3221,1),new Tile(3210,3222,1), DOOR))
 		  if(DUKETILE.distanceTo(ctx.players.local().tile())<6){
-			  m.state("Ready to take shields");
-			  
-			  
+			
 			 if(!m.findOption(option))
 			  if(!m.isChatting("Duke")){
 				  m.npcInteract(DUKE, "");
 			  }
 		   }else {
+			   m.state("Walking towards the Duke");
 			   ctx.movement.step(DUKETILE);
 			   m.sleep(Random.nextInt(Random.nextInt(200, 500), Random.nextInt(700, 900)));
 			   
@@ -48,8 +47,9 @@ public class ShieldStuff extends ShieldNode{
 		}else if(ctx.game.floor()==2){
 		   if(closeBank())
 			if(m.getToNearByTile(STAIRSTOPTILE)){
+				m.state("Climbing down stairs");
 				m.interactO(STAIRSTOP, "Climb-down", "Top stairs");
-			}
+			}else m.state("Walking to stairs");
 		}else {
 			m.state("Please start the script in Lumbridge bank.");
 		}

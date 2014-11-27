@@ -28,7 +28,7 @@ public class ShieldAntipattern extends ShieldNode{
 	@Override
 	public void execute() {
 		Point f = ctx.mouse.getLocation();
-		int number = Random.nextInt(Random.nextInt(1,36), Random.nextInt(1, 36));
+		int number = Random.nextInt(Random.nextInt(1,38), Random.nextInt(1, 38));
 		//System.out.println(number);
 		Item i;
 		String st = "Performing antipattern technique";
@@ -399,6 +399,17 @@ public class ShieldAntipattern extends ShieldNode{
 			ctx.mouse.move(f.x+Random.nextInt(10, -200),f.y+Random.nextInt(-200, -250));
 			ctx.mouse.scroll(true);
 			m.sleep(Random.nextInt(100, 900));
+			ShieldMainBody.antiPattern = false;
+			break;
+			
+		case 37:
+		    ctx.mouse.click(false);
+			ShieldMainBody.antiPattern = false;
+			break;
+			
+			
+		case 38:
+		    ctx.mouse.click(true);
 			ShieldMainBody.antiPattern = false;
 			break;
 			

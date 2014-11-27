@@ -29,6 +29,8 @@ public class ShieldGoBank extends ShieldNode{
 	public long tempTime = 0;
 	private int SHIELD = 1540;
 	
+	private boolean setTime = true;
+	
 	@Override
 	public void execute() {
 		
@@ -37,15 +39,20 @@ public class ShieldGoBank extends ShieldNode{
 				if(ctx.bank.opened()){
 					ShieldMainBody.amount = m.bankAmount(SHIELD);
 					
-					if(System.currentTimeMillis()!=tempTime){
+					if(System.currentTimeMillis()!=tempTime && setTime){
+						if((tempTime - System.currentTimeMillis())<10000){
 						ShieldMainBody.timeCycle =  tempTime - System.currentTimeMillis();
-						System.out.println("Set time initially : " + tempTime);
+						System.out.println("Set time to : " + tempTime);
+						}else System.out.println("Got time, but not showing b/c unrealistic");
 						tempTime = System.currentTimeMillis();
-						
+						setTime = false;
 					}
 					
 					ctx.bank.depositInventory();
-				}else ctx.bank.open();
+				}else {
+					setTime = true;
+					ctx.bank.open();
+				}
 			}
 		}else if(!m.findOption(option))
 			   if(!m.isChatting(""))

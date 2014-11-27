@@ -2,6 +2,7 @@ package shieldCollector;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,12 +12,13 @@ import org.powerbot.script.PollingScript;
 import org.powerbot.script.Random;
 import org.powerbot.script.Script;
 import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.GeItem;
 
 
 
 
 @Script.Manifest(name = "Delta Shield Collector", 
-description = "350k/hr! Talks to the duke in Lumbridge to get anti-dragon shields and banks them", properties = "topic = 1231125")
+description = "Talks to the duke in Lumbridge to get anti-dragon shields and banks them for money", properties = "topic = 1231125")
 
 public class ShieldMainBody extends PollingScript<ClientContext> implements PaintListener{
 
@@ -35,12 +37,19 @@ public class ShieldMainBody extends PollingScript<ClientContext> implements Pain
 	public static long timeCycle = 0;
 	
 	public static int amount = 0;
-	public static boolean useKeyBoard = false;;
+	public static boolean useKeyBoard = false;
+	private int SHIELD = 1540;
+	private int GEPrice = 900;
 	
 	
 	private void onStart() {
 		
 		if(start){
+			
+			try{
+				GEPrice = GeItem.price(SHIELD);
+				System.out.println("Setting shield price to : " + GEPrice);
+			}catch(Exception e){System.out.println("There was a problem getting the Grand Exchange price of shields");}
 			
 			if(Random.nextInt(1, 4)>1){
 				useKeyBoard = true;
@@ -112,11 +121,61 @@ public class ShieldMainBody extends PollingScript<ClientContext> implements Pain
 		 // perHour = (((timeCycle/1000)/60))*28;
 		//  perHour = perHour/60;
 		//  }
+			//below calcs the total profit in bank and formats it for presentation
+			String moneyNum = ""+(stringCount * GEPrice);
+			String moneyO = "unknown amount";
+			if(moneyNum.length()==4){
+				DecimalFormat formatter = new DecimalFormat("#,###");
+				moneyO = formatter.format((stringCount * GEPrice));
+			}else if(moneyNum.length()==5){
+				DecimalFormat formatter = new DecimalFormat("##,###");
+				moneyO = formatter.format((stringCount * GEPrice));
+			}else if(moneyNum.length()==6){
+				DecimalFormat formatter = new DecimalFormat("###,###");
+				moneyO = formatter.format((stringCount * GEPrice));
+			}else if(moneyNum.length()==7){
+				DecimalFormat formatter = new DecimalFormat("#,###,###");
+				moneyO = formatter.format((stringCount * GEPrice));
+			}
 		  g.setColor(Color.GREEN);
 		  g.drawString("Runtime: " + m.format(time), 9,80);
 			g.drawString(""+state, 9,100);
-			g.drawString("Shields In Bank: "+stringCount, 9,120);
+			
+			g.drawString("Shields In Bank: "+stringCount + " total profit of: " + moneyO + " GP" , 9,120);
 			//g.drawString("Time it took: " + moneyphour, 9, 140);
+			
+			
+			
+			String moneyNumHR = ""+(stringCount * GEPrice);
+			String moneyOHR = "unknown amount";
+			
+			long perHour = ((timeCycle/1000)/60);//into minutes
+			//System.out.println("Minutes are : " + perHour);
+			if(perHour<0){perHour = perHour*-1;}
+			
+			if(perHour>0){
+			perHour = 60/perHour;//how many trips per hour
+			perHour = perHour*(28*GEPrice);
+			}
+			
+			//System.out.println("perHour is : " + perHour);
+			if(moneyNumHR.length()==4){
+				DecimalFormat formatter = new DecimalFormat("#,###");
+				moneyOHR = formatter.format((perHour));
+			}else if(moneyNumHR.length()==5){
+				DecimalFormat formatter = new DecimalFormat("##,###");
+				moneyOHR = formatter.format((perHour));
+			}else if(moneyNumHR.length()==6){
+				DecimalFormat formatter = new DecimalFormat("###,###");
+				moneyOHR = formatter.format((perHour));
+			}else if(moneyNumHR.length()==7){
+				DecimalFormat formatter = new DecimalFormat("#,###,###");
+				moneyOHR = formatter.format((perHour));
+			}
+			System.out.println("After formatting it is : " + moneyOHR);
+			if(stringCount>0 ){
+				g.drawString("GP/HR: " + moneyOHR+ " GP", 9, 140);
+			}else 	g.drawString("GP/HR: Must wait until we bank atleast once..", 9, 140);
 			//g.drawString("Time it took: " + m.format(timeCycle), 9, 140);
 			//g.drawString("Shields per hour: " + perHour, 9, 160);
 			
