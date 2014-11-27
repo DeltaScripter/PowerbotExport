@@ -33,7 +33,7 @@ public class flaxAntipattern extends FlaxNode{
 		//System.out.println(number);
 		Item i;
 		String st = "Performing antipattern technique";
-		System.out.println("Antipattern");
+		//System.out.println("Antipattern");
 		switch(number){
 		
 		case 1:

@@ -15,8 +15,8 @@ import org.powerbot.script.rt6.ClientContext;
 
 
 
-@Script.Manifest(name = "Delta Dragon Shield Collector", 
-description = "Talks to the duke in Lumbridge to get anti-dragon fire shields and banks them", properties = "topic = 1231125")
+@Script.Manifest(name = "Delta Shield Collector", 
+description = "350l/hr! Talks to the duke in Lumbridge to get anti-dragon shields and banks them", properties = "topic = 1231125")
 
 public class ShieldMainBody extends PollingScript<ClientContext> implements PaintListener{
 
@@ -34,10 +34,18 @@ public class ShieldMainBody extends PollingScript<ClientContext> implements Pain
 	public static long runTime;
 	public static long timeCycle = 0;
 	
+	public static int amount = 0;
+	public static boolean useKeyBoard = false;;
+	
 	
 	private void onStart() {
 		
 		if(start){
+			
+			if(Random.nextInt(1, 4)>1){
+				useKeyBoard = true;
+				System.out.println("Using keyboard");
+			}
 			
 	     runTime = System.currentTimeMillis();
 			 
@@ -55,6 +63,10 @@ public class ShieldMainBody extends PollingScript<ClientContext> implements Pain
 		calcAntiPattern();
 		
 		onStart();
+		if(ctx.game.floor()==0){
+			m.state("Please start the script in Lumbridge bank");
+			m.interactO(36776, "", "Stairs");
+		}else
 		if(!start){
 		for(ShieldNode node: nodeList){
 			if(node.activate()){
@@ -82,21 +94,29 @@ public class ShieldMainBody extends PollingScript<ClientContext> implements Pain
 	            }
 	        }
 	    }
+	   double phour;
+	   double moneyphour;
 	  @Override
 		public void repaint(Graphics g) {
 		  
 			long time = runTime - System.currentTimeMillis();
 			
-		  long perHour = 0;
+		 // long perHour = 0;
 		  
-		  if(timeCycle>0){
-		  perHour = (((timeCycle/1000)/60))*28;
-		  perHour = perHour/60;
-		  }
+		  //for finding money per hour
+		    //moneyphour = (time/1000);//convert to seconds
+		    //moneyphour = ((amount*66)/moneyphour);
+		   // moneyphour = moneyphour*800;
+		  
+		//  if(timeCycle>0){
+		 // perHour = (((timeCycle/1000)/60))*28;
+		//  perHour = perHour/60;
+		//  }
 		  g.setColor(Color.GREEN);
 		  g.drawString("Runtime: " + m.format(time), 9,80);
 			g.drawString(""+state, 9,100);
 			g.drawString("Shields In Bank: "+stringCount, 9,120);
+			//g.drawString("Time it took: " + moneyphour, 9, 140);
 			//g.drawString("Time it took: " + m.format(timeCycle), 9, 140);
 			//g.drawString("Shields per hour: " + perHour, 9, 160);
 			

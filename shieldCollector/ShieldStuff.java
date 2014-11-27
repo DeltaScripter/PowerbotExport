@@ -25,7 +25,7 @@ public class ShieldStuff extends ShieldNode{
 	private int DUKE = 741;
 	
 	private int SHIELD = 1540;
-	private String option[] = {"I seek a"};
+	private String option[] = {"So, are you going to","Yes","Elvarg, the dragon","I seek a"};
 	@Override
 	public void execute() {
 		
@@ -34,6 +34,8 @@ public class ShieldStuff extends ShieldNode{
 		if(m.getPastDoor(new Tile(3206,3221,1),new Tile(3210,3222,1), DOOR))
 		  if(DUKETILE.distanceTo(ctx.players.local().tile())<6){
 			  m.state("Ready to take shields");
+			  
+			  
 			 if(!m.findOption(option))
 			  if(!m.isChatting("Duke")){
 				  m.npcInteract(DUKE, "");

@@ -572,6 +572,7 @@ public class DemonSlayer extends Node {
 			
 			if((ctx.varpbits.varpbit(3518) & 0x7F)==118){//If you already got the silver light and must read the dropped scroll
 				init = null;
+				Vars.DYNAMICV = false;
 				//the scroll acts like an npc
 				Method.interactO(91692, "Read", "Grufeld's scroll");//the scroll on ground near Bach's old location
 				

@@ -2,14 +2,17 @@ package shieldCollector;
 
 import java.util.ArrayList;
 
+import org.powerbot.script.Filter;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ChatOption;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.GroundItem;
 import org.powerbot.script.rt6.Item;
 import org.powerbot.script.rt6.ItemQuery;
+import org.powerbot.script.rt6.Menu.Command;
 import org.powerbot.script.rt6.Npc;
 import org.powerbot.script.rt6.Hud.Window;
 
@@ -82,14 +85,26 @@ public class ShieldMethod extends ClientAccessor	{
 			////ctx.environment.sleep(20,50);
 			for (int i :OPTIONVALUE) {
 				if (ctx.widgets.component(1188,1).visible()&&ctx.widgets.component(1188, i).text().contains(t)) {
-					state("Attempting to click option in this area");
+					if(ShieldMainBody.useKeyBoard){
+						state("Attempting to use keyboard");
+						if(i==12){
+						ctx.input.send("{VK_1}");
+						}
+						if(i==18){
+							ctx.input.send("{VK_2}");
+							}
+						sleep(Random.nextInt(300, 700));
+					}else{
+					state("Attempting to click option");
 					ctx.mouse.click(ctx.widgets.component(1188, i).centerPoint().x+10,ctx.widgets.component(1188, i).centerPoint().y+3 , true);
+					}
 					return true; 
 				}
 			}
-			System.out.println("Inside npcInteract - we couldn't find proper option - clicking an npc to close wrong menu");
-			npcInteract(741,"");
+		
 		}
+		System.out.println("Inside npcInteract - we couldn't find proper option - clicking an npc to close wrong menu");
+		npcInteract(741,"");
 		return false;
 	}
 	public void pressContinue(){
@@ -118,6 +133,7 @@ public class ShieldMethod extends ClientAccessor	{
 			 //System.out.println("Pressing continue 1187- from Method");
 			 ctx.widgets.widget(1187).component(7).click();
 		 }
+		 sleep(Random.nextInt(200, 500));
 		
 	}
 	public boolean isChatting(final String p) {
