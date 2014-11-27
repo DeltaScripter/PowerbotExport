@@ -16,7 +16,7 @@ import org.powerbot.script.rt6.ClientContext;
 
 
 @Script.Manifest(name = "Delta Shield Collector", 
-description = "350l/hr! Talks to the duke in Lumbridge to get anti-dragon shields and banks them", properties = "topic = 1231125")
+description = "350k/hr! Talks to the duke in Lumbridge to get anti-dragon shields and banks them", properties = "topic = 1231125")
 
 public class ShieldMainBody extends PollingScript<ClientContext> implements PaintListener{
 
