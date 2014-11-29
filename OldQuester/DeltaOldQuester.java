@@ -210,7 +210,7 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 			scrollPane1.setBounds(3, 54, 437, 173);
 
 			//---- questComboBox ----
-			questComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
+			questComboBox.setModel(new DefaultComboBoxModel(new String[] {
 				"The Restless Ghost",
 				"Rune Mysteries",
 				"Cook's Assistant"
