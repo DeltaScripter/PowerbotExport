@@ -88,7 +88,7 @@ public abstract class WebAction extends ClientAccessor{
 		
 		//Timer failSafe = new Timer(30000);
 		//PollingScript script = ctx.client(.get().getActiveScript();
-		
+		try{
 		Path p = ctx.movement.findPath(target);
 			if (!ctx.players.local().inMotion() || (ctx.movement.distance(ctx.movement.destination()) < 8 &&
 					ctx.movement.distance(ctx.movement.destination(),
@@ -103,6 +103,9 @@ public abstract class WebAction extends ClientAccessor{
 			if (ctx.movement.distance(target) < 5) {
 				return true;
 			}
+			
+			
+		}catch(Exception e){}
 		return false;
 	}
 

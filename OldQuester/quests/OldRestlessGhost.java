@@ -39,10 +39,21 @@ public class OldRestlessGhost extends OldNode{
 	private boolean init = false;
 	private int AMULET = 552;
 	
+	Tile dest = new Tile(-1,-1,-1);
 	@Override
 	public void execute() {
 		
+		/*
+		if(ctx.movement.destination().matrix(ctx).reachable()&&
+				dest!=ctx.movement.destination()&& !ctx.players.local().inMotion()){
+		    Tile prev = dest;
+			dest = ctx.movement.destination();
+			//System.out.println("Dest is now : " + dest);  
+		System.out.println("new DeltaWebLine(new Tile"+prev + ",new Tile" + ctx.movement.destination() + "),");
+		Method.sleep(700);
+		}*/
 		
+		///*
 			while(Method.inventoryContains(AMULET)){
 				Method.interactInventory(AMULET, "Wear", "Amulet");
 			}
@@ -67,7 +78,7 @@ public class OldRestlessGhost extends OldNode{
 		}else{
 		  cs0();//Speak to the priest (Aereck) and begin the quest
 		}
-		
+		//*/
 		
 	}
 	private int BASEMENTLADDER = 2148;
@@ -111,7 +122,8 @@ public class OldRestlessGhost extends OldNode{
   			
   			
   		}else{//walk to the ghost area
-  			
+  			Method.state("Walking to the ghost's shack");
+			
   			 RSWeb web = new RSWeb(ctx);
 			 web.walkToTile(new Tile(3245,3193));//walk to the ghost's shack
 			 /*
@@ -167,6 +179,7 @@ private void cs3() {//get the skull from wizards tower
 				Method.preciseInteractO(FIRSTTOWERDOOR, bounds, "Open");
 			}
 		}else{//walk to the wizards tower
+			Method.state("Walking to the Wizards Tower");
 			
 			 RSWeb web = new RSWeb(ctx);
 			 web.walkToTile(new Tile(3108,3168));//walk to the wizard's tower
@@ -228,6 +241,7 @@ private void cs3() {//get the skull from wizards tower
 			
 			
 		}else{//walk to the ghost area
+			Method.state("Walking to the ghost's shack");
 			
 			 RSWeb web = new RSWeb(ctx);
 			 web.walkToTile(new Tile(3245,3193));//walk to the ghost's shack
@@ -273,6 +287,7 @@ private void cs3() {//get the skull from wizards tower
 				}
 				
 			}else{
+				Method.state("Walking to the priest in the swamp");
 				
 				 RSWeb web = new RSWeb(ctx);
 	    		  web.walkToTile(new Tile(3147, 3171, 0));//walk to the priest in swamp
@@ -314,7 +329,7 @@ private void cs3() {//get the skull from wizards tower
       				 }else Method.clickOnMap(new Tile(3237,3210,0));//tile by outside door of church
               }
 			}else {//walk to lummbridge
-				
+				Method.state("Walking to the Lumbridge church");
 				 RSWeb web = new RSWeb(ctx);
 	    		  web.walkToTile(new Tile(3237,3210,0));//walk to lumbridge entrance of church
 	    

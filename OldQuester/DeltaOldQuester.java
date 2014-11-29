@@ -83,7 +83,7 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 	        }
 	    }
 	   
-		BufferedImage paint = downloadImage("http://i1223.photobucket.com/albums/dd508/thriller645/OldQuesterPaint_zps04de3574.png");
+		BufferedImage paint = downloadImage("http://i1223.photobucket.com/albums/dd508/thriller645/OldQuesterPaint2_zps1196bf64.png");
 		
 	   public static int mouseX;
 	   public static int mouseY;
