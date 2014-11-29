@@ -440,7 +440,8 @@ private int SPELLBOOKICONWIDGETPARENT = 548;
 
 	public void useItemOn(int item, int obj, String string) {
 		state("Using item on object");
-		if(ctx.inventory.selectedItem().id()!=-1){
+		if(ctx.inventory.selectedItem()!=null ||
+				ctx.inventory.selectedItem().id()!=-1){
 			interactO(obj, "Use", string);
 		}else if(inventoryContains(item))
 			interactInventory(item,"Use","Item");
