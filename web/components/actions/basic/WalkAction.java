@@ -1,7 +1,6 @@
 package web.components.actions.basic;
 
 import org.powerbot.script.Tile;
-import org.powerbot.script.rt4.ClientContext;
 
 import web.components.actions.WebAction;
 
@@ -14,8 +13,8 @@ import web.components.actions.WebAction;
  */
 public class WalkAction extends WebAction {
 
-	public WalkAction(ClientContext ctx, final Tile source, final Tile target) {
-		super(ctx,"Walk",source, target);
+	public WalkAction(final Tile source, final Tile target) {
+		super("Walk",source, target);
 	}
 
 	@Override
@@ -38,6 +37,11 @@ public class WalkAction extends WebAction {
 		return source.distanceTo(target);
 	}
 
+	@Override
+	public void poll() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 }
