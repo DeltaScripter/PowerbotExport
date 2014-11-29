@@ -1,3 +1,4 @@
+package quests;
 /*package quests;
 
 import org.powerbot.core.script.job.state.Node;

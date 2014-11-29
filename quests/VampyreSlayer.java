@@ -10,7 +10,7 @@ import org.powerbot.script.rt6.Player;
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
-public class VampyreSlayer extends Node{
+public class VampyreSlayer extends DeltaNode{
 
 
 	public VampyreSlayer(ClientContext ctx) {

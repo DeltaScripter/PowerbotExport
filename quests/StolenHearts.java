@@ -3,6 +3,10 @@ package quests;
 import java.awt.Point;
 
 
+
+
+
+
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
@@ -13,7 +17,7 @@ import org.powerbot.script.rt6.Player;
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
-public class StolenHearts extends Node{
+public class StolenHearts extends DeltaNode{
 
 	
 	public StolenHearts(ClientContext ctx) {

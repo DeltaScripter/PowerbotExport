@@ -8,7 +8,7 @@ import org.powerbot.script.rt6.Player;
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
-public class DeathPlateau extends Node{
+public class DeathPlateau extends DeltaNode{
 
 	public DeathPlateau(ClientContext ctx) {
 		super(ctx);

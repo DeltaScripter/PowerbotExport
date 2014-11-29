@@ -9,10 +9,14 @@ import org.powerbot.script.rt6.Interactive;
 import org.powerbot.script.rt6.Player;
 
 
+
+
+
+
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
-public class ErnestTheChicken extends Node{
+public class ErnestTheChicken extends DeltaNode{
 
 	public ErnestTheChicken(ClientContext ctx) {
 		super(ctx);

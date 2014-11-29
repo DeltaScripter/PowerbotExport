@@ -1,14 +1,19 @@
 package quests;
 
 
+import java.util.ArrayList;
+
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Player;
 
+
+
+
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
-public class CooksAssistant extends Node{
+public class CooksAssistant extends DeltaNode{
 
 	
  public CooksAssistant(ClientContext ctx) {
@@ -74,7 +79,73 @@ public final Tile[] pathToCook = new Tile[] {
 	public Player player = ctx.players.local();
 	public Vars Vars = new Vars();
 	boolean q = true;//only runs once.
+	
+	
+	Tile dest = new Tile(-1,-1,-1);
+	ArrayList<Tile> sortedPath = new ArrayList<Tile>();
+	
 	public void execute() {
+		
+			/*
+			if(ctx.movement.destination().matrix(ctx).reachable()&&
+					dest!=ctx.movement.destination()&& !ctx.players.local().inMotion()){
+			    Tile prev = dest;
+				dest = ctx.movement.destination();
+				//System.out.println("Dest is now : " + dest);  
+			System.out.println("new DeltaWebLine(new Tile"+prev + ",new Tile" + ctx.movement.destination() + "),");
+			Method.sleep(700);
+			}
+			*/
+		 
+		/*
+		 
+		 
+		 //System.out.println("Size of path : " + path.length);
+		for(Tile i : path){
+			 
+			 
+			 for(Tile f : path){
+					
+					if(i.distanceTo(f)<3){
+						
+					   sortedPath.add(i);
+						
+					}else if(!sortedPath.contains(i))
+							sortedPath.add(i);
+				}
+			 
+		 }
+		 //System.out.println("Size of sortedPath : " + sortedPath.size());
+		 
+	
+		 
+			Tile temp = new Tile(-1,-1,-1);
+			Tile first = new Tile(-2,-1,-1);
+			
+			for(Tile t : sortedPath){
+				
+				if(t.distanceTo(temp)>15){
+					temp=t;
+					first = t;
+					 System.out.println("new DeltaWebLine(new Tile"+temp + ",new Tile" + first + "),");
+				}else
+				if(first==temp){
+					first = t;
+					 System.out.println("new DeltaWebLine(new Tile"+temp + ",new Tile" + first + "),");
+					temp = t;
+				}else{
+					first = t;
+					System.out.println("new DeltaWebLine(new Tile"+first + ",new Tile" + temp + "),");
+					temp = t;
+				}
+				
+			}
+			ctx.controller.stop();//*/
+			//___________________
+
+		  
+		
+		
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		Method.resetTeleporting();
 		DeltaQuester.numSteps = 3;
@@ -105,6 +176,8 @@ public final Tile[] pathToCook = new Tile[] {
 			cs0();//Speak to the cook and start the quest
 		}
 	}
+
+
 
 	private void failsafe() {
 		if(Method.objIsNotNull(78695)){//if player gets stuck in basement at lumbridge castle

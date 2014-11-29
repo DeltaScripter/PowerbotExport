@@ -10,7 +10,7 @@ import org.powerbot.script.rt6.Hud.Window;
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
-public class DragonSlayer extends Node{
+public class DragonSlayer extends DeltaNode{
 
 	public DragonSlayer(ClientContext ctx) {
 		super(ctx);

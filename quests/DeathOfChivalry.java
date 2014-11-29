@@ -1,3 +1,4 @@
+package quests;
 /*package quests;
 
 import lodestoneActivator.Data.TeleportLode;

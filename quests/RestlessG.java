@@ -4,8 +4,6 @@ package quests;
 
 
 
-import java.util.ArrayList;
-
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Npc;
@@ -14,7 +12,7 @@ import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
 
-public class RestlessG extends Node{
+public class RestlessG extends DeltaNode{
 
 
 

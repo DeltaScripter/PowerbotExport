@@ -12,7 +12,7 @@ import quests.Vars.TeleportType;
 
 
 
-public class DemonSlayer extends Node {
+public class DemonSlayer extends DeltaNode {
 
 	public DemonSlayer(ClientContext ctx) {
 		super(ctx);

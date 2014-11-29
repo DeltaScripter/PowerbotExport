@@ -10,7 +10,7 @@ import org.powerbot.script.rt6.Skills;
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
-public class MineIsYours extends Node{
+public class MineIsYours extends DeltaNode{
 
 	public MineIsYours(ClientContext ctx) {
 		super(ctx);

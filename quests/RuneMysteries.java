@@ -1,3 +1,4 @@
+package quests;
 /*package quests;
 
 import java.awt.Graphics;

@@ -179,7 +179,7 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 			okButton = new JButton();
 			scrollPane1 = new JScrollPane();
 			textArea1 = new JTextArea();
-			questComboBox = new JComboBox<>();
+			questComboBox = new JComboBox();
 
 			//======== this ========
 			setTitle("Delta 07 Quester");

@@ -8,7 +8,7 @@ import org.powerbot.script.rt6.Player;
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
-public class PiratesTreasure extends Node{
+public class PiratesTreasure extends DeltaNode{
 
 	
 	public PiratesTreasure(ClientContext ctx) {

@@ -7,7 +7,7 @@ import org.powerbot.script.rt6.Player;
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
-public class ElementalWorkshop1 extends Node{
+public class ElementalWorkshop1 extends DeltaNode{
 
 	public ElementalWorkshop1(ClientContext ctx) {
 		super(ctx);

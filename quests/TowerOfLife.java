@@ -1,3 +1,4 @@
+package quests;
 /*package quests;
 
 import org.powerbot.script.Filter;

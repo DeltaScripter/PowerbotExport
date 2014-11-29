@@ -12,7 +12,7 @@ import org.powerbot.script.rt6.Skills;
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
-public class BuyersAndCellars extends Node {
+public class BuyersAndCellars extends DeltaNode {
 	public BuyersAndCellars(ClientContext ctx) {
 		super(ctx);
 	}

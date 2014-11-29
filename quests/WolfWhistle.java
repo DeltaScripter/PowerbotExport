@@ -9,7 +9,7 @@ import org.powerbot.script.rt6.Npc;
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
-public class WolfWhistle extends Node{
+public class WolfWhistle extends DeltaNode{
 
 
 

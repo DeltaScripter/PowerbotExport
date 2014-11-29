@@ -5,8 +5,8 @@ import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Component;
 
-import dqbody.DeltaQuester;
-import dqbody.Method;
+import quests.DeltaQuester;
+import quests.Method;
 
 
 public class GrandExchange extends ClientAccessor{

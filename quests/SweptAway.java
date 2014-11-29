@@ -10,7 +10,7 @@ import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
 
-public class SweptAway extends Node {
+public class SweptAway extends DeltaNode {
 
 
 

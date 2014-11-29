@@ -10,7 +10,7 @@ import org.powerbot.script.rt6.Skills;
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
-public class TheKnightsSword extends Node{
+public class TheKnightsSword extends DeltaNode{
 
 	public TheKnightsSword(ClientContext ctx) {
 		super(ctx);

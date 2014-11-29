@@ -9,7 +9,7 @@ import lodestoneActivator.Data.TeleportType;
 
 
 
-public class Biohazard extends Node{
+public class Biohazard extends DeltaNode{
 
 	public Biohazard(ClientContext ctx) {
 		super(ctx);

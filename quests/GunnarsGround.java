@@ -7,7 +7,7 @@ import org.powerbot.script.rt6.Player;
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
-public class GunnarsGround extends Node{
+public class GunnarsGround extends DeltaNode{
 
 	
 	public GunnarsGround(ClientContext ctx) {

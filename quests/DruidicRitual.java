@@ -10,7 +10,7 @@ import quests.Vars.TeleportType;
 
 
 
-public class DruidicRitual extends Node{
+public class DruidicRitual extends DeltaNode{
 
 	public DruidicRitual(ClientContext ctx) {
 		super(ctx);

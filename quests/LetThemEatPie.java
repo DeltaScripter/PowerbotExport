@@ -8,7 +8,7 @@ import org.powerbot.script.rt6.Player;
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
-public class LetThemEatPie extends Node{
+public class LetThemEatPie extends DeltaNode{
 
 public LetThemEatPie(ClientContext ctx) {
 		super(ctx);

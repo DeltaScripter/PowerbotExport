@@ -9,7 +9,7 @@ import quests.Vars.TeleportType;
 
 
 
-public class ImpCatcher extends Node {
+public class ImpCatcher extends DeltaNode {
 
 	
 	public ImpCatcher(ClientContext ctx) {
