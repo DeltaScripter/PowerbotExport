@@ -1,14 +1,15 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
-
 public class Caveslime extends SlayerNode{
 
-	public Caveslime(MethodContext ctx) {
+	public Caveslime(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -16,7 +17,7 @@ public class Caveslime extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public boolean activate() {
-		return slayerbody.currentTask=="cave slime" && ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="cave slime" && ctx.varpbits.varpbit(183)!=0;
 	}
 
 	Tile[] myTiles = new Tile[] { new Tile(3228, 3220, 0), new Tile(3233, 3216, 0), new Tile(3234, 3210, 0), 
@@ -27,11 +28,12 @@ public class Caveslime extends SlayerNode{
 			new Tile(3210, 3157, 0), new Tile(3204, 3155, 0), new Tile(3198, 3152, 0), 
 			new Tile(3192, 3151, 0), new Tile(3186, 3152, 0), new Tile(3181, 3156, 0), 
 			new Tile(3179, 3162, 0), new Tile(3178, 3162, 0) };
+	
 	private int[] bankItems = {596};//unlit torch
 	private int[] amountOfItem = {1};
 	@Override
 	public void execute() {
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 		
 		if(slayerbody.goBank){
 			m.bankItems(bankItems, amountOfItem);

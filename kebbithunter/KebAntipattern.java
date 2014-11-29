@@ -212,6 +212,26 @@ public class KebAntipattern extends KebNode{
 			KebBody.antiPattern = false;
 			break;
 			
+		case 21:
+			KebBody.state = st;
+			for(GameObject rock : ctx.objects.select().id(66472,66496).first()){
+				if(rock.inViewport()){
+					ctx.mouse.move(rock.centerPoint());
+					m.sleep(Random.nextInt(100, 340));
+					ctx.mouse.move(f.x-Random.nextInt(100, 300),f.y+Random.nextInt(23, 230));
+				}else ctx.camera.turnTo(rock);
+			}
+			KebBody.antiPattern = false;
+			break;
+			
+		case 22:
+			if(ctx.hud.open(Window.SKILLS)){
+				m.sleep(Random.nextInt(2000, 3500));
+				ctx.mouse.move(f.x-Random.nextInt(50, 400),f.y+Random.nextInt(33, 330));
+			}
+			KebBody.antiPattern = false;
+			break;
+			
 			default:
 				KebBody.antiPattern = false;
 				break;

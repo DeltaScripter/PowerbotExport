@@ -125,7 +125,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 		   gePrice = 1700;
 				   //GeItem.getPrice(10117);//kebbit fur
 		    
-			huntAmount = Random.nextInt(23,26);
+			huntAmount = Random.nextInt(23,25);
 			addNode(new hunt(ctx));
 			addNode(new bank(ctx));
 			addNode(new KebAntipattern(ctx));

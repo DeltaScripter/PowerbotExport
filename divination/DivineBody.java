@@ -1,4 +1,4 @@
-package divination;
+/*package divination;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -598,7 +598,7 @@ public class DivineBody extends PollingScript implements PaintListener{
 			} catch (IOException e) {
 				return null;
 			}
-		}*/
+		}
 private Font myFont = new Font("Consolas",Font.BOLD,15);
 private Font myStateFont = new Font("Arial Black",Font.BOLD,14);
 //private final Image paint = getImage("http://img546.imageshack.us/img546/8859/i52e.png");
@@ -816,3 +816,4 @@ private void setMouse(Graphics g) {
 	
 
 }
+*/

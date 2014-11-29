@@ -1,4 +1,4 @@
-package divination;
+/*package divination;
 
 import java.util.ArrayList;
 
@@ -300,3 +300,4 @@ Timer timer = new Timer(0);
 		return 0;
 	}
 }
+*/

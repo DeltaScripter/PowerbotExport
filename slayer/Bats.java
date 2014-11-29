@@ -1,14 +1,15 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
 
+
 public class Bats extends SlayerNode{
 
-	public Bats(MethodContext ctx) {
+	public Bats(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -23,12 +24,12 @@ public class Bats extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public boolean activate() {
-		return slayerbody.currentTask=="bats" && ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="bats" && ctx.varpbits.varpbit(183)!=0;
 	}
 
 	@Override
 	public void execute() {//2581,3481
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 		
 		if(new Tile(2755,3406,0).distanceTo(local)<25){//bat area
 			m.fightNPC(78, "Attack");//bats

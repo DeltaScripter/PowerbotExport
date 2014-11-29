@@ -1,17 +1,16 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Random;
-import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.Area;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Area;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
-
 public class Ghouls extends SlayerNode{
 
-	public Ghouls(MethodContext ctx) {
+	public Ghouls(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -46,17 +45,17 @@ public class Ghouls extends SlayerNode{
 			new Tile(3391, 3485, 0), new Tile(3397, 3487, 0), new Tile(3403, 3488, 0) };
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&slayerbody.mask)==31&& ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="ghoul"&& ctx.varpbits.varpbit(183)!=0;
 	}
 
 	@Override
 	public void execute() {
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 		
 		if( new Tile(3429, 3460, 0).distanceTo(local)<20&&otherSide.contains(local)){
 			teleported = false;
 			baseTile = null;
-			if(m.getInteractingNPC()!=null && ctx.players.local().isInCombat()){
+			if(m.getInteractingNPC()!=null && ctx.players.local().inCombat()){
 				m.fightNPC(1218,"Attack");//Banshee
 			}else m.npcInteract(1218, "Attack");//Banshee
 		}else
@@ -68,22 +67,22 @@ public class Ghouls extends SlayerNode{
 				
 				if(baseTile!=null){
 					m.displayTileDifference(baseTile);
-					if(new Tile(baseTile.getX()+35,baseTile.getY()-19,0).distanceTo(local)<4){//exit loc
+					if(new Tile(baseTile.x()+35,baseTile.y()-19,0).distanceTo(local)<4){//exit loc
 						m.interactO(3443, "Pass-through", "Exit");//exit
 					}else
-					if(new Tile(baseTile.getX()+29,baseTile.getY()-9,0).getMatrix(ctx).isReachable()){//second door
-						m.clickOnMap(new Tile(baseTile.getX()+35,baseTile.getY()-19,0));//exit loc
-					}else if(new Tile(baseTile.getX()+25,baseTile.getY()-9,0).distanceTo(local)<7){//second door loc
+					if(new Tile(baseTile.x()+29,baseTile.y()-9,0).matrix(ctx).reachable()){//second door
+						m.clickOnMap(new Tile(baseTile.x()+35,baseTile.y()-19,0));//exit loc
+					}else if(new Tile(baseTile.x()+25,baseTile.y()-9,0).distanceTo(local)<7){//second door loc
 						m.interactO(3445, "Open", "Door");//last door
 					}else
-					if(new Tile(baseTile.getX(),baseTile.getY()-14,0).getMatrix(ctx).isReachable()){
-						m.clickOnMap(new Tile(baseTile.getX()+25,baseTile.getY()-9,0));//walk to second door
-					}else if(new Tile(baseTile.getX(),baseTile.getY()-14,0).distanceTo(local)<7){//first door loc
+					if(new Tile(baseTile.x(),baseTile.y()-14,0).matrix(ctx).reachable()){
+						m.clickOnMap(new Tile(baseTile.x()+25,baseTile.y()-9,0));//walk to second door
+					}else if(new Tile(baseTile.x(),baseTile.y()-14,0).distanceTo(local)<7){//first door loc
 						m.interactO(3444, "Open", "Door");//first
-					}else m.clickOnMap(new Tile(baseTile.getX(),baseTile.getY()-14,0));//first door loc
+					}else m.clickOnMap(new Tile(baseTile.x(),baseTile.y()-14,0));//first door loc
 				}else{
 					m.state("Determining location..");
-					ctx.game.sleep(6500);
+					m.sleep(6500);
 					baseTile = local;
 				}
 			}else

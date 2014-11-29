@@ -1,15 +1,15 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Npc;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
-
 public class Ghosts extends SlayerNode{
 
-	public Ghosts(MethodContext ctx) {
+	public Ghosts(ClientContext ctx) {
 		super(ctx);
 		
 	}
@@ -24,28 +24,18 @@ public class Ghosts extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==9&&ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="ghosts" && ctx.varpbits.varpbit(183)!=0;
 	}
 
 	@Override
 	public void execute() {
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 		
 		if(new Tile(2895,9848,0).distanceTo(local)<30){//ghost area
 			teleported = false;
-				if(!ctx.players.local().isInMotion()){
 				  for(Npc ghost: ctx.npcs.select().nearest().id(5342,5343,5344,5345,5346,5347).first()){
-					 if(m.getInteractingNPC()==null){
-						 if(ghost.getLocation().distanceTo(local)<7){
-						   if(!ghost.interact("Attack")){
-						  	 ctx.camera.turnTo(ghost.getLocation().randomize(2, 3));
-						   }
-						 }else m.clickOnMap(ghost.getLocation());
-					 }else
-					  m.fightNPC(ghost.getId(), "Attack");
+					 m.fightNPC(ghost.id(), "Attack");
 				  }
-				}
-			
 		}else if(m.objIsNotNull(74990)){//in cave
 			m.clickOnMap(new Tile(2895,9848,0));
 		}else if(new Tile(2887,3394,0).distanceTo(local)<7){//cave entrance

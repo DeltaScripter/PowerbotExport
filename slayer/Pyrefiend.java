@@ -1,16 +1,16 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Random;
-import org.powerbot.script.wrappers.Npc;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Area;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
-
 public class Pyrefiend extends SlayerNode{
 
-	public Pyrefiend(MethodContext ctx) {
+	public Pyrefiend(ClientContext ctx) {
 		super(ctx);
 	}
 	Tile[] toFiend = new Tile[] {
@@ -32,27 +32,27 @@ public class Pyrefiend extends SlayerNode{
 			new Tile(2790, 3613, 0), new Tile(2795, 3614, 0) };
 	@Override
 	public boolean activate() {
-		return (((ctx.settings.get(2091)>>slayerbody.push&0x1F)==4|| (ctx.settings.get(2091)>>slayerbody.push&0x1F)==25 )&& ctx.settings.get(183)!=0);
+		return slayerbody.currentTask=="pyrefiend"&& ctx.varpbits.varpbit(183)!=0;
 	}
 
 	SMethod m = new SMethod(ctx);
 	private boolean teleported = false;
 	@Override
 	public void execute() {
-   Tile local = ctx.players.local().getLocation();
+   Tile local = ctx.players.local().tile();
 		if(new Tile(2757,10006,0).distanceTo(local)<20){
 			teleported = false;
 			for(Npc gob: ctx.npcs.select().id(1633,1634,1635,1636).nearest().first()){
-				if(!ctx.players.local().isInMotion()&& m.getInteractingNPC()==null){
-					if(gob.getLocation().distanceTo(local)<7){
+				if(!ctx.players.local().inMotion()&& m.getInteractingNPC()==null){
+					if(gob.tile().distanceTo(local)<7){
 						if(!gob.interact("Attack")){
-							ctx.camera.turnTo(gob.getLocation().randomize(1, 3));
-						}else ctx.game.sleep(Random.nextInt(1000, 2000));
-					}else m.clickOnMap(gob.getLocation());
-				}else m.fightNPC(gob.getId(), "Attack");
+							ctx.camera.turnTo(gob.tile().derive(1, 3));
+						}else m.sleep(Random.nextInt(1000, 2000));
+					}else m.clickOnMap(gob.tile());
+				}else m.fightNPC(gob.id(), "Attack");
 			}
 		}else
-   if(new Tile(2808,10002,0).getMatrix(ctx).isReachable()){
+   if(new Tile(2808,10002,0).matrix(ctx).reachable()){
 	   m.simpleWalk(toFiend, "Walking to pyrefiends");
    }else
 		if(new Tile(2795,3615,0).distanceTo(local)<7){

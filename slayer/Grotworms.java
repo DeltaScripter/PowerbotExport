@@ -1,14 +1,16 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Area;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
-
 public class Grotworms extends SlayerNode{
 
-	public Grotworms(MethodContext ctx) {
+	public Grotworms(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -20,22 +22,22 @@ public class Grotworms extends SlayerNode{
 			new Tile(2996, 3228, 0), new Tile(2991, 3232, 0), new Tile(2989, 3237, 0) };
 	@Override
 	public boolean activate() {
-		return (slayerbody.currentTask=="grotworms"&& ctx.settings.get(183)!=0);
+		return (slayerbody.currentTask=="grotworms"&& ctx.varpbits.varpbit(183)!=0);
 	}
 
 	@Override
 	public void execute() {
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 		
 		if(m.objIsNotNull(71039)){
 			if(baseTile!=null){
 				//m.displayTileDifference(baseTile);
-				if(new Tile(baseTile.getX()-33,baseTile.getY()-1,0).distanceTo(local)<25){//grotworm area
+				if(new Tile(baseTile.x()-33,baseTile.y()-1,0).distanceTo(local)<25){//grotworm area
 					teleported = false;
 						m.fightNPC(15461,"Attack");//Grotworms
-				}else m.clickOnMap(new Tile(baseTile.getX()-33,baseTile.getY()-1,0));//grotworm area
+				}else m.clickOnMap(new Tile(baseTile.x()-33,baseTile.y()-1,0));//grotworm area
 			}else {
-				ctx.game.sleep(3000);
+				m.sleep(3000);
 				baseTile = local;
 			}
 		}else

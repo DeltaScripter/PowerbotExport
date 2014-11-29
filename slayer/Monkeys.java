@@ -1,15 +1,16 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Area;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Area;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
-
 public class Monkeys extends SlayerNode{
 
-	public Monkeys(MethodContext ctx) {
+	public Monkeys(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -29,20 +30,20 @@ public class Monkeys extends SlayerNode{
 			new Tile(2819, 3215, 0) });
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==20&& ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="monkey"&& ctx.varpbits.varpbit(183)!=0;
 	}
 
 	@Override
 	public void execute() {
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 		final String opt[] = {"Yes"};
-		while(ctx.settings.get(1113)!=0){
+		while(ctx.varpbits.varpbit(1113)!=0){
 			m.state("Cutscene");
 		}
 		if(new Tile(2880,3161,0).distanceTo(local)<24){//money area
 			teleported = false;
 			m.fightNPC(132, "Attack");
-		}else if(new Tile(2956,3143,1).getMatrix(ctx).isReachable()&&ctx.game.getPlane()==1){//on boat
+		}else if(new Tile(2956,3143,1).matrix(ctx).reachable()&&ctx.game.floor()==1){//on boat
 			m.interactO(2082, "Cross", "Plank");
 		}else
 		if(island.contains(local)){

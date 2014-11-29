@@ -1,15 +1,16 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Npc;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Area;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
-
 public class Skeletons extends SlayerNode{
 
-	public Skeletons(MethodContext ctx) {
+	public Skeletons(ClientContext ctx) {
 		super(ctx);
 		
 	}
@@ -24,26 +25,18 @@ public class Skeletons extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&slayerbody.mask)==3&&ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="skeleton"&&ctx.varpbits.varpbit(183)!=0;
 	}
 
 	@Override
 	public void execute() {
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 		
 		if(new Tile(2884,9816,0).distanceTo(local)<30){//ghost area
 			teleported = false;
-				if(!ctx.players.local().isInMotion()){
+				if(!ctx.players.local().inMotion()){
 				  for(Npc ghost: ctx.npcs.select().nearest().id(90,5333,5334,5332).first()){
-					 if(m.getInteractingNPC()==null){
-						 System.out.println("getinteracting npc is null");
-						 if(ghost.getLocation().distanceTo(local)<7){
-						   if(m.state("Attempting to attack: " + ghost.getName())&&
-								   !ghost.interact("Attack")){
-						  	 ctx.camera.turnTo(ghost.getLocation().randomize(2, 3));
-						   }
-						 }else m.clickOnMap(ghost.getLocation());
-					 }else m.fightNPC(ghost.getId(), "Attack");
+					 m.fightNPC(ghost.id(), "Attack");
 				  }
 				}
 			

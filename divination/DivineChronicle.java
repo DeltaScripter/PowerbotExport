@@ -1,4 +1,4 @@
-package divination;
+/*package divination;
 
 
 
@@ -75,3 +75,4 @@ public class DivineChronicle extends DivineNode{
 	}
 
 }
+*/

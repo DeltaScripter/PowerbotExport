@@ -1,20 +1,22 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Area;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
-
 public class Icefiends extends SlayerNode{
 
-	public Icefiends(MethodContext ctx) {
+	public Icefiends(ClientContext ctx) {
 		super(ctx);
 	}
 
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==7&&ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="icefiend"&&ctx.varpbits.varpbit(183)!=0;
 	}
 
 	Tile[] myTiles = new Tile[] { new Tile(2967, 3407, 0), new Tile(2970, 3413, 0), new Tile(2975, 3417, 0), 
@@ -29,7 +31,7 @@ public class Icefiends extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public void execute() {
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 		
 		if(new Tile(3005,3480,0).distanceTo(local)<20){//loc
 			teleported = false;

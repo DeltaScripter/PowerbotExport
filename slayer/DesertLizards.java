@@ -1,15 +1,15 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Npc;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
-
 public class DesertLizards extends SlayerNode{
 
-	public DesertLizards(MethodContext ctx) {
+	public DesertLizards(ClientContext ctx) {
 		super(ctx);
 	}
 	Tile[] pathToLizards = new Tile[] {
@@ -38,14 +38,14 @@ public class DesertLizards extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public boolean activate() {
-		return slayerbody.currentTask=="desert lizards" && ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="desert lizards" && ctx.varpbits.varpbit(183)!=0;
 	}
 
 	private int[] bankItems = {1823,6696};//water skins & ice cooler
 	private int[] amountOfItem = {2,70};
 	@Override
 	public void execute() {
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 	
 		if(m.inventoryGetCount(6696)<1){
 			slayerbody.goBank = true;
@@ -59,17 +59,17 @@ public class DesertLizards extends SlayerNode{
 		if(new Tile(3413,3034,0).distanceTo(local)<30){//liz area
 			for(Npc liz: ctx.npcs.select().id(2806,2808).nearest().first()){
 				if(m.getInteractingNPC()==null){
-					if(liz.getLocation().distanceTo(local)<7){
+					if(liz.tile().distanceTo(local)<7){
 						if(!liz.interact("Attack")){
-							ctx.camera.turnTo(liz.getLocation().randomize(2, 3));
+							ctx.camera.turnTo(liz.tile().derive(2, 3));
 						}
-					}else if(liz.getLocation().distanceTo(new Tile(3413,3034,0))<30){
-						m.clickOnMap(liz.getLocation());
+					}else if(liz.tile().distanceTo(new Tile(3413,3034,0))<30){
+						m.clickOnMap(liz.tile());
 					}
-				}else if(liz.getHealthPercent()<2){
+				}else if(liz.healthPercent()<2){
 					m.state("Using Ice cooler on lizard");
-					m.useItemOnNpc(6696, liz.getId(), "Use");
-				}else m.fightNPC(liz.getId(), "Attack");
+					m.useItemOnNpc(6696, liz.id(), "Use");
+				}else m.fightNPC(liz.id(), "Attack");
 			}
 		}else if(teleported){
 			m.simpleWalk(pathToLizards,"Walking to lizard area");

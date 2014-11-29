@@ -71,7 +71,7 @@ public class ChocoBody extends PollingScript<ClientContext> implements PaintList
 		stop();
 	}
 	  private boolean calcAntiPattern() {
-			int number = Random.nextInt(0,20);
+			int number = Random.nextInt(0,13);
 			if(number == 1){
 				antiPattern = true;
 				return true;
@@ -82,7 +82,7 @@ public class ChocoBody extends PollingScript<ClientContext> implements PaintList
 			ArrayList<String> actions = new ArrayList<String>();
 			
 			// if(!//timer.isRunning()){
-			for(Item t : ctx.backpack.select().id(i).first()){
+			for(Item t : ctx.backpack.select().id(i)){
 				//System.out.println(ctx.widgets.component(1477,122).component(0).boundingRect().getCenterY());
 				if(ctx.hud.open(Window.BACKPACK) && ctx.widgets.component(1473,31).contains(
 					t.component().centerPoint())){
@@ -100,6 +100,7 @@ public class ChocoBody extends PollingScript<ClientContext> implements PaintList
 							if(t.interact(string)){
 							System.out.println("Using " + string + " with item: " + o);
 							 sleep(Random.nextInt(2000, 2500));
+							 break;
 							}
 						}
 					}
@@ -113,6 +114,7 @@ public class ChocoBody extends PollingScript<ClientContext> implements PaintList
 					ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
 					ctx.mouse.scroll(true);
 					}
+				break;
 				}
 			//}else System.out.println("//timer1 running");
 		}
@@ -152,7 +154,7 @@ public class ChocoBody extends PollingScript<ClientContext> implements PaintList
 				state = "Crushing chocolate";
 				countTime = true;
 				
-				if(ctx.bank.close() && ctx.players.local().animation()!=1989){
+				if(ctx.bank.close() && ctx.players.local().animation()!=1989 && ctx.players.local().idle()){
 					crushChocolateBars();
 				}
 				

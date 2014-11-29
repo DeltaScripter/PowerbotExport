@@ -1,16 +1,15 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Random;
-import org.powerbot.script.wrappers.Npc;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
-
 public class Dwarves extends SlayerNode{
 
-	public Dwarves(MethodContext ctx) {
+	public Dwarves(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -23,26 +22,26 @@ public class Dwarves extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public boolean activate() {
-		return slayerbody.currentTask=="dwarves" && ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="dwarves" && ctx.varpbits.varpbit(183)!=0;
 	}
 
 	@Override
 	public void execute() {
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 		
 		if(new Tile(3015,3456,0).distanceTo(local)<40){//loc of dwarf
 			teleported = false;
 			for(Npc gob: ctx.npcs.select().id(3275,3268,3274,118).nearest().first()){
-				if(!ctx.players.local().isInMotion()&& m.getInteractingNPC()==null){
-					if(gob.getLocation().distanceTo(local)<7){
-						if(!gob.getLocation().getMatrix(ctx).isReachable()){
+				if(!ctx.players.local().inMotion()&& m.getInteractingNPC()==null){
+					if(gob.tile().distanceTo(local)<7){
+						if(!gob.tile().matrix(ctx).reachable()){
 							m.interactO(1530, "Open","Door");
 						}else
 						if(!gob.interact("Attack")){
-							ctx.camera.turnTo(gob.getLocation().randomize(1, 3));
-						}else ctx.game.sleep(Random.nextInt(1000, 2000));
-					}else m.clickOnMap(gob.getLocation());
-				}else m.fightNPC(gob.getId(), "Attack");
+							ctx.camera.turnTo(gob.tile().derive(1, 3));
+						}else m.sleep(Random.nextInt(1000, 2000));
+					}else m.clickOnMap(gob.tile());
+				}else m.fightNPC(gob.id(), "Attack");
 			}
 		}else if(teleported){
 			m.simpleWalk(myTiles, "Walking to dwarves");

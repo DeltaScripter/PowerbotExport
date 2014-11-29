@@ -1,32 +1,27 @@
 package slayer;
 
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
-import org.powerbot.script.lang.BasicNamedQuery;
-import org.powerbot.script.lang.ItemQuery;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.MethodProvider;
-import org.powerbot.script.methods.Hud.Window;
-import org.powerbot.script.util.Random;
-import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.GameObject;
-import org.powerbot.script.wrappers.Item;
-import org.powerbot.script.wrappers.Npc;
-import org.powerbot.script.wrappers.Tile;
-import org.powerbot.script.wrappers.TilePath;
-
-import unicow.DeltaUniBody;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientAccessor;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.GameObject;
+import org.powerbot.script.rt6.Hud.Window;
+import org.powerbot.script.rt6.Item;
+import org.powerbot.script.rt6.ItemQuery;
+import org.powerbot.script.rt6.MobileIdNameQuery;
+import org.powerbot.script.rt6.Npc;
 
 
-public class SMethod extends MethodProvider{
+public class SMethod extends ClientAccessor{
 
-	public SMethod(MethodContext arg0) {
+	public SMethod(ClientContext arg0) {
 		super(arg0);
 	}
 	public enum TeleportLode{
 		
-		VARROCK(new Tile(3214,3378,0)),FALADOR(new Tile(2965,3402, 0)), LUMMBRIDGE(new Tile(3233,3221, 0)),
+		CANIFIS(new Tile(3517,3515,0)),VARROCK(new Tile(3214,3378,0)),FALADOR(new Tile(2965,3402, 0)), LUMMBRIDGE(new Tile(3233,3221, 0)),
 		BURTHORPE(new Tile(2899,3543, 0)),CATHERBY(new Tile(2831,3451,0)),PORTSARIM(new Tile(3011,3217,0)),
 		DRAYNOR(new Tile(3107,3298,0)),ARDOUGNE(new Tile(2634,3348,0)), YANILLE(new Tile(2530,3095,0)),
 		SEERS( new Tile(2689,3482,0)),TAVERLY(new Tile(2877,3441,0)),EDGEVILLE(new Tile(3068,3505,0)),
@@ -39,10 +34,16 @@ public class SMethod extends MethodProvider{
 			return tile;
 		}
 	}
+	public void sleep(int millis){
+		try {
+			Thread.sleep(Math.max(5, (int) (millis * Random.nextDouble(0.85, 1.5))));
+		} catch (InterruptedException ignored) {
+		}
+	}
 	public boolean playerText(String string) {
-		if (ctx.widgets.get(137,90).isValid()) {
+		if (ctx.widgets.component(137,90).valid()) {
 			//state("Checking: " + string);
-			if (ctx.widgets.get(137,90).getChild(0).getText()
+			if (ctx.widgets.component(137,90).component(0).text()
 					.contains(string)) {
 				System.out.println("returning true for player text");
 				return true;
@@ -51,10 +52,14 @@ public class SMethod extends MethodProvider{
 		return false;
 	}
 	public enum TeleportType{
-		ARDOUGNE(22,"Ardougne"),BURTHHORPE(23,"Burthorpe"),CATHERBY(24,"Catherby"),DRAYNOR(25,"Draynor"),
-		FALADOR(27,"Falador"),LUMBRIDGE(28,"Lumbridge"),PORTSARIM(29,"Port Sarim"),
-		SEERS(30,"Seers"),TAVERLY(31,"Taverly"),VARROCK(32,"Varrock"),YANILLE(33,"Yanille"),
+		ARDOUGNE(22,"Ardougne"),BURTHHORPE(18,"Burthorpe"),CATHERBY(19,"Catherby"),DRAYNOR(20,"Draynor"),
+		FALADOR(22,"Falador"),LUMBRIDGE(23,"Lumbridge"),PORTSARIM(24,"Port Sarim"),
+		SEERS(25,"Seers"),TAVERLY(26,"Taverly"),VARROCK(27,"Varrock"),YANILLE(28,"Yanille"),
+		CANIFIS(34,"Canifis"),
 		FREMNICKPRIVINCE(36,"Fremnik Province"),KARAMJA(37,"Karamja"),EDGEVILLE(26,"Edgeville");
+		
+		
+		
 		int type;
 		String name;
 		int numMatch[] = {40,41,42,43,44,45,46,47,48,49,50,51,52,53};
@@ -73,18 +78,18 @@ public class SMethod extends MethodProvider{
 	}
 	public boolean backPackIsFull() {
 		ArrayList<Integer> inventory = new ArrayList<Integer>();
-		for(Item i : ctx.backpack.getAllItems()){
-				if(i.getId()!=-1)
-				inventory.add(i.getId());
+		for(Item i : ctx.backpack.items()){
+				if(i.id()!=-1)
+				inventory.add(i.id());
 		}
 		return inventory.size()>=28;
 	}
 	
 	public boolean EquipmentContains(int i) {
 		
-		if(!ctx.hud.isVisible(Window.WORN_EQUIPMENT)){
-			state("Opening equipment view");
-			ctx.hud.view(Window.WORN_EQUIPMENT);
+		if(!ctx.hud.opened(Window.WORN_EQUIPMENT)){
+			state("Opening equipment open");
+			ctx.hud.open(Window.WORN_EQUIPMENT);
 			sleep(2000);
 		}
 		if(!ctx.equipment.select().id(i).first().isEmpty()){
@@ -102,15 +107,17 @@ public class SMethod extends MethodProvider{
 		
 		ArrayList<Integer> itemsInBank= new ArrayList<Integer>();
 		
-		if(new Tile(2947,3368, 0).distanceTo(ctx.players.local().getLocation())<6){
-		if(ctx.bank.isOpen()){
+		if(new Tile(2947,3368, 0).distanceTo(ctx.players.local().tile())<6){
+		if(ctx.bank.opened()){
 			
+			//if backpack is full (of food?..) deposit everything
 			if(backPackIsFull()){
 				System.out.println("Inventory is full, depositing.");
 				ctx.bank.deposit(slayerbody.FOODID, bankItems.length);
 			}
+			//below is for depositing our inventory only once
 			while(!slayerbody.onceDepositInventory){
-				if(!ctx.bank.isOpen()){
+				if(!ctx.bank.opened()){
 					System.out.println("Bank is closed, breaking");
 					break;
 				}
@@ -118,43 +125,49 @@ public class SMethod extends MethodProvider{
 					System.out.println("Deposited inventory");
 					state("Depositing");
 					slayerbody.onceDepositInventory = true;
+					sleep(500);
 				}
 			}
 			
-			//Find all items in bank and store them
+			//Find all items in bank and store them in an arraylist
 			for(Item bankItem: ctx.bank.select()){
-				if(!itemsInBank.contains(bankItem.getId()))
-					itemsInBank.add(bankItem.getId());
+				if(!itemsInBank.contains(bankItem.id()))
+					itemsInBank.add(bankItem.id());
 			}
 			//Grabs the items we need from the bank
 			for(int i = 0; i<bankItems.length;){
 				
-				if(!ctx.bank.isOpen()){
+				if(!ctx.bank.opened()){//precaution for breaking a loop
 					System.out.println("Bank is not open, breaking for loop");
 					break;
 				}
-				
+				//amountOfItem = amount of the item you want in the inventory
+				//bankItems = the items you want from the bank
 				if(!itemsInBank.contains(bankItems[i])){
 					System.out.println("Cannot find item with ID: " + bankItems[i]);
 					i++;
 				}else
 				if(itemIsStackable(bankItems[i])>amountOfItem[i]){
+					System.out.println("Item is stackable and we now have enough of it");
 					i++;
 				}else if(inventoryGetCount(bankItems[i])==amountOfItem[i]){
+					System.out.println("Have enough of item in inventory, equal amount");
 					i++;
 				}else if(inventoryGetCount(bankItems[i])>amountOfItem[i]){
 					state("Depositing item of overabundunce");
 					ctx.bank.deposit(bankItems[i],(inventoryGetCount(bankItems[i])-amountOfItem[i]) );
 				}else {
+					System.out.println("Current spot in array, "+ i);
 					System.out.println("Amount of item currently in inventory: "+inventoryGetCount(bankItems[i]));
 					ctx.bank.withdraw(bankItems[i], (amountOfItem[i]-inventoryGetCount(bankItems[i])));
-					ctx.game.sleep(2000);
+					sleep(2000);
 				}
 			}
-			while(inventoryGetCount(slayerbody.FOODID)<(10)){
+			//Food stuff below
+			while(inventoryGetCount(slayerbody.FOODID)<(15)){
 				System.out.println("Withdrawing food");
 				state("Attempting to withdraw food");
-				if(!ctx.bank.isOpen()){
+				if(!ctx.bank.opened()){
 					System.out.println("Bank is closed, breaking");
 					break;
 				}
@@ -163,19 +176,21 @@ public class SMethod extends MethodProvider{
 					break;
 				}
 				//System.out.println("Taking out "+(25 - (bankItems.length+10) -inventoryGetCount(slayerbody.FOODID))+ " of food");
-				ctx.bank.withdraw(slayerbody.FOODID, (10));
+				ctx.bank.withdraw(slayerbody.FOODID, (15));
 			}
-			while(inventoryGetCount(slayerbody.FOODID)>(10)){
+			while(inventoryGetCount(slayerbody.FOODID)>(15)){
 				System.out.println("Depositing food; too much in inventory - need 10");
-				if(!ctx.bank.isOpen()){
+				if(!ctx.bank.opened()){
 					System.out.println("Bank is closed, breaking");
 					break;
 				}
 				//System.out.println("Taking out "+(25 - (bankItems.length+10) -inventoryGetCount(slayerbody.FOODID))+ " of food");
-				ctx.bank.deposit(slayerbody.FOODID, (inventoryGetCount(slayerbody.FOODID)-10));
+				ctx.bank.deposit(slayerbody.FOODID, (inventoryGetCount(slayerbody.FOODID)-15));
 			}
 			System.out.println("Finished banking");
 			once = false;
+			hasFood = true;
+			slayerbody.currentTask ="Finished task, getting new one";
 			slayerbody.goBank = false;
 			
 		}else{
@@ -184,7 +199,7 @@ public class SMethod extends MethodProvider{
 		}
 	 }else if(teleBank){
 		   ctx.movement.newTilePath(pathToBank).traverse();
-		}else if(TeleportLode.FALADOR.getTile().distanceTo(ctx.players.local().getLocation())<30){
+		}else if(TeleportLode.FALADOR.getTile().distanceTo(ctx.players.local().tile())<30){
 			teleBank = true;
 		}else teleportTo(TeleportType.FALADOR.getTeleport(),"Falador");
 		
@@ -192,63 +207,53 @@ public class SMethod extends MethodProvider{
 
 	private int itemIsStackable(int id) {
 		for(Item i:ctx.backpack.select().id(id)){
-			return i.getStackSize();
+			return i.stackSize();
 		}
 		return 0;
 	}
 
 	public int inventoryGetCount(int i) {
-		if(!ctx.hud.isOpen(Window.BACKPACK) || !ctx.hud.isVisible(Window.BACKPACK))
+		if(!ctx.hud.opened(Window.BACKPACK) || !ctx.hud.opened(Window.BACKPACK))
 			ctx.hud.open(Window.BACKPACK);
 		
 		ItemQuery<Item> g;
 		g = null;
 		g = ctx.backpack.select().id(i);
 		for(Item h:ctx.backpack.select().id(i)){
-		 if(h.getStackSize()>2){
-			 return h.getStackSize();
+		 if(h.stackSize()>2){
+			 return h.stackSize();
 		 }
 		}
 	
 		return g.count(false);
 	}
-	private Web web;
-	Timer wait = new Timer(0);
 	public boolean state (String txt){
 		slayerbody.state = txt;
 		return true;
 	}
 	public boolean byCloseLoc(Tile loc, int dist) {
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 		
 		if(local.distanceTo(loc)<dist){
 			return true;
-		}else clickOnMap(loc);
+		}else ctx.movement.step(loc);
 		
 		return false;
 	}
 	public boolean objIsByTile(Tile tile, int object, int dist) {
 		for(GameObject obj : ctx.objects.select().id(object).nearest(tile)){
-			if(obj.getLocation().distanceTo(tile)<dist){
+			if(obj.tile().distanceTo(tile)<dist){
 				return true;
 			}
 		}
 		return false;
 	}
-	public boolean canMakePath(Tile dest) {
-		 web = new Web(ctx, ctx.players.local().getLocation(), dest );
-			
-			if(web.getPath()!=null && web.walk()){
-				//System.out.println("path is not null");
-				return true;
-			}
-		return false;
-	}
+
 	static ArrayList<Tile> path = new ArrayList<Tile>();
 	boolean oncew = false;
 	boolean pass = false;
 	public ArrayList<Tile> walkTo (Tile dest, String destName) {/*
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 		Tile[] nodes = new Tile[] { new Tile(3108, 3288, 0), new Tile(3108, 3282, 0), new Tile(3106, 3276, 0), 
 				new Tile(3104, 3270, 0), new Tile(3103, 3264, 0), new Tile(3102, 3258, 0), 
 				new Tile(3102, 3252, 0), new Tile(3104, 3246, 0), new Tile(3105, 3240, 0), 
@@ -283,12 +288,12 @@ public class SMethod extends MethodProvider{
 					openList.add(nodes[i+1]);
 		}
 		while(!pass){
-			if(ctx.hud.isVisible(Window.FRIENDS)){System.out.println("Breaking, friends");break;}
+			if(ctx.hud.opened(Window.FRIENDS)){System.out.println("Breaking, friends");break;}
 			pass = true;
 		for(int o = 0; o < openList.size()-1; o++){
-			if(ctx.hud.isVisible(Window.FRIENDS)){System.out.println("Breaking, friends");break;}
+			if(ctx.hud.opened(Window.FRIENDS)){System.out.println("Breaking, friends");break;}
 			
-			local = ctx.players.local().getLocation();
+			local = ctx.players.local().tile();
 			//System.out.println("Our path tiles: " + openList.get(o) + " size: " + openList.size());
 			
 			int dist3 = (int)openList.get(o).distanceTo(dest);
@@ -324,7 +329,7 @@ public class SMethod extends MethodProvider{
 		
 		
 		/*
-		  web = new Web(ctx, ctx.players.local().getLocation(), dest );
+		  web = new Web(ctx, ctx.players.local().tile(), dest );
 			state("Walking eto "+destName + " " + web.getPath().getNext() );
 			if(web.getPath() != null && !wait.isRunning()) {
 				state("Walking to "+destName + " " + web.getPath().getNext() );
@@ -337,57 +342,46 @@ public class SMethod extends MethodProvider{
 	}
 	public void interactO(final int i, final String string, final String o) {
 		for(GameObject y: ctx.objects.select().id(i).nearest().first()){
-			if(y.isOnScreen() && y.interact(string)){
-			ctx.game.sleep(Random.nextInt(1200, 1600));
+			if(y.inViewport() && y.interact(string)){
+			sleep(Random.nextInt(600, 1600));
 			}else {
-				ctx.camera.turnTo(y.getLocation().randomize(2, 3));
+				ctx.camera.turnTo(y.tile().derive(2, 3));
 			}
 		}
 		
 	}
-	private Timer clickOnMap = new Timer(0);
 	public void clickOnMap (Tile loc){
-		System.out.println("Inside click on map");
-		if(!clickOnMap.isRunning()){
-		ctx.movement.stepTowards(ctx.movement.getClosestOnMap(loc));
-		clickOnMap = new Timer(Random.nextInt(1200, 2500));
-		}
-		
+		ctx.movement.step(ctx.movement.closestOnMap(loc.derive(1, 3)));
 	}
 	
-	private Timer timer = new Timer(0);
 	public void teleportTo(int loc, String teleName) {
 		final int[] widgetsInterference = {1184,1189,1244,105,1191,149,1199,438,1242,1186,1188,1350,149,667};
-		if(!timer.isRunning()){
-	
-			
+		
 		for(int i: widgetsInterference){
-			if(ctx.widgets.get(i,0).isVisible()){
+			if(ctx.widgets.component(i,0).valid()){
 				state("Clicking on map to close dialogue");
-				clickOnMap(ctx.players.local().getLocation());
-				timer = new Timer(2000);
+				clickOnMap(ctx.players.local().tile());
 			}
 		}
 		
-		if(ctx.bank.close() && ctx.widgets.get(1092,loc).isVisible()){//lodestone screen
-			state("Selecting teleport: " + teleName);
-			ctx.mouse.move(ctx.widgets.get(1092).getComponent(loc).getCenterPoint());
-			ctx.widgets.get(1092).getComponent(loc).click(true);
-			timer = new Timer(6000);
-		}else {
-			if (!ctx.players.local().isInCombat())
-				if (ctx.players.local().getAnimation() == -1){
-					ctx.widgets.get(1465,10).hover();
-					for(String t: ctx.menu.getItems()){
-						if(t.contains("Teleport")){
-							ctx.widgets.get(1465,10).click();//select lodestone button
-							timer = new Timer(1000);
-						}
+		
+		if(ctx.players.local().animation()==-1)
+			if(ctx.bank.close() && ctx.widgets.component(1092,loc).visible()){//lodestone screen
+				state("Selecting teleport: " + teleName);
+				ctx.mouse.move(ctx.widgets.component(1092,loc).centerPoint());
+				ctx.widgets.component(1092,loc).click(true);
+				sleep(3000);
+			}else {
+				if (!ctx.players.local().inCombat()){
+					if (ctx.players.local().animation() == -1){
+						ctx.widgets.component(1477,38).component(1).hover();//1477,59,1
+						ctx.widgets.component(1477,38).component(1).click();//select lodestone button
+							
 					}
+				}else slayerbody.state = "Waiting for character to not be in combat";
+			}		
 				
-				}
-		}		
-		}
+		
 	}
 	
 	
@@ -398,11 +392,11 @@ public class SMethod extends MethodProvider{
 		return false;
 	}
 	public void displayTileDifference(Tile tile) {
-		state("X: " + (ctx.players.local().getLocation().getX()-tile.getX()) + "Y: "+ (ctx.players.local().getLocation().getY()-tile.getY()));
+		state("X: " + (ctx.players.local().tile().x()-tile.x()) + "Y: "+ (ctx.players.local().tile().y()-tile.y()));
 		
 	}
 	public boolean handleDoor(Tile tile, int id, String action) {
-         Tile local = ctx.players.local().getLocation();
+         Tile local = ctx.players.local().tile();
          
          if(tile.distanceTo(local)<20 && objIsByTile(tile,id,8)){
         	 state("Handling door");
@@ -416,278 +410,214 @@ public class SMethod extends MethodProvider{
 	}
 	public int getInteractingNPCID()
     {
-        final BasicNamedQuery<Npc> npcs = ctx.npcs.select();
+        final MobileIdNameQuery<Npc> npcs = ctx.npcs.select();
        
         if(npcs != null && npcs.size() > 0)
             for(final Npc npc : npcs)
-                if(npc.getInteracting() != null && npc.getInteracting().equals(ctx.players.local())){
+                if(npc.interacting() != null && npc.interacting().equals(ctx.players.local())){
            
-                	return npc.getId();
+                	return npc.id();
                 }
         return 0;
     }
 	public Npc getInteractingNPC()
     {
-        final BasicNamedQuery<Npc> npcs = ctx.npcs.select();
+        final MobileIdNameQuery<Npc> npcs = ctx.npcs.select();
        
         if(npcs != null && npcs.size() > 0)
             for(final Npc npc : npcs)
-                if(npc.getInteracting() != null && npc.getInteracting().equals(ctx.players.local()))
+                if(npc.interacting() != null && npc.interacting().equals(ctx.players.local()))
                     return npc;
         return null;
     }
 	public void pressContinue(){
 		 int widgetID[] = {1191,1184,1187};
-		 if(ctx.widgets.get(1186,3).isVisible()){
-			 ctx.widgets.get(1186,3).click();
-			 ctx.environment.sleep(1200);
-		 }else if(ctx.widgets.get(1189,4).isVisible()){
-			 ctx.widgets.get(1189,4).click();
-			 ctx.environment.sleep(1200);
+		 if(ctx.widgets.component(1186,3).valid()){
+			 ctx.widgets.component(1186,3).click();
+			 sleep(1200);
+		 }else if(ctx.widgets.component(1189,4).valid()){
+			 ctx.widgets.component(1189,4).click();
+			sleep(1200);
 		 }
 		for(int both : widgetID){
-		    if(ctx.widgets.get(both,14).isVisible()){
-		    	ctx.widgets.get(both, 14).click();
-		    	ctx.environment.sleep(500);
+		    if(ctx.widgets.component(both,14).valid()){
+		    	ctx.widgets.component(both, 14).click();
+		    	sleep(500);
 		    }
 		}
 	}
 	private boolean closeInterfaces() {
-		int widgetInterference[] = {1188,1092,1186,1189};
+		int widgetInterference[] = {1188,1184,1092,1186,1189};
 		System.out.println("Inside close interfaces");
-		while((ctx.widgets.get(1244,23).isVisible())){//completed quest screen
+		while((ctx.widgets.component(1244,23).valid())){//completed quest screen
 			state("Closing completed quest screen");
-				ctx.widgets.get(1244,23).click(true);
+				ctx.widgets.component(1244,23).click(true);
 		}
-			while(ctx.bank.isOpen()){
+			while(ctx.bank.opened()){
 				ctx.bank.close();
 			}
 		for(int index: widgetInterference){
 			
-			if(ctx.widgets.get(index,0).isVisible()){
-				System.out.println("Closing an interaface");
+			if(ctx.widgets.component(index,0).valid()){
+				System.out.println("Closing an interface");
 				if(index==1186){
 					pressContinue();
 				}else{
 					state("Clicking on map to close dialogue");
-				clickOnMap(ctx.players.local().getLocation());
+				clickOnMap(ctx.players.local().tile().derive(Random.nextInt(2, 4),Random.nextInt(1, 3)));
 				return false;
 				}
 			  }
 			}
 		return true;
 	}
-	Timer SpeakTotimer = new Timer(0);
 	public void npcInteract(int i, String string) {
-		System.out.println("Inside npc interact");
 		for(Npc n : ctx.npcs.select().id(i).nearest().first()){
-			if(ctx.players.local().isInCombat()){
+			if(ctx.players.local().inCombat()){
 				System.out.println("Sleeping slightly from combat");
-				ctx.game.sleep(Random.nextInt(2000, 2300));
+				sleep(Random.nextInt(300, 730));
 			}
-			if(n.isOnScreen()){
-				System.out.println("on screen");
+			if(n.inViewport()){
 				if(!n.interact(string)){
 					System.out.println("failed to interact");
-					ctx.camera.turnTo(n.getLocation().randomize(1, 3));
-				}
+					ctx.camera.turnTo(n.tile().derive(1, 3));
+				}else sleep(Random.nextInt(400, 830));
 			}else {
-				System.out.println("not on screen");
-				ctx.camera.turnTo(n.getLocation().randomize(1, 3));
+				ctx.camera.turnTo(n.tile().derive(1, 3));
 			}
-			}
+		}
 		
 	}
-	Timer waitClick = new Timer(0);
 	public void fightNPC(int id, String action) {
 		
-		if(ctx.combatBar.isExpanded()){
-			
-			if(getInteractingNPC()==null && !waitClick.isRunning()){//if not in combat
-				for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
-					if(enemy.getLocation().distanceTo(ctx.players.local().getLocation())<7){
-						//DeltaUniBody.state = "Attacking npc";
-						ctx.game.sleep(2000);
-						npcInteract(enemy.getId(),"Attack");
-					}else ctx.movement.stepTowards(enemy.getLocation());
-				}
-			}else
-		for(int i = 0; i<9;i++){
-			System.out.println("Inside for loop for fighting");
-			//DeltaUniBody.state = "Fighting NPC";
-			if(ctx.players.local().getHealthPercent()<40){
-				System.out.println("Breaking; too low health");
-				break;
-			}
-			
-			if(getInteractingNPC()==null){
-				System.out.println("Breaking for loop, not in combat");
-				waitClick = new Timer(2000);
-				break;
-			}
-			
-			if(!ctx.players.local().isInCombat()){//in case we can't reach the cow + its attacking us
-				for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
-					if(enemy.getLocation().distanceTo(ctx.players.local().getLocation())<7&& !waitClick.isRunning()){
-						//DeltaUniBody.state = "Attacking npc";
-						npcInteract(enemy.getId(),"Attack");
-					}else ctx.movement.stepTowards(enemy.getLocation());
-				}
-			}else
-			if(ctx.combatBar.getActionAt(i).isReady()){
-				if(!waitClick.isRunning()){
-				
-							if (ctx.combatBar.getActionAt(i).select(true)) {
-								i++;
-								waitClick = new Timer(Random.nextInt(750, 1500));
-								ctx.game.sleep(Random.nextInt(400, 200));
-							} else {
-								ctx.combatBar.getActionAt(i).getComponent().click();
-								i++;
-								waitClick = new Timer(Random.nextInt(750, 1500));
-							}
-						}
-			}else i++;
-			
-			
-		}	
-			
-			
-		}else System.out.println("Please open the actionbar");
 		
-	}
-	/*
-	public void fightNPC(int id, String action) {
-		System.out.println("Inside fight npc with normal fight");
-		if(ctx.combatBar.isExpanded()){
-			//System.out.println("ID: "+getInteractingNPCID());
-			if(!ctx.players.local().isInCombat() || getInteractingNPC()==null){//if not in combat
-				System.out.println("Player not in combat, attempting to fight");
-				for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
-					if(enemy.getLocation().distanceTo(ctx.players.local().getLocation())<7){
-						if(!waitClick.isRunning())
-						npcInteract(enemy.getId(),action);
-						else System.out.println("Want to attack, but timer running: "+ waitClick.getRemaining());
-					}else {
-						System.out.println("Stepping towards npc");
-						ctx.movement.stepTowards(enemy.getLocation());
+		if (actionBarOpened())
+			if (!inCombat()) {
+				attackNPC(id, action);// /uses 'attack' on the npc we're fighting
+				slayerbody.state = "Waiting";
+			} else
+				for (int i = 0; i < 9; i++) {
+					//System.out.println("In for loop");
+					if (ctx.players.local().healthPercent() < 40) {
+						System.out.println("Breaking; too low health");
+						break;
 					}
+
+
+					if (!inCombat()) {
+						break;
+					} else if (ctx.combatBar.actionAt(i).ready()) {
+						slayerbody.state = "Fighting!";
+						if (ctx.combatBar.actionAt(i).select(true)) {
+							i++;
+							sleep(Random.nextInt(50, 200));
+						} else {
+							ctx.combatBar.actionAt(i).component().click();
+							i++;
+						}
+
+					} else i++;
+
 				}
-			}else if(getInteractingNPC()!=null&&
-					ctx.players.local().isInCombat()&&	state("Now fighting NPC"))
-		for(int i = 0; i<9;i++){
-			System.out.println("Within for loop");
-			foodSupport();
-			if(ctx.players.local().getHealthPercent()<60){
-				System.out.println("Health percent less than 60, breaking for loop");
-				break;
-			}
-			
-			if(getInteractingNPC()==null){
-				System.out.println("Breaking for loop, not in combat");
-				break;
-			}
-			if(ctx.combatBar.getActionAt(i).isReady()){
-				if(!waitClick.isRunning()){
-				//System.out.println("Clicking action: "+ ctx.combatBar.getActionAt(i).getId());
-					if(ctx.combatBar.getActionAt(i).isValid()&&
-							!ctx.combatBar.getActionAt(i).select()){
-					ctx.combatBar.getActionAt(i).getComponent().click();
-				    waitClick = new Timer(Random.nextInt(980, 1300));
-					}//else  waitClick = new Timer(Random.nextInt(980, 1300));
-				}else System.out.println("timer : "+waitClick.getRemaining());
-			}else i++;
-			
-		}	
-		}else state("Please open the action bar to continue");
-		
-	}
-	*/
-	
-	
-	/*boolean doneFight = false;
-	Timer killTimer = new Timer(0);
-	public void fightNPC(int id, String action, boolean specialFinish) {
-		System.out.println("Inside fightNPC - with special finish");
-		if(ctx.combatBar.isExpanded()){
-			//System.out.println("ID: "+getInteractingNPCID());
-			
-			if(!ctx.players.local().isInCombat() ||
-					getInteractingNPCID()!=id&&!ctx.players.local().isInCombat()){//if not in combat
-				for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
-					if(enemy.getLocation().distanceTo(ctx.players.local().getLocation())<7){
-						npcInteract(enemy.getId(),action);
-					}else ctx.movement.stepTowards(enemy.getLocation());
-				}
-			}else if(getInteractingNPC()!=null&&getInteractingNPCID()==id&&
-					ctx.players.local().isInCombat() )
-		for(int i = 0; i<9;){
-			foodSupport();
-			state("Fighting NPC");
-			if(ctx.players.local().getHealthPercent()<60){
-				System.out.println("Health percent less than 60, breaking for loop");
-				break;
-			}
-			
-			if(specialFinish && getInteractingNPC()!=null
-					&& getInteractingNPC().getHealthPercent()<2){
-				System.out.println("Breaking for special move");
-				break;
-			}
-			
-			if(getInteractingNPC()==null){
-				System.out.println("Breaking for loop, not in combat");
-				break;
-			}
-			
-			if(ctx.combatBar.getActionAt(i).isReady()){
-				if(!waitClick.isRunning()){
-				//System.out.println("Clicking action: "+ ctx.combatBar.getActionAt(i).getId());
-				ctx.combatBar.getActionAt(i).getComponent().click();
-				  waitClick = new Timer(750);
-				}
-			}else i++;
-		}	
-		}else state("Please open the action bar to continue");
 		
 	}
 	
-	*/
+	public boolean inCombat() {
+		return ctx.players.local().interacting().valid();
+	}
+	private boolean actionBarOpened() {
+		return ctx.combatBar.expanded();
+	}
+	private void attackNPC(int id, String action) {
+		
+		for(Npc enemy: ctx.npcs.select().id(id).nearest().first()){
+			
+			if(enemy.tile().distanceTo(ctx.players.local().tile())<6){
+
+				if(!ctx.players.local().inMotion() && enemy.valid()&&
+						enemy.healthPercent()>=20){
+					System.out.println("Enemy stance:" + enemy.stance());
+					System.out.println("Enemy healthpercent:" + enemy.healthPercent());
+					System.out.println("Enemy in combat:" + enemy.inCombat());
+				npcInteract(enemy.id(),action);
+				sleep(Random.nextInt(200, 400));
+				}
+				
+			}else if(!ctx.players.local().inMotion())
+				ctx.movement.step(enemy.tile().derive(2, 3));
+		}
+		
+	}
+	public static String format(final long millis) {
+		final StringBuilder sb = new StringBuilder();
+		final long totalseconds = millis / 1000L;
+		final long totalminutes = totalseconds / 60L;
+		final long totalhours = totalminutes / 60L;
+		final int seconds = (int) totalseconds % 60;
+		final int minutes = (int) totalminutes % 60;
+		final int hours = (int) totalhours % 24;
+		final int days = (int) (totalhours / 24);
+		if (days > 0) {
+		if (days < 10) {
+		sb.append(0);
+		}
+		sb.append(days);
+		sb.append(":");
+		}
+		if (hours < 10) {
+		sb.append(0);
+		}
+		sb.append(hours);
+		sb.append(":");
+		if (minutes < 10) {
+		sb.append(0);
+		}
+		sb.append(minutes);
+		sb.append(":");
+		if (seconds < 10) {
+		sb.append(0);
+		}
+		sb.append(seconds);
+		return sb.toString();
+		}
+	public GameObject getObject(int i) {
+		for(GameObject obj : ctx.objects.select().id(i).nearest().first()){
+			return obj;
+		}
+		return null;
+	}
 	
 	
-	private boolean hasFood = true;
-	Timer combatTimer = new Timer(0);
+	
+	public static boolean hasFood = true;
+	
 	public void foodSupport() {
 		//System.out.println("Inside food support");
-		if(ctx.widgets.get(1430,83).isVisible()){//health bar
-			double barHealth = ctx.widgets.get(1430,83).getChild(3).getWidth();
-			double maxHealth = ctx.widgets.get(1430,83).getChild(1).getWidth() + 32;
+		if(ctx.widgets.component(1430,83).valid()){//health bar
+			double barHealth = ctx.widgets.component(1430,83).component(3).width();
+			double maxHealth = ctx.widgets.component(1430,83).component(1).width() + 32;
 			slayerbody.health = (barHealth/maxHealth)*100;
 		}
 		 
-		 if(getInteractingNPC()!=null){//if fighting
-				combatTimer = new Timer(4000);
-		}
 		if(slayerbody.FOOD_FEATURE) {
-			if (ctx.players.local().getHealthPercent()<55) {
-				if(hasFood){
-				if(inventoryContains(slayerbody.FOODID)){
+			if (ctx.players.local().healthPercent()<55) {
+			  if(hasFood)
+				if(closeInterfaces() &&inventoryContains(slayerbody.FOODID)){
 					System.out.println("Attempting to eat food");
 					state("Food support initiated");
 					interactInventory(slayerbody.FOODID, "Eat","Food");
-					ctx.environment.sleep(1700, 2000);
 					}else hasFood = false;
-				}
+				
 			}
 		}
 	}
 	public boolean inventoryContains(String i) {
-		System.out.println("Inside inventorycontains(string)");
-		if(!ctx.hud.isVisible(Window.BACKPACK)){
-			while (ctx.bank.isOpen()){
+		//System.out.println("Inside inventorycontains(string)");
+		if(!ctx.hud.opened(Window.BACKPACK)){
+			while (ctx.bank.opened()){
 				ctx.bank.close();
 			}
-			ctx.hud.view(Window.BACKPACK);
+			ctx.hud.open(Window.BACKPACK);
 		}
 			while (!ctx.backpack.select().name(i).isEmpty()) {
 				return true;
@@ -696,12 +626,11 @@ public class SMethod extends MethodProvider{
 		return false;
 	}
 	public boolean inventoryContains(int i) {
-		System.out.println("Inside inventorycontains");
-		if(!ctx.hud.isVisible(Window.BACKPACK)){
-			while (ctx.bank.isOpen()){
+		if(!ctx.hud.opened(Window.BACKPACK)){
+			while (ctx.bank.opened()){
 				ctx.bank.close();
 			}
-			ctx.hud.view(Window.BACKPACK);
+			ctx.hud.open(Window.BACKPACK);
 		}
 			while (!ctx.backpack.select().id(i).isEmpty()) {
 				return true;
@@ -709,74 +638,51 @@ public class SMethod extends MethodProvider{
 		
 		return false;
 	}
-	public void interactInventory(final int i, final String string, final String o) {
-		ArrayList<String> actions = new ArrayList<String>();
-	//	System.out.println("Inside interacting inventory");
-		 if(!timer.isRunning()){
-		for(Item t : ctx.backpack.select().id(i).first()){
-			System.out.println("Inside interact inventory");
-			//System.out.println(ctx.widgets.get(1477,122).getChild(0).getBoundingRect().getCenterY());
-			if(ctx.hud.view(Window.BACKPACK) && closeInterfaces() && ctx.widgets.get(1473,7).contains(
-				t.getComponent().getCenterPoint())){
-				//System.out.println("Hovering");
+	public void interactInventory(final int id, final String string, final String o) {
+		if(closeInterfaces())
+		for(Item t : ctx.backpack.select().id(id).shuffle()){
+			if(ctx.hud.open(Window.BACKPACK) && ctx.widgets.component(1473,7).contains(
+				t.component().centerPoint())){
 				t.hover();
-				ctx.game.sleep(200);
-				String[] menuItems = ctx.menu.getItems();
-				for(String opt: menuItems){
-					if(!actions.contains(opt)){
-						actions.add(opt);
-					}
-				}
-				for(String text: actions){
-					if(text.contains(string)){
-						if(closeInterfaces())
-						if(t.interact(string)){
-						System.out.println("Using " + string + " with item: " + o);
-						 timer = new Timer(5500);
-						}
-					}
-				}
-				 
+				t.interact(string);
+				sleep(Random.nextInt(200,570));
+				 break;
 			}else
-			if(ctx.widgets.get(1473,7).getBoundingRect().getCenterY()>
-			t.getComponent().getBoundingRect().getCenterY()){
-				state("Scrolling through inventory");
-				ctx.mouse.move(ctx.widgets.get(1473, 7).getAbsoluteLocation());
+			if(ctx.widgets.component(1473,7).boundingRect().getCenterY()>
+			t.component().boundingRect().getCenterY()){
+				ctx.mouse.move(ctx.widgets.component(1473, 7).centerPoint());
 				ctx.mouse.scroll(false);
 			}else {
-				state("Scrolling through inventory");
-				ctx.mouse.move(ctx.widgets.get(1473, 7).getAbsoluteLocation());
+				ctx.mouse.move(ctx.widgets.component(1473, 7).centerPoint());
 				ctx.mouse.scroll(true);
 				}
 			}
-		}//else System.out.println("timer1 running");
 	}
+
 	public boolean isChatting(final String p) {
 		int[] widgets = {1184,1191,1187};
 		
 		for(int w : widgets){
-			if(ctx.widgets.get(w).isValid() && ctx.widgets.get(w,11).isVisible()){
+			if(ctx.widgets.component(w,1).valid()){
 				state("Speaking to: " + p);
-				SpeakTotimer = new Timer(5000);
 				pressContinue();
-				ctx.environment.sleep(900,1300);
+				sleep(300);
 				return true;
 			}
 		}
-		ctx.environment.sleep(1200,1300);
 		return false;
 	}
 	public  final int OPTIONVALUE[] = {11,12,18,19,23,24,28,29,33,34};
 	public  boolean findOption(String[] text) {
-		if(!ctx.widgets.get(1188).isValid()){
+		if(!ctx.widgets.component(1188,1).valid()){
 			return false;
 		}
 		for (String t:text) {
-			ctx.environment.sleep(20,50);
+			sleep(50);
 			for (int i :OPTIONVALUE) {
-				if (ctx.widgets.get(1188).isValid()&&ctx.widgets.get(1188, i).getText().contains(t)) {
+				if (ctx.widgets.component(1188,1).valid()&&ctx.widgets.component(1188, i).text().contains(t)) {
 					state("Attempting to click option");
-					ctx.mouse.click(ctx.widgets.get(1188, i).getAbsoluteLocation().x+10,ctx.widgets.get(1188, i).getAbsoluteLocation().y+3 , true);
+					ctx.mouse.click(ctx.widgets.component(1188, i).centerPoint().x+10,ctx.widgets.component(1188, i).centerPoint().y+3 , true);
 					return true; 
 				}
 			}
@@ -787,26 +693,23 @@ public class SMethod extends MethodProvider{
 		System.out.println("Inside useItemOnNPC");
 		state("Using item on npc");
 		if(closeInterfaces())
-		if(ctx.backpack.isItemSelected()){
+		if(ctx.backpack.itemSelected()){
 			npcInteract(npc,"Use");
 		}else if(inventoryContains(item))
 			interactInventory(item,"Use","Item");
 		
 	}
-	public void setGeneralCamera() {
-		if(ctx.camera.getPitch()<50){
+	public void setGeneralCamera(int camAngle) {
+		if(ctx.camera.pitch()<50){
 			state("Setting camera pitch");
-			ctx.camera.setPitch(60);
+			ctx.camera.pitch(camAngle);
 		}
 		
 	}
-	Timer wa = new Timer(0);
 	public void simpleWalk(Tile[] path, String string) {
-		if(!wa.isRunning()){
 			state(string);
-			ctx.movement.newTilePath(path).traverse();
-			wa = new Timer(Random.nextInt(2000, 3000));
-		}
+			ctx.movement.newTilePath(path).randomize(1, 2).traverse();
+			sleep(3500);
 		
 	}
 }

@@ -1,14 +1,14 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
 
 public class Bears extends SlayerNode{
 
-	public Bears(MethodContext ctx) {
+	public Bears(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -24,12 +24,12 @@ public class Bears extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public boolean activate() {
-		return slayerbody.currentTask=="bears" && ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="bears" && ctx.varpbits.varpbit(183)!=0;
 	}
 
 	@Override
 	public void execute() {
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 		
 		if(new Tile(2696,3344,0).distanceTo(local)<25){
 			teleported = false;

@@ -172,7 +172,7 @@ public class ShieldMainBody extends PollingScript<ClientContext> implements Pain
 				DecimalFormat formatter = new DecimalFormat("#,###,###");
 				moneyOHR = formatter.format((perHour));
 			}
-			System.out.println("After formatting it is : " + moneyOHR);
+			//System.out.println("After formatting it is : " + moneyOHR);
 			if(stringCount>0 ){
 				g.drawString("GP/HR: " + moneyOHR+ " GP", 9, 140);
 			}else 	g.drawString("GP/HR: Must wait until we bank atleast once..", 9, 140);

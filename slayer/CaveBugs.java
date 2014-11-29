@@ -1,16 +1,16 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Random;
-import org.powerbot.script.wrappers.Npc;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
 
 public class CaveBugs extends SlayerNode{
 
-	public CaveBugs(MethodContext ctx) {
+	public CaveBugs(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -21,7 +21,7 @@ public class CaveBugs extends SlayerNode{
 	private int[] amountOfItem = {1};
 	@Override
 	public boolean activate() {
-		return slayerbody.currentTask=="cavebugs" && ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="cavebugs" && ctx.varpbits.varpbit(183)!=0;
 	}
 
 	Tile[] myTiles = new Tile[] { new Tile(3228, 3220, 0), new Tile(3233, 3216, 0), new Tile(3234, 3210, 0), 
@@ -34,7 +34,7 @@ public class CaveBugs extends SlayerNode{
 			new Tile(3179, 3162, 0), new Tile(3178, 3162, 0) };
 	@Override
 	public void execute() {//1831-1832
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 		
 		if(slayerbody.goBank){
 			m.bankItems(bankItems, amountOfItem);
@@ -46,13 +46,13 @@ public class CaveBugs extends SlayerNode{
 		}else 
 		if(new Tile(3182,9548,0).distanceTo(local)<25){
 			for(Npc gob: ctx.npcs.select().id(1832).nearest().first()){
-				if(!ctx.players.local().isInMotion()&& m.getInteractingNPC()==null){
-					if(gob.getLocation().distanceTo(local)<7){
+				if(!ctx.players.local().inMotion()&& m.getInteractingNPC()==null){
+					if(gob.tile().distanceTo(local)<7){
 						if(!gob.interact("Attack")){
-							ctx.camera.turnTo(gob.getLocation().randomize(1, 3));
-						}else ctx.game.sleep(Random.nextInt(1000, 2000));
-					}else m.clickOnMap(gob.getLocation());
-				}else m.fightNPC(gob.getId(), "Attack");
+							ctx.camera.turnTo(gob.tile().derive(1, 3));
+						}else m.sleep(Random.nextInt(1000, 2000));
+					}else m.clickOnMap(gob.tile());
+				}else m.fightNPC(gob.id(), "Attack");
 			}
 		}else if(m.objIsNotNull(78695)){//in cave?
 			teleported = false;

@@ -1,16 +1,16 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Random;
-import org.powerbot.script.wrappers.Npc;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Area;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
-
 public class Harpieswarm extends SlayerNode{
 
-	public Harpieswarm(MethodContext ctx) {
+	public Harpieswarm(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -24,7 +24,7 @@ public class Harpieswarm extends SlayerNode{
 			new Tile(2860, 3109, 0), new Tile(2865, 3110, 0), new Tile(2868, 3110, 0) };
 	@Override
 	public boolean activate() {
-		return (slayerbody.currentTask=="harpie bug swarms" && ctx.settings.get(183)!=0);
+		return (slayerbody.currentTask=="harpie bug swarms" && ctx.varpbits.varpbit(183)!=0);
 	}
 	static boolean hasLantern = false;
 	
@@ -35,7 +35,7 @@ public class Harpieswarm extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public void execute() {
-   Tile local = ctx.players.local().getLocation();
+   Tile local = ctx.players.local().tile();
 	System.out.println("Here");
    while(!hasLantern && m.inventoryGetCount(7051)==1){
 	   m.state("Equipping bug lantern");
@@ -55,13 +55,13 @@ public class Harpieswarm extends SlayerNode{
 		if(new Tile(2868, 3110, 0).distanceTo(local)<18){
 			teleported = false;
 			for(Npc gob: ctx.npcs.select().id(3153).nearest().first()){
-				if(!ctx.players.local().isInMotion()&& m.getInteractingNPC()==null){
-					if(gob.getLocation().distanceTo(local)<7){
+				if(!ctx.players.local().inMotion()&& m.getInteractingNPC()==null){
+					if(gob.tile().distanceTo(local)<7){
 						if(!gob.interact("Attack")){
-							ctx.camera.turnTo(gob.getLocation().randomize(1, 3));
-						}else ctx.game.sleep(Random.nextInt(1000, 2000));
-					}else m.clickOnMap(gob.getLocation());
-				}else m.fightNPC(gob.getId(), "Attack");
+							ctx.camera.turnTo(gob.tile().derive(1, 3));
+						}else m.sleep(Random.nextInt(1000, 2000));
+					}else m.clickOnMap(gob.tile());
+				}else m.fightNPC(gob.id(), "Attack");
 			}
 		}else if(teleported){
 			m.simpleWalk(toSwarm, "Walking to goblins");

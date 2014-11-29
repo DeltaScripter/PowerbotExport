@@ -1,4 +1,4 @@
-package divination;
+/*package divination;
 
 import java.awt.Point;
 
@@ -196,4 +196,4 @@ public class DivineAntipattern extends DivineNode{
 	}
 	
 	
-}
+}*/

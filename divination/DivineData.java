@@ -1,4 +1,4 @@
-package divination;
+/*package divination;
 
 import org.powerbot.script.wrappers.Tile;
 
@@ -151,3 +151,4 @@ public enum TeleportLode{
 	}
 	
 }
+*/

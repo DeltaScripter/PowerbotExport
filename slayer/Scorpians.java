@@ -1,14 +1,16 @@
 package slayer;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.Area;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Npc;
 
 import slayer.SMethod.TeleportLode;
 import slayer.SMethod.TeleportType;
-
 public class Scorpians extends SlayerNode{
 
-	public Scorpians(MethodContext ctx) {
+	public Scorpians(ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -29,15 +31,15 @@ public class Scorpians extends SlayerNode{
 	private boolean teleported = false;
 	@Override
 	public boolean activate() {
-		return (ctx.settings.get(2091)>>slayerbody.push&0x1F)==13 && ctx.settings.get(183)!=0;
+		return slayerbody.currentTask=="scorpions" && ctx.varpbits.varpbit(183)!=0;
 	}
 
 	@Override
 	public void execute() {
-		Tile local = ctx.players.local().getLocation();
+		Tile local = ctx.players.local().tile();
 		
 		if(new Tile(3297,3293,0).distanceTo(local)<30){//scorpian area
-			if(ctx.players.local().isInCombat())
+			if(ctx.players.local().inCombat())
 				teleported = false;
 			m.fightNPC(107, "Attack");//scorpians 
 		}else if(teleported){

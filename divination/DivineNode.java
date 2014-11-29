@@ -1,4 +1,4 @@
-package divination;
+/*package divination;
 
 
 import org.powerbot.script.methods.MethodContext;
@@ -10,7 +10,7 @@ import org.powerbot.script.methods.MethodProvider;
 * Date: 17/06/13
 * Time: 16:36
 * To change this template use File | Settings | File Templates.
-*/
+
 
     public abstract class DivineNode extends MethodProvider {
 
@@ -25,4 +25,4 @@ import org.powerbot.script.methods.MethodProvider;
 
     public abstract void execute();
 
-}
+}*/

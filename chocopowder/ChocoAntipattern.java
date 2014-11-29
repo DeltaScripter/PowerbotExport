@@ -55,6 +55,7 @@ public class ChocoAntipattern extends ChocoNode{
 				}
 				if(!ctx.menu.opened())
 					ctx.mouse.click(false);
+				break;
 			}
 			ChocoBody.antiPattern = false;
 			break;
@@ -178,6 +179,7 @@ public class ChocoAntipattern extends ChocoNode{
 				if(g.inViewport()){
 					ctx.mouse.move(g.centerPoint());
 				}
+				break;
 			}
 			ChocoBody.antiPattern = false;
 			break;
@@ -191,6 +193,7 @@ public class ChocoAntipattern extends ChocoNode{
 					m.sleep(Random.nextInt(1200, 1600));
 					ctx.mouse.move(f.x-Random.nextInt(300, 10),f.y+Random.nextInt(0, 170));
 				}
+				break;
 			}
 			ChocoBody.antiPattern = false;
 			break;
@@ -209,6 +212,7 @@ public class ChocoAntipattern extends ChocoNode{
 					m.sleep(Random.nextInt(200, 600));
 					ctx.mouse.move(f.x-Random.nextInt(300, 10),f.y+Random.nextInt(154, 23));
 				}
+				break;
 			}
 			ChocoBody.antiPattern = false;
 			break;
