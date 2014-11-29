@@ -165,6 +165,7 @@ public final Tile[] pathToCook = new Tile[] {
 		if((ctx.varpbits.varpbit(2492)&0x3) ==2){
 			DeltaQuester.progress = 3;
 			Method.state("The Cook's Assistant quest has been completed.");
+			Method.sleep(2000);
 			DeltaQuester.e = true;
 		}else
 		if((ctx.varpbits.varpbit(2492)&0x1) ==1){
