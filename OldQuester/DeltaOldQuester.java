@@ -25,7 +25,7 @@ import javax.swing.*;
 
 
 @Script.Manifest(name = "O7 Quester", 
-description = "Completes 07 quests! want more? suggest some on thread!",properties = "client=4; topic = 1231910;")
+description = "Completes 07 quests! want more? suggest some on thread!",properties = "client=4; topic = 1231910")
 public class DeltaOldQuester extends PollingScript<ClientContext> implements PaintListener{
 
 	
