@@ -2,9 +2,9 @@ package flaxSpinner;
 
 import org.powerbot.script.rt6.ClientContext;
 
-public class goBank extends FlaxNode{
+public class FlaxgoBank extends FlaxNode{
 
-	public goBank(ClientContext ctx) {
+	public FlaxgoBank(ClientContext ctx) {
 		super(ctx);
 	}
 

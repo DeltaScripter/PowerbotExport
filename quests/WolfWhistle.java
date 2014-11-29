@@ -32,7 +32,7 @@ public class WolfWhistle extends DeltaNode{
 
 
 
-	public final Area bonesArea = new Area(new Tile[] {
+	public final DeltaArea bonesArea = new DeltaArea(new Tile[] {
 			new Tile(2847, 3475, 0), new Tile(2860, 3475, 0),
 			new Tile(2860, 3483, 0), new Tile(2845, 3483, 0) });
 

@@ -59,7 +59,7 @@ public class GunnarsGround extends DeltaNode{
 			new Tile(3081, 3425, 0), new Tile(3079, 3430, 0), new Tile(3079, 3435, 0), 
 			new Tile(3077, 3440, 0), new Tile(3077, 3442, 0) };
 	
-	final Area FatherDoor = new Area(new Tile[] { 
+	final DeltaArea FatherDoor = new DeltaArea(new Tile[] { 
 			new Tile(3075, 3438, 0), new Tile(3075, 3433, 0), new Tile(3082, 3434, 0), 
 			new Tile(3081, 3439, 0) });
 	

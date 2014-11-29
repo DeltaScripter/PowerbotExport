@@ -40,11 +40,11 @@ public class DemonSlayer extends DeltaNode {
 			new Tile(3240, 3390, 0), new Tile(3245, 3388, 0), new Tile(3250, 3388, 0),
 			new Tile(3253,3388,0)};
 	
-	final Area TrapDoor = new Area(new Tile[] {
+	final DeltaArea TrapDoor = new DeltaArea(new Tile[] {
 			new Tile(3254, 3487, 0), new Tile(3254, 3483, 0), new Tile(3260, 3483, 0), 
 			new Tile(3260, 3488, 0) });
 	
-	final Area TempleDoor = new Area(new Tile[] {
+	final DeltaArea TempleDoor = new DeltaArea(new Tile[] {
 			new Tile(3252, 3389, 0), new Tile(3253, 3386, 0), new Tile(3257, 3386, 0), 
 			new Tile(3257, 3391, 0) });
 	

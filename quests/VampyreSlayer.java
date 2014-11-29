@@ -54,18 +54,18 @@ public class VampyreSlayer extends DeltaNode{
 			new Tile(3109, 3342, 0), new Tile(3108, 3347, 0), new Tile(3108, 3352, 0), 
 			new Tile(3107, 3353, 0) };
 	
-	final Area MorganDoor = new Area(new Tile[] { 
+	final DeltaArea MorganDoor = new DeltaArea(new Tile[] { 
 			new Tile(3095, 3272, 0), new Tile(3095, 3269, 0), new Tile(3100, 3269, 0), 
 			new Tile(3099, 3272, 0) });
 	
-	final Area BarBottomDoor = new Area(new Tile[] { 
+	final DeltaArea BarBottomDoor = new DeltaArea(new Tile[] { 
 			new Tile(3212, 3398, 0), new Tile(3212, 3392, 0), new Tile(3220, 3392, 0), 
 			new Tile(3221, 3400, 0) });
 	
-	final Area ManorArea = new Area(new Tile[] { new Tile(3096, 3354, 0), new Tile(3125, 3354, 0), new Tile(3125, 3370, 0), 
+	final DeltaArea ManorArea = new DeltaArea(new Tile[] { new Tile(3096, 3354, 0), new Tile(3125, 3354, 0), new Tile(3125, 3370, 0), 
 			new Tile(3093, 3370, 0) });
 	
-	final Area ManorDoorToStairs = new Area(new Tile[] {
+	final DeltaArea ManorDoorToStairs = new DeltaArea(new Tile[] {
 			new Tile(3110, 3362, 0), new Tile(3110, 3356, 0), new Tile(3114, 3356, 0), 
 			new Tile(3114, 3363, 0) });
 	

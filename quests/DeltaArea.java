@@ -15,7 +15,7 @@ import org.powerbot.script.rt6.ClientContext;
  * 
  * @author Timer and Odell
  */
-public class Area {
+public class DeltaArea {
 
 	private static ClientContext ctx = null;
 
@@ -26,7 +26,7 @@ public class Area {
 	/**
 	 * Constructs a rectangular area.
 	 */
-	public Area(final Tile t1, final Tile t2) {
+	public DeltaArea(final Tile t1, final Tile t2) {
 		this(new Tile(Math.min(t1.x(), t2.x()), Math.min(t1.y(),
 				t2.y()), t1.floor()), new Tile(Math.max(t1.x(),
 				t2.x()), Math.min(t1.y(), t2.y()), t1.floor()),
@@ -39,7 +39,7 @@ public class Area {
 	/**
 	 * Constructs a polygonal area.
 	 */
-	public Area(final Tile... bounds) {
+	public DeltaArea(final Tile... bounds) {
 		polygon = new Polygon();
 		for (final Tile tile : bounds) {
 			if (plane != -1 && tile.floor() != plane) {

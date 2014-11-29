@@ -13,8 +13,8 @@ import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 
-import lodestoneActivator.Data.TeleportLode;
-import lodestoneActivator.Data.TeleportType;
+import lodestoneActivator.LodeData.TeleportLode;
+import lodestoneActivator.LodeData.TeleportType;
 import org.powerbot.script.Script;
 
 
@@ -22,7 +22,7 @@ import org.powerbot.script.Script;
 @Script.Manifest(name = "DeltaLodestone", 
 description = "Unlocks various F2P lodestones",properties = "topic = 1129211")
 
-public class Body extends PollingScript <ClientContext> implements org.powerbot.script.PaintListener{
+public class LodeBody extends PollingScript <ClientContext> implements org.powerbot.script.PaintListener{
 
 	public final Tile pathToVarrock[] = new Tile[]{
 			new Tile(3207,3233,0),new Tile(3217,3232,0), new Tile(3221,3223,0),
@@ -72,7 +72,7 @@ public class Body extends PollingScript <ClientContext> implements org.powerbot.
 		new Tile(3282,3211,0),new Tile(3284,3201,0),new Tile(3289,3195,0),
 		new Tile(3292,3189,0),new Tile(3298,3184,0)
 	};
-	private final List<Node> nodeList = Collections.synchronizedList(new ArrayList<Node>());
+	private final List<LodeNode> nodeList = Collections.synchronizedList(new ArrayList<LodeNode>());
 	private String state;
 	public boolean done = false;
 	private String countLodestones;
@@ -94,7 +94,7 @@ public class Body extends PollingScript <ClientContext> implements org.powerbot.
 			state = "Closing interface";
 			ctx.widgets.component(1223,11).component(1).click();
 		}else
-		for(Node node: nodeList){
+		for(LodeNode node: nodeList){
 			if(node.activate()){
 				node.execute();
 			}
@@ -109,16 +109,16 @@ public class Body extends PollingScript <ClientContext> implements org.powerbot.
 		}
 		
 	}
-	private void addNode(final Node...nodes) {
+	private void addNode(final LodeNode...nodes) {
 		   
-	        for(Node node : nodes) {
+	        for(LodeNode node : nodes) {
 	            if(!this.nodeList.contains(node)) {
 	                this.nodeList.add(node);
 	            }
 	        }
 	    }
 	  
-   class walkTo extends Node{
+   class walkTo extends LodeNode{
 
 	   
 	private boolean dynamicV;

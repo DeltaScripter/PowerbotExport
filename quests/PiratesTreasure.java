@@ -54,26 +54,26 @@ public class PiratesTreasure extends DeltaNode{
 		new Tile(2979,3378, 0), new Tile(2989,3379, 0),
 		new Tile(2999,3384, 0)};
 	
-	final Area Karamja = new Area(new Tile[] { 
+	final DeltaArea Karamja = new DeltaArea(new Tile[] { 
 			new Tile(2897, 3159, 0), new Tile(2896, 3137, 0), new Tile(2967, 3133, 0), 
 			new Tile(2967, 3164, 0) });
 	
-	final Area DoorByCrateOfWine = new Area(new Tile[] {new Tile(3012, 3210, 0), new Tile(3012, 3202, 0), new Tile(3007, 3202, 0), 
+	final DeltaArea DoorByCrateOfWine = new DeltaArea(new Tile[] {new Tile(3012, 3210, 0), new Tile(3012, 3202, 0), new Tile(3007, 3202, 0), 
 			new Tile(3007, 3211, 0) });
 	
-	final Area FoodDoor = new Area(new Tile[] { 
+	final DeltaArea FoodDoor = new DeltaArea(new Tile[] { 
 			new Tile(3014, 3207, 0), new Tile(3014, 3200, 0), new Tile(3019, 3201, 0), 
 			new Tile(3019, 3209, 0) });
 	
-	final Area PortSarim = new Area(new Tile[] { 
+	final DeltaArea PortSarim = new DeltaArea(new Tile[] { 
 			new Tile(3012, 3193, 0), new Tile(3012, 3223, 0), new Tile(3058, 3267, 0), 
 			new Tile(3058, 3190, 0) });
 	
-	final Area BarBottomDoor = new Area(new Tile[] { 
+	final DeltaArea BarBottomDoor = new DeltaArea(new Tile[] { 
 			new Tile(3212, 3398, 0), new Tile(3212, 3392, 0), new Tile(3220, 3392, 0), 
 			new Tile(3221, 3400, 0) });
 	
-	final Area BarUpDoor = new Area(new Tile[] { 
+	final DeltaArea BarUpDoor = new DeltaArea(new Tile[] { 
 			new Tile(3226, 3393, 1), new Tile(3226,3399, 1), new Tile(3221,3398, 1), 
 			new Tile(3221,3390, 1) });
 	

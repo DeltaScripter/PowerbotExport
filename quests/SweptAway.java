@@ -102,27 +102,27 @@ public class SweptAway extends DeltaNode {
 			new Tile(3021, 3235, 0), new Tile(3021, 3240, 0), new Tile(3021, 3245, 0), 
 			new Tile(3019, 3250, 0), new Tile(3019, 3255, 0), new Tile(3017, 3258, 0) };
 
-	public final Area AggieArea = new Area(new Tile[] { 
+	public final DeltaArea AggieArea = new DeltaArea(new Tile[] { 
 			new Tile(3080, 3262, 0), new Tile(3086, 3262, 0), new Tile(3086, 3258, 0), 
 			new Tile(3080, 3258, 0) });
 	
-	public final Area AggieDoor = new Area(new Tile[] { 
+	public final DeltaArea AggieDoor = new DeltaArea(new Tile[] { 
 			new Tile(3084, 3260, 0), new Tile(3084, 3256, 0), new Tile(3089, 3256, 0), 
 			new Tile(3089, 3260, 0) });
 	
-	public final Area HettyArea = new Area(new Tile[] { 
+	public final DeltaArea HettyArea = new DeltaArea(new Tile[] { 
 			new Tile(2964, 3208, 0), new Tile(2964, 3203, 0), new Tile(2969, 3203, 0), 
 			new Tile(2969, 3208, 0) });
 	
-	public final Area HettyDoor = new Area(new Tile[] { 
+	public final DeltaArea HettyDoor = new DeltaArea(new Tile[] { 
 			new Tile(2961, 3207, 0), new Tile(2961, 3204, 0), new Tile(2966, 3204, 0), 
 			new Tile(2966, 3207, 0) });
 	
-	public final Area BettyArea = new Area(new Tile[] { 
+	public final DeltaArea BettyArea = new DeltaArea(new Tile[] { 
 			new Tile(3010, 3261, 0), new Tile(3010, 3256, 0), new Tile(3015, 3256, 0), 
 			new Tile(3015, 3261, 0) });
 	
-	public final Area BettyDoor = new Area(new Tile[] { 
+	public final DeltaArea BettyDoor = new DeltaArea(new Tile[] { 
 			new Tile(3013, 3260, 0), new Tile(3013, 3256, 0), new Tile(3019, 3256, 0), 
 			new Tile(3019, 3260, 0) });
 	//--------------------------------

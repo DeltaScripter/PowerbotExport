@@ -9,7 +9,7 @@ import OldQuester.DeltaOldQuester;
 import OldQuester.OldMethod;
 import OldQuester.OldNode;
 
-public class RestlessGhost extends OldNode{
+public class OldRestlessGhost extends OldNode{
 
 	//npcs
 	private int PRIESTID = 921;
@@ -27,7 +27,7 @@ public class RestlessGhost extends OldNode{
 	
 	
 	OldMethod Method = new OldMethod(ctx);
-	public RestlessGhost(ClientContext ctx) {
+	public OldRestlessGhost(ClientContext ctx) {
 		super(ctx);
 	}
 

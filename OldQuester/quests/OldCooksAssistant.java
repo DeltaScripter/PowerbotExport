@@ -8,9 +8,9 @@ import OldQuester.DeltaOldQuester;
 import OldQuester.OldMethod;
 import OldQuester.OldNode;
 
-public class CooksAssistant extends OldNode{
+public class OldCooksAssistant extends OldNode{
 
-	public CooksAssistant(ClientContext ctx) {
+	public OldCooksAssistant(ClientContext ctx) {
 		super(ctx);
 	}
 

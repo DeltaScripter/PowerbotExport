@@ -27,15 +27,15 @@ public class DeathPlateau extends DeltaNode{
 		new Tile(2923,3558, 0), new Tile(2922,3569, 0),
 		new Tile(2919,3574, 0)};
 	
-	public final Area dwarf1Area= new Area(new Tile[] {//Area outside the first dwarf's cave.
+	public final DeltaArea dwarf1Area= new DeltaArea(new Tile[] {//Area outside the first dwarf's cave.
 			new Tile(2853,3570,0), new Tile(2862,3570,0),
 			new Tile(2864,3576,0), new Tile(2852,3578,0)});
 	
-	public final Area DwarfDoor1 = new Area(new Tile[] { 
+	public final DeltaArea DwarfDoor1 = new DeltaArea(new Tile[] { 
 			new Tile(2823, 3558, 0), new Tile(2823, 3551, 0), new Tile(2827, 3550, 0), 
 			new Tile(2828, 3559, 0) });
 	
-	public final Area DwarfDoor2 = new Area(new Tile[] {
+	public final DeltaArea DwarfDoor2 = new DeltaArea(new Tile[] {
 			new Tile(2820, 3557, 0), new Tile(2820, 3553, 0), new Tile(2824, 3552, 0), 
 			new Tile(2823, 3557, 0) });
 	

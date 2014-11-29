@@ -20,7 +20,7 @@ import org.powerbot.script.rt6.ClientContext;
 @Script.Manifest(name = "Delta Bow Strings", 
 description = "Spins flax into bowstrings in Lummbridge, antipattern included!", properties = "topic = 1230497")
 
-public class MainBody extends PollingScript<ClientContext> implements PaintListener{
+public class FlaxMainBody extends PollingScript<ClientContext> implements PaintListener{
 
 	public static String state = "Welcome..";
 	public static int stringCount = 0;
@@ -37,7 +37,7 @@ public class MainBody extends PollingScript<ClientContext> implements PaintListe
 		if(start){
 		 //System.out.println("Adding node");
 		 addNode(new FlaxStuff(ctx));
-		 addNode(new goBank(ctx));
+		 addNode(new FlaxgoBank(ctx));
 		 addNode(new flaxAntipattern(ctx));
 		 start = false;
 		}

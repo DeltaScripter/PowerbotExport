@@ -12,9 +12,9 @@ import org.powerbot.script.Script;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
 
-import OldQuester.quests.CooksAssistant;
-import OldQuester.quests.RestlessGhost;
-import OldQuester.quests.RuneMysteries;
+import OldQuester.quests.OldCooksAssistant;
+import OldQuester.quests.OldRestlessGhost;
+import OldQuester.quests.OldRuneMysteries;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -66,9 +66,9 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 	private void onStart() {
 		if(!start){
 			initiateGui();
-			addNode(new RuneMysteries(ctx));
-			addNode(new RestlessGhost(ctx));
-			addNode(new CooksAssistant(ctx));
+			addNode(new OldRuneMysteries(ctx));
+			addNode(new OldRestlessGhost(ctx));
+			addNode(new OldCooksAssistant(ctx));
 			///System.out.println("Added nodes!");
 			start = true;
 		}

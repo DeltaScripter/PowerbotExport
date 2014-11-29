@@ -111,11 +111,11 @@ public class StolenHearts extends DeltaNode{
 			new Tile(3292, 3176, 0), new Tile(3292, 3171, 0), new Tile(3292, 3166, 0), 
 			new Tile(3291, 3165, 0) };
  
- public final Area ThugDoor = new Area(new Tile[] { 
+ public final DeltaArea ThugDoor = new DeltaArea(new Tile[] { 
 		 new Tile(3087, 3276, 0), new Tile(3087, 3272, 0), new Tile(3093, 3272, 0), 
 			new Tile(3092, 3277, 0) });
 	
- public final Area JailDoor = new Area(new Tile[] { 
+ public final DeltaArea JailDoor = new DeltaArea(new Tile[] { 
 		 new Tile(3125, 3249, 0), new Tile(3125, 3245, 0), new Tile(3129, 3245, 0), 
 			new Tile(3129, 3248, 0) });
  

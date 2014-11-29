@@ -9,11 +9,11 @@ import OldQuester.DeltaOldQuester;
 import OldQuester.OldMethod;
 import OldQuester.OldNode;
 
-public class RuneMysteries extends OldNode{
+public class OldRuneMysteries extends OldNode{
 
 	
 	OldMethod Method = new OldMethod(ctx);
-	public RuneMysteries(ClientContext ctx) {
+	public OldRuneMysteries(ClientContext ctx) {
 		super(ctx);
 	}
 

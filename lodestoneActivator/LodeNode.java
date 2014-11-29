@@ -13,11 +13,11 @@ import org.powerbot.script.rt6.ClientContext;
 * To change this template use File | Settings | File Templates.
 */
 
-    public abstract class Node extends ClientContext {
+    public abstract class LodeNode extends ClientContext {
 
     protected ClientContext ctx;
 
-    public Node(ClientContext ctx) {
+    public LodeNode(ClientContext ctx) {
         super(ctx);
         this.ctx = ctx;
     }

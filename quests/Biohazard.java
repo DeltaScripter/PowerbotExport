@@ -4,8 +4,8 @@ import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Hud.Window;
 
-import lodestoneActivator.Data.TeleportLode;
-import lodestoneActivator.Data.TeleportType;
+import lodestoneActivator.LodeData.TeleportLode;
+import lodestoneActivator.LodeData.TeleportType;
 
 
 

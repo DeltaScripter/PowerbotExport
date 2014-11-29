@@ -56,7 +56,7 @@ public class RestlessG extends DeltaNode{
 			new Tile(3240, 3175, 0), new Tile(3240, 3180, 0), new Tile(3242, 3185, 0), 
 			new Tile(3243, 3190, 0), new Tile(3246, 3195, 0), new Tile(3249, 3196, 0) };
 	
-	public final Area swampInsideHut = new Area(
+	public final DeltaArea swampInsideHut = new DeltaArea(
 			new Tile[] { new Tile(3202, 3151, 0), new Tile(3210, 3151, 0), new Tile(3210, 3146, 0), 
 					new Tile(3201, 3146, 0) });
 	

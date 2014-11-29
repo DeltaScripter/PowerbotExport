@@ -40,7 +40,7 @@ public class BuyersAndCellars extends DeltaNode {
 			new Tile(3236, 3169, 0), new Tile(3227, 3158, 0),
 			new Tile(3216, 3156, 0), new Tile(3207, 3153, 0) };
 	
-	final Area FatherDoor = new Area(new Tile[] { new Tile(3203, 3154, 0), new Tile(3203, 3150, 0), new Tile(3209, 3150, 0), 
+	final DeltaArea FatherDoor = new DeltaArea(new Tile[] { new Tile(3203, 3154, 0), new Tile(3203, 3150, 0), new Tile(3209, 3150, 0), 
 			new Tile(3209, 3156, 0) });
 
 	public int itemsArrayGE[] = {0};//contains the states of items needing to be purchased.

@@ -25,7 +25,7 @@ public class FlaxMethod extends ClientAccessor	{
 		} catch (InterruptedException ignored) {
 		}
 	}
-	public void state(String state){MainBody.state = state;}
+	public void state(String state){FlaxMainBody.state = state;}
 	
 	public double tileDisctanceToPlayer(Tile tile) {return tile.distanceTo(ctx.players.local().tile());}
 	

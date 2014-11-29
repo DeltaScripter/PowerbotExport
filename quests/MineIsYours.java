@@ -94,7 +94,7 @@ public class MineIsYours extends DeltaNode{
 			new Tile(2964, 3357, 0), new Tile(2965, 3352, 0), new Tile(2965, 3347, 0), 
 			new Tile(2965, 3342, 0), new Tile(2966, 3338, 0) };
 	
-	final Area CastleDoor = new Area(new Tile[] {new Tile(2962, 3343, 0), new Tile(2962, 3335, 0), new Tile(2967, 3335, 0), 
+	final DeltaArea CastleDoor = new DeltaArea(new Tile[] {new Tile(2962, 3343, 0), new Tile(2962, 3335, 0), new Tile(2967, 3335, 0), 
 			new Tile(2967, 3343, 0) });
 	
 	public final int Doric = 284;

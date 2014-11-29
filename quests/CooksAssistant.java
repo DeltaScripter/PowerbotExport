@@ -52,14 +52,14 @@ public final Tile[] pathToCook = new Tile[] {
 			new Tile(3172, 3286, 0), new Tile(3168, 3289, 0), new Tile(3166, 3294, 0), 
 			new Tile(3165, 3299, 0), new Tile(3166, 3304, 0), new Tile(3166, 3305, 0) };
  
- public final Area eggDoor = new Area(new Tile[] { 
+ public final DeltaArea eggDoor = new DeltaArea(new Tile[] { 
 		 new Tile(3184, 3282, 0), new Tile(3184, 3277, 0), new Tile(3191, 3277, 0), 
 			new Tile(3191, 3282, 0) });
  
- public final Area cowDoor = new Area(new Tile[] {new Tile(3248, 3270, 0), new Tile(3248, 3262, 0), new Tile(3255, 3263, 0), 
+ public final DeltaArea cowDoor = new DeltaArea(new Tile[] {new Tile(3248, 3270, 0), new Tile(3248, 3262, 0), new Tile(3255, 3263, 0), 
 			new Tile(3255, 3271, 0) });
  
- public final Area flourDoor = new Area(new Tile[] { 
+ public final DeltaArea flourDoor = new DeltaArea(new Tile[] { 
 		 new Tile(3163, 3305, 0), new Tile(3163, 3300, 0), new Tile(3168, 3300, 0), 
 			new Tile(3168, 3305, 0) });
  

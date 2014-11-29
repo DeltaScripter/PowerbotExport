@@ -28,10 +28,10 @@ public class ElementalWorkshop1 extends DeltaNode{
 			new Tile(2693, 3484, 0), new Tile(2698, 3485, 0), new Tile(2703, 3484, 0), 
 			new Tile(2708, 3484, 0), new Tile(2711, 3483, 0) };
 	
-	final Area EntranceDoor = new Area(new Tile[] { new Tile(2707, 3498, 0), new Tile(2707, 3495, 0), new Tile(2712, 3495, 0), 
+	final DeltaArea EntranceDoor = new DeltaArea(new Tile[] { new Tile(2707, 3498, 0), new Tile(2707, 3495, 0), new Tile(2712, 3495, 0), 
 			new Tile(2713, 3500, 0) });
 	
-	final Area StartDoor = new Area(new Tile[] {
+	final DeltaArea StartDoor = new DeltaArea(new Tile[] {
 			new Tile(2710, 3484, 0), new Tile(2710, 3481, 0), new Tile(2718, 3481, 0), 
 			new Tile(2718, 3485, 0) });
 	

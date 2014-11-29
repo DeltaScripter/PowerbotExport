@@ -3,7 +3,7 @@ package lodestoneActivator;
 import org.powerbot.script.Tile;
 
 
-public class Data {
+public class LodeData {
 
 
 
