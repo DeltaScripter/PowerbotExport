@@ -1,6 +1,5 @@
 package web.components.actions.basic;
 
-import org.powerbot.script.Calculations;
 import org.powerbot.script.Tile;
 
 import web.components.actions.WebAction;

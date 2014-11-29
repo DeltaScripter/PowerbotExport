@@ -1,8 +1,8 @@
 package web.components.actions;
 
-import org.powerbot.script.PollingScript;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt4.ClientAccessor;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Path;
 
@@ -12,9 +12,10 @@ import org.powerbot.script.rt4.Path;
  * Date: 11/06/12
  * Time: 23:25
  */
-public abstract class WebAction extends PollingScript<ClientContext>{
+public abstract class WebAction extends ClientAccessor{
 
-	protected WebAction(final String name, final Tile source, final Tile target) {
+	protected WebAction(ClientContext ctx, final String name, final Tile source, final Tile target) {
+		super(ctx);
 		this.name = name;
 		this.source = source;
 		this.target = target;

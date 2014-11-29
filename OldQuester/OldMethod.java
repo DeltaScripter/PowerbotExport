@@ -2,9 +2,6 @@ package OldQuester;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.powerbot.bot.rt4.client.Npc;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
@@ -16,9 +13,6 @@ import org.powerbot.script.rt4.Interactive;
 import org.powerbot.script.rt4.Item;
 import org.powerbot.script.rt4.ItemQuery;
 import org.powerbot.script.rt4.Player;
-import org.powerbot.script.rt6.Hud.Window;
-
-import dqbody.Vars.TeleportLode;
 
 
 public class OldMethod extends ClientAccessor{
@@ -52,236 +46,8 @@ public class OldMethod extends ClientAccessor{
 		private int GIVEYOUSTUFFWIDGET = 204;
 		
 		
-	//uses the node map to walk to a location
-		public void walkTo(ArrayList<Tile> dest , String pathName) {
-		   // state(pathName);
-			//building a path
-		   // if(!ctx.players.local().inMotion())
-			//if(!ctx.movement.findPath(generatePath(dest)).traverse()){
-		    if(generatePath(dest)!=null)
-				clickOnMap(generatePath(dest));
-				//sleep(Random.nextInt(Random.nextInt(1500, 2000), Random.nextInt(16000, 3000)));
-			//}
-					
-					//break condition
-					//if(spellBookOpen()){
-					//	break;
-				//	}
-					
-					
-				
-			
-			/*
-		    state(pathName);
-			
-			while(tile.get(tile.size()-1).distanceTo(ctx.players.local().tile())>10){
-				
-				//break condition
-				if(spellBookOpen()){
-					break;
-				}
-				
-				
-				//System.out.println("Size up here is: " + tile.size());
-				//System.out.println("0 is: "+ tile.get(0) +" our dist form it : "+tile.get(0).distanceTo(ctx.players.local().tile()));
-			if(tile.get(0).distanceTo(ctx.players.local().tile())<10){
-				tile.remove(0);
-				System.out.println("Removing checkpoint, new size is: " + tile.size());
-			}else{
-				//System.out.println("Trying to walk towards : " + tile.get(0));
-			try{
-				sleep(Random.nextInt(1000, 1500));
-				
-				//if(nodeWalk(tile.get(0)).matrix(ctx).reachable()){//if we can reach the tile..
-					//clickOnMap(nodeWalk(tile.get(0)));//then walk towards it
-				//}
-				if(!ctx.movement.findPath(nodeWalk(tile.get(0))).traverse()){
-					//System.out.println("using click on map");
-				clickOnMap(nodeWalk(tile.get(0)));
-				}//else System.out.println("Using find path");
-			}catch(Exception e){System.out.println("Node path returning null");}
-			}
-			  //this is for breaking the loop
-			  // if(!ctx.hud.opened(Window.BACKPACK)){
-			  	 //break;
-			  
-			}
-			*/
-		}
-		
-	public static ArrayList<Tile> badTiles = new ArrayList<Tile>();
-	ArrayList<Tile> possiblePath = new ArrayList<Tile>();
-	ArrayList<Tile> generatePath = new ArrayList<Tile>();
-	
-	private Tile generatePath(ArrayList<Tile> end) {
-			
-		if(generatePath.isEmpty()){//only run when we have no path at all
-			
-			
-		Tile currentTile = ctx.players.local().tile();
-	
-		boolean doItAgain = true;
-		
-		
-		//add all the nodes form the storage
-		for(Tile nodes: OldNodeTiles.nodes){
-			if(!possiblePath.contains(nodes)){
-				possiblePath.add(nodes);
-			}
-		}
-		
-		for(Tile t : possiblePath){
-			if(t.distanceTo(ctx.players.local().tile())<20){
-				currentTile = t;
-				System.out.println("Setting initial node tile to " + t);
-				if(!generatePath.contains(t))
-				generatePath.add(t);
-				break;
-			}
-		}
-		
-			//break condition
-		//	if(spellBookOpen()){
-			//	System.out.println("Break - spell book open");
-			//	break;
-			//}
-			
-			//System.out.println("In while loop");
-			//for(int o  = 0; o<possiblePath.size();){
-			   while(doItAgain){
-				   doItAgain = false;
-				for(Tile node: possiblePath){
-					//System.out.println("Checking node " + node + " with current tile " + generatePath.get(generatePath.size()-1));
-					
-					
-					if(spellBookOpen()){
-						break;
-					}else state("Spell book open");
-					
-					if(generatePath.size()>500){
-						break;
-					}
-					
-					if(generatePath.get(generatePath.size()-1).distanceTo(end.get(0))<20){
-						System.out.println("breaking b/c path made");
-						break;
-					}
-					
-					
-					if(!badTiles.contains(node)&&
-							//node.distanceTo(generatePath.get(generatePath.size()-1))<15 &&
-							!generatePath.contains(node)
-							//&&nodeIsCloserThan(node, generatePath.get(generatePath.size()-1), end.get(0))
-							){
-						generatePath.add(node);
-						doItAgain = true;
-						 //System.out.println("ZZZ tile distance: " + generatePath.get(generatePath.size()-1).distanceTo(end.get(0)) + " and tile is "+generatePath.get(generatePath.size()-1));
-							
-						System.out.println("Adding node to generated path : " + node+ " generated path size is " + generatePath.size() + " bad node size" + badTiles.size() );
-					}//else System.out.println("Skipping node: " + node);
-					
-					
-					
-					
-				   }
-			
-				
-			   }
-			   System.out.println("Ending tile distance: " + generatePath.get(generatePath.size()-1).distanceTo(end.get(0)) + " and tile is "+generatePath.get(generatePath.size()-1));
-				if(generatePath.size()>0&&
-						generatePath.get(generatePath.size()-1).distanceTo(end.get(0))>20&&
-						!badTiles.contains(generatePath.get(generatePath.size()-1))){//NOpe end node doesn't reach, bad path adding bad node
-					
-					System.out.println("Adding bad node.." + generatePath.get(generatePath.size()-1));
-					badTiles.add(generatePath.get(generatePath.size()-1));//grab the end tile to add b/c its dead end
-					generatePath.clear();
-				}else{//if we have a successful path..
-					
-					System.out.println("First tile to walk to would be " + generatePath.get(0) + " last tile is " + generatePath.get(generatePath.size()-1));
-					DeltaOldQuester.walkingTile = generatePath;
-					return generatePath.get(0);
-				}
-				
-				
-				//}
-				//generatePath.clear();
-				//System.out.println("END and final dist is"+ generatePath.get(generatePath.size()-1).distanceTo(end.get(0)) + " the size is  " + generatePath.size());
-			
-			
-		System.out.println("Still trying to generate path...");
-		//generatePath.clear();
-		
-		}else{
-			if(generatePath.get(0).distanceTo(ctx.players.local().tile())<8){
-				generatePath.remove(0);
-			     System.out.println("REMOVING CLOSE TILE IN GENERATE PATH " + generatePath.get(0)+ " with size generatePath: " + generatePath.size());
-					
-				}
-			System.out.println("Returning proper path : " + generatePath.size());
-			return generatePath.get(0);
-		}
-			return null;
-		}
 
-		private boolean nodeIsCloserThan(Tile node, Tile tile, Tile end) {
-		   double noded = node.distanceTo(end);//the possible node to add to generated path
-		   double tiled = tile.distanceTo(end);//the base tile we're scanning around
-		   //System.out.println("node " + noded + " and tile" + tiled);
-		   if(noded < tiled){
-			//   System.out.println("Node " + node  + " is closer than " + tile);
-			   return true;
-		   }
-		   
-		return false;
-	}
 
-		//the below method is not called by quest-scripts, they use the above one instead
-		public Tile nodeWalk(Tile dest){
-			 ArrayList distances = new ArrayList();//distances of all nodes from destination tile
-			 
-			 ArrayList usableNodes = new ArrayList();//stores the actual
-			 ArrayList distUsableNodes = new ArrayList();//distances of nodes on map
-			 
-			 //List for calc closest node on map
-			 List<Double> calcList = new ArrayList();
-			 
-			 
-			 //grab distances of nodes from destination
-			 for(Tile dist: OldNodeTiles.nodes){
-				double distance =  dest.distanceTo(dist);
-				distances.add(distance);
-				//System.out.println("Tile nearest is: " + dist+" distance of: "+ distance);
-			 }
-			//Grab the nodes that are visible on our map
-			for(int i = 0; i<OldNodeTiles.nodes.length; i++){
-				
-				if(OldNodeTiles.nodes[i].matrix(ctx).onMap()){//
-				     usableNodes.add(OldNodeTiles.nodes[i]);
-				     distUsableNodes.add(distances.get(i));
-				}
-			}
-			//find out which node is closer to our destination tile
-			calcList.addAll(distUsableNodes);
-			Collections.sort(calcList);
-			//Collections.reverse(calcList);
-			
-			for(int h  = 0; h<usableNodes.size();h++){
-				Tile potentialNode = (Tile) usableNodes.get(h);
-				Double distToMatch = (Double)distUsableNodes.get(h);
-				
-				if(distToMatch==calcList.get(0)){
-					usableNodes.clear();
-					distUsableNodes.clear();
-					calcList.clear();
-					//System.out.println("WE FOUND ARE FIRST NODE! : "+ potentialNode);
-					return potentialNode.derive(2, 4);
-				}
-			}
-			return null;
-		}
-	
-	 
-		////timer waitClick = new //timer(0);
 		public boolean goBank =true;
 	
 
@@ -724,14 +490,7 @@ private int SPELLBOOKICONWIDGETPARENT = 548;
 		}
 		return false;
 	}
-	public void resetTeleporting() {
-		if(TeleportLode.LUMMBRIDGE.getTile().distanceTo(ctx.players.local().tile())<10 || TeleportLode.VARROCK.getTile().distanceTo(ctx.players.local().tile())<10 || TeleportLode.DRAYNOR.getTile().distanceTo(ctx.players.local().tile())<10||
-				TeleportLode.PORTSARIM.getTile().distanceTo(ctx.players.local().tile())<10|| TeleportLode.ARDOUGNE.getTile().distanceTo(ctx.players.local().tile())<10|| TeleportLode.YANILLE.getTile().distanceTo(ctx.players.local().tile())<10||
-				TeleportLode.BURTHORPE.getTile().distanceTo(ctx.players.local().tile())<10|| TeleportLode.CATHERBY.getTile().distanceTo(ctx.players.local().tile())<10|| TeleportLode.FALADOR.getTile().distanceTo(ctx.players.local().tile())<10
-				){
-			teleporting = false;
-		}
-	}
+
 	public boolean interference() {
 		while(ctx.widgets.component(1186,1).valid() && ctx.widgets.component(1186,2).text().contains("are now leaving the")){//18
 			if(ctx.widgets.component(1186,3).valid()){

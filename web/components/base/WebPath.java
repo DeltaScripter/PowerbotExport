@@ -2,8 +2,6 @@ package web.components.base;
 
 import java.util.LinkedList;
 
-import javax.swing.text.html.HTMLDocument.Iterator;
-
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
