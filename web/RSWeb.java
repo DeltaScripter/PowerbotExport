@@ -28,8 +28,11 @@ import astar.wrappers.NodePath;
  * Date: 11/06/12
  * Time: 23:10
  */
+
 public class RSWeb extends Graph {
 
+	
+	FTPLines FTPLines = new FTPLines(ctx);
 	public RSWeb(ClientContext script) {
 		super(script, script, "RSWeb");
 		//System.out.println("Building web");
