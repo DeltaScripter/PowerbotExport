@@ -7,14 +7,14 @@ import org.powerbot.script.rt6.Player;
 
 import dqbody.DeltaQuester;
 import dqbody.Method;
-import dqbody.Node;
+import dqbody.DeltaNode;
 import dqbody.Vars;
 import dqbody.Vars.TeleportLode;
 import dqbody.Vars.TeleportType;
 
 
 
-public class DruidicRitual extends Node{
+public class DruidicRitual extends DeltaNode{
 
 	public DruidicRitual(ClientContext ctx) {
 		super(ctx);

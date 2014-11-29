@@ -9,12 +9,12 @@ import org.powerbot.script.rt6.Skills;
 
 import dqbody.DeltaQuester;
 import dqbody.Method;
-import dqbody.Node;
+import dqbody.DeltaNode;
 import dqbody.Vars;
 import dqbody.Vars.TeleportLode;
 import dqbody.Vars.TeleportType;
 
-public class TheKnightsSword extends Node{
+public class TheKnightsSword extends DeltaNode{
 
 	public TheKnightsSword(ClientContext ctx) {
 		super(ctx);

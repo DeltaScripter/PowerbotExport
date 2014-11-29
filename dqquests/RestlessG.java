@@ -11,13 +11,13 @@ import org.powerbot.script.rt6.Npc;
 import dqbody.Area;
 import dqbody.DeltaQuester;
 import dqbody.Method;
-import dqbody.Node;
+import dqbody.DeltaNode;
 import dqbody.Vars;
 import dqbody.Vars.TeleportLode;
 import dqbody.Vars.TeleportType;
 
 
-public class RestlessG extends Node{
+public class RestlessG extends DeltaNode{
 
 
 

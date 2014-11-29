@@ -10,14 +10,14 @@ import org.powerbot.script.rt6.Player;
 import dqbody.Area;
 import dqbody.DeltaQuester;
 import dqbody.Method;
-import dqbody.Node;
+import dqbody.DeltaNode;
 import dqbody.Vars;
 import dqbody.Vars.TeleportLode;
 import dqbody.Vars.TeleportType;
 
 
 
-public class DemonSlayer extends Node {
+public class DemonSlayer extends DeltaNode {
 
 	public DemonSlayer(ClientContext ctx) {
 		super(ctx);

@@ -13,12 +13,12 @@ import org.powerbot.script.rt6.Player;
 
 import dqbody.DeltaQuester;
 import dqbody.Method;
-import dqbody.Node;
+import dqbody.DeltaNode;
 import dqbody.Vars;
 import dqbody.Vars.TeleportLode;
 import dqbody.Vars.TeleportType;
 
-public class ErnestTheChicken extends Node{
+public class ErnestTheChicken extends DeltaNode{
 
 	public ErnestTheChicken(ClientContext ctx) {
 		super(ctx);

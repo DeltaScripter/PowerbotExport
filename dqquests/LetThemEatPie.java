@@ -7,12 +7,12 @@ import org.powerbot.script.rt6.Player;
 
 import dqbody.DeltaQuester;
 import dqbody.Method;
-import dqbody.Node;
+import dqbody.DeltaNode;
 import dqbody.Vars;
 import dqbody.Vars.TeleportLode;
 import dqbody.Vars.TeleportType;
 
-public class LetThemEatPie extends Node{
+public class LetThemEatPie extends DeltaNode{
 
 public LetThemEatPie(ClientContext ctx) {
 		super(ctx);

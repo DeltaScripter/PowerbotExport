@@ -9,13 +9,13 @@ import org.powerbot.script.rt6.Hud.Window;
 
 import dqbody.DeltaQuester;
 import dqbody.Method;
-import dqbody.Node;
+import dqbody.DeltaNode;
 import dqbody.Paths;
 import dqbody.Vars;
 import dqbody.Vars.TeleportLode;
 import dqbody.Vars.TeleportType;
 
-public class DragonSlayer extends Node{
+public class DragonSlayer extends DeltaNode{
 
 	public DragonSlayer(ClientContext ctx) {
 		super(ctx);

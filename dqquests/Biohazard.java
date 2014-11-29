@@ -6,14 +6,14 @@ import org.powerbot.script.rt6.Hud.Window;
 
 import dqbody.DeltaQuester;
 import dqbody.Method;
-import dqbody.Node;
+import dqbody.DeltaNode;
 import dqbody.Vars;
 import lodestoneActivator.Data.TeleportLode;
 import lodestoneActivator.Data.TeleportType;
 
 
 
-public class Biohazard extends Node{
+public class Biohazard extends DeltaNode{
 
 	public Biohazard(ClientContext ctx) {
 		super(ctx);

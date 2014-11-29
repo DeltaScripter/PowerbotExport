@@ -10,12 +10,12 @@ import org.powerbot.script.rt6.Skills;
 import dqbody.Area;
 import dqbody.DeltaQuester;
 import dqbody.Method;
-import dqbody.Node;
+import dqbody.DeltaNode;
 import dqbody.Vars;
 import dqbody.Vars.TeleportLode;
 import dqbody.Vars.TeleportType;
 
-public class MineIsYours extends Node{
+public class MineIsYours extends DeltaNode{
 
 	public MineIsYours(ClientContext ctx) {
 		super(ctx);

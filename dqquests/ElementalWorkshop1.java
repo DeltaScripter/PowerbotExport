@@ -7,12 +7,12 @@ import org.powerbot.script.rt6.Player;
 import dqbody.Area;
 import dqbody.DeltaQuester;
 import dqbody.Method;
-import dqbody.Node;
+import dqbody.DeltaNode;
 import dqbody.Vars;
 import dqbody.Vars.TeleportLode;
 import dqbody.Vars.TeleportType;
 
-public class ElementalWorkshop1 extends Node{
+public class ElementalWorkshop1 extends DeltaNode{
 
 	public ElementalWorkshop1(ClientContext ctx) {
 		super(ctx);

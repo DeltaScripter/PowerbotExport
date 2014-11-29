@@ -111,14 +111,14 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 	
 	
 	
-	private final List<Node> nodesList = Collections.synchronizedList(new ArrayList<Node>());
+	private final List<DeltaNode> nodesList = Collections.synchronizedList(new ArrayList<DeltaNode>());
 
 	
    
 	
-	   private void addNode(final Node...nodes) {
+	   private void addNode(final DeltaNode...nodes) {
 		   
-	        for(Node node : nodes) {
+	        for(DeltaNode node : nodes) {
 	            if(!this.nodesList.contains(node)) {
 	                this.nodesList.add(node);
 	            }
@@ -148,7 +148,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 			ctx.widgets.component(1223,11).component(1).click();//close button
 		}
 		if(ready){//start performing quest script
-		for(Node node : nodesList) {
+		for(DeltaNode node : nodesList) {
             if(node.activate()) {
                 node.execute();
            }
