@@ -168,10 +168,10 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 				textArea1.setText("Start this script near Lumbridge or Varrock");
 			}
 			if(questComboBox.getSelectedItem().toString().contains("Rune Mysteries")){
-				textArea1.setText("Start this script near Lumbridge or Varrock\nNo requirements except some free inventory space");
+				textArea1.setText("Start this script near Lumbridge or Varrock\nNo requirements");
 			}
 			if(questComboBox.getSelectedItem().toString().contains("Cook's Assistant")){
-				textArea1.setText("Quest currently under development");
+				textArea1.setText("Start this quest in Lumbridge\n\nYou will need:\n- Empty pot\n- Empty bucket");
 			}
 		}
 

@@ -69,7 +69,7 @@ public class flaxAntipattern extends FlaxNode{
 			FlaxMainBody.state = st;
 			i = ctx.backpack.itemAt(Random.nextInt(7, 20));
 				i.hover();
-				ctx.mouse.scroll(true);
+				//ctx.mouse.scroll(true);
 				m.sleep(Random.nextInt(200,2000));
 				ctx.mouse.move(f.x-Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
 				m.sleep(Random.nextInt(1956,3200));
@@ -116,7 +116,7 @@ public class flaxAntipattern extends FlaxNode{
 		case 10:
 			FlaxMainBody.state = st;
 			ctx.mouse.move(f.x+Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
-			ctx.mouse.scroll(true);
+			//ctx.mouse.scroll(true);
 			m.sleep(Random.nextInt(100, 900));
 			FlaxMainBody.antiPattern = false;
 			break;
@@ -173,7 +173,7 @@ public class flaxAntipattern extends FlaxNode{
 			
 		case 16:
 			FlaxMainBody.state = st;
-			ctx.mouse.scroll(true);
+			//ctx.mouse.scroll(true);
 			FlaxMainBody.antiPattern = false;
 			break;
 			
