@@ -14,7 +14,6 @@ import org.powerbot.script.rt4.Interactive;
 import org.powerbot.script.rt4.Item;
 import org.powerbot.script.rt4.ItemQuery;
 import org.powerbot.script.rt4.Player;
-import org.powerbot.script.rt6.Hud.Window;
 
 
 public class OldMethod extends ClientAccessor{

@@ -181,6 +181,9 @@ public class OldRuneMysteries extends OldNode{
 		if(ctx.game.floor()==1){
 			final int[] bounds = {148, 112, -228, -8, -4, 128};
 			if(Method.getPastDoor(new Tile(3206,3222,1), new Tile(3208,3222,1), DUKEDOOR, bounds)){
+				
+				
+				if(Method.getToNearByTile(new Tile(3210,3221,1)))
 				   if(!Method.findOption(opt))	
 						if(!Method.isChatting("Duke Horacio")){
 							Method.npcInteract(DUKE, "");

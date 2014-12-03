@@ -224,8 +224,8 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 			okButton = new JButton();
 			scrollPane1 = new JScrollPane();
 			textArea1 = new JTextArea();
-			questComboBox = new JComboBox<>();
-			foodCombo = new JComboBox<>();
+			questComboBox = new JComboBox();
+			foodCombo = new JComboBox();
 			label1 = new JLabel();
 
 			//======== this ========
@@ -272,7 +272,7 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 				}
 			});
 			//---- foodCombo ----
-			foodCombo.setModel(new DefaultComboBoxModel<>(new String[] {
+			foodCombo.setModel(new DefaultComboBoxModel(new String[] {
 				"Shrimp"
 			}));
 			contentPane.add(foodCombo);
