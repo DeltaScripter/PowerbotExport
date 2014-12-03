@@ -346,7 +346,8 @@ public class OldWaterFall extends OldNode{
 					Method.tileDisctanceToPlayer((new Tile(2512,3480,0)))<10){//initla crash site
 			
 			if(ctx.players.local().tile().equals(new Tile(2512,3476,0))){
-				ctx.camera.pitch(30);
+				if(ctx.camera.pitch()>50)
+				ctx.camera.pitch(40);
 				Method.useItemOn(ROPE, FIRSTROCK,"");
 			}else Method.clickOnMap(new Tile(2512,3476,0));
 			
@@ -392,6 +393,7 @@ public class OldWaterFall extends OldNode{
 		}else
 		if(new Tile(2512,3480,0).matrix(ctx).reachable()){//initla crash site
 			if(ctx.players.local().tile().equals(new Tile(2512,3476,0))){
+				if(ctx.camera.pitch()>40)
 				ctx.camera.pitch(30);
 				Method.useItemOn(ROPE, FIRSTROCK,"");
 			}else Method.clickOnMap(new Tile(2512,3476,0));
