@@ -31,7 +31,7 @@ public class OldCooksAssistant extends OldNode{
 	@Override
 	public void execute() {
 		
-		
+		DeltaOldQuester.numSteps = 3;
 		
 			if(hasMilk==false && Method.inventoryContains(MILKBUCKET)){
 				System.out.println("Found milk");
@@ -47,15 +47,18 @@ public class OldCooksAssistant extends OldNode{
 			}
 			
 		if((ctx.varpbits.varpbit(29)) ==2){
+			DeltaOldQuester.progress=3;
 			//COMPLETED QUEST!
 			Method.state("COMPLETED QUEST!!");
 			Method.sleep(2000);
 			DeltaOldQuester.shutOff = true;
 		}else
 		if((ctx.varpbits.varpbit(29)) ==1){
+			DeltaOldQuester.progress=2;
 			cs1();//Gather/make the items and finish the quest by speaking to the cook again
 		}else
 		if((ctx.varpbits.varpbit(29)) ==0){
+			DeltaOldQuester.progress=1;
 			cs0();//Speak to the cook and start the quest
 		}
 		

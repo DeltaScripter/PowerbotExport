@@ -49,7 +49,6 @@ public class Method extends ClientAccessor{
 		public static boolean useBank =true;
 		public static int bankDecide = 5;
 		
-		public static int slot = 0;
 		public static boolean depoBank = false;
 		private Vars Vars = new Vars();
 		GrandExchange Ge = new GrandExchange(ctx);

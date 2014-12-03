@@ -2,6 +2,7 @@ package OldQuester;
 
 
 import java.util.ArrayList;
+
 import org.powerbot.bot.rt4.client.Npc;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
@@ -13,6 +14,7 @@ import org.powerbot.script.rt4.Interactive;
 import org.powerbot.script.rt4.Item;
 import org.powerbot.script.rt4.ItemQuery;
 import org.powerbot.script.rt4.Player;
+import org.powerbot.script.rt6.Hud.Window;
 
 
 public class OldMethod extends ClientAccessor{
@@ -25,7 +27,6 @@ public class OldMethod extends ClientAccessor{
 	    static Tile bankTile;
 		static int life = 500;//Used for food support
 		static int baseLife;
-		static boolean hasFood = true;
 		public static boolean useBank =true;
 		public static int bankDecide = 5;
 		
@@ -175,7 +176,7 @@ public class OldMethod extends ClientAccessor{
 			if(inventoryOpened()){
 				System.out.println("Hovering");
 				t.hover();
-				sleep(1200);
+				sleep(200);
 				String[] menuItems = ctx.menu.items();
 				for(String opt: menuItems){
 					if(!actions.contains(opt)){
@@ -186,7 +187,8 @@ public class OldMethod extends ClientAccessor{
 					if(text.contains(string)){
 						if(t.interact(string)){
 						System.out.println("Using " + string + " with item: " + o);
-						 sleep(Random.nextInt(2000, 2500));
+						 //sleep(Random.nextInt(2000, 2500));
+						break;
 						}
 					}
 				}
@@ -246,8 +248,8 @@ public class OldMethod extends ClientAccessor{
 		for(GameObject y: ctx.objects.select().id(i).nearest().first()){
 			//if(closeInterfaces())
 			if(y.inViewport() && y.interact(string)){
-			state("Interacting with: " + o);
-			sleep(Random.nextInt(1800,2500));
+			//state("Interacting with: " + o);
+			sleep(Random.nextInt(1100,1400));
 			}else {
 				ctx.camera.turnTo(y.tile());
 			}
@@ -437,10 +439,43 @@ private int SPELLBOOKICONWIDGETPARENT = 548;
 			return true;}
 		return false;
 	}
-
+	public void useItemOn(int item, int obj, int[] bounds, String string) {
+		
+		  if(!inventoryOpened())
+				openInventory();
+		
+		interactInventory(item,"Use","Item");
+		sleep(Random.nextInt(600, 1000));
+		GameObject objs = ctx.objects.select().id(obj).each(Interactive.doSetBounds(bounds)).select(Interactive.areInViewport()).nearest().poll();
+		objs.interact(string,"");
+			sleep(2000);
+		
+		
+	}
 	public void useItemOn(int item, int obj, String string) {
 		//state("Using item on object: " + ctx.inventory.selectedItem().);
-		
+		//System.out.println("Selected item: " + ctx.inventory.selectedItem().valid());
+		//System.out.println("Selected type: " + ctx.inventory.selectionType());
+		//System.out.println("Selected item index: " + ctx.inventory.selectedItemIndex());
+	   if(!inventoryOpened())
+		openInventory();
+		for(Item g: ctx.inventory.select().id(item)){
+			if(g.interact("Use")){
+				
+				for(GameObject y: ctx.objects.select().id(obj).nearest().first()){
+					//if(closeInterfaces())
+					if(y.inViewport() && y.interact("Use")){
+						sleep(Random.nextInt(1000,2000));
+						break;
+					}else {
+						ctx.camera.turnTo(y.tile());
+					}
+				
+						}
+				 break;
+			}
+		}
+		/*
 		//if(ctx.inventory.selectedItem().id()!=-1){
 			interactO(obj, "", string);
 			sleep(Random.nextInt(600, 1000));
@@ -448,7 +483,7 @@ private int SPELLBOOKICONWIDGETPARENT = 548;
 			//if(inventoryContains(item))
 			interactInventory(item,"Use","Item");
 		
-		
+		*/
 	}
 	public void useItemOnNpc(int item, int npc, String string) {
 		state("Don't know how to use item on npcs");
@@ -696,26 +731,33 @@ private int SPELLBOOKICONWIDGETPARENT = 548;
 	public boolean EquipmentContains(int i) {
 		//state("Don't know how to check equipment");
 	  if(equipmentOpened()){
-		  
-		  if(ctx.widgets.component(387, 8).component(1).itemId()==i){//neck slot
+		  sleep(1000);
+		  if(ctx.widgets.component(387, 8).component(1).itemId()==i
+				  &&ctx.widgets.component(387, 8).component(1).visible()){//neck slot
 			  return true;
 		  }
-		  if(ctx.widgets.component(387, 7).component(1).itemId()==i){//cape slot
+		  if(ctx.widgets.component(387, 7).component(1).itemId()==i
+				  &&ctx.widgets.component(387, 8).component(1).visible()){//cape slot
 			  return true;
 		  }
-		  if(ctx.widgets.component(387, 6).component(1).itemId()==i){//helmet slot
+		  if(ctx.widgets.component(387, 6).component(1).itemId()==i
+				  &&ctx.widgets.component(387, 8).component(1).visible()){//helmet slot
 			  return true;
 		  }
-		  if(ctx.widgets.component(387, 9).component(1).itemId()==i){//sword slot
+		  if(ctx.widgets.component(387, 9).component(1).itemId()==i
+				  &&ctx.widgets.component(387, 8).component(1).visible()){//sword slot
 			  return true;
 		  }
-		  if(ctx.widgets.component(387, 10).component(1).itemId()==i){//armour slot
+		  if(ctx.widgets.component(387, 10).component(1).itemId()==i
+				  &&ctx.widgets.component(387, 8).component(1).visible()){//armour slot
 			  return true;
 		  }
-		  if(ctx.widgets.component(387, 11).component(1).itemId()==i){//shield slot
+		  if(ctx.widgets.component(387, 11).component(1).itemId()==i
+				  &&ctx.widgets.component(387, 8).component(1).visible()){//shield slot
 			  return true;
 		  }
-		  if(ctx.widgets.component(387, 12).component(1).itemId()==i){//leggings slot
+		  if(ctx.widgets.component(387, 12).component(1).itemId()==i
+				  &&ctx.widgets.component(387, 8).component(1).visible()){//leggings slot
 			  return true;
 		  }//All I care to add..
 		  
@@ -726,7 +768,7 @@ private int SPELLBOOKICONWIDGETPARENT = 548;
 		//}
 		return false;
 	}
-private boolean equipmentOpened() {
+public boolean equipmentOpened() {
 		if(ctx.widgets.component(548, 52).textureId()==-1){
 			state("Opening equipment..");
 			ctx.widgets.component(548, 52).interact("");
@@ -807,8 +849,15 @@ private int INVETORYIDWIDGET = 149;
 	}
 
 	public int inventoryGetCount(int i) {
-		state("Don't know how to count in inventory");
 		
+		if(inventoryOpened()){
+		
+		ItemQuery<Item> g;
+		g = null;
+		g = ctx.inventory.select().id(i);
+		return g.count(true);
+		
+		}else openInventory();
 		return 0;
 	}
 
@@ -927,6 +976,7 @@ private int INVETORYIDWIDGET = 149;
 			return true;
 		}else {
 			//System.out.println("Clicking on tile : " + tile);
+			if(!ctx.movement.findPath(tile).traverse())
 			clickOnMap(tile);
 			sleep(Random.nextInt(1000, 1400));
 		}
@@ -981,6 +1031,51 @@ private int INVETORYIDWIDGET = 149;
 			if(!isChatting("NPC")){
 				npcInteract(npc,"Talk-to");
 			}
+		}
+	}
+	public boolean Takeoff(int i) {
+		if(equipmentOpened()){
+			 if(ctx.widgets.component(387, 8).component(1).itemId()==i){//neck slot
+				 ctx.widgets.component(387, 8).component(1).click();
+			  }
+			  if(ctx.widgets.component(387, 7).component(1).itemId()==i){//cape slot
+				  ctx.widgets.component(387, 8).component(1).click();
+			  }
+			  if(ctx.widgets.component(387, 6).component(1).itemId()==i){//helmet slot
+				  ctx.widgets.component(387, 8).component(1).click();
+			  }
+			  if(ctx.widgets.component(387, 9).component(1).itemId()==i){//sword slot
+				  ctx.widgets.component(387, 8).component(1).click();
+			  }
+			  if(ctx.widgets.component(387, 10).component(1).itemId()==i){//armour slot
+				  ctx.widgets.component(387, 8).component(1).click();
+			  }
+			  if(ctx.widgets.component(387, 11).component(1).itemId()==i){//shield slot
+				  ctx.widgets.component(387, 8).component(1).click();
+			  }
+			  if(ctx.widgets.component(387, 12).component(1).itemId()==i){//leggings slot
+				  ctx.widgets.component(387, 8).component(1).click();
+			  }
+		}else openEquipment();
+		
+		return false;
+	}
+	private void openEquipment() {
+	 	ctx.widgets.component(548, 52).interact("");//equipment button 
+		
+	}
+	private boolean hasFood = true;
+	public void foodSupport() {
+		String g = ""+ ctx.widgets.component(548, 77).text().toString();
+		int currentHealth = Integer.parseInt(g);
+		
+		if(hasFood && (currentHealth<=9)){
+			if(!inventoryContains(DeltaOldQuester.foodID)){
+				System.out.println("hasFood is false b/c no food in inventory");
+				hasFood=false;
+			}
+			state("Eating some food - low on health");
+			interactInventory(DeltaOldQuester.foodID, "", "Food");
 		}
 	}
 	

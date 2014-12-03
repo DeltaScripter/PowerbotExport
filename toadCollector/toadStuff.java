@@ -68,7 +68,7 @@ public class toadStuff extends toadNode{
 			if(!ctx.movement.findPath(new Tile(2420,3510,0).derive(1, 2)).traverse()){
 				ctx.movement.newTilePath(pathToToad).randomize(1, 2).traverse();
 				}
-			m.sleep(Random.nextInt(Random.nextInt(2100, 2200), Random.nextInt(2300, 2400)));
+		//	m.sleep(Random.nextInt(Random.nextInt(1100, 1200), Random.nextInt(1300, 1400)));
 			m.state("Need to walk to toads");
 		}
 	

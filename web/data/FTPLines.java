@@ -184,6 +184,255 @@ public WebComponent[] componentArray = {
 	new WebLine(ctx, new Tile(3077, 3282, 0),new Tile(3074, 3277, 0)),
 	new WebLine(ctx, new Tile(3074, 3277, 0),new Tile(3070, 3276, 0)),
 	
+	new WebLine(ctx, new Tile(3070, 3276, 0),new Tile(3060, 3275, 0)),
+	new WebLine(ctx, new Tile(3060, 3275, 0),new Tile(3060, 3275, 0)),
+	new WebLine(ctx, new Tile(3060, 3275, 0),new Tile(3050, 3274, 0)),
+	new WebLine(ctx, new Tile(3050, 3274, 0),new Tile(3038, 3276, 0)),
+	new WebLine(ctx, new Tile(3038, 3276, 0),new Tile(3038, 3276, 0)),
+	new WebLine(ctx, new Tile(3038, 3276, 0),new Tile(3028, 3276, 0)),
+	new WebLine(ctx, new Tile(3028, 3276, 0),new Tile(3016, 3275, 0)),
+	new WebLine(ctx, new Tile(3016, 3275, 0),new Tile(3007, 3277, 0)),
+	new WebLine(ctx, new Tile(3007, 3277, 0),new Tile(3006, 3289, 0)),
+	new WebLine(ctx, new Tile(3006, 3289, 0),new Tile(3006, 3300, 0)),
+	new WebLine(ctx, new Tile(3006, 3300, 0),new Tile(3008, 3311, 0)),
+	new WebLine(ctx, new Tile(3008, 3311, 0),new Tile(3007, 3321, 0)),
+	new WebLine(ctx, new Tile(3007, 3321, 0),new Tile(3007, 3334, 0)),
+	new WebLine(ctx, new Tile(3007, 3334, 0),new Tile(3007, 3345, 0)),
+	new WebLine(ctx, new Tile(3007, 3345, 0),new Tile(3005, 3356, 0)),
+	new WebLine(ctx, new Tile(3005, 3356, 0),new Tile(2997, 3363, 0)),
+	new WebLine(ctx, new Tile(2997, 3363, 0),new Tile(2997, 3363, 0)),
+	new WebLine(ctx, new Tile(2997, 3363, 0),new Tile(2989, 3370, 0)),
+	new WebLine(ctx, new Tile(2989, 3370, 0),new Tile(2989, 3370, 0)),
+	new WebLine(ctx, new Tile(2989, 3370, 0),new Tile(2981, 3377, 0)),
+	new WebLine(ctx, new Tile(2981, 3377, 0),new Tile(2968, 3380, 0)),
+	new WebLine(ctx, new Tile(2968, 3380, 0),new Tile(2967, 3387, 0)),
+	new WebLine(ctx, new Tile(2967, 3387, 0),new Tile(2966, 3394, 0)),
+	new WebLine(ctx, new Tile(2966, 3394, 0),new Tile(2966, 3394, 0)),
+	new WebLine(ctx, new Tile(2966, 3394, 0),new Tile(2964, 3404, 0)),
+	
+	
+	//the branches from flador to barbarian village
+	new WebLine(ctx, new Tile(2964, 3404, 0),new Tile(2973, 3413, 0)),
+	new WebLine(ctx, new Tile(2973, 3413, 0),new Tile(2978, 3416, 0)),
+	new WebLine(ctx, new Tile(2978, 3416, 0),new Tile(2985, 3419, 0)),
+	new WebLine(ctx, new Tile(2985, 3419, 0),new Tile(2988, 3428, 0)),
+	new WebLine(ctx, new Tile(2988, 3428, 0),new Tile(2994, 3432, 0)),
+	new WebLine(ctx, new Tile(2994, 3432, 0),new Tile(3005, 3432, 0)),
+	new WebLine(ctx, new Tile(3005, 3432, 0),new Tile(3014, 3430, 0)),
+	new WebLine(ctx, new Tile(3014, 3430, 0),new Tile(3021, 3426, 0)),
+	new WebLine(ctx, new Tile(3021, 3426, 0),new Tile(3031, 3427, 0)),
+	new WebLine(ctx, new Tile(3031, 3427, 0),new Tile(3039, 3423, 0)),
+	new WebLine(ctx, new Tile(3039, 3423, 0),new Tile(3045, 3417, 0)),
+	new WebLine(ctx, new Tile(3045, 3417, 0),new Tile(3055, 3411, 0)),
+	new WebLine(ctx, new Tile(3055, 3411, 0),new Tile(3062, 3418, 0)),
+	new WebLine(ctx, new Tile(3062, 3418, 0),new Tile(3074, 3417, 0)),
+	new WebLine(ctx, new Tile(3074, 3417, 0),new Tile(3085, 3420, 0)),
+	
+	
+	
+	
+	new WebLine(ctx, new Tile(2964, 3404, 0),new Tile(2964, 3404, 0)),
+	new WebLine(ctx, new Tile(2964, 3404, 0),new Tile(2957, 3414, 0)),
+	new WebLine(ctx, new Tile(2957, 3414, 0),new Tile(2950, 3420, 0)),
+	new WebLine(ctx, new Tile(2950, 3420, 0),new Tile(2950, 3420, 0)),
+	new WebLine(ctx, new Tile(2950, 3420, 0),new Tile(2948, 3429, 0)),
+	new WebLine(ctx, new Tile(2948, 3429, 0),new Tile(2948, 3439, 0)),
+	new WebLine(ctx, new Tile(2948, 3439, 0),new Tile(2947, 3449, 0)),
+	new WebLine(ctx, new Tile(2947, 3449, 0),new Tile(2939, 3450, 0)),
+	new WebLine(ctx, new Tile(2939, 3450, 0),new Tile(2930, 3450, 0)),
+	new WebLine(ctx, new Tile(2930, 3450, 0),new Tile(2920, 3455, 0)),
+	new WebLine(ctx, new Tile(2920, 3455, 0),new Tile(2908, 3455, 0)),
+	new WebLine(ctx, new Tile(2908, 3455, 0),new Tile(2896, 3455, 0)),
+	new WebLine(ctx, new Tile(2896, 3455, 0),new Tile(2887, 3444, 0)),
+	new WebLine(ctx, new Tile(2887, 3444, 0),new Tile(2872, 3441, 0)),
+	new WebLine(ctx, new Tile(2872, 3441, 0),new Tile(2872, 3441, 0)),
+	new WebLine(ctx, new Tile(2872, 3441, 0),new Tile(2873, 3449, 0)),
+	new WebLine(ctx, new Tile(2873, 3449, 0),new Tile(2872, 3460, 0)),
+	new WebLine(ctx, new Tile(2872, 3460, 0),new Tile(2872, 3460, 0)),
+	new WebLine(ctx, new Tile(2872, 3460, 0),new Tile(2869, 3469, 0)),
+	new WebLine(ctx, new Tile(2869, 3469, 0),new Tile(2867, 3480, 0)),
+	new WebLine(ctx, new Tile(2867, 3480, 0),new Tile(2867, 3480, 0)),
+	new WebLine(ctx, new Tile(2867, 3480, 0),new Tile(2870, 3488, 0)),
+	new WebLine(ctx, new Tile(2870, 3488, 0),new Tile(2875, 3498, 0)),
+	new WebLine(ctx, new Tile(2875, 3498, 0),new Tile(2877, 3508, 0)),
+	new WebLine(ctx, new Tile(2877, 3508, 0),new Tile(2877, 3517, 0)),
+	new WebLine(ctx, new Tile(2877, 3517, 0),new Tile(2877, 3517, 0)),
+	new WebLine(ctx, new Tile(2877, 3517, 0),new Tile(2870, 3525, 0)),
+	new WebLine(ctx, new Tile(2870, 3525, 0),new Tile(2870, 3525, 0)),
+	new WebLine(ctx, new Tile(2870, 3525, 0),new Tile(2861, 3524, 0)),
+	new WebLine(ctx, new Tile(2861, 3524, 0),new Tile(2850, 3524, 0)),
+	new WebLine(ctx, new Tile(2850, 3524, 0),new Tile(2841, 3526, 0)),
+	new WebLine(ctx, new Tile(2841, 3526, 0),new Tile(2841, 3526, 0)),
+	new WebLine(ctx, new Tile(2841, 3526, 0),new Tile(2833, 3532, 0)),
+	new WebLine(ctx, new Tile(2833, 3532, 0),new Tile(2827, 3536, 0)),
+	new WebLine(ctx, new Tile(2827, 3536, 0),new Tile(2827, 3536, 0)),
+	new WebLine(ctx, new Tile(2827, 3536, 0),new Tile(2823, 3528, 0)),
+	new WebLine(ctx, new Tile(2823, 3528, 0),new Tile(2823, 3528, 0)),
+	new WebLine(ctx, new Tile(2823, 3528, 0),new Tile(2812, 3522, 0)),
+	new WebLine(ctx, new Tile(2812, 3522, 0),new Tile(2803, 3517, 0)),
+	new WebLine(ctx, new Tile(2803, 3517, 0),new Tile(2803, 3517, 0)),
+	new WebLine(ctx, new Tile(2803, 3517, 0),new Tile(2796, 3512, 0)),
+	new WebLine(ctx, new Tile(2796, 3512, 0),new Tile(2795, 3502, 0)),
+	new WebLine(ctx, new Tile(2795, 3502, 0),new Tile(2798, 3495, 0)),
+	new WebLine(ctx, new Tile(2798, 3495, 0),new Tile(2798, 3495, 0)),
+	new WebLine(ctx, new Tile(2798, 3495, 0),new Tile(2807, 3496, 0)),
+	new WebLine(ctx, new Tile(2807, 3496, 0),new Tile(2814, 3499, 0)),
+	new WebLine(ctx, new Tile(2814, 3499, 0),new Tile(2824, 3499, 0)),
+	new WebLine(ctx, new Tile(2824, 3499, 0),new Tile(2824, 3499, 0)),
+	new WebLine(ctx, new Tile(2824, 3499, 0),new Tile(2829, 3494, 0)),
+	new WebLine(ctx, new Tile(2829, 3494, 0),new Tile(2833, 3487, 0)),
+	new WebLine(ctx, new Tile(2833, 3487, 0),new Tile(2833, 3487, 0)),
+	new WebLine(ctx, new Tile(2833, 3487, 0),new Tile(2835, 3479, 0)),
+	new WebLine(ctx, new Tile(2835, 3479, 0),new Tile(2835, 3479, 0)),
+	new WebLine(ctx, new Tile(2835, 3479, 0),new Tile(2839, 3470, 0)),
+	new WebLine(ctx, new Tile(2839, 3470, 0),new Tile(2843, 3462, 0)),
+	new WebLine(ctx, new Tile(2843, 3462, 0),new Tile(2847, 3451, 0)),
+	new WebLine(ctx, new Tile(2847, 3451, 0),new Tile(2854, 3445, 0)),
+	new WebLine(ctx, new Tile(2854, 3445, 0),new Tile(2859, 3441, 0)),
+	new WebLine(ctx, new Tile(2859, 3441, 0),new Tile(2850, 3437, 0)),
+	new WebLine(ctx, new Tile(2850, 3437, 0),new Tile(2841, 3436, 0)),
+	new WebLine(ctx, new Tile(2841, 3436, 0),new Tile(2835, 3435, 0)),
+	new WebLine(ctx, new Tile(2835, 3435, 0),new Tile(2827, 3438, 0)),
+	new WebLine(ctx, new Tile(2827, 3438, 0),new Tile(2827, 3438, 0)),
+	new WebLine(ctx, new Tile(2827, 3438, 0),new Tile(2820, 3438, 0)),
+	new WebLine(ctx, new Tile(2820, 3438, 0),new Tile(2813, 3445, 0)),
+	new WebLine(ctx, new Tile(2813, 3445, 0),new Tile(2803, 3445, 0)),
+	new WebLine(ctx, new Tile(2803, 3445, 0),new Tile(2804, 3436, 0)),
+	new WebLine(ctx, new Tile(2804, 3436, 0),new Tile(2804, 3433, 0)),
+	
+	
+	new WebLine(ctx, new Tile(2804, 3433, 0),new Tile(2795, 3432, 0)),
+	new WebLine(ctx, new Tile(2795, 3432, 0),new Tile(2789, 3437, 0)),
+	new WebLine(ctx, new Tile(2789, 3437, 0),new Tile(2783, 3443, 0)),
+	new WebLine(ctx, new Tile(2783, 3443, 0),new Tile(2777, 3449, 0)),
+	new WebLine(ctx, new Tile(2777, 3449, 0),new Tile(2772, 3454, 0)),
+	new WebLine(ctx, new Tile(2772, 3454, 0),new Tile(2767, 3460, 0)),
+	new WebLine(ctx, new Tile(2767, 3460, 0),new Tile(2763, 3467, 0)),
+	new WebLine(ctx, new Tile(2763, 3467, 0),new Tile(2757, 3474, 0)),
+	new WebLine(ctx, new Tile(2757, 3474, 0),new Tile(2752, 3477, 0)),
+	new WebLine(ctx, new Tile(2752, 3477, 0),new Tile(2743, 3479, 0)),
+	new WebLine(ctx, new Tile(2743, 3479, 0),new Tile(2733, 3484, 0)),
+	new WebLine(ctx, new Tile(2733, 3484, 0),new Tile(2724, 3483, 0)),
+	new WebLine(ctx, new Tile(2724, 3483, 0),new Tile(2714, 3484, 0)),
+	new WebLine(ctx, new Tile(2714, 3484, 0),new Tile(2706, 3483, 0)),
+	new WebLine(ctx, new Tile(2706, 3483, 0),new Tile(2698, 3483, 0)),
+	new WebLine(ctx, new Tile(2698, 3483, 0),new Tile(2689, 3484, 0)),
+	new WebLine(ctx, new Tile(2689, 3484, 0),new Tile(2683, 3482, 0)),
+	
+	new WebLine(ctx, new Tile(2683, 3482, 0),new Tile(2679, 3478, 0)),
+	new WebLine(ctx, new Tile(2679, 3478, 0),new Tile(2680, 3470, 0)),
+	new WebLine(ctx, new Tile(2680, 3470, 0),new Tile(2673, 3465, 0)),
+	new WebLine(ctx, new Tile(2673, 3465, 0),new Tile(2669, 3457, 0)),
+	new WebLine(ctx, new Tile(2669, 3457, 0),new Tile(2665, 3450, 0)),
+	new WebLine(ctx, new Tile(2665, 3450, 0),new Tile(2658, 3445, 0)),
+	new WebLine(ctx, new Tile(2658, 3445, 0),new Tile(2652, 3439, 0)),
+	new WebLine(ctx, new Tile(2652, 3439, 0),new Tile(2647, 3433, 0)),
+	new WebLine(ctx, new Tile(2647, 3433, 0),new Tile(2645, 3426, 0)),
+	new WebLine(ctx, new Tile(2645, 3426, 0),new Tile(2646, 3418, 0)),
+	new WebLine(ctx, new Tile(2646, 3418, 0),new Tile(2646, 3408, 0)),
+	new WebLine(ctx, new Tile(2646, 3408, 0),new Tile(2643, 3400, 0)),
+	new WebLine(ctx, new Tile(2643, 3400, 0),new Tile(2634, 3401, 0)),
+	new WebLine(ctx, new Tile(2634, 3401, 0),new Tile(2630, 3396, 0)),
+	new WebLine(ctx, new Tile(2630, 3396, 0),new Tile(2624, 3390, 0)),
+	new WebLine(ctx, new Tile(2624, 3390, 0),new Tile(2618, 3385, 0)),
+	new WebLine(ctx, new Tile(2618, 3385, 0),new Tile(2612, 3381, 0)),
+	new WebLine(ctx, new Tile(2612, 3381, 0),new Tile(2603, 3381, 0)),
+	new WebLine(ctx, new Tile(2603, 3381, 0),new Tile(2594, 3382, 0)),
+	new WebLine(ctx, new Tile(2594, 3382, 0),new Tile(2584, 3383, 0)),
+	
+	
+	new WebLine(ctx, new Tile(2584, 3383, 0),new Tile(2585, 3374, 0)),
+	new WebLine(ctx, new Tile(2585, 3374, 0),new Tile(2582, 3368, 0)),
+	new WebLine(ctx, new Tile(2582, 3368, 0),new Tile(2581, 3359, 0)),
+	new WebLine(ctx, new Tile(2581, 3359, 0),new Tile(2582, 3351, 0)),
+	new WebLine(ctx, new Tile(2582, 3351, 0),new Tile(2588, 3344, 0)),
+	new WebLine(ctx, new Tile(2588, 3344, 0),new Tile(2586, 3334, 0)),
+	new WebLine(ctx, new Tile(2586, 3334, 0),new Tile(2582, 3329, 0)),
+	new WebLine(ctx, new Tile(2582, 3329, 0),new Tile(2581, 3322, 0)),
+	new WebLine(ctx, new Tile(2581, 3322, 0),new Tile(2577, 3314, 0)),
+	new WebLine(ctx, new Tile(2577, 3314, 0),new Tile(2569, 3313, 0)),
+	new WebLine(ctx, new Tile(2569, 3313, 0),new Tile(2565, 3307, 0)),
+	new WebLine(ctx, new Tile(2565, 3307, 0),new Tile(2563, 3299, 0)),
+	new WebLine(ctx, new Tile(2563, 3299, 0),new Tile(2563, 3291, 0)),
+	new WebLine(ctx, new Tile(2563, 3291, 0),new Tile(2566, 3284, 0)),
+	new WebLine(ctx, new Tile(2566, 3284, 0),new Tile(2573, 3281, 0)),
+	new WebLine(ctx, new Tile(2573, 3281, 0),new Tile(2581, 3279, 0)),
+	new WebLine(ctx, new Tile(2581, 3279, 0),new Tile(2589, 3283, 0)),
+	new WebLine(ctx, new Tile(2589, 3283, 0),new Tile(2592, 3293, 0)),
+	new WebLine(ctx, new Tile(2592, 3293, 0),new Tile(2597, 3296, 0)),
+	new WebLine(ctx, new Tile(2597, 3296, 0),new Tile(2606, 3295, 0)),
+	new WebLine(ctx, new Tile(2606, 3295, 0),new Tile(2604, 3289, 0)),
+	new WebLine(ctx, new Tile(2604, 3289, 0),new Tile(2607, 3282, 0)),
+	new WebLine(ctx, new Tile(2607, 3282, 0),new Tile(2607, 3275, 0)),
+	new WebLine(ctx, new Tile(2607, 3275, 0),new Tile(2610, 3268, 0)),
+	new WebLine(ctx, new Tile(2610, 3268, 0),new Tile(2603, 3263, 0)),
+	new WebLine(ctx, new Tile(2603, 3263, 0),new Tile(2597, 3257, 0)),
+	new WebLine(ctx, new Tile(2597, 3257, 0),new Tile(2593, 3250, 0)),
+	new WebLine(ctx, new Tile(2593, 3250, 0),new Tile(2586, 3241, 0)),
+	new WebLine(ctx, new Tile(2586, 3241, 0),new Tile(2583, 3232, 0)),
+	
+	new WebLine(ctx, new Tile(2583, 3232, 0),new Tile(2579, 3223, 0)),
+	new WebLine(ctx, new Tile(2579, 3223, 0),new Tile(2574, 3223, 0)),
+	new WebLine(ctx, new Tile(2574, 3223, 0),new Tile(2566, 3219, 0)),
+	new WebLine(ctx, new Tile(2566, 3219, 0),new Tile(2562, 3213, 0)),
+	new WebLine(ctx, new Tile(2562, 3213, 0),new Tile(2553, 3209, 0)),
+	new WebLine(ctx, new Tile(2553, 3209, 0),new Tile(2547, 3210, 0)),
+	new WebLine(ctx, new Tile(2547, 3210, 0),new Tile(2541, 3207, 0)),
+	new WebLine(ctx, new Tile(2541, 3207, 0),new Tile(2535, 3209, 0)),
+	new WebLine(ctx, new Tile(2535, 3209, 0),new Tile(2530, 3208, 0)),
+	new WebLine(ctx, new Tile(2530, 3208, 0),new Tile(2527, 3209, 0)),
+	new WebLine(ctx, new Tile(2527, 3209, 0),new Tile(2519, 3204, 0)),
+	new WebLine(ctx, new Tile(2519, 3204, 0),new Tile(2512, 3204, 0)),
+	new WebLine(ctx, new Tile(2512, 3204, 0),new Tile(2508, 3202, 0)),
+	new WebLine(ctx, new Tile(2508, 3202, 0),new Tile(2504, 3194, 0)),
+	new WebLine(ctx, new Tile(2504, 3194, 0),new Tile(2505, 3190, 0)),
+
+	new WebLine(ctx, new Tile(2505, 3190, 0),new Tile(2522, 3187, 0)),
+	new WebLine(ctx, new Tile(2522, 3187, 0),new Tile(2522, 3187, 0)),
+	new WebLine(ctx, new Tile(2522, 3187, 0),new Tile(2524, 3180, 0)),
+	new WebLine(ctx, new Tile(2524, 3180, 0),new Tile(2533, 3179, 0)),
+	new WebLine(ctx, new Tile(2533, 3179, 0),new Tile(2540, 3177, 0)),
+	new WebLine(ctx, new Tile(2540, 3177, 0),new Tile(2550, 3173, 0)),
+	new WebLine(ctx, new Tile(2550, 3173, 0),new Tile(2550, 3167, 0)),
+	new WebLine(ctx, new Tile(2550, 3167, 0),new Tile(2543, 3155, 0)),
+	new WebLine(ctx, new Tile(2543, 3155, 0),new Tile(2543, 3155, 0)),
+	new WebLine(ctx, new Tile(2543, 3155, 0),new Tile(2535, 3155, 0)),
+
+	
+	
+	
+	new WebLine(ctx, new Tile(2584, 3383, 0),new Tile(2579, 3389, 0)),
+	new WebLine(ctx, new Tile(2579, 3389, 0),new Tile(2576, 3397, 0)),
+	new WebLine(ctx, new Tile(2576, 3397, 0),new Tile(2573, 3405, 0)),
+	new WebLine(ctx, new Tile(2573, 3405, 0),new Tile(2569, 3410, 0)),
+	new WebLine(ctx, new Tile(2569, 3410, 0),new Tile(2567, 3418, 0)),
+	new WebLine(ctx, new Tile(2567, 3418, 0),new Tile(2565, 3426, 0)),
+	
+	
+	new WebLine(ctx, new Tile(2565, 3426, 0),new Tile(2562, 3427, 0)),
+	new WebLine(ctx, new Tile(2562, 3427, 0),new Tile(2556, 3430, 0)),
+	new WebLine(ctx, new Tile(2556, 3430, 0),new Tile(2549, 3433, 0)),
+	new WebLine(ctx, new Tile(2549, 3433, 0),new Tile(2540, 3432, 0)),
+	new WebLine(ctx, new Tile(2540, 3432, 0),new Tile(2533, 3428, 0)),
+	new WebLine(ctx, new Tile(2533, 3428, 0),new Tile(2528, 3432, 0)),
+	new WebLine(ctx, new Tile(2528, 3432, 0),new Tile(2523, 3431, 0)),
+	
+	
+	new WebLine(ctx, new Tile(2565, 3426, 0),new Tile(2565, 3436, 0)),
+	new WebLine(ctx, new Tile(2565, 3436, 0),new Tile(2567, 3445, 0)),
+	new WebLine(ctx, new Tile(2567, 3445, 0),new Tile(2567, 3453, 0)),
+	new WebLine(ctx, new Tile(2567, 3453, 0),new Tile(2557, 3452, 0)),
+	
+	new WebLine(ctx, new Tile(2557, 3452, 0),new Tile(2556, 3458, 0)),
+	new WebLine(ctx, new Tile(2556, 3458, 0),new Tile(2553, 3465, 0)),
+	new WebLine(ctx, new Tile(2553, 3465, 0),new Tile(2551, 3472, 0)),
+	new WebLine(ctx, new Tile(2551, 3472, 0),new Tile(2544, 3477, 0)),
+	new WebLine(ctx, new Tile(2544, 3477, 0),new Tile(2539, 3474, 0)),
+	new WebLine(ctx, new Tile(2539, 3474, 0),new Tile(2531, 3480, 0)),
+	new WebLine(ctx, new Tile(2531, 3480, 0),new Tile(2532, 3488, 0)),
+	new WebLine(ctx, new Tile(2532, 3488, 0),new Tile(2529, 3495, 0)),
+
+
 	
 	new WebLine(ctx, new Tile(3167, 3289, 0),new Tile(3166, 3293, 0)),
 	new WebLine(ctx, new Tile(3166, 3293, 0),new Tile(3166, 3298, 0)),
@@ -195,125 +444,6 @@ public WebComponent[] componentArray = {
 	new WebLine(ctx, new Tile(3220, 3218, 0),new Tile(3215, 3219, 0)),
 	new WebLine(ctx, new Tile(3215, 3219, 0),new Tile(3206, 3227, 0)),
 
-	/*
-	new WebLine(ctx, new Tile(3116, 3218, 0), new Tile(3139, 3209, 0))
-	, new WebLine(ctx, new Tile(3116, 3218, 0), new Tile(3190, 3244, 0))
-	, new WebLine(ctx, new Tile(3190, 3244, 0), new Tile(3224, 3245, 0))
-	, new WebLine(ctx, new Tile(3224, 3245, 0), new Tile(3234, 3219, 0))
-	, new WebLine(ctx, new Tile(3234, 3219, 0), new Tile(3241, 3182, 0))
-	, new WebLine(ctx, new Tile(3241, 3182, 0), new Tile(3208, 3162, 0))
-	, new WebLine(ctx, new Tile(3208, 3162, 0), new Tile(3229, 3149, 0))
-	, new WebLine(ctx, new Tile(3208, 3162, 0), new Tile(3173, 3165, 0))
-	, new WebLine(ctx, new Tile(3173, 3165, 0), new Tile(3148, 3147, 0))
-	, new WebLine(ctx, new Tile(3173, 3165, 0), new Tile(3139, 3209, 0))
-	, new WebLine(ctx, new Tile(3116, 3218, 0), new Tile(3103, 3250, 0))
-	, new WebLine(ctx, new Tile(3103, 3250, 0), new Tile(3107, 3295, 0))
-	, new WebLine(ctx, new Tile(3107, 3295, 0), new Tile(3109, 3326, 0))
-	, new WebLine(ctx, new Tile(3109, 3326, 0), new Tile(3080, 3326, 0))
-	, new WebLine(ctx, new Tile(3107, 3295, 0), new Tile(3080, 3326, 0))
-	, new WebLine(ctx, new Tile(3076, 3385, 0), new Tile(3098, 3421, 0))
-	, new WebLine(ctx, new Tile(3224, 3245, 0), new Tile(3212, 3280, 0))
-	, new WebLine(ctx, new Tile(3212, 3280, 0), new Tile(3167, 3286, 0))
-	, new WebLine(ctx, new Tile(3167, 3286, 0), new Tile(3107, 3295, 0))
-	, new WebLine(ctx, new Tile(3151, 3417, 0), new Tile(3187, 3429, 0))
-	, new WebLine(ctx, new Tile(3187, 3429, 0), new Tile(3186, 3439, 0))
-	, new WebLine(ctx, new Tile(3187, 3429, 0), new Tile(3211, 3428, 0))
-	, new WebLine(ctx, new Tile(3211, 3428, 0), new Tile(3210, 3373, 0))
-	, new WebLine(ctx, new Tile(3211, 3428, 0), new Tile(3253, 3429, 0))
-	, new WebLine(ctx, new Tile(3210, 3373, 0), new Tile(3182, 3369, 0))
-	, new WebLine(ctx, new Tile(3210, 3373, 0), new Tile(3230, 3336, 0))
-	, new WebLine(ctx, new Tile(3230, 3336, 0), new Tile(3267, 3334, 0))
-	, new WebLine(ctx, new Tile(3267, 3334, 0), new Tile(3240, 3307, 0))
-	, new WebLine(ctx, new Tile(3230, 3336, 0), new Tile(3240, 3307, 0))
-	, new WebLine(ctx, new Tile(3267, 3334, 0), new Tile(3282, 3331, 0))
-	, new WebLine(ctx, new Tile(3269, 3166, 0), new Tile(3277, 3227, 0))
-	, new WebLine(ctx, new Tile(3277, 3227, 0), new Tile(3287, 3275, 0))
-	, new WebLine(ctx, new Tile(3287, 3275, 0), new Tile(3282, 3331, 0))
-	, new WebLine(ctx, new Tile(3287, 3275, 0), new Tile(3300, 3309, 0))
-	, new WebLine(ctx, new Tile(3269, 3166, 0), new Tile(3241, 3182, 0))
-	, new WebLine(ctx, new Tile(3116, 3218, 0), new Tile(3112, 3169, 0))
-	, new WebLine(ctx, new Tile(3107, 3295, 0), new Tile(3074, 3274, 0))
-	, new WebLine(ctx, new Tile(3074, 3274, 0), new Tile(3080, 3326, 0))
-	, new WebLine(ctx, new Tile(3033, 3276, 0), new Tile(3046, 3247, 0))
-	, new WebLine(ctx, new Tile(3033, 3276, 0), new Tile(3005, 3278, 0))
-	, new WebLine(ctx, new Tile(3005, 3278, 0), new Tile(3019, 3243, 0))
-	, new WebLine(ctx, new Tile(3019, 3243, 0), new Tile(3033, 3276, 0))
-	, new WebLine(ctx, new Tile(3019, 3243, 0), new Tile(3046, 3247, 0))
-	, new WebLine(ctx, new Tile(3019, 3205, 0), new Tile(3019, 3243, 0))
-	, new WebLine(ctx, new Tile(3019, 3205, 0), new Tile(3038, 3204, 0))
-	, new WebLine(ctx, new Tile(3019, 3205, 0), new Tile(3009, 3156, 0))
-	, new WebLine(ctx, new Tile(3005, 3278, 0), new Tile(3007, 3320, 0))
-	, new WebLine(ctx, new Tile(3007, 3320, 0), new Tile(3055, 3322, 0))
-	, new WebLine(ctx, new Tile(3005, 3278, 0), new Tile(2978, 3239, 0))
-	, new WebLine(ctx, new Tile(3019, 3243, 0), new Tile(2978, 3239, 0))
-	, new WebLine(ctx, new Tile(3019, 3205, 0), new Tile(2978, 3239, 0))
-	, new WebLine(ctx, new Tile(3007, 3320, 0), new Tile(3005, 3362, 0))
-	, new WebLine(ctx, new Tile(3005, 3362, 0), new Tile(2965, 3380, 0))
-	, new WebLine(ctx, new Tile(2965, 3380, 0), new Tile(2968, 3416, 0))
-	, new WebLine(ctx, new Tile(2968, 3416, 0), new Tile(3000, 3433, 0))
-	, new WebLine(ctx, new Tile(3000, 3433, 0), new Tile(3079, 3420, 0))
-	, new WebLine(ctx, new Tile(3079, 3420, 0), new Tile(3098, 3421, 0))
-	, new WebLine(ctx, new Tile(3079, 3420, 0), new Tile(3076, 3385, 0))
-	, new WebLine(ctx, new Tile(3253, 3429, 0), new Tile(3284, 3427, 0))
-	, new WebLine(ctx, new Tile(3284, 3427, 0), new Tile(3285, 3365, 0))
-	, new WebLine(ctx, new Tile(3285, 3365, 0), new Tile(3282, 3331, 0))
-	, new WebLine(ctx, new Tile(3285, 3365, 0), new Tile(3267, 3334, 0))
-	, new WebLine(ctx, new Tile(3151, 3417, 0), new Tile(3182, 3369, 0))
-	, new WebLine(ctx, new Tile(3253, 3429, 0), new Tile(3245, 3462, 0))
-	, new WebLine(ctx, new Tile(3245, 3462, 0), new Tile(3230, 3465, 0))
-	, new WebLine(ctx, new Tile(3230, 3465, 0), new Tile(3212, 3466, 0))
-	, new WebLine(ctx, new Tile(3212, 3466, 0), new Tile(3212, 3449, 0))
-	, new WebLine(ctx, new Tile(3212, 3449, 0), new Tile(3197, 3458, 0))
-	, new WebLine(ctx, new Tile(3197, 3458, 0), new Tile(3196, 3492, 0))
-	, new WebLine(ctx, new Tile(3196, 3492, 0), new Tile(3164, 3488, 0))
-	, new WebLine(ctx, new Tile(3151, 3417, 0), new Tile(3165, 3456, 0))
-	, new WebLine(ctx, new Tile(3165, 3456, 0), new Tile(3186, 3439, 0))
-	, new WebLine(ctx, new Tile(3165, 3456, 0), new Tile(3164, 3488, 0))
-	, new WebLine(ctx, new Tile(3167, 3286, 0), new Tile(3182, 3369, 0))
-	, new WebLine(ctx, new Tile(3253, 3418, 0), new Tile(3253, 3429, 0))
-	, new WebLine(ctx, new Tile(3000, 3433, 0), new Tile(3051, 3457, 0))
-	, new WebLine(ctx, new Tile(3079, 3420, 0), new Tile(3051, 3457, 0))
-	, new WebLine(ctx, new Tile(3098, 3421, 0), new Tile(3095, 3450, 0))
-	, new WebLine(ctx, new Tile(3095, 3450, 0), new Tile(3095, 3493, 0))
-	, new WebLine(ctx, new Tile(3095, 3493, 0), new Tile(3050, 3516, 0))
-	, new WebLine(ctx, new Tile(3050, 3516, 0), new Tile(3052, 3490, 0))
-	, new WebLine(ctx, new Tile(3052, 3490, 0), new Tile(3051, 3457, 0))
-	, new WebLine(ctx, new Tile(2946, 3368, 0), new Tile(2965, 3380, 0))
-	, new WebLine(ctx, new Tile(3005, 3362, 0), new Tile(3014, 3354, 0))
-	, new WebLine(ctx, new Tile(3005, 3362, 0), new Tile(3039, 3358, 0))
-	, new WebLine(ctx, new Tile(3014, 3354, 0), new Tile(3039, 3358, 0))
-	, new WebLine(ctx, new Tile(3039, 3358, 0), new Tile(3060, 3374, 0))
-	, new WebLine(ctx, new Tile(3039, 3358, 0), new Tile(3048, 3338, 0))
-	, new WebLine(ctx, new Tile(2965, 3380, 0), new Tile(2969, 3339, 0))
-	, new WebLine(ctx, new Tile(3224, 3245, 0), new Tile(3258, 3231, 0))
-	, new WebLine(ctx, new Tile(3258, 3231, 0), new Tile(3242, 3272, 0))
-	, new WebLine(ctx, new Tile(3242, 3272, 0), new Tile(3240, 3307, 0))
-	, new WebLine(ctx, new Tile(3151, 3417, 0), new Tile(3114, 3420, 0))
-	, new WebLine(ctx, new Tile(3212, 3280, 0), new Tile(3228, 3261, 0))
-	, new WebLine(ctx, new Tile(3224, 3245, 0), new Tile(3228, 3261, 0))
-	, new WebLine(ctx, new Tile(3228, 3261, 0), new Tile(3241, 3261, 0))
-	, new WebLine(ctx, new Tile(3241, 3261, 0), new Tile(3242, 3272, 0))
-	, new WebLine(ctx, new Tile(3241, 3261, 0), new Tile(3258, 3231, 0))
-	, new WebLine(ctx, new Tile(3109, 3326, 0), new Tile(3167, 3286, 0))
-	, new WebLine(ctx, new Tile(3167, 3286, 0), new Tile(3154, 3258, 0))
-	, new WebLine(ctx, new Tile(3154, 3258, 0), new Tile(3190, 3244, 0))
-	, new WebLine(ctx, new Tile(3154, 3258, 0), new Tile(3103, 3250, 0))
-	, new WebLine(ctx, new Tile(3093, 3242, 0), new Tile(3103, 3250, 0))
-	, new WebLine(ctx, new Tile(2945, 3438, 0), new Tile(2968, 3416, 0))
-	, new WebLine(ctx, new Tile(3051, 3457, 0), new Tile(3042, 3471, 0))
-	, new WebLine(ctx, new Tile(3052, 3490, 0), new Tile(3042, 3471, 0))
-	, new WebLine(ctx, new Tile(3042, 3471, 0), new Tile(3016, 3457, 0))
-	, new WebLine(ctx, new Tile(3051, 3457, 0), new Tile(3095, 3450, 0))
-	, new WebLine(ctx, new Tile(3076, 3342, 0), new Tile(3076, 3385, 0))
-	, new WebLine(ctx, new Tile(3046, 3247, 0), new Tile(3060, 3275, 0))
-	, new WebLine(ctx, new Tile(3033, 3276, 0), new Tile(3060, 3275, 0))
-	, new WebLine(ctx, new Tile(3055, 3322, 0), new Tile(3076, 3342, 0))
-	, new WebLine(ctx, new Tile(3055, 3322, 0), new Tile(3055, 3307, 0))
-	, new WebLine(ctx, new Tile(3060, 3275, 0), new Tile(3074, 3274, 0))
-	, new WebLine(ctx, new Tile(3080, 3326, 0), new Tile(3076, 3342, 0))
-	, new WebLine(ctx, new Tile(3215, 3218, 0), new Tile(3234, 3219, 0))
-	, new WebLine(ctx, new Tile(3215, 3218, 0), new Tile(3206, 3209, 0))
-	*/
 
 };
 }

@@ -12,6 +12,8 @@ import web.components.base.WebPath;
 import web.components.lines.WebComponent;
 import web.data.FTPLines;
 import web.interfaces.TileHeuristic;
+import OldQuester.DeltaOldQuester;
+import OldQuester.OldMethod;
 import astar.AStar;
 import astar.types.Graph;
 import astar.types.Node;
@@ -173,17 +175,39 @@ public class RSWeb extends Graph {
 			//System.out.println("path is null");
 		return getWebPath(ctx.players.local().tile(), target);
 	}
-
+	OldMethod Method = new OldMethod(ctx);
+	final int[] bounds = {112, 136, -220, 32, -148, 116};
+	
 	public final boolean walkToTile(final Tile target) {
+		try{//imideately below hanles the Burthorpe gate
+		if(Method.tileDisctanceToPlayer(new Tile(2937,3451,0))<10 &&
+				Method.objIsNotNull(7408)){//gate at burhorpe
+		
+			Method.preciseInteractO(7408, bounds, "");
+		}else{//if Burthhorpe gate is not in our way..
+		
 		if (target.matrix(ctx).reachable()) {
 			return walkTo(target);
 		}
+
 		WebPath path = getWebPath(target);
 		return path != null && path.traverse();
+		}
+		
+		}catch(Exception e){}
+		
+		 return false;
+		
 	}
 
+	public final boolean walkCreatedPath(final WebPath thePath, String state) {
+		DeltaOldQuester.state = state;
+		System.out.println("First node is " + thePath.getFirst());
+		return thePath != null && thePath.traverse();
+	}
+	
 	private boolean walkTo(final Tile target) {
-	    System.out.println("Walking via findPath NOT NODES");
+	   // System.out.println("Walking via findPath NOT NODES");
 		Path p = ctx.movement.findPath(target);
 			if (!ctx.players.local().inMotion() || (ctx.movement.distance(ctx.movement.destination()) < 8 && ctx.movement.distance(ctx.movement.destination(),
 			                                                                                                                      target) > 5)) {

@@ -15,6 +15,7 @@ import org.powerbot.script.rt4.ClientContext;
 import OldQuester.quests.OldCooksAssistant;
 import OldQuester.quests.OldRestlessGhost;
 import OldQuester.quests.OldRuneMysteries;
+import OldQuester.quests.OldWaterFall;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -25,11 +26,10 @@ import javax.swing.*;
 
 
 @Script.Manifest(name = "O7 Quester", 
-description = "Completes 07 quests! want more? suggest some on thread!",properties = "client=4; topic = 1231910")
+description = "Completes 07 quests!",properties = "client=4; topic = 1231910")
 public class DeltaOldQuester extends PollingScript<ClientContext> implements PaintListener{
 
 	
-	public static int FOOD_ID = 0;
 	public static boolean FOOD_FEATURE = false;
 	public static boolean shutOff = false;//for shutting down the script when necessary
 	
@@ -37,6 +37,12 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 	public static int scriptSelect = 0;
 	public static ArrayList<Tile> walkingTile = new ArrayList<Tile>();
 	public String questName = "Choose a quest..";
+	
+	//for paint
+		public static int progress = 0;
+		public static int numSteps = 0;
+	
+	public static int foodID = 0;
 	
     private boolean start = false;//for using onStart() only once
     private boolean goOn = false;
@@ -69,6 +75,7 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 			addNode(new OldRuneMysteries(ctx));
 			addNode(new OldRestlessGhost(ctx));
 			addNode(new OldCooksAssistant(ctx));
+			addNode(new OldWaterFall(ctx));
 			///System.out.println("Added nodes!");
 			start = true;
 		}
@@ -99,17 +106,24 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 		
 		setMouse(g);
 		   
-		   
-		//color tile
-		if(walkingTile.size()>1){
-			for(Tile tile: walkingTile){
-		g.drawLine(ctx.players.local().tile().matrix(ctx).getBounds().getBoundingBox().x, ctx.players.local().tile().matrix(ctx).getBounds().getBoundingBox().y,tile.matrix(ctx).getBounds().getBoundingBox().x, tile.matrix(ctx).getBounds().getBoundingBox().y);
-		//g.drawString("Hello",ctx.players.local().tile().matrix(ctx).getBounds().getBoundingBox().x, ctx.players.local().tile().matrix(ctx).getBounds().getBoundingBox().y);
-		  }
-		}
+		g.setColor(Color.BLACK);
+		g.drawRect(6,330, 500, 7);
+		g.setColor(Color.green);
+		if(numSteps!=0)
+		g.fillRect(6,330, progress*500/numSteps, 7);
+		
 		g.setColor(Color.BLACK);
 		g.drawString("State: " + state, 20,370);
-		g.drawString("State: " + questName, 20,390);
+		g.drawString("Quest name: " + questName, 20,390);
+		
+		String h = ""+ ctx.widgets.component(548, 77).text().toString();
+		int currentHealth = Integer.parseInt(h);
+		try{
+			
+		g.drawString("Player health: " + currentHealth + " HP - eating at < 9 HP", 20,430);
+		}catch(Exception e){}
+		
+		g.drawString("Food ID: " +foodID, 20,450);
 		
 	}
 	private void setMouse(Graphics g) {
@@ -139,6 +153,171 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 		}
 
 		private void okButtonActionPerformed(ActionEvent e) {
+			
+			setQuestToComplete();
+			setFood();
+			this.setVisible(false);
+			goOn = true;//for starting normal script activity - unpausing the script
+			this.dispose();
+		}
+		private void setFood() {
+			if(foodCombo.getSelectedItem().toString().contains("Shrimp")){
+				foodID = 315;
+			}
+			
+			if(foodCombo.getSelectedItem().toString().contains("Trout")){
+				foodID = 333;
+			}
+			
+			if(foodCombo.getSelectedItem().toString().contains("Salmon")){
+				foodID = 329;
+			}
+			
+			if(foodCombo.getSelectedItem().toString().contains("")){
+				
+			}
+			
+			if(foodCombo.getSelectedItem().toString().contains("")){
+				
+			}
+			
+		}
+
+		private void setQuestToComplete() {
+			if(questComboBox.getSelectedItem().toString().contains("Restless Ghost")){
+				questName = "Restless Ghost";
+				scriptSelect = 1;
+			}
+			if(questComboBox.getSelectedItem().toString().contains("Rune Mysteries")){
+				questName = "Rune Mysteries";
+				scriptSelect = 2;
+			}
+			if(questComboBox.getSelectedItem().toString().contains("Cook's Assistant")){
+				questName = "Cook's Assistant";
+				scriptSelect = 3;
+			}
+			if(questComboBox.getSelectedItem().toString().contains("Waterfall")){
+				questName = "Waterfall";
+				scriptSelect = 4;
+			}
+		}
+
+		private void questComboBoxActionPerformed(ActionEvent e) {
+			System.out.println("Changed quest selection");
+			if(questComboBox.getSelectedItem().toString().contains("Restless Ghost")){
+				textArea1.setText("Start this script near Lumbridge or Varrock");
+			}
+			if(questComboBox.getSelectedItem().toString().contains("Rune Mysteries")){
+				textArea1.setText("Start this script near Lumbridge or Varrock\nNo requirements");
+			}
+			if(questComboBox.getSelectedItem().toString().contains("Cook's Assistant")){
+				textArea1.setText("Start this quest in Lumbridge\n\nYou will need:\n- Empty pot\n- Empty bucket");
+			}
+			if(questComboBox.getSelectedItem().toString().contains("Waterfall")){
+				textArea1.setText("You will need\n- Air runes X 6\n- Earth runes X 6\n- Water runes X 6\n- Rope X 1\n\nMake sure you have only the amounts stated above\nand no more!\n\nStart the script in any of the quest areas(or just outside Catherby bank.)");
+			}
+		}
+
+		private void initComponents() {
+			// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+			// Generated using JFormDesigner Evaluation license - chris gofih
+			okButton = new JButton();
+			scrollPane1 = new JScrollPane();
+			textArea1 = new JTextArea();
+			questComboBox = new JComboBox<>();
+			foodCombo = new JComboBox<>();
+			label1 = new JLabel();
+
+			//======== this ========
+			setTitle("Delta 07 Quester");
+			Container contentPane = getContentPane();
+			contentPane.setLayout(null);
+
+			//---- okButton ----
+			okButton.setText("START");
+			okButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					okButtonActionPerformed(e);
+				}
+			});
+			contentPane.add(okButton);
+			okButton.setBounds(333, 15, 104, 34);
+
+			//======== scrollPane1 ========
+			{
+
+				//---- textArea1 ----
+				textArea1.setText("Please select a quest.");
+				textArea1.setLineWrap(true);
+				textArea1.setEditable(false);
+				scrollPane1.setViewportView(textArea1);
+			}
+			contentPane.add(scrollPane1);
+			scrollPane1.setBounds(3, 54, 437, 173);
+
+			//---- questComboBox ----
+			questComboBox.setModel(new DefaultComboBoxModel(new String[] {
+					"The Restless Ghost",
+					"Rune Mysteries",
+					"Cook's Assistant",
+					"Waterfall"
+				}));
+			contentPane.add(questComboBox);
+			questComboBox.setBounds(12, 19, 308, 30);
+			questComboBox.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					questComboBoxActionPerformed(e);
+				}
+			});
+			//---- foodCombo ----
+			foodCombo.setModel(new DefaultComboBoxModel<>(new String[] {
+				"Shrimp"
+			}));
+			contentPane.add(foodCombo);
+			foodCombo.setBounds(103, 239, 150, 28);
+
+			//---- label1 ----
+			label1.setText("Type of food:");
+			contentPane.add(label1);
+			label1.setBounds(10, 236, 127, 35);
+
+			{ // compute preferred size
+				Dimension preferredSize = new Dimension();
+				for(int i = 0; i < contentPane.getComponentCount(); i++) {
+					Rectangle bounds = contentPane.getComponent(i).getBounds();
+					preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+					preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+				}
+				Insets insets = contentPane.getInsets();
+				preferredSize.width += insets.right;
+				preferredSize.height += insets.bottom;
+				contentPane.setMinimumSize(preferredSize);
+				contentPane.setPreferredSize(preferredSize);
+			}
+			pack();
+			setLocationRelativeTo(getOwner());
+			// JFormDesigner - End of component initialization  //GEN-END:initComponents
+		}
+
+		// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+		// Generated using JFormDesigner Evaluation license - chris gofih
+		private JButton okButton;
+		private JScrollPane scrollPane1;
+		private JTextArea textArea1;
+		private JComboBox<String> questComboBox;
+		private JComboBox<String> foodCombo;
+		private JLabel label1;
+		// JFormDesigner - End of variables declaration  //GEN-END:variables
+	}
+/*
+	class DeltaOldQuesterGUI extends JFrame {
+		public DeltaOldQuesterGUI() {
+			initComponents();
+		}
+
+		private void okButtonActionPerformed(ActionEvent e) {
 			System.out.println("Pressed ok");
 			
 			setQuestToComplete();
@@ -160,6 +339,10 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 				questName = "Cook's Assistant";
 				scriptSelect = 3;
 			}
+			if(questComboBox.getSelectedItem().toString().contains("Waterfall")){
+				questName = "Waterfall";
+				scriptSelect = 4;
+			}
 		}
 
 		private void questComboBoxActionPerformed(ActionEvent e) {
@@ -172,6 +355,9 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 			}
 			if(questComboBox.getSelectedItem().toString().contains("Cook's Assistant")){
 				textArea1.setText("Start this quest in Lumbridge\n\nYou will need:\n- Empty pot\n- Empty bucket");
+			}
+			if(questComboBox.getSelectedItem().toString().contains("Waterfall")){
+				textArea1.setText("In development");
 			}
 		}
 
@@ -213,7 +399,8 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 			questComboBox.setModel(new DefaultComboBoxModel(new String[] {
 				"The Restless Ghost",
 				"Rune Mysteries",
-				"Cook's Assistant"
+				"Cook's Assistant",
+				"Waterfall"
 			}));
 			questComboBox.addActionListener(new ActionListener() {
 				@Override
@@ -252,6 +439,6 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 	}
 
 
-
+*/
 
 }

@@ -41,7 +41,6 @@ public class toadAntipattern extends toadNode{
 			i = ctx.backpack.itemAt(Random.nextInt(20, 25));
 			i.hover();
 			m.sleep(Random.nextInt(200,1000));
-			ctx.mouse.scroll(false);
 			ToadMainBody.antiPattern = false;
 			break;
 			
@@ -53,6 +52,7 @@ public class toadAntipattern extends toadNode{
 				}
 				if(!ctx.menu.opened())
 					ctx.mouse.click(false);
+				break;
 			}
 			ToadMainBody.antiPattern = false;
 			break;
@@ -68,7 +68,6 @@ public class toadAntipattern extends toadNode{
 			ToadMainBody.state = st;
 			i = ctx.backpack.itemAt(Random.nextInt(7, 20));
 				i.hover();
-				ctx.mouse.scroll(true);
 				m.sleep(Random.nextInt(200,2000));
 				ctx.mouse.move(f.x-Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
 				m.sleep(Random.nextInt(1956,3200));
@@ -115,7 +114,6 @@ public class toadAntipattern extends toadNode{
 		case 10:
 			ToadMainBody.state = st;
 			ctx.mouse.move(f.x+Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
-			ctx.mouse.scroll(true);
 			m.sleep(Random.nextInt(100, 900));
 			ToadMainBody.antiPattern = false;
 			break;
@@ -142,7 +140,7 @@ public class toadAntipattern extends toadNode{
 					m.sleep(Random.nextInt(Random.nextInt(1300, 1700), Random.nextInt(2100, 2400)));
 				}
 				if(!ctx.menu.opened())
-					ctx.mouse.click(false);
+					ctx.mouse.click(false);break;
 			}
 				ToadMainBody.antiPattern = false;
 				break;
@@ -154,7 +152,7 @@ public class toadAntipattern extends toadNode{
 					ctx.mouse.move(g.centerPoint());
 				}
 				if(!ctx.menu.opened())
-					ctx.mouse.click(false);
+					ctx.mouse.click(false);break;
 			}
 				ToadMainBody.antiPattern = false;
 				break;
@@ -179,7 +177,11 @@ public class toadAntipattern extends toadNode{
 			
 		case 16:
 			ToadMainBody.state = st;
-			ctx.mouse.scroll(true);
+			for(GameObject g : ctx.objects.select().first()){
+				if(g.inViewport()){
+					ctx.mouse.move(g.centerPoint());
+				}break;
+			}
 			ToadMainBody.antiPattern = false;
 			break;
 			
@@ -188,7 +190,7 @@ public class toadAntipattern extends toadNode{
 			for(GameObject g : ctx.objects.select().first()){
 				if(g.inViewport()){
 					ctx.mouse.move(g.centerPoint());
-				}
+				}break;
 			}
 			ToadMainBody.antiPattern = false;
 			break;
@@ -201,7 +203,7 @@ public class toadAntipattern extends toadNode{
 					ctx.mouse.click(false);
 					m.sleep(Random.nextInt(1200, 1600));
 					ctx.mouse.move(f.x-Random.nextInt(300, 10),f.y+Random.nextInt(0, 170));
-				}
+				}break;
 			}
 			ToadMainBody.antiPattern = false;
 			break;
@@ -219,7 +221,7 @@ public class toadAntipattern extends toadNode{
 					ctx.mouse.move(g.centerPoint());
 					m.sleep(Random.nextInt(200, 600));
 					ctx.mouse.move(f.x-Random.nextInt(300, 10),f.y+Random.nextInt(154, 23));
-				}
+				}break;
 			}
 			ToadMainBody.antiPattern = false;
 			break;
@@ -232,7 +234,7 @@ public class toadAntipattern extends toadNode{
 					m.sleep(Random.nextInt(100, 340));
 					ctx.mouse.move(f.x-Random.nextInt(100, 300),f.y+Random.nextInt(23, 230));
 					break;
-				}else ctx.camera.turnTo(rock);
+				}else ctx.camera.turnTo(rock);break;
 			}
 			ToadMainBody.antiPattern = false;
 			break;
@@ -255,7 +257,7 @@ public class toadAntipattern extends toadNode{
 					m.sleep(Random.nextInt(100, 340));
 					ctx.mouse.move(f.x-Random.nextInt(100, 300),f.y+Random.nextInt(23, 230));
 					break;
-				}else ctx.camera.turnTo(rock);
+				}else ctx.camera.turnTo(rock);break;
 			}
 			ToadMainBody.antiPattern = false;
 			break;
@@ -268,7 +270,7 @@ public class toadAntipattern extends toadNode{
 					m.sleep(Random.nextInt(100, 340));
 					ctx.mouse.move(f.x-Random.nextInt(100, 300),f.y+Random.nextInt(23, 230));
 					break;
-				}else ctx.camera.turnTo(rock);
+				}else ctx.camera.turnTo(rock);break;
 			}
 			ToadMainBody.antiPattern = false;
 			break;
@@ -336,7 +338,7 @@ public class toadAntipattern extends toadNode{
 					ctx.mouse.move(rock.centerPoint());
 					m.sleep(Random.nextInt(100, 340));
 					ctx.mouse.move(f.x-Random.nextInt(100, 300),f.y+Random.nextInt(23, 230));
-				}else ctx.camera.turnTo(rock);
+				}else ctx.camera.turnTo(rock);break;
 			}
 			ToadMainBody.antiPattern = false;
 			break;
@@ -358,7 +360,7 @@ public class toadAntipattern extends toadNode{
 					ctx.mouse.click(false);
 					m.sleep(Random.nextInt(400, 700));
 					ctx.mouse.move(f.x-Random.nextInt(0300, 110),f.y+Random.nextInt(230, -170));
-				}else ctx.camera.turnTo(g.tile().derive(2, 4));
+				}else ctx.camera.turnTo(g.tile().derive(2, 4));break;
 			}
 			ToadMainBody.antiPattern = false;
 			break;

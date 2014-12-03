@@ -159,7 +159,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 			Tile local = ctx.players.local().tile();
 			if(!Method.inventoryContains(10117)){//kebbit fur
 				hunt = true;
-				System.out.println("Setting hunt to true");
+				//System.out.println("Setting hunt to true");
 			}
 			if(bankTile.distanceTo(local)<6){
 				if(!ctx.bank.inViewport())
@@ -228,7 +228,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 			backPackItems = Method.inventoryGetCount(10117);
 			if(backPackItems >= huntAmount){
 				hunt = false;
-				System.out.println("Setting hunt to false");
+				//System.out.println("Setting hunt to false");
 			}
 			
 			if (new Tile(2871,3481,0).distanceTo(ctx.players.local().tile())>25){//kebbit area
@@ -404,9 +404,9 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 					if(!ctx.players.local().inMotion()
 							&&ctx.players.local().animation()==-1)
 					if (rock.inViewport()&&rock.interact("Inspect")) {
-							System.out.println("Clicking on rock: " + ctx.players.local().animation());
+						//	System.out.println("Clicking on rock: " + ctx.players.local().animation());
 					} else{
-						System.out.println("Turning camera rock");
+						//System.out.println("Turning camera rock");
 						ctx.camera.turnTo(rock.tile().derive(1, 3));
 					}
 				} else {

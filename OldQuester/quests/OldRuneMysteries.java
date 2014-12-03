@@ -32,28 +32,36 @@ public class OldRuneMysteries extends OldNode{
 	Tile dest = new Tile(-1,-1,-1);
 	@Override
 	public void execute() { 
+		DeltaOldQuester.numSteps = 7;
 		
 		if(ctx.varpbits.varpbit(63)==6){
+			DeltaOldQuester.progress=7;
 			//COMPLETED QUEST!
 			Method.state("COMPLETED QUEST!!");
 			Method.sleep(2000);
 			DeltaOldQuester.shutOff = true;
 		}else
 		if(ctx.varpbits.varpbit(63)==5){
+			DeltaOldQuester.progress=6;
 			cs1();//Give a package to Aubrey in Varrok
 		}else
 		if(ctx.varpbits.varpbit(63)==4){
+			DeltaOldQuester.progress=5;
 			cs2();//Talk to Aubrey again for his analysis
 		}else
 		if(ctx.varpbits.varpbit(63)==3){
+			DeltaOldQuester.progress=4;
 			cs2();//Give a package to Aubrey in Varrok
 		}else
 		if(ctx.varpbits.varpbit(63)==2){
+			DeltaOldQuester.progress=3;
 			cs1();//Talk to Sedridor(wizard) still -contining conversation...
 		}else
 		if(ctx.varpbits.varpbit(63)==1){
+			DeltaOldQuester.progress=2;
 			cs1();//Head to the wizards tower and show head wizard the talisman
 		}else {
+			DeltaOldQuester.progress=1;
 			cs0();//Speak to Duke Horacio to begin the quest
 		}
 	

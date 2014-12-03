@@ -38,10 +38,15 @@ public class OldRestlessGhost extends OldNode{
 
 	private boolean init = false;
 	private int AMULET = 552;
+
 	
 	Tile dest = new Tile(-1,-1,-1);
 	@Override
 	public void execute() {
+		DeltaOldQuester.numSteps = 6;
+		// RSWeb web = new RSWeb(ctx);
+		 //web.walkToTile(new Tile(3252,3404, 0));//some tile
+		//Method.state("Closest node to you: " + web.getNearestNode(ctx.players.local().tile()));
 		
 		/*
 		if(ctx.movement.destination().matrix(ctx).reachable()&&
@@ -49,8 +54,12 @@ public class OldRestlessGhost extends OldNode{
 		    Tile prev = dest;
 			dest = ctx.movement.destination();
 			//System.out.println("Dest is now : " + dest);  
-		System.out.println("new DeltaWebLine(new Tile"+prev + ",new Tile" + ctx.movement.destination() + "),");
-		Method.sleep(700);
+		if(ctx.movement.destination()!=prev){	
+		System.out.println("new WebLine(ctx, new Tile"+prev + ",new Tile" + ctx.movement.destination() + "),");
+		Method.sleep(3000);
+		Method.state("Not ready - SLEEPING!");
+		}
+		Method.state("Ready to click!");
 		}*/
 		
 		///*
@@ -59,23 +68,29 @@ public class OldRestlessGhost extends OldNode{
 			}
 		
 		if((ctx.varpbits.varpbit(107)) ==5){
+			DeltaOldQuester.progress=6;
 			//COMPLETED QUEST!
 			Method.state("COMPLETED QUEST!!");
 			Method.sleep(2000);
 			DeltaOldQuester.shutOff = true;
 		}else		
 		if((ctx.varpbits.varpbit(107)) ==4){
+			DeltaOldQuester.progress=5;
           cs4();//get back to lumbridge and place skull in coffin
 		}else	
 		if((ctx.varpbits.varpbit(107)) ==3){
+			DeltaOldQuester.progress=4;
 	      cs3();//Go get the skull from the wizards tower
 		}else	
 		if((ctx.varpbits.varpbit(107)) ==2){
+			DeltaOldQuester.progress=3;
 	      cs2();//Speak to the ghost
 		}else
 		if((ctx.varpbits.varpbit(107)) ==1){
+			DeltaOldQuester.progress=2;
 		  cs1();//Speak to the swamp priest and get the ghost amulet
 		}else{
+			DeltaOldQuester.progress=1;
 		  cs0();//Speak to the priest (Aereck) and begin the quest
 		}
 		//*/
