@@ -148,7 +148,7 @@ public class StolenHearts extends DeltaNode{
 			if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2449)&0x7F)!=105){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.varpbits.varpbit(2449)&0x7F)!=105){
+	    if(quests.Vars.useBank && (ctx.varpbits.varpbit(2449)&0x7F)!=105){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if((ctx.varpbits.varpbit(2449)&0x7F)==105){
@@ -301,9 +301,9 @@ public class StolenHearts extends DeltaNode{
 		
 	}
 	private void dragMouse(Point point, Point endLocation) {
-		ctx.mouse.move(point);
-		ctx.mouse.drag(point, true);
-		ctx.mouse.drag(endLocation, true);
+		ctx.input.move(point);
+		ctx.input.drag(point, true);
+		ctx.input.drag(endLocation, true);
 		Method.sleep(1800);
 	}
 	private void cs11() {//Perform the amazing parkour course on the roofs of buildings in Alkharid
@@ -343,8 +343,8 @@ public class StolenHearts extends DeltaNode{
 						Method.state("Moving/moved");
 						for(GameObject rope : ctx.objects.select().id(75917).nearest().first()){
 						//	ctx.camera.setYaw(50);
-							ctx.mouse.move(rope.tile().matrix(ctx).point(Random.nextDouble() * 0.6D - 4.2D,+0.60D,-1060));
-							ctx.mouse.click(true);
+							ctx.input.move(rope.tile().matrix(ctx).point(Random.nextDouble() * 0.6D - 4.2D,+0.60D,-1060));
+							ctx.input.click(true);
 						
 						}
 					}
@@ -490,7 +490,7 @@ public class StolenHearts extends DeltaNode{
 				ctx.widgets.component(1092,1).valid()&&//the widget for teleport selection
 				   ctx.widgets.component(1092,0).visible()){
 			//click the lummbridge teleport
-			ctx.mouse.move(ctx.widgets.component(1092,loc).centerPoint());
+			ctx.input.move(ctx.widgets.component(1092,loc).centerPoint());
 			ctx.widgets.component(1092,loc).click(true);
 			Method.sleep(2000);
 			
@@ -590,8 +590,8 @@ public class StolenHearts extends DeltaNode{
 							if(JailDoor.contains(jailDoor.tile())){
 								/*Our camera zooms WAY in during a cutscene
 								 * making the door it needs to open off screen, we must zoom out by scrolling*/
-								ctx.mouse.move(300,279);//the center of screen
-								ctx.mouse.scroll(true);//true = scrolling out
+								ctx.input.move(300,279);//the center of screen
+								ctx.input.scroll(true);//true = scrolling out
 								Method.interactO(3434, "Open", "Door");
 							}else Method.walking(pathToShore, "Walking to the shore",false);
 						}
@@ -704,8 +704,8 @@ public class StolenHearts extends DeltaNode{
 						int differ = ctx.players.local().tile().matrix(ctx).mapPoint().x - k.tile().matrix(ctx).mapPoint().x;
 						System.out.println("Differ: "+ differ);
 						if(differ < 0 ){
-							ctx.mouse.click(ctx.players.local().tile().matrix(ctx).mapPoint().x  + differ, ctx.players.local().tile().matrix(ctx).mapPoint().y,true);
-						}else ctx.mouse.click(ctx.players.local().tile().matrix(ctx).mapPoint().x, ctx.players.local().tile().matrix(ctx).mapPoint().y - differ,true);
+							ctx.input.click(ctx.players.local().tile().matrix(ctx).mapPoint().x  + differ, ctx.players.local().tile().matrix(ctx).mapPoint().y,true);
+						}else ctx.input.click(ctx.players.local().tile().matrix(ctx).mapPoint().x, ctx.players.local().tile().matrix(ctx).mapPoint().y - differ,true);
 						
 					}
 				}

@@ -5,7 +5,6 @@ package quests;
 
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
-import org.powerbot.script.rt6.Skills;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -83,14 +82,14 @@ public class TheKnightsSword extends DeltaNode{
 		//Settings used, 2547 for main body.
 		Method.foodSupport();
 		DeltaQuester.numSteps = 8;
-		System.out.println("useBank : "+Vars.useBank);
+		System.out.println("useBank : "+quests.Vars.useBank);
 		
 		if(!inits){
 			if(!Method.FaladorLodeIsActive() || !Method.VarrokLodeIsActive()){
 				Method.state("You require Varrok and Falador lodestone, skipping quest");
 				//ctx.game.sleep(2000);
 				DeltaQuester.e = true;
-			}else if(ctx.skills.level(Skills.MINING)<10){
+			}else if(ctx.skills.level(14)<10){//14 is mining index constant
 				Method.state("Mining level of 10 is required, skipping quest");
 				//ctx.game.sleep(2000);
 				DeltaQuester.e = true;
@@ -105,7 +104,7 @@ public class TheKnightsSword extends DeltaNode{
 		}else 
 		if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2547) & 0x7) !=7) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
-		}else if(Vars.useBank){
+		}else if(quests.Vars.useBank){
 			System.out.println("Inside useBank call");
 			Method.useBank(bankItems,bankItemAmount);
 			}else 

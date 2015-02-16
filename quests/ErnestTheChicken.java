@@ -3,15 +3,8 @@ package quests;
 
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
-import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.GroundItem;
-import org.powerbot.script.rt6.Interactive;
 import org.powerbot.script.rt6.Player;
-
-
-
-
-
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -457,8 +450,8 @@ public class ErnestTheChicken extends DeltaNode{
 								//if(!timer.isRunning())//below grabs the poison off the table
 								for(GroundItem poison: ctx.groundItems.select().name("Poison").nearest().first()){//the poison
 									if (poison.inViewport()) {
-										ctx.mouse.move(poison.tile().matrix(ctx).point(.457D, .368D, -400));
-										ctx.mouse.click(true);
+										ctx.input.move(poison.tile().matrix(ctx).point(.457D, .368D, -400));
+										ctx.input.click(true);
 										//timer = new Timer(2000);
 									} else ctx.camera.turnTo(poison);
 								

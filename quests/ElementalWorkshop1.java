@@ -69,7 +69,7 @@ public class ElementalWorkshop1 extends DeltaNode{
 		}else
 		if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2675)>>20&0x1)!=1) {
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
-		}else if(Vars.useBank){
+		}else if(quests.Vars.useBank){
 			Method.useBank(bankItems, bankItemAmount);
 		}
 		else if((ctx.varpbits.varpbit(2675)>>20&0x1)==1){

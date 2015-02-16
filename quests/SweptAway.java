@@ -156,7 +156,7 @@ public class SweptAway extends DeltaNode {
 			if(!DeltaQuester.checkedBank){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.varpbits.varpbit(2198) & 0x1F) !=18){
+	    if(quests.Vars.useBank && (ctx.varpbits.varpbit(2198) & 0x1F) !=18){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if((ctx.varpbits.varpbit(2198) & 0x1F) ==18){
@@ -510,7 +510,7 @@ private void cs5() {
 			Method.teleportTo(TeleportType.DRAYNOR.getTeleport(),TeleportType.DRAYNOR.getName());
 		}else Method.teleportTo(TeleportType.LUMBRIDGE.getTeleport(),TeleportType.LUMBRIDGE.getName());
 		}
-		
+	/*	
 	private void doPuzzleStep(int animal, int fCage, int sCage, Tile tile, Tile tile2) {
 		Player local = ctx.players.local();
 		if (!Method.teleporting && Method.inventoryContains(animal)){
@@ -538,7 +538,7 @@ private void cs5() {
 		}
 		
 	}
-
+*/
 	private void cs2() {//Speak to Aggie
 		final String opt[] = {"Yes, I","Talk about Swept"};
 	    final int[] triID = {39408, 39392, 39387,39373};

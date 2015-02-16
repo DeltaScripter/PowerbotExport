@@ -81,7 +81,7 @@ public class GunnarsGround extends DeltaNode{
 			if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2111) & 0x7F) != 100){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.varpbits.varpbit(2111) & 0x7F) != 100){
+	    if(quests.Vars.useBank && (ctx.varpbits.varpbit(2111) & 0x7F) != 100){
 			Method.useBank(bankItems, bankItemAmount);
 		}else if(!Method.interference())
 		if ((ctx.varpbits.varpbit(2111) & 0x7F) == 100) {

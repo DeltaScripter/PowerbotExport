@@ -4,7 +4,6 @@ package quests;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
-import org.powerbot.script.rt6.Interactive;
 import org.powerbot.script.rt6.Player;
 
 import quests.Vars.TeleportLode;
@@ -95,7 +94,7 @@ public class DemonSlayer extends DeltaNode {
 		if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(3518) & 0x7F)!=121){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.varpbits.varpbit(3518) & 0x7F)!=121){
+	    if(quests.Vars.useBank && (ctx.varpbits.varpbit(3518) & 0x7F)!=121){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if(!inits){

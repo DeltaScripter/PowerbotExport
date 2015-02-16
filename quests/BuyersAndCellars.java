@@ -6,9 +6,6 @@ import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Hud.Window;
 import org.powerbot.script.rt6.Player;
 
-
-import org.powerbot.script.rt6.Skills;
-
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
 
@@ -71,7 +68,7 @@ public class BuyersAndCellars extends DeltaNode {
 		if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(2085) & 0x7FF) != 1930){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.varpbits.varpbit(2085) & 0x7FF) != 1930){
+	    if(quests.Vars.useBank && (ctx.varpbits.varpbit(2085) & 0x7FF) != 1930){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2085) & 0x7FF) != 1930) {
@@ -261,7 +258,7 @@ public class BuyersAndCellars extends DeltaNode {
 			Method.skipPics();
 			if (Method.npcIsNotNull(11273) && Method.getNPC(11273).tile().distanceTo(local.tile()) < 5) {
 				if (pickPocket) {
-					if (ctx.skills.level(Skills.THIEVING) >= 5) {
+					if (ctx.skills.level(17) >= 5) {//17 is constant for theiving skill
 						if (new Tile(4661, 5903, 0).distanceTo(local.tile()) < 2) {
 							pickPocket = false;
 						} else

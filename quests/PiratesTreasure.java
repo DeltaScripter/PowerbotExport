@@ -109,7 +109,7 @@ public class PiratesTreasure extends DeltaNode{
 			if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2227) & 0x7) !=4){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.varpbits.varpbit(2227) & 0x7) !=4){
+	    if(quests.Vars.useBank && (ctx.varpbits.varpbit(2227) & 0x7) !=4){
 	    	Method.useBank(bankItems, bankItemAmount);
 		}else
 		if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2227) & 0x7) !=4) {

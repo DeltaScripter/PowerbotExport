@@ -248,7 +248,7 @@ public class DragonSlayer extends DeltaNode{
 			DeltaQuester.e = true;
 		}else
 		if(init){
-			Vars.useBank = true;//make sure this is here if you want it to actually check the bank after using the G.E
+			quests.Vars.useBank = true;//make sure this is here if you want it to actually check the bank after using the G.E
 			init();//Determines what part of the quest the player is on(map pieces), it checks alkharid bank for the map pieces you have
 		}else
 			if((ctx.varpbits.varpbit(2268)&0x1F) == 9){
@@ -260,7 +260,7 @@ public class DragonSlayer extends DeltaNode{
 			if((ctx.varpbits.varpbit(2268)&0x1F) == 8){//changes to this setting upon crash landing on island
 				System.out.println("Step 14");
 				DeltaQuester.progress = 14;
-				if(Vars.useBank){
+				if(quests.Vars.useBank){
 					Method.useBank(bankItems5, bankItemAmount5);//the shield and some food and map
 				}else
 				cs12();//fight the dragon
@@ -280,7 +280,7 @@ public class DragonSlayer extends DeltaNode{
 								if((ctx.varpbits.varpbit(2268)&0x7) == 6){//ready to go off and fight dragon
 									System.out.println("Step 12");
 									DeltaQuester.progress = 12;
-									if(Vars.useBank){
+									if(quests.Vars.useBank){
 										Method.useBank(bankItems5, bankItemAmount5);//the shield and some food and map
 									}else cs10();//equips sheild & speaks to ned
 								}else
@@ -292,7 +292,7 @@ public class DragonSlayer extends DeltaNode{
 										Vars.DYNAMICV = false;
 									}
 									//grab needed items and head off to port sarim
-									if(Vars.useBank){
+									if(quests.Vars.useBank){
 										Method.useBank(bankItems3, bankItemAmount3);//planks & nails
 									}else
 									cs9();//Repair the ship
@@ -319,7 +319,7 @@ public class DragonSlayer extends DeltaNode{
 						}
 					}else{
 						
-					if(Vars.useBank){
+					if(quests.Vars.useBank){
 						Method.useBank(bankItems2, bankItemAmount2);//the ingredients for the oracle
 					}else{
 						System.out.println("Step 6");
@@ -331,7 +331,7 @@ public class DragonSlayer extends DeltaNode{
 					if(DeltaQuester.checkedBank)
 						Method.determineBank(bankItems);
 				
-			    if(Vars.useBank&&!new Tile(2936,9656,0).matrix(ctx).reachable()){//tile is the final area where you get the map piece
+			    if(quests.Vars.useBank&&!new Tile(2936,9656,0).matrix(ctx).reachable()){//tile is the final area where you get the map piece
 			    	Method.useBank(bankItems, bankItemAmount1);//grabs the maze key
 				}else{
 					System.out.println("Step 5");
@@ -394,7 +394,7 @@ public class DragonSlayer extends DeltaNode{
 		}else
 		if(new Tile(2855,3239,0).matrix(ctx).reachable()){//some tile on the island
 			ctx.movement.findPath(new Tile(2835,3258,0)).traverse();//top of mountain
-		}else if(Vars.useBank){
+		}else if(quests.Vars.useBank){
 			Method.useBank(bankItems3, bankItemAmount3);//planks & nails
 		}else if((ctx.varpbits.varpbit(2269)>>8&0x7)==7){
 			cs11();//Set sail again
@@ -439,7 +439,7 @@ public class DragonSlayer extends DeltaNode{
 
 	private void cs10() {//prepare the character then speak to Ned
 		if( (!Method.inventoryContains(1540)&&!Method.inventoryContains(1538))){
-			Method.useBank = true;
+			quests.Method.useBank = true;
 		}
 		while(Method.inventoryGetCount(1540)==1){
 			Method.interactInventory(1540, "Wear", "Dragon Shield");
@@ -476,7 +476,7 @@ public class DragonSlayer extends DeltaNode{
 		
 		if( !Method.inventoryContains(960) && !Method.inventoryContains(1539)&&(ctx.varpbits.varpbit(2268)&0x7) != 7
 				&&(ctx.varpbits.varpbit(2268)&0x1F) != 8){
-			Method.useBank = true;
+			quests.Method.useBank = true;
 		}
 		//if(Method.useBank&&(ctx.varpbits.varpbit(2268)&0x7) != 7&&(ctx.varpbits.varpbit(2268)&0x1F) != 8){
 		//	Method.useBank(bankItems4, 1, 90, 0);
@@ -525,7 +525,7 @@ public class DragonSlayer extends DeltaNode{
 		final String opt[] = {"Alright then, ","I suppose I could pay you","I believe you've got a"};
 		
 		 if(!Method.teleporting&& Method.inventoryContains(1536)){
-			 Vars.useBank = true;
+			 quests.Vars.useBank = true;
 				hasWormMap = true;
 			}else
 		if(new Tile(3012,3189,0).matrix(ctx).reachable() &&new Tile(3012,3189,0).distanceTo(ctx.players.local().tile())<5){
@@ -575,7 +575,7 @@ public class DragonSlayer extends DeltaNode{
 		
 		if( ((ctx.varpbits.varpbit(2269)>>17&0x1)!=1 || (ctx.varpbits.varpbit(2269)>>18&0x1)!=1||(ctx.varpbits.varpbit(2269)>>19&0x1)!=1||(ctx.varpbits.varpbit(2269)>>20&0x1)!=1)
 				&& (!Method.inventoryContains(1791)&&!Method.inventoryContains(1907) && !Method.inventoryContains(13431)&&!Method.inventoryContains(950))){
-			Method.useBank = true;
+			quests.Method.useBank = true;
 		}
 			if((ctx.varpbits.varpbit(2269)&0x7)==4){//After speaking to the Oracle
 			 if(Method.inventoryContains(1537)){
@@ -678,7 +678,7 @@ public class DragonSlayer extends DeltaNode{
 			hasMalzarMap = true;
 		}else if(new Tile(2936,9656,0).matrix(ctx).reachable()&& ctx.game.floor()==0){
 			Vars.DYNAMICV = false;
-			Vars.useBank = true;//use bank for later
+			quests.Vars.useBank = true;//use bank for later
 			Method.skipPics();
 			Method.interactO(2603, "Open", "Chest");
 			Method.interactO(2604, "Search", "Chest");
@@ -847,7 +847,7 @@ public class DragonSlayer extends DeltaNode{
 		final String opt[] = {"A dragon, that sounds","I thought you were going","The Guildmaster of the","Can you sell me a "};
 		
 		if( !Method.inventoryContains(11279) && (ctx.varpbits.varpbit(2268)&0x1F) == 9){
-			Method.useBank = true;
+			quests.Method.useBank = true;
 		}
 		//if(Method.useBank && (ctx.varpbits.varpbit(2268)&0x1F) == 9){
 		//	Method.useBank(bankItems6, 1, 1, 90);

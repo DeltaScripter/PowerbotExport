@@ -48,7 +48,7 @@ public class ImpCatcher extends DeltaNode {
 		if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2669)&0x3)!=2){
 			Method.checkBank();
 		}else
-		if(Vars.useBank && (ctx.varpbits.varpbit(2669)&0x3)!=2){
+		if(quests.Vars.useBank && (ctx.varpbits.varpbit(2669)&0x3)!=2){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if (DeltaQuester.GEFeature) {

@@ -69,7 +69,10 @@ public class RestlessG extends DeltaNode{
 		super(ctx);
 	}
 	boolean q = true;
+
+	
 	public void execute() {
+	
 		Method.setGeneralCamera();//get the camera pitch for general use on quests
 		
 		if(q){
@@ -88,7 +91,7 @@ public class RestlessG extends DeltaNode{
 				
 		Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.varpbits.varpbit(2324)&0x7) !=5){
+	    if(quests.Vars.useBank && (ctx.varpbits.varpbit(2324)&0x7) !=5){
 	    	
 			Method.useBank(bankItems, bankItemAmount);
 		}else
@@ -151,7 +154,7 @@ public class RestlessG extends DeltaNode{
 	private void cs2() {//Speak to the ghost initially
 		
 		Method m = new Method(ctx);
-		String opt[] = {"Yep."};
+		String opt[] = {"Yep"};
 		if(Vars.gAmuEquip){
 			if(new Tile(3248,3193,0).distanceTo(ctx.players.local().tile())<6){
 				Vars.DYNAMICV = false;

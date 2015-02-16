@@ -112,7 +112,7 @@ boolean q = true;
 			if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(2674)&0x3F)!=40){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.varpbits.varpbit(2674)&0x3F)!=40){
+	    if(quests.Vars.useBank && (ctx.varpbits.varpbit(2674)&0x3F)!=40){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if (DeltaQuester.GEFeature&&(ctx.varpbits.varpbit(2674)&0x3F)!=40) {

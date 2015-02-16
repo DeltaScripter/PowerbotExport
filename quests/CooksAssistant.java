@@ -156,7 +156,7 @@ public final Tile[] pathToCook = new Tile[] {
 		if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(2492)&0x3) !=2){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.varpbits.varpbit(2492)&0x3) !=2){
+	    if(quests.Vars.useBank && (ctx.varpbits.varpbit(2492)&0x3) !=2){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2492)&0x3) !=2) {
@@ -281,11 +281,11 @@ public final Tile[] pathToCook = new Tile[] {
 		}else 
 			if(!Method.findOption(opt)){
 			if(ctx.widgets.component(1184,1).valid() || ctx.widgets.component(1191,1).valid()){//NEEDED
-				int widgets[] = {1184,1191};
-				for(int wid: widgets){
+				//int widgets[] = {1184,1191};
+				//for(int wid: widgets){
 				 Method.pressContinue();
 					
-				}
+				//}
 			}else Method.speakTo(3806, "Millie Miller");
 			
 			}

@@ -98,12 +98,12 @@ public class VampyreSlayer extends DeltaNode{
 		if(!DeltaQuester.checkedBank){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.varpbits.varpbit(2170)&0x7)!=7){
+	    if(quests.Vars.useBank && (ctx.varpbits.varpbit(2170)&0x7)!=7){
 	    	System.out.println("step 9");
 			Method.useBank(bankItems, bankItemAmount);
 		}else if (DeltaQuester.GEFeature && (ctx.varpbits.varpbit(2170)&0x7)!=7) {
 			System.out.println("step 8");
-			Method.onlyItemsGE = true;
+			quests.Method.onlyItemsGE = true;
 			Method.useGE(itemDString, itemDID, itemDPrice, itemDAmount);
 		}else
 		if((ctx.varpbits.varpbit(2170)&0x7)==7){

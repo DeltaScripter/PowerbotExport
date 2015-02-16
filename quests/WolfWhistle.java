@@ -115,7 +115,7 @@ public class WolfWhistle extends DeltaNode{
 			if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2506)&0x3F)!=35){
 				Method.checkBank();
 			}else
-		   if(Vars.useBank && (ctx.varpbits.varpbit(2506)&0x3F)!=35){
+		   if(quests.Vars.useBank && (ctx.varpbits.varpbit(2506)&0x3F)!=35){
 				Method.useBank(bankItems, bankItemAmount);
 			}else
 			if((ctx.varpbits.varpbit(2506)&0x3F)==35){

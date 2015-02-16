@@ -7,19 +7,15 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
@@ -72,7 +68,6 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 	public static double health;
 	private static int mouseX = 0;
 	private static int mouseY = 0;
-	private static DeltaQuester instance = null;
     private static Vars variable = new Vars();
 	
 	
@@ -111,13 +106,13 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 
 	public void poll() {
 		
-	
 		
 		onStart();
 		
 		if(g){
 			log.info("shutting down..");
-			this.ctx.controller().stop();
+			//this.ctx.controller().stop();
+			ctx.controller.stop();
 		}
 		while(ctx.widgets.component(1401,31).component(1).visible()){//Dialogue type after completing Stolen Hearts
 			System.out.println("Closing Stolen Hearts dialogue");
@@ -153,6 +148,8 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 		 }
 		updateQuests();//removes quests from queue that have been completed
 		}
+		
+		
 	}
 	
 	
@@ -177,6 +174,7 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 				   addNode(new MineIsYours(ctx));
 				   addNode(new GunnarsGround(ctx));
 				   addNode(new DragonSlayer(ctx));
+				   addNode(new testquest(ctx));
 				   addNode(new ElementalWorkshop1(ctx));// may have issues
 				  //addNode(new TheBloodPact(ctx));
 				   //addNode(new TheKnightsSword(ctx));
@@ -330,16 +328,24 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 			}else if (qList.get(0) =="Biohazard"&& scriptToStart!=41) {
 				scriptToStart=41;
 				if(GEWO) GEFeature = true;
+			}else if (qList.get(0) =="testquest"&& scriptToStart!=42) {
+				scriptToStart=42;
+				if(GEWO) GEFeature = true;
 			}
 			
 		}else if(ready && qList.isEmpty()){
 			Method.state("There are no quests in queue; shutting down.");
-			this.ctx.controller().stop();
+			//this.ctx.controller().stop();
+			ctx.controller.stop();
 		}
 		
 	}
 	class DeltaQuesterGUI extends JFrame {
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		public DefaultListModel<String> queueListModel = new DefaultListModel<String>();
 		public DefaultListModel<?> questListModel = new DefaultListModel<Object>();
 		public DefaultListModel<String> rewardItemModel = new DefaultListModel<String>();
@@ -355,6 +361,10 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 		questList.setCellRenderer(new MyListRenderer());
 			
 			questList.setModel(new AbstractListModel<String>() {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 				String[] values = {
 						"Cook's Assistant","Death Plateau","Demon Slayer","Dragon Slayer","Druidic Ritual"
 						,"Ernest The Chicken","Gunnar's Ground","Imp Catcher","Let Them Eat Pie",
@@ -745,6 +755,10 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 
 							//---- queueList ----
 							queueList.setModel(new AbstractListModel<String>() {
+								/**
+								 * 
+								 */
+								private static final long serialVersionUID = 1L;
 								String[] values = {
 									"Please add a quest"
 								};
@@ -897,6 +911,10 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 
 							//---- rewardItemList ----
 							rewardItemList.setModel(new AbstractListModel<String>() {
+								/**
+								 * 
+								 */
+								private static final long serialVersionUID = 1L;
 								String[] values = {
 									""
 								};
@@ -919,6 +937,10 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 
 							//---- rewardExpList ----
 							rewardExpList.setModel(new AbstractListModel<String>() {
+								/**
+								 * 
+								 */
+								private static final long serialVersionUID = 1L;
 								String[] values = {
 									""
 								};
@@ -1139,7 +1161,11 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 		// JFormDesigner - End of variables declaration  //GEN-END:variables
 		 private class MyListRenderer extends DefaultListCellRenderer  
 		    {  
-		        private HashMap<Object, String> incompleteQuests = new HashMap<Object, String>();  
+		        /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+				private HashMap<Object, String> incompleteQuests = new HashMap<Object, String>();  
 		   
 		        public Component getListCellRendererComponent( JList<?> list,  
 		                Object value, int index, boolean isSelected,  
@@ -1428,13 +1454,6 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
 	}
 	
 
-	private Image getImage(String url) {
-		try {
-			return ImageIO.read(new URL(url));
-		} catch (IOException e) {
-			return null;
-		}
-	}
 	private final Font font1 = new Font("Serif", 0, 15);
    // private final Image paint = getImage("http://i.imgur.com/IBSYZA1.png");
 	//private final Image paint = getImage("http://img841.imageshack.us/img841/5984/kg3.png");
@@ -1444,8 +1463,8 @@ public class DeltaQuester extends PollingScript<ClientContext> implements PaintL
     public  void repaint(Graphics g) {
     	
 		g.drawImage(paint, -19, -15, null);
-		mouseX = (int) ctx.mouse.getLocation().getX();
-		mouseY = (int) ctx.mouse.getLocation().getY();
+		mouseX = (int) ctx.input.getLocation().getX();
+		mouseY = (int) ctx.input.getLocation().getY();
           setMouse(g);
 		/*
 		int seconds = (int)(runtime.getElapsed()/1000);

@@ -110,7 +110,7 @@ public class Biohazard extends DeltaNode{
 		if(!DeltaQuester.checkedBank&&(ctx.varpbits.varpbit(2535)&0x1F)==0){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank&&(ctx.varpbits.varpbit(2535)&0x1F)==0){
+	    if(quests.Vars.useBank&&(ctx.varpbits.varpbit(2535)&0x1F)==0){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if(!init){

@@ -1,38 +1,26 @@
 package quests;
 
 
-import features.GrandExchange;
-
 import java.util.ArrayList;
 
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.Action;
-import org.powerbot.script.rt6.Backpack;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.GroundItem;
-import org.powerbot.script.rt6.Interactive;
 import org.powerbot.script.rt6.Hud.Window;
+import org.powerbot.script.rt6.Interactive;
 import org.powerbot.script.rt6.Item;
 import org.powerbot.script.rt6.ItemQuery;
 import org.powerbot.script.rt6.MobileIdNameQuery;
 import org.powerbot.script.rt6.Npc;
 import org.powerbot.script.rt6.Player;
 
-
-
-
-
-
-
-
-
-
-
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
+import features.GrandExchange;
 
 
 public class Method extends ClientAccessor{
@@ -319,7 +307,22 @@ public class Method extends ClientAccessor{
 		}
 		return bankItems.contains(id);
 	}
-	   
+	public boolean isChatting() {
+		
+		if(!startQuestOpen())
+		if(ctx.widgets.widget(1184).valid()||
+				ctx.widgets.component(1191,0).visible()||
+				ctx.widgets.component(1187,0).visible()||
+				ctx.widgets.component(1188,0).visible()||
+				ctx.widgets.component(1189,0).visible()||
+				ctx.widgets.component(1186,0).visible()){
+			pressContinue();
+			sleep(300);
+			return true;
+		}
+		//System.out.println("Returning false");
+		return false;
+	}
 	public boolean isChatting(final String p) {
 		
 		if(ctx.widgets.widget(1184).valid()||
@@ -371,7 +374,7 @@ public class Method extends ClientAccessor{
 			for (int i :Vars.OPTIONVALUE) {
 				if (ctx.widgets.component(1188,1).visible()&&ctx.widgets.component(1188, i).text().contains(t)) {
 					state("Attempting to click option in this area");
-					ctx.mouse.click(ctx.widgets.component(1188, i).centerPoint().x+10,ctx.widgets.component(1188, i).centerPoint().y+3 , true);
+					ctx.input.click(ctx.widgets.component(1188, i).centerPoint().x+10,ctx.widgets.component(1188, i).centerPoint().y+3 , true);
 					return true; 
 				}
 			}
@@ -383,7 +386,6 @@ public class Method extends ClientAccessor{
 		DeltaQuester.state = message;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void speakTo(final int id, final String p) {
 		System.out.println("Moving camera fffto npc");
 			for(Npc n: ctx.npcs.select().id(id).nearest().first()){
@@ -452,12 +454,12 @@ public class Method extends ClientAccessor{
 			if(ctx.widgets.component(1473,31).boundingRect().getCenterY()>//was 7
 			t.component().boundingRect().getCenterY()){
 				state("Scrolling through inventory");
-				ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
-				ctx.mouse.scroll(false);
+				ctx.input.move(ctx.widgets.component(1473, 31).centerPoint());
+				ctx.input.scroll(false);
 			}else {
 				state("Scrolling through inventory");
-				ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
-				ctx.mouse.scroll(true);
+				ctx.input.move(ctx.widgets.component(1473, 31).centerPoint());
+				ctx.input.scroll(true);
 				}
 			System.out.println("center y"+ctx.widgets.component(1473,31).boundingRect().getCenterY());
 			System.out.println("center y object" + t.component().boundingRect().getCenterY());
@@ -494,12 +496,12 @@ public class Method extends ClientAccessor{
 			if(ctx.widgets.component(1473,31).boundingRect().getCenterY()>
 			t.component().boundingRect().getCenterY()){
 				state("Scrolling through inventory");
-				ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
-				ctx.mouse.scroll(false);
+				ctx.input.move(ctx.widgets.component(1473, 31).centerPoint());
+				ctx.input.scroll(false);
 			}else {
 				state("Scrolling through inventory");
-				ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
-				ctx.mouse.scroll(true);
+				ctx.input.move(ctx.widgets.component(1473, 31).centerPoint());
+				ctx.input.scroll(true);
 				}
 			}
 		//}else System.out.println("//timer1 running");
@@ -508,8 +510,7 @@ public class Method extends ClientAccessor{
         return ctx.players.local().interacting()!=null;
     }
     public void interactO(final String name, final String string, final String o) {
-    	ArrayList<String> actions = new ArrayList<String>();
-    	
+    
 		for(GameObject y: ctx.objects.select().name(name).nearest().first()){
 			//if(closeInterfaces())
 			//if(y.inViewport()){
@@ -539,9 +540,46 @@ public class Method extends ClientAccessor{
 				}
 		
 	}
-	public void interactO(final int i, final String string, final String o) {
-		ArrayList<String> actions = new ArrayList<String>();
+    
+	public boolean interactOReturn(final int i, final String action) {
+	
+		if(!objIsNotNull(i) && !ctx.players.local().inMotion()){
+			System.out.println("Successfully click because object does not exist!");
+			return true;
+		}
+		
 		for(GameObject y: ctx.objects.select().id(i).nearest().first()){
+			//if(closeInterfaces())
+			System.out.println("dist" + y.tile().distanceTo(ctx.players.local().tile()));
+			
+			y.hover();
+			y.hover();
+			
+			boolean menuExist = false;
+			for(String h : ctx.menu.items()){
+				if(!h.contains("Walk here") && !h.contains("Cancel") && !h.contains("Examine")){
+					menuExist = true;
+					System.out.println("On object with the menu of: "+h);
+				}
+			}
+			if(y.inViewport() && y.interact(action)&&menuExist==true||
+					 y.tile().distanceTo(ctx.players.local().tile())>6){
+			state("Interacting: " + "");
+			sleep(Random.nextInt(1000,2000));
+			System.out.println("Successfully click an object!");
+			if(!ctx.players.local().inMotion()){
+				sleep(Random.nextInt(2000, 3000));
+				return true;
+			}
+			}else {
+				ctx.camera.turnTo(y.tile());
+			}
+
+				}
+		return false;
+	}
+	public void interactO(final int i, final String string, final String o) {
+	for(GameObject y: ctx.objects.select().id(i).nearest().first()){
 			//if(closeInterfaces())
 			if(y.inViewport() && y.interact(string)){
 			state("Interacting: " + string);
@@ -622,6 +660,37 @@ public class Method extends ClientAccessor{
 			}
 	//	}
 	}
+	
+	public boolean npcInteract(int i) {
+		ArrayList<String> actions = new ArrayList<String>();
+		//if(!SpeakTo//timer.isRunning()){
+		for(Npc n : ctx.npcs.select().id(i).nearest().first()){
+				if (n.inViewport()) {
+					n.hover();
+					String menuItems[] = ctx.menu.items();
+					for(String opt: menuItems){
+						if(!actions.contains(opt))
+							actions.add(opt);
+					}
+					for(String text: actions){
+						if(text.contains("")){
+							// SpeakTo//timer = new //timer(2400);
+							 System.out.println("interacting");
+							  if(n.interact("")){
+							   sleep(2000);
+							   System.out.println("Returning true for clicking on npc");
+							   return true;
+							  }
+							
+						}
+					}
+				} else ctx.camera.turnTo(n);
+			}
+	//	}
+		return false;
+	}
+
+	
 	public boolean npcInteract(int i, String string) {
 		ArrayList<String> actions = new ArrayList<String>();
 		//if(!SpeakTo//timer.isRunning()){
@@ -694,7 +763,7 @@ public class Method extends ClientAccessor{
 	public boolean startQuestOpen() {
 		if(ctx.widgets.component(1500,0).visible()){
 			state("Accepting quest offer");
-			ctx.mouse.click(ctx.widgets.component(1500, 402).centerPoint(),true);
+			ctx.input.click(ctx.widgets.component(1500, 402).centerPoint(),true);
 			return true;
 		}
 		return false;
@@ -769,7 +838,7 @@ public class Method extends ClientAccessor{
 		if(ctx.widgets.component(1092,loc).visible()){//lodestone screen
 			//System.out.println("Selecting the teleport");
 			state("Selecting teleport: " + teleName);
-			ctx.mouse.move(ctx.widgets.component(1092,loc).centerPoint());
+			ctx.input.move(ctx.widgets.component(1092,loc).centerPoint());
 			ctx.widgets.component(1092,loc).click(true);
 			sleep(3000);
 		}else {
@@ -821,6 +890,20 @@ public class Method extends ClientAccessor{
 		
 		
 	}
+	public boolean forceUseItemOnObj(int itemID, int objID){
+		
+		state("Using item on object");
+		if(closeInterfaces())
+		if(ctx.backpack.itemSelected()){
+			if(interactOReturn(objID,"")){
+				return true;
+			}
+		}else if(inventoryContains(itemID))
+			interactInventory(itemID,"Use","Item");
+		
+		return false;
+	}
+	
 	public void useItemOn(int item, int obj, String string) {
 		state("Using item on object");
 		if(closeInterfaces())
@@ -903,7 +986,7 @@ public class Method extends ClientAccessor{
 			
 		}
 		if(ctx.widgets.component(1188,0).visible() && ctx.widgets.component(1188,11).text().contains("Leave the st")){
-			ctx.mouse.click(ctx.widgets.component(1188, 11).centerPoint().x+10,ctx.widgets.component(1188, 11).centerPoint().y+3 , true);
+			ctx.input.click(ctx.widgets.component(1188, 11).centerPoint().x+10,ctx.widgets.component(1188, 11).centerPoint().y+3 , true);
 			
 			return true;
 		}
@@ -947,7 +1030,7 @@ public class Method extends ClientAccessor{
 		Item[] inventory = null;
 		inventory = ctx.backpack.items();
 		
-		if(!Vars.ranOnce){
+		if(!quests.Vars.ranOnce){
 			//state("Determining if you need to bank");
 			for(Item i : inventory){
 				//System.out.println("Checking inv items");
@@ -969,25 +1052,25 @@ public class Method extends ClientAccessor{
 				
 				 if(invspace<itemsNeeded){
 					 System.out.println("DetermineBank setting useBank to true, out of inventory space");
-					Vars.useBank = true;
-					Vars.ranOnce = true;
+					quests.Vars.useBank = true;
+					quests.Vars.ranOnce = true;
 				}else {
 					 System.out.println("DetermineBank, we have sufficient inventory space");
-					Vars.useBank = false;
-					Vars.ranOnce = true;
+					quests.Vars.useBank = false;
+					quests.Vars.ranOnce = true;
 				}
 				 for(int bankitem: items){
-						if(Vars.bankItems.contains(bankitem)){
+						if(quests.Vars.bankItems.contains(bankitem)){
 							System.out.println("DetermineBank, Found item!");
-							Vars.useBank = true;
-							Vars.ranOnce = true;
+							quests.Vars.useBank = true;
+							quests.Vars.ranOnce = true;
 						}else System.out.println("DetermineBank, can't find item in bank" + bankitem);
 					}
 				 if(DeltaQuester.FOOD_FEATURE){
-						if(inventoryGetCount(DeltaQuester.FOOD_ID)<=foodspace && Vars.bankItems.contains(DeltaQuester.FOOD_ID)){
+						if(inventoryGetCount(DeltaQuester.FOOD_ID)<=foodspace && quests.Vars.bankItems.contains(DeltaQuester.FOOD_ID)){
 							 System.out.println("DetermineBank, setting useBank to true - we need more food");
-							Vars.useBank = true;
-							Vars.ranOnce = true;
+							quests.Vars.useBank = true;
+							quests.Vars.ranOnce = true;
 						}
 					}
 		}//else System.out.println("ranOnce: " + Vars.ranOnce);
@@ -1046,7 +1129,7 @@ public class Method extends ClientAccessor{
 				
 				//if we have enough room for food, we take some into our inventory.
 				if(DeltaQuester.FOOD_FEATURE&&
-						Vars.bankItems.contains(DeltaQuester.FOOD_ID) &&
+						quests.Vars.bankItems.contains(DeltaQuester.FOOD_ID) &&
 						inventoryGetCount(DeltaQuester.FOOD_ID)<foodspace){//needs to be 'less than', or else it'll keep taking out food
 					
 					    System.out.println("Taking " + foodspace + " of " + DeltaQuester.FOOD_ID + " out of the bank");
@@ -1072,7 +1155,7 @@ public class Method extends ClientAccessor{
 				 }
 				ctx.bank.close();
 				System.out.println("Turning bank off: " + donesearch);
-				Vars.useBank = false;
+				quests.Vars.useBank = false;
 					}
 					  }
 			} else {
@@ -1149,7 +1232,39 @@ public class Method extends ClientAccessor{
 		//System.out.println("Attempting" + bankTile+": "+rand.nextInt(3));
 		
 	}
-
+public boolean forceInteractGItem(int ID){
+	
+	if(!ctx.groundItems.select().id(ID).first().isEmpty()){
+		if(!ctx.widgets.component(1092,42).visible()){
+			for(GroundItem item : ctx.groundItems.select().id(ID).nearest().first()){
+				if (item.inViewport()) {
+					
+					ctx.input.move(item.centerPoint());
+					
+					boolean menuExist = false;
+					for(String h : ctx.menu.items()){
+						if(!h.contains("Walk here") && !h.contains("Cancel") && !h.contains("Examine")&&
+								h.contains("Take")){
+							menuExist = true;
+							System.out.println("ground item with the menu of: "+h);
+						}
+					}
+					
+					
+						if(item.interact("Take") && menuExist){
+						//ctx.environment.sleep(500,600);
+						return true;
+						}else ctx.camera.turnTo(item.tile());
+					
+				} else ctx.camera.turnTo(item);
+				break;
+			}
+			
+		}else clickOnMap(ctx.players.local().tile());
+	}
+	
+	return false;
+}
 	public void interactG(int i, String string, String string2) {
 		if(!ctx.groundItems.select().id(i).first().isEmpty()){
 			DeltaQuester.paintIndicator = i;
@@ -1157,7 +1272,7 @@ public class Method extends ClientAccessor{
 				for(GroundItem item : ctx.groundItems.select().id(i).nearest().first()){
 					if (item.inViewport()) {
 						state("Performing action on ground item: " + string2);
-						ctx.mouse.move(item.centerPoint());
+						ctx.input.move(item.centerPoint());
 							if(item.interact(string)){
 							//ctx.environment.sleep(500,600);
 							break;
@@ -1173,7 +1288,6 @@ public class Method extends ClientAccessor{
 	}
 	public void combineItems(int item1, int item2) {
 		state("Combining items");
-		Backpack inv = ctx.backpack;
 		skipPics();
 		if(!isChatting("Self")){
 			if(ctx.backpack.itemSelected()){
@@ -1249,9 +1363,22 @@ public class Method extends ClientAccessor{
 		
 		return true;
 	}
-
+public boolean forceWearItem(int ID){
+	
+	if(EquipmentContains(ID)){
+		return true;
+	}
+	while(inventoryContains(ID)){
+		System.out.println("Fiound tisobdddddddddu");
+		interactInventory(ID, "", "");
+		break;
+	}
+	return false;
+	
+}
 	public void clickOnMap(Tile t) {
 		try{
+			if(t!=null)
 		ctx.movement.step(ctx.movement.closestOnMap(t));
 		}catch(Exception e){e.printStackTrace();}
 		/*
@@ -1383,10 +1510,10 @@ public class Method extends ClientAccessor{
 			System.out.println("Now3");
 			Vars.DYNAMICV = false;
 			if(ctx.bank.opened()){
-				Vars.bankItems.clear();
+				quests.Vars.bankItems.clear();
 				for(Item i: ctx.bank.select()){
-					if(!Vars.bankItems.contains(i.id()))
-						Vars.bankItems.add(i.id());
+					if(!quests.Vars.bankItems.contains(i.id()))
+						quests.Vars.bankItems.add(i.id());
 				}
 				System.out.println("Finished checking bank");
 				DeltaQuester.checkedBank = true;
@@ -1449,7 +1576,7 @@ public class Method extends ClientAccessor{
 				ctx.bank.deposit(noteID, Amount);
 				cacheBank();
 				//ctx.environment.sleep(1200);
-			}else if(!Vars.bankItems.contains(itemID)){
+			}else if(!quests.Vars.bankItems.contains(itemID)){
 				System.out.println("Could not find item in bank");
 				DeltaQuester.exchangeBank = true;
 			}else {
@@ -1464,11 +1591,11 @@ public class Method extends ClientAccessor{
 
 	private void cacheBank() {
 		System.out.println("Clearing cache");
-		Vars.bankItems.clear();
+		quests.Vars.bankItems.clear();
 		for(Item i: ctx.bank.select()){
-			if(!Vars.bankItems.contains(i.id())){
+			if(!quests.Vars.bankItems.contains(i.id())){
 				//System.out.println("Adding: " + i.id());
-				Vars.bankItems.add(i.id());
+				quests.Vars.bankItems.add(i.id());
 			}
 		}
 		

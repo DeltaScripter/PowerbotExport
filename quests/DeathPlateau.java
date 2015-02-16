@@ -63,7 +63,7 @@ public class DeathPlateau extends DeltaNode{
 		//if(!DeltaQuester.checkedBank && (ctx.varpbits.varpbit(2337) & 0x1FF) !=449){
 		//	Method.checkBank();
 		//}else
-	    if(Vars.useBank && (ctx.varpbits.varpbit(2337) & 0x1FF) !=449){
+	    if(quests.Vars.useBank && (ctx.varpbits.varpbit(2337) & 0x1FF) !=449){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if((ctx.varpbits.varpbit(2337) & 0x1FF) ==449){
@@ -127,7 +127,6 @@ public class DeathPlateau extends DeltaNode{
 	}
 	
 	private void cs6() {//speak to nd destroy the troll
-		Player local = ctx.players.local();
 		final String opt[] = {"Prepare to die"};
 		
 		if(Method.npcIsNotNull(15101)){//troll

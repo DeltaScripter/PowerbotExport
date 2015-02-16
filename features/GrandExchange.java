@@ -54,7 +54,9 @@ public class GrandExchange extends ClientAccessor{
 			
 		}else {
 			System.out.println("Interacting w/buy button on initial screen");
-			ctx.mouse.move(ctx.widgets.component(105, 19).centerPoint());
+			
+			ctx.input.move(ctx.widgets.component(105, 19).centerPoint());
+			
 			sleep(Random.nextInt(1500, 2000));
 			ctx.widgets.component(105,19).interact("");//click the slot buy button
 		}
@@ -67,7 +69,9 @@ public class GrandExchange extends ClientAccessor{
 		Component g = ctx.widgets.component(1469,2);//search box for price
 		if(g.visible() && g.text().contains("you wish to buy for")){//if open
 			if(ctx.widgets.component(1469,3).text().equals(price)){
-				ctx.keyboard.sendln("");
+				
+				ctx.input.sendln("");
+				
 			}else if(ctx.widgets.component(1469,3).text().isEmpty()){
 				sendText(price);
 			}else ctx.widgets.component(105,154).click();//re-open the search textbox
@@ -92,7 +96,9 @@ public class GrandExchange extends ClientAccessor{
 		DeltaQuester.state = "setting quantity";
 		if(ctx.widgets.component(1469,2).visible()){//typing box for quantity
 			if(ctx.widgets.component(1469,3).text().equals(amount)){
-			ctx.keyboard.sendln("");
+			
+				ctx.input.sendln("");
+				
 			}else if(ctx.widgets.component(1469,3).text().isEmpty()){
 				sendText(amount);
 			}else {
@@ -107,7 +113,8 @@ public class GrandExchange extends ClientAccessor{
 
 	private void sendText(String amount) {
 			sleep(1500);
-			ctx.keyboard.send(amount);
+			
+			ctx.input.send(amount);
 		    sleep(1000);
 	}
 
@@ -136,12 +143,15 @@ public class GrandExchange extends ClientAccessor{
 						}else
 						if(results.centerPoint().y>ctx.widgets.component(389, 4).component(s).centerPoint().y){
 							System.out.println("scrolling list down");
-							ctx.mouse.move(results.centerPoint());
-							ctx.mouse.scroll(false);
+							
+							
+							ctx.input.move(results.centerPoint());
+							ctx.input.scroll(false);
+							
 						}else {
 							System.out.println("scrolling mouse");
-							ctx.mouse.move(results.centerPoint());
-							ctx.mouse.scroll(true);
+							ctx.input.move(results.centerPoint());
+							ctx.input.scroll(true);
 						}
 					}else s++;
 

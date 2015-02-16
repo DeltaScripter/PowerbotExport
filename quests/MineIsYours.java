@@ -5,7 +5,6 @@ import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Component;
 import org.powerbot.script.rt6.Player;
-import org.powerbot.script.rt6.Skills;
 
 import quests.Vars.TeleportLode;
 import quests.Vars.TeleportType;
@@ -131,11 +130,11 @@ public class MineIsYours extends DeltaNode{
 			if(!DeltaQuester.checkedBank&& (ctx.varpbits.varpbit(2231)&0x3F) !=55){
 			Method.checkBank();
 		}else
-	    if(Vars.useBank && (ctx.varpbits.varpbit(2231)&0x3F) !=55){
+	    if(quests.Vars.useBank && (ctx.varpbits.varpbit(2231)&0x3F) !=55){
 			Method.useBank(bankItems, bankItemAmount);
 		}else
 		if(!init){
-			if(ctx.skills.level(Skills.SMITHING)<5){
+			if(ctx.skills.level(13)<5){//13 is the constant value for the smithing skill
 				Method.state("Smithing level of 5 is required, skipping quest");
 				Method.sleep(4000);
 				DeltaQuester.e  = true;
@@ -379,8 +378,8 @@ public class MineIsYours extends DeltaNode{
 		if(Method.objIsNotNull(31130)){
 			if(Method.objIsNotNull(4618)){
 				if(Method.getObject(4618).tile().distanceTo(local.tile())<4){
-			ctx.mouse.move(Method.getObject(4618).tile().matrix(ctx).point(Random.nextDouble() * .3 - 0.6D, .6D, 300));
-			ctx.mouse.click(true);
+			ctx.input.move(Method.getObject(4618).tile().matrix(ctx).point(Random.nextDouble() * .3 - 0.6D, .6D, 300));
+			ctx.input.click(true);
 				}else Method.clickOnMap(Method.getObject(4618).tile());
 			}
 		}else
