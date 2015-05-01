@@ -128,7 +128,7 @@ public class OldMethod extends ClientAccessor{
 		for (String t:text) {
 			for (int i :Vars.OPTIONVALUE) {
 				if (ctx.widgets.component(OPTIONMENUWIDGET,1).visible()&&ctx.widgets.component(OPTIONMENUWIDGET, i).text().contains(t)) {
-					ctx.mouse.click(ctx.widgets.component(OPTIONMENUWIDGET, i).centerPoint().x+10,ctx.widgets.component(OPTIONMENUWIDGET, i).centerPoint().y+3 , true);
+					ctx.input.click(ctx.widgets.component(OPTIONMENUWIDGET, i).centerPoint().x+10,ctx.widgets.component(OPTIONMENUWIDGET, i).centerPoint().y+3 , true);
 					sleep(Random.nextInt(1000,1600));
 					return true; 
 				}
@@ -139,7 +139,7 @@ public class OldMethod extends ClientAccessor{
 			for (int i :Vars.OPTIONVALUE) {
 				if (ctx.widgets.component(OPTIONMENUWIDGET2,1).visible()&&ctx.widgets.component(OPTIONMENUWIDGET2, i).text().contains(t)) {
 					System.out.println("Clicking option in second type menu");
-					ctx.mouse.click(ctx.widgets.component(OPTIONMENUWIDGET2, i).centerPoint().x+10,ctx.widgets.component(OPTIONMENUWIDGET2, i).centerPoint().y+3 , true);
+					ctx.input.click(ctx.widgets.component(OPTIONMENUWIDGET2, i).centerPoint().x+10,ctx.widgets.component(OPTIONMENUWIDGET2, i).centerPoint().y+3 , true);
 					sleep(Random.nextInt(1000,1600));
 					return true; 
 				}
@@ -150,7 +150,7 @@ public class OldMethod extends ClientAccessor{
 					for (int i :Vars.OPTIONVALUE) {
 						if (ctx.widgets.component(OPTIONMENUWIDGET3,1).visible()&&ctx.widgets.component(OPTIONMENUWIDGET3, i).text().contains(t)) {
 							System.out.println("Clicking option in second type menu");
-							ctx.mouse.click(ctx.widgets.component(OPTIONMENUWIDGET3, i).centerPoint().x+10,ctx.widgets.component(OPTIONMENUWIDGET3, i).centerPoint().y+3 , true);
+							ctx.input.click(ctx.widgets.component(OPTIONMENUWIDGET3, i).centerPoint().x+10,ctx.widgets.component(OPTIONMENUWIDGET3, i).centerPoint().y+3 , true);
 							sleep(Random.nextInt(1000,1600));
 							return true; 
 						}
@@ -211,7 +211,7 @@ public class OldMethod extends ClientAccessor{
         return ctx.players.local().interacting()!=null;
     }
     public void interactO(final String name, final String string, final String o) {
-    	ArrayList<String> actions = new ArrayList<String>();
+    	//ArrayList<String> actions = new ArrayList<String>();
     	
 		for(GameObject y: ctx.objects.select().name(name).nearest().first()){
 			//if(closeInterfaces())
@@ -243,7 +243,7 @@ public class OldMethod extends ClientAccessor{
 		
 	}
 	public void interactO(final int i, final String string, final String o) {
-		ArrayList<String> actions = new ArrayList<String>();
+		//ArrayList<String> actions = new ArrayList<String>();
 		for(GameObject y: ctx.objects.select().id(i).nearest().first()){
 			//if(closeInterfaces())
 			if(y.inViewport() && y.interact(string)){
@@ -368,7 +368,7 @@ public class OldMethod extends ClientAccessor{
 	public boolean startQuestOpen() {
 		if(ctx.widgets.component(1500,0).visible()){
 			state("Accepting quest offer");
-			ctx.mouse.click(ctx.widgets.component(1500, 402).centerPoint(),true);
+			ctx.input.click(ctx.widgets.component(1500, 402).centerPoint(),true);
 			return true;
 		}
 		return false;
@@ -537,7 +537,7 @@ private int SPELLBOOKICONWIDGETPARENT = 548;
 			
 		}
 		if(ctx.widgets.component(1188,0).visible() && ctx.widgets.component(1188,11).text().contains("Leave the st")){
-			ctx.mouse.click(ctx.widgets.component(1188, 11).centerPoint().x+10,ctx.widgets.component(1188, 11).centerPoint().y+3 , true);
+			ctx.input.click(ctx.widgets.component(1188, 11).centerPoint().x+10,ctx.widgets.component(1188, 11).centerPoint().y+3 , true);
 			
 			return true;
 		}
@@ -661,7 +661,7 @@ private int SPELLBOOKICONWIDGETPARENT = 548;
 		} else getToBank();
 	}
 	*/
-	private boolean bankHasAtleastOneOfItems(int[] items, int[] amount) {
+	public boolean bankHasAtleastOneOfItems(int[] items, int[] amount) {
 		ItemQuery<Item> bankstuff;
 		bankstuff = null;
 		bankstuff = ctx.bank.select();
@@ -681,7 +681,7 @@ private int SPELLBOOKICONWIDGETPARENT = 548;
 		return false;
 	}
 
-	private void getToBank() {
+	public void getToBank() {
 		
 		state("Need to make ability to get to a bank");
 	}
@@ -693,7 +693,7 @@ private int SPELLBOOKICONWIDGETPARENT = 548;
 				for(GroundItem item : ctx.groundItems.select().id(i).nearest().first()){
 					if (item.inViewport()) {
 						state("Performing action on ground item: " + string2);
-						ctx.mouse.move(item.centerPoint());
+						ctx.input.move(item.centerPoint());
 							if(item.interact(string)){
 							//ctx.environment.sleep(500,600);
 							break;
@@ -721,6 +721,15 @@ private int SPELLBOOKICONWIDGETPARENT = 548;
 		state("Walking to location: " + tile);
 		Player local = ctx.players.local();
 		if(tile.distanceTo(local.tile())<5){
+			return true;
+		}else clickOnMap(tile);
+		return false;
+	}
+	
+	public boolean getToTile(Tile tile, int dist) {
+		state("Walking to location: " + tile);
+		Player local = ctx.players.local();
+		if(tile.distanceTo(local.tile())<dist){
 			return true;
 		}else clickOnMap(tile);
 		return false;
@@ -913,7 +922,7 @@ private int INVETORYIDWIDGET = 149;
 	}
 
 
-	private void cacheBank() {
+	public void cacheBank() {
 		System.out.println("Clearing cache");
 		OldVars.bankItems.clear();
 		for(Item i: ctx.bank.select()){
@@ -1069,12 +1078,14 @@ private int INVETORYIDWIDGET = 149;
 		int currentHealth = Integer.parseInt(g);
 		
 		if(hasFood && (currentHealth<=9)){
+			
+			state("Eating some food - low on health");
+			interactInventory(DeltaOldQuester.foodID, "", "Food");
+			
 			if(!inventoryContains(DeltaOldQuester.foodID)){
 				System.out.println("hasFood is false b/c no food in inventory");
 				hasFood=false;
 			}
-			state("Eating some food - low on health");
-			interactInventory(DeltaOldQuester.foodID, "", "Food");
 		}
 	}
 	

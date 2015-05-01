@@ -22,7 +22,6 @@ public class OldCooksAssistant extends OldNode{
 	
 	private int MILKBUCKET = 1927;
 	
-	private boolean init = true;
 	
 	private boolean hasMilk = false;
 	private boolean hasEgg = false;

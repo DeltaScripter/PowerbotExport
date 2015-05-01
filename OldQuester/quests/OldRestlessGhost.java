@@ -36,7 +36,7 @@ public class OldRestlessGhost extends OldNode{
 		return DeltaOldQuester.scriptSelect==1;
 	}
 
-	private boolean init = false;
+	//private boolean init = false;
 	private int AMULET = 552;
 
 	
@@ -44,9 +44,9 @@ public class OldRestlessGhost extends OldNode{
 	@Override
 	public void execute() {
 		DeltaOldQuester.numSteps = 6;
-		// RSWeb web = new RSWeb(ctx);
-		 //web.walkToTile(new Tile(3252,3404, 0));//some tile
-		//Method.state("Closest node to you: " + web.getNearestNode(ctx.players.local().tile()));
+		 RSWeb web = new RSWeb(ctx);
+		 web.walkToTile(new Tile(3108, 3353, 0));//some tile
+		Method.state("Closest node to you: " + web.getNearestNode(ctx.players.local().tile()));
 		
 		/*
 		if(ctx.movement.destination().matrix(ctx).reachable()&&
@@ -62,7 +62,7 @@ public class OldRestlessGhost extends OldNode{
 		Method.state("Ready to click!");
 		}*/
 		
-		///*
+		/*
 			while(Method.inventoryContains(AMULET)){
 				Method.interactInventory(AMULET, "Wear", "Amulet");
 			}
@@ -93,7 +93,7 @@ public class OldRestlessGhost extends OldNode{
 			DeltaOldQuester.progress=1;
 		  cs0();//Speak to the priest (Aereck) and begin the quest
 		}
-		//*/
+		*/
 		
 	}
 	private int BASEMENTLADDER = 2148;

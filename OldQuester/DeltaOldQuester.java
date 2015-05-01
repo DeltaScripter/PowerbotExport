@@ -13,6 +13,7 @@ import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
 
 import OldQuester.quests.OldCooksAssistant;
+import OldQuester.quests.OldErnestTheChicken;
 import OldQuester.quests.OldRestlessGhost;
 import OldQuester.quests.OldRuneMysteries;
 import OldQuester.quests.OldWaterFall;
@@ -26,7 +27,7 @@ import javax.swing.*;
 
 
 @Script.Manifest(name = "O7 Quester", 
-description = "Completes your quests!",properties = "client=4; topic = 1231910")
+description = "Automatically completes quests you want done.",properties = "client=4; topic = 1231910")
 public class DeltaOldQuester extends PollingScript<ClientContext> implements PaintListener{
 
 	
@@ -54,7 +55,7 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 		onStart();
 		if(shutOff || !ctx.game.loggedIn()){
 			System.out.println("Shutting down..");
-			this.ctx.controller().stop();
+			this.ctx.controller.stop();
 			stop();
 			this.stop();
 		}
@@ -69,6 +70,13 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 		}
 		
 	}
+	/*INSTRUCTIONS ON NODE WALKING
+	 * -Any new nodes added must be connected to an existing node
+	 * I believe each node can have multiple branches to other paths
+	 * -We used code inside the Restless ghost quest script to generate a new path conveniently
+	 * */
+	
+	
 	private void onStart() {
 		if(!start){
 			initiateGui();
@@ -76,6 +84,7 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 			addNode(new OldRestlessGhost(ctx));
 			addNode(new OldCooksAssistant(ctx));
 			addNode(new OldWaterFall(ctx));
+			addNode(new OldErnestTheChicken(ctx));
 			///System.out.println("Added nodes!");
 			start = true;
 		}
@@ -101,8 +110,8 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
     	
 		g.drawImage(paint, -5, -45, null);
 		
-		mouseX = (int) ctx.mouse.getLocation().getX();
-		mouseY = (int) ctx.mouse.getLocation().getY();
+		mouseX = (int) ctx.input.getLocation().getX();
+		mouseY = (int) ctx.input.getLocation().getY();
 		
 		setMouse(g);
 		   
@@ -148,6 +157,10 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 		}
 	}
 	class DeltaOldQuesterGUI extends JFrame {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		public DeltaOldQuesterGUI() {
 			initComponents();
 		}
@@ -200,6 +213,10 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 				questName = "Waterfall";
 				scriptSelect = 4;
 			}
+			if(questComboBox.getSelectedItem().toString().contains("Ernest The Chicken")){
+				questName = "Ernest The Chicken";
+				scriptSelect = 5;
+			}
 		}
 
 		private void questComboBoxActionPerformed(ActionEvent e) {
@@ -216,6 +233,9 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 			if(questComboBox.getSelectedItem().toString().contains("Waterfall")){
 				textArea1.setText("You will need\n- Air runes X 6\n- Earth runes X 6\n- Water runes X 6\n- Rope X 1\n\nMake sure you have only the amounts stated above\nand no more!\n\nStart the script in any of the quest areas(or just outside Catherby bank.)");
 			}
+			if(questComboBox.getSelectedItem().toString().contains("Ernest The Chicken")){
+				textArea1.setText("In development");
+			}
 		}
 
 		private void initComponents() {
@@ -224,8 +244,8 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 			okButton = new JButton();
 			scrollPane1 = new JScrollPane();
 			textArea1 = new JTextArea();
-			questComboBox = new JComboBox();
-			foodCombo = new JComboBox();
+			questComboBox = new JComboBox<String>();
+			foodCombo = new JComboBox<String>();
 			label1 = new JLabel();
 
 			//======== this ========
@@ -257,10 +277,11 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 			scrollPane1.setBounds(3, 54, 437, 173);
 
 			//---- questComboBox ----
-			questComboBox.setModel(new DefaultComboBoxModel(new String[] {
+			questComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {
 					"The Restless Ghost",
 					"Rune Mysteries",
 					"Cook's Assistant",
+					"Ernest The Chicken",
 					"Waterfall"
 				}));
 			contentPane.add(questComboBox);
@@ -272,7 +293,7 @@ public class DeltaOldQuester extends PollingScript<ClientContext> implements Pai
 				}
 			});
 			//---- foodCombo ----
-			foodCombo.setModel(new DefaultComboBoxModel(new String[] {
+			foodCombo.setModel(new DefaultComboBoxModel<String>(new String[] {
 				"Shrimp"
 			}));
 			contentPane.add(foodCombo);

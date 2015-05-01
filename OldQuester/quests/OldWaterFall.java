@@ -33,7 +33,7 @@ public class OldWaterFall extends OldNode{
 			Method.state("Closing the book!");
 			Method.clickOnMap(ctx.players.local().tile());
 		}
-		
+		Method.foodSupport();
 		
 		
 		
@@ -376,14 +376,14 @@ public class OldWaterFall extends OldNode{
 	
 	private int BOOKDOOR = 7143;
 	private int STAIRBOOK = 16671;
-	private int HEDLY = 4179;
+	//private int HEDLY = 4179;
 	private int BOOKSHELF = 1989;
 	private int BOOK = 292;
 	
 	private void cs2() {//Get out o the waterfall - head to the book house - go upstairs and get book then read it
 		final int[] bounds = {84, 32, -144, 0, 16, 132};//book door
 		
-		final String[] opt = {"Is there treasure under","Where else is worth","Can you tell me what happened"};
+		//final String[] opt = {"Is there treasure under","Where else is worth","Can you tell me what happened"};
 		
 		
 		if(new Tile(2513,3467,0).matrix(ctx).reachable()){//second area
