@@ -25,9 +25,14 @@ public class Vars {
 		}
 	}
 	public enum TeleportType{
-		ARDOUGNE(22,"Ardougne"),BURTHHORPE(18,"Burthorpe"),CATHERBY(19,"Catherby"),DRAYNOR(20,"Draynor"),
-		FALADOR(22,"Falador"),LUMBRIDGE(23,"Lumbridge"),PORTSARIM(24,"Port Sarim"),
-		SEERS(25,"Seers"),TAVERLY(26,"Taverly"),VARROCK(27,"Varrock"),YANILLE(28,"Yanille");
+		
+		/*If lode stone widgets need to be updated..
+		 * then check what the offset is from what the new widget number is on one
+		 * of the lodestone and just switch ALL of the lodestone with the offset --sounds confusing but simple..*/
+		
+		ARDOUGNE(11,"Ardougne"),BURTHHORPE(12,"Burthorpe"),CATHERBY(13,"Catherby"),DRAYNOR(14,"Draynor"),
+		FALADOR(16,"Falador"),LUMBRIDGE(17,"Lumbridge"),PORTSARIM(18,"Port Sarim"),
+		SEERS(20,"Seers"),TAVERLY(20,"Taverly"),VARROCK(21,"Varrock"),YANILLE(22,"Yanille");
 		int type;
 		String name;
 		int numMatch[] = {40,41,42,43,44,45,46,47,48,49,50,51,52,53};
@@ -47,7 +52,7 @@ public class Vars {
 	
 	public static ArrayList<Integer> bankItems = new ArrayList<Integer>();
 	public static final int[] CHATWIDGETS = {1191,1184,1188};
-	public  final int OPTIONVALUE[] = {11,12,18,19,23,24,28,29,33,34};
+	public  final int OPTIONVALUE[] = {0,11,12,18,19,23,24,28,29,32,33,34,36};
 	public boolean DYNAMICV = false;
 	public boolean DYNAMICV2 = false;
 	public boolean DYNAMICV3 = false;

@@ -366,13 +366,15 @@ public class Method extends ClientAccessor{
 	}
 	public  boolean findOption(String[] text) {
 		Vars Vars = new Vars();
-		if(!ctx.widgets.component(1188,1).visible()){
+		if(!ctx.widgets.component(1188,2).visible()){
+			System.out.println("Can't find the option text");
 			return false;
 		}
 		for (String t:text) {
 			////ctx.environment.sleep(20,50);
 			for (int i :Vars.OPTIONVALUE) {
-				if (ctx.widgets.component(1188,1).visible()&&ctx.widgets.component(1188, i).text().contains(t)) {
+				System.out.println("Looking through options");
+				if (ctx.widgets.component(1188,2).visible()&&ctx.widgets.component(1188, i).text().contains(t)) {
 					state("Attempting to click option in this area");
 					ctx.input.click(ctx.widgets.component(1188, i).centerPoint().x+10,ctx.widgets.component(1188, i).centerPoint().y+3 , true);
 					return true; 
@@ -1007,9 +1009,9 @@ public class Method extends ClientAccessor{
 			 System.out.println("Pressing continue 1189- from Method");
 			 ctx.widgets.component(1189,10).click();
 		 }
-		 if(ctx.widgets.widget(1184).component(11).visible()){
+		 if(ctx.widgets.widget(1184).component(10).visible()){
 			 System.out.println("Pressing continue 1184- from Method");
-			 ctx.widgets.widget(1184).component(11).click();
+			 ctx.widgets.widget(1184).component(10).click();
 		 }
 		 if (ctx.widgets.widget(1191).component(7).visible()){
 			 System.out.println("Pressing continue 1191- from Method");

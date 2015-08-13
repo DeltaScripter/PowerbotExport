@@ -190,7 +190,7 @@ public class RestlessG extends DeltaNode{
 	private void cs1() {//Speak to the crazy priest
 		
 		Method Method = new Method(ctx);
-		final String opt[] = {"A ghost","sent me to talk"};
+		final String opt[] = {"A ghost","sent me to talk","Father Aereck sent me"};
 		if(new Tile(3206, 3153, 0).distanceTo(ctx.players.local().tile())<6){
 			if(swampInsideHut.contains(ctx.players.local().tile())){
 				Vars.DYNAMICV = false;
@@ -217,6 +217,7 @@ public class RestlessG extends DeltaNode{
 		
 		if(new Tile(3243,3205,0).distanceTo(ctx.players.local().tile())<5){
 			Vars.DYNAMICV = false;
+			Method.state("Trying to find the priest");
 			if(!Method.startQuestOpen())
 			if(!Method.findOption(opt))
 			if(!Method.isChatting("Aereck")){
