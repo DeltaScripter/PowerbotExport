@@ -953,8 +953,11 @@ public class Method extends ClientAccessor{
 				 
 				for(int both : widgetID){
 				    if(ctx.widgets.component(both,1).valid()){
+				    	ctx.chat.clickContinue();
 				    	ctx.widgets.component(both, 11).click();
-				    	ctx.widgets.component(both, 7).click();
+				    	//ctx.widgets.component(both, 7).click();
+				    	ctx.widgets.component(both, 6).click();
+				    	
 				    }
 				}
 		}
@@ -1005,9 +1008,10 @@ public class Method extends ClientAccessor{
 			 ctx.widgets.component(1186,7).click();// the continue button (another one)
 			 sleep(Random.nextInt(2000, 2400));//the delayedment is necessary for What's Mine Is Yours quest (beginning of it)
 		 }
-		 if(ctx.widgets.component(1189,10).visible()){
-			 System.out.println("Pressing continue 1189- from Method");
-			 ctx.widgets.component(1189,10).click();
+		 ctx.chat.clickContinue();
+		 if(ctx.widgets.component(1189,6).visible()){
+			 System.out.println("Pressing continue 1189, at widget component '6'- from Method at method 'pressContinue'");
+			 ctx.widgets.component(1189,6).click();
 		 }
 		 if(ctx.widgets.widget(1184).component(10).visible()){
 			 System.out.println("Pressing continue 1184- from Method");
