@@ -1008,7 +1008,7 @@ public class Method extends ClientAccessor{
 			 ctx.widgets.component(1186,7).click();// the continue button (another one)
 			 sleep(Random.nextInt(2000, 2400));//the delayedment is necessary for What's Mine Is Yours quest (beginning of it)
 		 }
-		 ctx.chat.clickContinue();
+		 //ctx.chat.clickContinue();
 		 if(ctx.widgets.component(1189,6).visible()){
 			 System.out.println("Pressing continue 1189, at widget component '6'- from Method at method 'pressContinue'");
 			 ctx.widgets.component(1189,6).click();

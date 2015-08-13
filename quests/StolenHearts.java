@@ -272,7 +272,10 @@ public class StolenHearts extends DeltaNode{
 					
 					if(!ctx.widgets.component(1189,2).visible())//The screen that appearrs after getting the puzzle completely
 				Method.interactO(76708, "Place", "Display");
-					else ctx.widgets.component(1189,3).click();
+					else {
+						Method.pressContinue();
+						//ctx.widgets.component(1189,3).click();
+					}
 			}else//Gather the key
 			if(ctx.widgets.component(1351,29).visible()){
 				System.out.println("Here");
