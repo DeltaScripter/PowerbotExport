@@ -266,11 +266,11 @@ public class KebMethod extends ClientAccessor{
 			}else
 			if(ctx.widgets.component(1473,31).boundingRect().getCenterY()>
 			t.component().boundingRect().getCenterY()){
-				ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
-				ctx.mouse.scroll(false);
+				ctx.input.move(ctx.widgets.component(1473, 31).centerPoint());
+				ctx.input.scroll(false);
 			}else {
-				ctx.mouse.move(ctx.widgets.component(1473, 31).centerPoint());
-				ctx.mouse.scroll(true);
+				ctx.input.move(ctx.widgets.component(1473, 31).centerPoint());
+				ctx.input.scroll(true);
 				}
 			}
 	}
@@ -280,7 +280,7 @@ public class KebMethod extends ClientAccessor{
 		KebBody.state = "Teleporting to: " + teleName;
 		/*if(!timer.isRunning()){
 		if(ctx.widgets.get(1092,loc).opened()){//lodestone screen
-			ctx.mouse.move(ctx.widgets.get(1092).getComponent(loc).getCenterPoint());
+			ctx.input.move(ctx.widgets.get(1092).getComponent(loc).getCenterPoint());
 			ctx.widgets.get(1092).getComponent(loc).click(true);
 			timer = new Timer(6000);
 		}else {

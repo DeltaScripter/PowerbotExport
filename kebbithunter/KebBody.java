@@ -219,10 +219,10 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 				
 			}
 			allowDrop = false;
-			if(ctx.camera.pitch()>70){
-				ctx.camera.pitch(Random.nextInt(30, 65));
-			}else if(ctx.camera.pitch()<30)
-				ctx.camera.pitch(Random.nextInt(33, 68));
+			if(ctx.camera.pitch()>80){
+				ctx.camera.pitch(Random.nextInt(43, 65));
+			}else if(ctx.camera.pitch()<Random.nextInt(40, 41))
+				ctx.camera.pitch(Random.nextInt(42, 68));
 			
 			int backPackItems;
 			backPackItems = Method.inventoryGetCount(10117);
@@ -418,7 +418,7 @@ public class KebBody extends PollingScript<ClientContext> implements org.powerbo
 		   
 	   }
 	   private boolean calcAntiPattern() {
-			int number = rand.nextInt(0,23);
+			int number = rand.nextInt(0,19);
 			if(number == 1){
 				antiPattern = true;
 				return true;
@@ -452,8 +452,8 @@ private void setMouse(Graphics g) {
 		
 	   g.drawImage(paint, 0,0,null);
 		
-		mouseX = (int) ctx.mouse.getLocation().getX();
-		mouseY = (int) ctx.mouse.getLocation().getY();
+		mouseX = (int) ctx.input.getLocation().getX();
+		mouseY = (int) ctx.input.getLocation().getY();
 		setMouse(g);
 		g.setFont(myStateFont);
 		//g.setColor(Color.magenta);

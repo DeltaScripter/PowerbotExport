@@ -2,10 +2,13 @@ package kebbithunter;
 
 import java.awt.Point;
 
+import org.powerbot.script.Filter;
 import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.GroundItem;
+import org.powerbot.script.rt6.MobileIdNameQuery;
 import org.powerbot.script.rt6.Hud.Window;
 import org.powerbot.script.rt6.Item;
 import org.powerbot.script.rt6.Player;
@@ -27,7 +30,7 @@ public class KebAntipattern extends KebNode{
 
 	@Override
 	public void execute() {
-		Point f = ctx.mouse.getLocation();
+		Point f = ctx.input.getLocation();
 		
 		int number = Random.nextInt(Random.nextInt(1,30), Random.nextInt(1, 30));
 		//System.out.println(number);
@@ -50,10 +53,10 @@ public class KebAntipattern extends KebNode{
 			KebBody.state = st;
 			for(GroundItem g : ctx.groundItems.select()){
 				if(g.inViewport()){
-					ctx.mouse.move(g.centerPoint());
+					ctx.input.move(g.centerPoint());
 				}
 				if(!ctx.menu.opened())
-					ctx.mouse.click(false);
+					ctx.input.click(false);
 			}
 			KebBody.antiPattern = false;
 			break;
@@ -69,9 +72,9 @@ public class KebAntipattern extends KebNode{
 			KebBody.state = st;
 			i = ctx.backpack.itemAt(Random.nextInt(7, 20));
 				i.hover();
-				ctx.mouse.scroll(true);
+				ctx.input.scroll(true);
 				m.sleep(Random.nextInt(200,2000));
-				ctx.mouse.move(f.x-Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
+				ctx.input.move(f.x-Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
 				m.sleep(Random.nextInt(1956,3200));
 				KebBody.antiPattern = false;
 			
@@ -79,7 +82,7 @@ public class KebAntipattern extends KebNode{
 			
 		case 5:
 			KebBody.state = st;
-			ctx.mouse.move(Random.nextInt(100, 300),Random.nextInt(100, 300));
+			ctx.input.move(Random.nextInt(100, 300),Random.nextInt(100, 300));
 			m.sleep(Random.nextInt(700,1000));
 			KebBody.antiPattern = false;
 			break;
@@ -87,36 +90,36 @@ public class KebAntipattern extends KebNode{
 		case 6:
 			
 			KebBody.state = st;
-			ctx.mouse.move(f.x+Random.nextInt(40, 70),f.y-Random.nextInt(20, 70));
+			ctx.input.move(f.x+Random.nextInt(40, 70),f.y-Random.nextInt(20, 70));
 			m.sleep(Random.nextInt(300, 1900));
 			KebBody.antiPattern = false;
 			break;
 			
 		case 7:
 			KebBody.state = st;
-			ctx.mouse.move(f.x-Random.nextInt(20, 100),f.y+Random.nextInt(40, 200));
+			ctx.input.move(f.x-Random.nextInt(20, 100),f.y+Random.nextInt(40, 200));
 			m.sleep(Random.nextInt(1300, 2900));
 			KebBody.antiPattern = false;
 			break;
 			
 		case 8:
 			KebBody.state = st;
-			ctx.mouse.move(f.x-Random.nextInt(20, 100),f.y+Random.nextInt(40, 200));
+			ctx.input.move(f.x-Random.nextInt(20, 100),f.y+Random.nextInt(40, 200));
 			m.sleep(Random.nextInt(100, 900));
 			KebBody.antiPattern = false;
 			break;
 			
 		case 9:
 			KebBody.state = st;
-			ctx.mouse.move(f.x+Random.nextInt(0, 200),f.y+Random.nextInt(100, 300));
+			ctx.input.move(f.x+Random.nextInt(0, 200),f.y+Random.nextInt(100, 300));
 			m.sleep(Random.nextInt(100, 900));
 			KebBody.antiPattern = false;
 			break;
 			
 		case 10:
 			KebBody.state = st;
-			ctx.mouse.move(f.x+Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
-			ctx.mouse.scroll(true);
+			ctx.input.move(f.x+Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
+			ctx.input.scroll(true);
 			m.sleep(Random.nextInt(100, 900));
 			KebBody.antiPattern = false;
 			break;
@@ -127,7 +130,7 @@ public class KebAntipattern extends KebNode{
 				i.hover();
 				i.click(false);
 				m.sleep(Random.nextInt(200,2000));
-				ctx.mouse.move(f.x-Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
+				ctx.input.move(f.x-Random.nextInt(0, 200),f.y+Random.nextInt(200, 250));
 				m.sleep(Random.nextInt(1956,3200));
 				KebBody.antiPattern = false;
 				break;
@@ -167,7 +170,7 @@ public class KebAntipattern extends KebNode{
 			
 		case 16:
 			KebBody.state = st;
-			ctx.mouse.scroll(true);
+			ctx.input.scroll(true);
 			KebBody.antiPattern = false;
 			break;
 			
@@ -175,7 +178,7 @@ public class KebAntipattern extends KebNode{
 			KebBody.state = st;
 			for(GameObject g : ctx.objects.select().first()){
 				if(g.inViewport()){
-					ctx.mouse.move(g.centerPoint());
+					ctx.input.move(g.centerPoint());
 				}
 			}
 			KebBody.antiPattern = false;
@@ -184,11 +187,11 @@ public class KebAntipattern extends KebNode{
 			KebBody.state = st;
 			for(Player g : ctx.players.select().first()){
 				if(g.inViewport()){
-					ctx.mouse.move(g.centerPoint());
+					ctx.input.move(g.centerPoint());
 					if(!ctx.menu.opened())
-					ctx.mouse.click(false);
+					ctx.input.click(false);
 					m.sleep(Random.nextInt(1200, 1600));
-					ctx.mouse.move(f.x-Random.nextInt(300, 10),f.y+Random.nextInt(0, 170));
+					ctx.input.move(f.x-Random.nextInt(300, 10),f.y+Random.nextInt(0, 170));
 				}
 			}
 			KebBody.antiPattern = false;
@@ -204,10 +207,10 @@ public class KebAntipattern extends KebNode{
 			KebBody.state = st;
 			for(Player g : ctx.players.select().first()){
 				if(g.inViewport()){
-					ctx.mouse.move(g.centerPoint());
+					ctx.input.move(g.centerPoint());
 					m.sleep(Random.nextInt(200, 600));
-					ctx.mouse.move(f.x-Random.nextInt(300, 10),f.y+Random.nextInt(154, 23));
-				}
+					ctx.input.move(f.x-Random.nextInt(300, 10),f.y+Random.nextInt(154, 23));
+				}break;
 			}
 			KebBody.antiPattern = false;
 			break;
@@ -216,9 +219,9 @@ public class KebAntipattern extends KebNode{
 			KebBody.state = st;
 			for(GameObject rock : ctx.objects.select().id(66472,66496).first()){
 				if(rock.inViewport()){
-					ctx.mouse.move(rock.centerPoint());
+					ctx.input.move(rock.centerPoint());
 					m.sleep(Random.nextInt(100, 340));
-					ctx.mouse.move(f.x-Random.nextInt(100, 300),f.y+Random.nextInt(23, 230));
+					ctx.input.move(f.x-Random.nextInt(100, 300),f.y+Random.nextInt(23, 230));
 				}else ctx.camera.turnTo(rock);
 			}
 			KebBody.antiPattern = false;
@@ -227,17 +230,118 @@ public class KebAntipattern extends KebNode{
 		case 22:
 			if(ctx.hud.open(Window.SKILLS)){
 				m.sleep(Random.nextInt(2000, 3500));
-				ctx.mouse.move(f.x-Random.nextInt(50, 400),f.y+Random.nextInt(33, 330));
+				ctx.input.move(f.x-Random.nextInt(50, 400),f.y+Random.nextInt(33, 330));
 			}
 			KebBody.antiPattern = false;
 			break;
+			
+		case 23:
+			KebBody.state = st;
+			ctx.input.click(true);
+			KebBody.antiPattern = false;
+			break;
+			
+		case 24:
+			KebBody.state = st;
+			ctx.input.click(true);
+			m.sleep(Random.nextInt(200, 600));
+			KebBody.antiPattern = false;
+			break;
+			
+			
+		case 25:
+			KebBody.state = st;
+			if(ctx.hud.open(Window.SKILLS)){
+				m.sleep(Random.nextInt(100, 2000));
+			}
+			ctx.input.move(f.x-Random.nextInt(-50, -400),f.y+Random.nextInt(-33, -330));
+			KebBody.antiPattern = false;
+			break;
+			
+			
+			
+		case 26:
+			
+			KebBody.state = st;
+			m.sleep(Random.nextInt(Random.nextInt(1200, 1300), Random.nextInt(1400, 1700)));
+			KebBody.antiPattern = false;
+			break;
+			
+			
+	case 27:
+			
+			KebBody.state = st;
+			for(Player g : ctx.players.select().first()){
+				g.hover();
+				g.click(false);
+			}
+			KebBody.antiPattern = false;
+			break;
+	case 28:
+		
+		KebBody.state = st;
+		checkRock(new Tile(2872,3479,0),66471);
+		KebBody.antiPattern = false;
+		break;
+		
+	case 29:
+		
+		KebBody.state = st;
+		for(GameObject rock : ctx.objects.select().id(66471,66470,66472,66473,66474).nearest().first()){
+			rock.hover();
+			rock.click();
+			break;
+		}
+		KebBody.antiPattern = false;
+		break;
+		
+	case 30:
+		
+		KebBody.state = st;
+		for(GameObject rock : ctx.objects.select().id(66472,66473,66474).nearest().first()){
+			rock.hover();
+			rock.click(true);
+			break;
+		}
+		KebBody.antiPattern = false;
+		break;
+			
+			
 			
 			default:
 				KebBody.antiPattern = false;
 				break;
 		
 		}
+	}//checkRock(new Tile(2872,3479,0),66471);
+	private void checkRock(final Tile rockTile, final int id) {
+		Tile local =ctx.players.local().tile();
+		
+		MobileIdNameQuery<GameObject> findRock =ctx.objects.select().select(new Filter<GameObject>() {
+			public boolean accept(GameObject g) {
+			return g.tile().distanceTo(rockTile)<5 && g.id()==id;
+				
+			}
+	         });
+		
+		for (GameObject rock : findRock) {
+			if (rock.tile().distanceTo(local) < 10 || rock.inViewport()) {
+				
+				if(!ctx.players.local().inMotion()
+						&&ctx.players.local().animation()==-1)
+				if (rock.inViewport()&&rock.interact("Inspect")) {
+					//	System.out.println("Clicking on rock: " + ctx.players.local().animation());
+				} else{
+					//System.out.println("Turning camera rock");
+					ctx.camera.turnTo(rock.tile().derive(1, 3));
+				}
+			} else {
+				ctx.movement.step(rock.tile().derive(1, 4));
+			}
+		}
+		
 	}
+	
 	public void closeInteruptions(){
 		//Reach Divination level cap; become a member dialogue
 		while(ctx.widgets.component(1401,36).visible()){
